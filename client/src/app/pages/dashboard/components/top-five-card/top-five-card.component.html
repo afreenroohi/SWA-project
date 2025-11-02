@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        <p class="card-title">{{ heading }}</p>
+    </div>
+    <div class="card-body">
+        <div class="item-heading item">
+            <p class="sno">Ranking</p>
+            <p class="item-title">Vendor Name</p>
+            <p class="item-value">Amount</p>
+        </div>
+        <div class="item" *ngFor="let item of items; let index = index">
+            <p class="sno">{{ index + 1 }}</p>
+            <p class="item-title">{{ item.title }}</p>
+            <p class="item-value">{{ item.value }}</p>
+        </div>
+    </div>
+</div>

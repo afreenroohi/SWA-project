@@ -1,0 +1,52 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <form [formGroup]="repForm">
+                <div class="create__form__section">
+                    <div class="row w-100 my-3 justify-content-center">
+
+                        <!-- * Created By -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="creater">{{ 'RFP.CreatedBy' | translate }}</nz-form-label>
+                            <nz-select nzShowSearch formControlName="creater" style="width: 100%;" nzAllowClear>
+                                <nz-option *ngFor="let user of userList" [nzValue]="user.uname"
+                                    [nzLabel]="cs.userLanguage === 'en' ? 
+                                    user.userName : user.userName_ar"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <!-- * RFP Number -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="rfpNo">{{ 'RFP.RFP Number' | translate }}</nz-form-label>
+                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
+                            [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of rfpList" [nzValue]="o.RfpNo"
+                                    [nzLabel]="o.RfpNo"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <!-- <div class="col-12 col-md-6 mt-3">
+         
+            <nz-form-label nzRequired for="Dept">{{ 'RFP.Select Department' | translate }}</nz-form-label> 
+            <input nz-input formControlName="Dept" [readonly]="true">
+          </div> -->
+
+
+
+                        <div class="col-12  text-center" style="margin-top: 1%;">
+                            <button nz-button nzType="primary" style="
+            margin-top: 1.4rem;" nzSize="default" (click)="filterSearch()"> {{ 'RFP.search' | translate }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
+                Action="view" ></app-rfptable>
+            <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,129 @@
+<div class="dashboard">
+    <div class="dashboard-options">
+        <div class="option">
+            <nz-form-item>
+                <nz-form-label>
+                    {{ 'Dashboard.Financial Year' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-select [(ngModel)]="selectedYear" #selectedYearModel="ngModel">
+                        <nz-option *ngFor="let year of years" [nzValue]="year" [nzLabel]="year"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div> 
+        <div class="scroll-buttons">
+            <button nz-button class="back-button" nzShape="circle" (click)="scrollCards('left')">
+                <i class="icon-fill" nz-icon nzType="arrow-left" nzTheme="outline"></i>
+            </button>
+            <button nz-button class="forward-button" nzShape="circle" (click)="scrollCards('right')">
+                <i class="icon-fill" nz-icon nzType="arrow-right" nzTheme="outline"></i>
+            </button>
+        </div>
+    </div>
+    <ng-container *ngIf="showCards">
+        <div class="dashboard-cards row">
+            <!-- Scrollable Card Container -->
+            <div #scrollContainer class="card-scroll-container">
+                <!-- * Total Number of RFPs -->
+                <div *ngIf="cardList.TotRfpPrCard" class="card-items">
+                    <dashboard-card [title]="cardTitles.rfp" [value]="cardsData.TotalRfpCount || '-'"
+                        [description]="'Dashboard.RFPs'" [secondaryValue]="cardsData.TotalPrCount || '-'"
+                        [secondaryDescription]="'Dashboard.PRs'" [icon]="iconList.file"
+                        (viewTableDetailsToggle)="handleTableVisibility($event)">
+                    </dashboard-card>
+                </div>
+                <!-- * Total Number of Tenders -->
+                <div *ngIf="cardList.TotTndrCard" class="card-items">
+                    <dashboard-card [title]="cardTitles.tender" [value]="cardsData.TotalTndrCount || '-'"
+                        [icon]="iconList.fileCopy" (viewTableDetailsToggle)="handleTableVisibility($event)">
+                    </dashboard-card>
+                </div>
+                <!-- * Total Number of Contracts SAP -->
+                <div *ngIf="cardList.TotContCard" class="card-items">
+                    <dashboard-card [title]="cardTitles.contractSAP" [value]="cardsData.TotalContSapCount || '-'"
+                        [icon]="iconList.contractSAP" (viewTableDetailsToggle)="handleTableVisibility($event)">
+                    </dashboard-card>
+                </div>
+                <!-- * Total Number of Contracts P2P -->
+                <div *ngIf="cardList.TotContPreAprCard" class="card-items">
+                    <dashboard-card [title]="cardTitles.contract" [value]="cardsData.TotalContP2pCount || '-'"
+                        [description]="'Dashboard.Prepared'" [secondaryValue]="cardsData.TotalContaprP2pCount || '-'"
+                        [secondaryDescription]="'Dashboard.Approved'" [icon]="iconList.contract"
+                        (viewTableDetailsToggle)="handleTableVisibility($event)">
+                    </dashboard-card>
+                </div>
+                <!-- * Total Number of CoCs -->
+                <div *ngIf="cardList.TotCocCard" class="card-items">
+                    <dashboard-card [title]="cardTitles.coc" [value]="cardsData.TotalCocCount || '-'"
+                        [icon]="iconList.trackLine" (viewTableDetailsToggle)="handleTableVisibility($event)">
+                    </dashboard-card>
+                </div>
+            </div>
+
+            <!-- Dashboard Table Below -->
+            <ng-container *ngIf="viewTableDetailsToggle">
+                <div class="col-12 dashboard-table" id="dashboardTable">
+                    <dashboard-table [title]="tableTitle" [columns]="tableColumns" [data]="tableData"
+                        [isLoading]="isLoading" [total]="totalItems" [searchPlaceholder]="searchPlaceholder"
+                        [pageIndex]="pageIndex" (currentPage)="pageChange($event)" (download)="downloadExcel($event)"
+                        (search)="onSearch($event)" (filterAndSort)="onSortAndFilter($event)">
+                    </dashboard-table>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="showCharts">
+        <div class="dashboard-charts row">
+            <!-- * Top 5 Vendors -->
+            <div *ngIf="cardList.TopVndrs" class="col-6">
+                <dashboard-bar-chart [barChartHeading]="'Dashboard.Top 5 Vendors' | translate"
+ 
+                  [barChartData]="topVendorsChartData" [barChartOptions]="topVendorsChartOptions">
+                </dashboard-bar-chart>
+            </div>
+            <!-- * Number of Tenders by Committee -->
+            <div *ngIf="cardList.TotTndrByCmt" class="col-6">
+                <dashboard-pie-chart [filterSet]="tenderFilterSet"
+                  [pieChartHeading]="'Dashboard.Tender Breakdown by Committee' | translate"
+                  [pieChartData]="tenderByCommitteeChartData" (selectedFilters)="tenderByCommitteeFilter($event)">
+                </dashboard-pie-chart>
+            </div>
+             <!-- * Number of RFPs by org unit -->
+            <div *ngIf="cardList.TotRfpByDpt" class="col-6">
+                <dashboard-bar-chart [filterSet]="rfpByDeptFilterSet"
+                    [barChartHeading]="'Dashboard.RFPs Distribution by Department' | translate"
+                    [barChartData]="rfpByOrgUnitChartData" (selectedFilters)="rfpByOrgUnitFilter($event)">
+                </dashboard-bar-chart>
+            </div>
+            <!-- * Number of RFPs by month  -->
+            <div *ngIf="cardList.TotRfpByMonth" class="col-6">
+                <dashboard-line-chart [filterSet]="rfpFilterSet"
+                    [lineChartHeading]="'Dashboard.Monthly RFP Trends' | translate"
+                    [lineChartData]="rfpByMonthsChartData" (selectedFilters)="rfpByMonthFilter($event)">
+                </dashboard-line-chart>
+            </div>
+            <!-- * Number of Tenders by month -->
+            <div *ngIf="cardList.TotTndrByMonth" class="col-6">
+                <dashboard-line-chart [filterSet]="tenderFilterSet"
+                    [lineChartHeading]="'Dashboard.Monthly Tender Trends' | translate"
+                    [lineChartData]="tenderByMonthsChartData" (selectedFilters)="tenderByMonthFilter($event)">
+                </dashboard-line-chart>
+            </div>
+            <!-- * Number of Contracts by month -->
+            <div *ngIf="cardList.TotContByMonth" class="col-6">
+                <dashboard-line-chart [filterSet]="contractFilterSet"
+                    [lineChartHeading]="'Dashboard.Monthly Contract Trends' | translate"
+                    [lineChartData]="contractByMonthsChartData" (selectedFilters)="contractByMonthFilter($event)">
+                </dashboard-line-chart>
+            </div>
+            <!-- * Spend Analysis by month -->
+            <div *ngIf="cardList.TotAmtByMonth" class="col-6">
+                <dashboard-line-chart [filterSet]="spendAnalysisFilterSet"
+                    [lineChartHeading]="'Dashboard.Monthly CoC Expenditure Insights' | translate"
+                    [lineChartData]="spendAnalysisByMonthsChartData" (selectedFilters)="spendAnalysisFilter($event)">
+                </dashboard-line-chart>
+            </div>
+        </div>
+    </ng-container>
+</div>

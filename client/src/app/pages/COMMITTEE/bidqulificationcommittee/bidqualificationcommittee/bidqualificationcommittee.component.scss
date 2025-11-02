@@ -1,0 +1,168 @@
+@import '../../../../../variables';
+
+.create__form__section {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  width: 100%;
+  border-top: 3px solid #41ad4f;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+h6 {
+  font-size: 1rem !important;
+}
+
+.table-responsive {
+  ::ng-deep .ant-table-placeholder {
+    display: none;
+  }
+}
+
+.CommentCard {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  margin-top: 10px;
+  padding: 8px;
+}
+
+.bg-green {
+  background-color: #41ad4f;
+  color: #ffff;
+}
+
+.txt-red {
+  color:red
+}
+
+.create_com_head {
+  font-size: 18px;
+  font-family: 'Roboto';
+  font-weight: 600;
+}
+
+.committe-head-members {
+  th, td {
+    text-align: start !important;
+  }
+  tr:first-of-type { 
+    th {
+      background-color: $dark-grey !important;
+    }
+  }
+}
+
+.ant-collapse-header {
+  font-weight: 500;
+  font-size: 18px;
+  font-family: Roboto;
+  color: $dark-black-font !important;
+}
+
+.ant-btn.outline {
+  color: #65ba6c !important;
+  border-color: #65ba6c !important;
+}
+
+::ng-deep .modal-top-border {
+  border-top: 4px solid #005c99 !important;
+}
+
+::ng-deep .ant-modal-header {
+  border-bottom: 0px !important;
+}
+::ng-deep .ant-modal-footer {
+  text-align: left !important;
+  border-top: 0px !important;
+  height: 55px !important;
+}
+
+// Drop-down Arrow alignment style
+::ng-deep [dir="rtl"] .ant-select-arrow {
+  right: 84% !important;
+}
+
+::ng-deep .fr-second-toolbar{
+  border: 0 !important;
+  background: none !important;
+}
+
+::ng-deep .fr-wrapper{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar.fr-top{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar .fr-newline{
+  background: none !important;
+  height: 0px !important;
+}
+
+::ng-deep .fr-box.fr-basic .fr-wrapper{
+  background: none !important;
+}
+
+.green-circle {
+  margin-top: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #005c99;
+}
+
+.vl{
+  border-left: 1px solid #D9D9D9;
+  position: absolute;
+  left: 46%;
+  right: 46%;
+  height: 115%;
+}
+
+.comment-content{
+  font-size: 18px;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+::ng-deep .ant-form-item{
+  margin-bottom: 0 !important;
+}
+
+::ng-deep .ant-modal-title{
+  font-size: 22px;
+}
+
+.closeIcon{
+  border: none;
+  background: none;
+  height: fit-content;
+  cursor: pointer;
+}
+
+.ant-collapse {
+
+  background-color:#f1f1f1 ;
+
+  border: 1px solid #f1f1f1;
+
+  .ant-collapse-item {
+
+    border: 0;
+
+    .ant-collapse-content {
+
+border-top: 0 !important;
+
+}
+
+}
+}
+
+.is-invalid {
+  border: 1px solid red !important;
+}

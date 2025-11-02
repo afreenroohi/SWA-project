@@ -1,0 +1,65 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <h3 class="mt-2">{{'COC.Create COC' | translate }}</h3>
+  <div class="row mt-3">
+    <nz-table #nzTable nzShowSizeChanger *ngIf="departmentList && departmentList.length"
+      [nzData]="displayDepartmentList" [nzPageSize]="5" [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1"
+      [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" [nzNoResult]=noTableData>
+
+      <thead>
+        <tr>
+          <th>{{'Table.SI No' | translate}}</th>
+          <th nzCustomFilter>
+            {{'COM.Department' | translate}}
+            <nz-filter-trigger [(nzVisible)]="showSearchDepartment" [nzActive]="searchDepartmentValue.length > 0"
+              [nzDropdownMenu]="departmentSearch">
+              <span nz-icon nzType="search"></span>
+            </nz-filter-trigger>
+          </th>
+          <th>{{'COC.Profit Centre' | translate}}</th>
+          <th [nzWidth]="'5px'">{{'RFP.Action' | translate}}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container *ngFor="let data of nzTable.data; let i = index">
+          <tr>
+            <td>{{data.SiNo}} </td>
+
+            <td>
+              {{data.DepartmentName}}
+            </td>
+
+            <td> {{data.ProfitCentre}} </td>
+            <td>
+              <button nz-button nzType="text" nzSize="default" (click)="OpenPOandContract(data)"><span nz-icon
+                  nzType="right" nzTheme="outline"></span></button>
+            </td>
+          </tr>
+
+        </ng-container>
+
+      </tbody>
+    </nz-table>
+
+
+    <app-no-data-found *ngIf="!departmentList || !departmentList.length"></app-no-data-found>
+  </div>
+</div>
+
+<nz-dropdown-menu #departmentSearch="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input [placeholder]="translate.instant('COC.Enter Department')"
+        [(ngModel)]="searchDepartmentValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchDepartment()"
+        [ngClass]="cs.userLanguage === 'en'? 'search-button-en': 'search-button-ar'">{{'RFP.search' |
+        translate}}</button>
+      <button nz-button nzSize="small" (click)="resetDepartment()">{{'contract.common.Reset' | translate}}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<ng-template #noTableData>
+  <app-no-data-found></app-no-data-found>
+</ng-template>

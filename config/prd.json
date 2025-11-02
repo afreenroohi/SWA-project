@@ -1,0 +1,6 @@
+{
+    "PORT": "443",
+    "HOSTNAME":"procurement.mwan.sa",
+    "URL":"https://vhncwps4ap01.hec.mwan.gov.sa:44300/sap/opu/odata/sap//",
+    "SAP_PL_ALIAS": ";o=FIORI"   
+}

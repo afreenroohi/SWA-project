@@ -1,0 +1,102 @@
+<div class="row mt-2">
+    <!-- <div class="col-4">
+        <button nz-button nzType="primary" (click)="backToDashboard()">
+            <span *ngIf="cs.userLanguage === 'en' " nz-icon nzType="left"></span>
+            <span class="mx-2" *ngIf="cs.userLanguage === 'ar' " nz-icon nzType="right"></span>
+            {{ 'contract.common.BackToDashboard' | translate }}
+        </button>
+    </div> -->
+    <!-- <div class="col-4" style="text-align: center;"> -->
+        <p class="heading">{{ 'contract.common.ProjectDetails' | translate }}</p>
+    <!-- </div> -->
+</div>
+
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<!-- <div class="container-fluid" style="margin-top: 2rem;"> -->
+    <nz-form [formGroup]="ContractForm">
+        <div class="row">
+            <div class="col-4 my-1">
+                <nz-form-label>{{ 'contract.common.ProjectName' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <input style="width: 100%" nz-input formControlName="ProjectName" />
+                </nz-form-control>
+            </div>
+            <div class="col-4 my-1">
+                <nz-form-label>{{ 'contract.common.ProjectType' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width: 100%" formControlName="ProjectType" nzShowSearch nzSize="small">
+                        <nz-option *ngFor="let type of projectTypeList" [nzValue]="type.id"
+                            [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
+                    <!-- <small
+                      *ngIf="ContractForm.get('ProjectType')?.touched &&
+                            ContractForm.get('ProjectType')?.invalid">
+                      {{ "RFP.FieldIsRequired" | translate }}
+                    </small> -->
+                  </nz-select>
+                </nz-form-control>
+                </div>
+            <div class="col-4 my-1">
+                <nz-form-label>{{ 'contract.common.AwardNumber' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="AwardNumber" />
+                </nz-form-control>
+            </div>
+            <div class="col-4 my-2">
+                <nz-form-label>{{ 'contract.common.AwardDate' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="AwardDate" />
+                </nz-form-control>
+            </div>
+            <div class="col-4 my-2">
+                <nz-form-label>{{ 'contract.common.VendorName' | translate }}
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="VendorName" />
+                </nz-form-control>
+            </div>
+
+            <div class="mt-4">
+                <button style="height: 45px; width: 10%;" nz-button nzType="primary" (click)="asignOfficer()">
+                    {{ 'contract.buttons.Assign' | translate }}
+                </button>
+            </div>
+        </div>
+    </nz-form>
+<!-- </div> -->
+
+
+
+<nz-modal [ngStyle]="{ direction :  cs.userLanguage === 'ar' ? 'rtl' : 'ltr'  }" nzCentered [(nzVisible)]="isVisible"
+    [nzOkDisabled]="selectedOfficer==''">
+
+    <div *nzModalTitle class="heading d-flex" style="justify-content: space-between;">
+        <p>{{ 'contract.modal.head1' | translate }}</p>
+        <button class="closeIcon" (click)="handleCancel()">
+            <img src="../../../../../assets/logo/CloseIcon.svg" alt="">
+        </button>
+      </div>
+
+    <ng-container *nzModalContent>
+        <p style="font-size: 16px;">{{ 'contract.modal.content1' | translate }}</p>
+        <nz-form-item>
+            <nz-form-control nzHasFeedback>
+                <nz-select name="select-validate" [(ngModel)]="selectedOfficer" [ngModel]="'Select the unit Officer'">
+                    <nz-option nzDisabled nzValue="Select the unit Officer"
+                        nzLabel="{{ 'contract.modal.TheEmployeeInCharge' | translate }}">
+                    </nz-option>
+                    <nz-option *ngFor="let data of officerList" [nzValue]="data" [nzLabel]="data"></nz-option>
+
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </ng-container>
+
+    <div *nzModalFooter style="text-align: end;">
+        <button nz-button nzType="default" (click)="handleCancel()">{{ 'contract.Comment.Cancel' | translate }}</button>
+        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">{{ 'contract.buttons.Assign' | translate }}</button>
+      </div>
+</nz-modal>

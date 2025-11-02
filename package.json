@@ -1,0 +1,39 @@
+{
+  "name": "committe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:client": "npm run --prefix client ng s",
+    "start:api": "set NODE_ENV=loc&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
+    "start:qa": "set NODE_ENV=qa&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
+    "start:dev": "set NODE_ENV=dev&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
+    "start:prod": "set NODE_ENV=prd&& set NODE_EXTRA_CA_CERTS=./cert/sap_prod.crt&& nodemon server.js",
+    "start:local": "set NODE_ENV=loc&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
+    "start": "set NODE_ENV=prd&& nodemon server.js",
+    "build:projdev": "npm run --prefix client build -- -c=projdev",
+    "build:projqas": "npm run --prefix client build -- -c=projqas",
+    "build:maintdev": "npm run --prefix client build -- -c=maintdev",
+    "build:maintqas": "npm run --prefix client build -- -c=maintqas",
+    "build:preprod": "npm run --prefix client build -- -c=preprod",
+    "build:production": "npm run --prefix client build -- -c=production"
+  },
+  "author": "kaar",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "b64-to-blob": "^1.2.19",
+    "body-parser": "^1.20.0",
+    "config": "^3.3.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.1",
+    "helmet": "^7.1.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.19",
+    "uuid": "^9.0.0"
+  }
+}

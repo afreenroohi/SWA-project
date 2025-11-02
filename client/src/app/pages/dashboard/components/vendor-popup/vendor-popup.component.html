@@ -1,0 +1,39 @@
+<nz-skeleton [nzLoading]="loader" [nzParagraph]="{ rows: 10 }">
+    <div class="vendor-popup">
+        <div class="vendor-header">
+            <h2>{{ vendorDetails.vendorID }} - {{ vendorDetails.vendorName }}</h2>
+            <button nz-button nzType="primary" (click)="close()"><i nz-icon nzType="close"></i></button>
+        </div>
+        <hr>
+        <div class="vendor-details">
+            <h3>{{ "Dashboard.Vendor Details" | translate }}</h3>
+            <div class="row">
+                <div class="col-4 my-1" *ngFor="let entry of vendorKeys">
+                    <p><b>{{ entry[0] | translate }}</b></p>
+                    <p>{{ getVendorValues(entry[1]) || '-' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="contract-details">
+            <h3>{{ "Dashboard.Contract Details" | translate }}</h3>
+            <nz-table #basicTable [nzData]="vendorDetails.contractDetails" [nzPageSize]="4">
+                <thead>
+                    <tr>
+                       <th *ngFor="let header of contractTableHeaders">{{ header | translate }}</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let contract of basicTable.data">
+                        <td>{{ contract.contractNumber || '-' }}</td>
+                        <td>{{ (contract.agreementDate | customDate) || '-' }}</td>
+                        <td>{{ (contract.startDate | customDate) || '-' }}</td>
+                        <td>{{ (contract.endDate | customDate) || '-'  }}</td>
+                        <td>{{ (contract.targetValue | number) || '-' }}</td>
+                        <td>{{ concatArray(contract.pr) || '-' }}</td>
+                        <td>{{ concatArray(contract.po) || '-' }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</nz-skeleton>

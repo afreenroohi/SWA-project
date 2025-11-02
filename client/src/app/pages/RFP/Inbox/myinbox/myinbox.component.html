@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 mt-5"><nz-tabset [nzSelectedIndex]="ActiveTab">
+        <nz-tab [nzTitle]="titleTemplate" style="margin-left: 0% !important;">
+          <ng-template #titleTemplate>
+            <span nz-icon nzType="mail"></span>
+            {{ 'RFP.PendAppr' | translate }}
+          </ng-template>
+          <app-rfptable *ngIf="listArrayAppr" [listOfColumn]="listOfColumnRFPAppRej" [listArray]="listArrayAppr"
+            Action="approve"></app-rfptable>
+
+          <app-no-data-found *ngIf="!listArrayAppr"></app-no-data-found>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="titleTemplate1" style="margin-left: 0% !important;">
+          <ng-template #titleTemplate1>
+            <span nz-icon nzType="mail"></span>
+            {{ 'RFP.PendRev' | translate }}
+          </ng-template>
+          <app-rfptable *ngIf="listArrayRej" [listOfColumn]="listOfColumnRFPAppRej" [listArray]="listArrayRej"
+            Action="review"></app-rfptable>
+
+          <app-no-data-found *ngIf="!listArrayRej"></app-no-data-found>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+</div>

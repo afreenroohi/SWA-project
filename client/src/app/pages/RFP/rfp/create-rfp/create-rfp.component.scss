@@ -1,0 +1,93 @@
+.create__form__section {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-top: 3px solid #41ad4f;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.create__form__section {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-top: 3px solid #41ad4f;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+h6 {
+  font-size: 1rem !important;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  height: 32px;
+  padding: 9px;
+}
+
+input::selection {
+  border-color: 1px solid #41ad4f;
+  border: #41ad4f;
+  padding: 9px;
+}
+
+.create_rfp_head {
+  font-size: 18px;
+  font-family: 'Roboto';
+  font-weight: 600;
+}
+
+::ng-deep .ant-collapse-content {
+  background: #FCFCFC !important;
+}
+
+::ng-deep .ant-collapse-header {
+  background: #F1F1F1 !important;
+  font-weight: 700;
+  font-family: 'Roboto';
+}
+
+.boqbuttonDelete {
+  // height: 26px;
+  // width: 42px;
+  color: red;
+  border-color: red;
+}
+
+.boqbuttonEdit {
+  // height: 26px;
+  // width: 42px;
+  color: #005c99;
+  border-color: #005c99;
+}
+
+.addBtn {
+  background: none !important;
+  color: #005c99 !important;
+}
+
+.seperationLine {
+  margin-top: 3%;
+  background: #e9e9e9 !important;
+  border: none;
+  height: 2px;
+}
+.check{
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.w-98 {
+  width: 98%;
+}
+
+.posr-t-2 {
+  position: relative;
+  top: 2rem
+}
+

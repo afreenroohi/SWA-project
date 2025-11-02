@@ -1,0 +1,531 @@
+<h1>{{ "contract.create.create contract" | translate }}</h1>
+<!-- Aggrement details-->
+<nz-collapse
+  nzAccordion
+  [nzExpandIconPosition]="expandIconPosition"
+  class="mt-4"
+>
+  <nz-collapse-panel nzActive="true" [nzHeader]="headerTemplate">
+    <ng-template #headerTemplate>
+      <span style="font-weight: bold">{{
+        "contract.create.Agreement Details" | translate
+      }}</span>
+    </ng-template>
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="PRNumber" class="contract-form-label">{{
+          "contract.create.PR number" | translate
+        }}</nz-form-label>
+
+        <nz-select
+          id="PRNumber"
+          nzShowSearch
+          [(ngModel)]="selectedPR"
+          (ngModelChange)="onSelectedPRChange($event)"
+          style="width: 100%"
+        >
+          <nz-option
+            *ngFor="let PRNo of PRList; let i = index"
+            [nzLabel]="PRNo.PurchaseRequest"
+            [nzValue]="PRNo.PurchaseRequest"
+          >
+          </nz-option>
+        </nz-select>
+      </div>
+    </div>
+
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="RFP Number" class="contract-form-label">{{
+          "contract.create.RFP Number" | translate
+        }}</nz-form-label>
+
+        <p>{{ selectedRFP || "-" }}</p>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="Supplier/vendor" class="contract-form-label">{{
+          "contract.create.Supplier/vendor" | translate
+        }}</nz-form-label>
+
+        <p>
+          {{ contractCreationDetails.Supplier  }} -
+          {{ contractCreationDetails.SupplierName }}
+        </p>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Purchase Organisation"
+          class="contract-form-label"
+          >{{
+            "contract.create.Purchase Organisation" | translate
+          }}</nz-form-label
+        >
+
+        <p>{{ contractCreationDetails.PurchaseOrg || "-" }}</p>
+      </div>
+    </div>
+
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="PRNumber" class="contract-form-label">{{
+          "contract.create.Purchasing Group" | translate
+        }}</nz-form-label>
+
+        <p>
+          {{ contractCreationDetails.PurchaseGrp || "-" }} -
+          {{ contractCreationDetails.PurchaseGrpname }}
+        </p>
+      </div>
+
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="Agreement Type" class="contract-form-label">{{
+          "contract.create.Agreement Type" | translate
+        }}</nz-form-label>
+
+        <p>{{ contractCreationDetails.AgreementType || "-" }}</p>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="Agreement Date" class="contract-form-label">{{
+          "contract.create.Agreement Date" | translate
+        }}</nz-form-label>
+
+        <p>
+          {{
+            parseDate(contractCreationDetails.AgreementDt) | date : "dd/MM/yyyy"
+          }}
+        </p>
+      </div>
+    </div>
+  </nz-collapse-panel>
+</nz-collapse>
+<!-- contract details-->
+
+<nz-collapse
+  nzAccordion
+  [nzExpandIconPosition]="expandIconPosition"
+  class="mt-4"
+>
+  <nz-collapse-panel [nzHeader]="contractDeatailsheaderTemplate">
+    <ng-template #contractDeatailsheaderTemplate>
+      <span style="font-weight: bold">{{
+        "contract.create.Contract Details" | translate
+      }}</span>
+    </ng-template>
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="Company code" class="contract-form-label">{{
+          "contract.create.Company code" | translate
+        }}</nz-form-label>
+        <p>
+          {{ contractCreationDetails.CompCode || "-" }} -
+          {{ contractCreationDetails.CompCodeDesc }}
+        </p>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Target Value (with VAT)"
+          class="contract-form-label"
+          >{{
+            "contract.create.Target Value (with VAT)" | translate
+          }}</nz-form-label
+        >
+        <p>{{ contractCreationDetails.TargetValue | currency:'SAR ':'symbol':'1.0-2'  }}</p>
+      </div>
+    </div>
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Validity Start Date (Gregorian)"
+          class="contract-form-label"
+          >{{
+            "contract.create.Validity Start Date (Gregorian)" | translate
+          }} <span class="required-asterisk">*</span></nz-form-label
+        >
+        <nz-date-picker
+          [(ngModel)]="contractCreationDetails.ValStDate"
+          name="valStartDate"
+          (ngModelChange)="calculateContractEndDate()"
+        ></nz-date-picker>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Validity End Date (Gregorian)"
+          class="contract-form-label"
+          >{{
+            "contract.create.Validity End Date (Gregorian)" | translate
+          }}</nz-form-label
+        >
+        <nz-date-picker
+          [(ngModel)]="contractCreationDetails.ValEndDate"
+          name="valEndDate"
+          [nzDisabled]="true"
+        ></nz-date-picker>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label nzFor="Contract period" class="contract-form-label">{{
+          "contract.create.Contract period" | translate
+        }} <span class="required-asterisk">*</span></nz-form-label>
+        <nz-input-number
+          style="width: 100%"
+          [nzMin]="1"
+          [nzMax]="10"
+          [nzStep]="1"
+          [(ngModel)]="contractCreationDetails.ContPeriod"
+          (ngModelChange)="calculateContractEndDate()"
+        ></nz-input-number>
+      </div>
+    </div>
+    <div class="row w-100 my-1">
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Contract Period Unit"
+          class="contract-form-label"
+          >{{
+            "contract.create.Contract Period Unit" | translate
+          }} <span class="required-asterisk">*</span></nz-form-label
+        >
+        <nz-select
+          [(ngModel)]="contractCreationDetails.ContPerdUnit"
+          (ngModelChange)="calculateContractEndDate()"
+          id="Contract Period Unit"
+          style="width: 100%"
+        >
+          <nz-option
+            *ngFor="let o of durationTypes"
+            [nzValue]="o.id"
+            [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"
+            name="Contract Period Unit"
+          ></nz-option>
+        </nz-select>
+      </div>
+      <div class="col-md-4 col-12 mt-3">
+        <nz-form-label
+          nzFor="Etimad Reference Number (Contract)"
+          class="contract-form-label"
+          >{{
+            "contract.create.Etimad Reference Number (Contract)" | translate
+          }} </nz-form-label
+        >
+        <input nz-input   #referenceNo="ngModel" [(ngModel)]="contractCreationDetails.ReferenceNo"
+         (input)="restrictToOnlyNumbers($event)"  maxlength="10"/>
+        <div *ngIf="referenceNo.invalid && referenceNo.touched" class="required-asterisk">
+          Etimad Reference Number is required.
+        </div>
+      </div>
+    </div>
+  </nz-collapse-panel>
+  <!-- item details-->
+</nz-collapse>
+
+<nz-collapse *ngFor="let group of groupedByYearArray" [nzExpandIconPosition]="expandIconPosition" class="mt-4"
+  nzAccordion>
+  <!-- Nested Collapse Starts -->
+  <nz-collapse-panel [nzHeader]="headerTpl">
+    <ng-template #headerTpl>
+      <b>{{ 'RFP.RFP Budget Year' | translate }}: {{ group.year }}</b>
+    </ng-template>
+    <ng-container>
+        <!-- Item Details Panel -->
+        <nz-collapse nzAccordion [nzExpandIconPosition]="'right'" class="mt-4">
+          <nz-collapse-panel [nzHeader]="itemDeatailsheaderTemplate">
+            <ng-template #itemDeatailsheaderTemplate>
+              <span style="font-weight: bold">{{
+                "contract.create.Item Details" | translate
+                }}</span>
+            </ng-template>
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Item" class="contract-form-label">{{
+                  "contract.create.Item" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{ group.itemOverviews[0].Item || "-" }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Short Text" class="contract-form-label">{{
+                  "contract.create.Short Text" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.itemOverviews[0].ShortText || "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Item Category" class="contract-form-label">{{
+                  "contract.create.Item Category" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  cs.userLanguage === "en"
+                  ? group.itemOverviews[0].ItmCatDesEn
+                  : group.itemOverviews[0].ItmCatDesAra ||
+                  "-"
+                  }}
+                </p>
+              </div>
+
+            </div>
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Account Assignment Category" class="contract-form-label">{{
+                  "contract.create.Account Assignment Category" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{ group.itemOverviews[0].AccAssig || "-" }} - {{cs.userLanguage === "en" ?
+                  group.itemOverviews[0].AccAssigDesc : group.itemOverviews[0].AccAssigDesAr}}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Material Group" class="contract-form-label">{{
+                  "contract.create.Material Group" | translate
+                  }}</nz-form-label>
+                <p>
+                  {{
+                  cs.userLanguage === "en"
+                  ? group.itemOverviews[0].MatGrpDesc
+                  : group.itemOverviews[0]
+                  .MatGrpDescAra || "-"
+                  }}
+                </p>
+              </div>
+
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Target Quantity" class="contract-form-label">{{
+                  "contract.create.Target Quantity" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{ group.itemOverviews[0].TargQua || "-" }} {{group.itemOverviews[0].OrdUnit}}
+                </p>
+              </div>
+
+            </div>
+
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Net Price (Without VAT)" class="contract-form-label">{{
+                  "contract.create.Net Price (Without VAT)" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{ group.itemOverviews[0].NetPrice | currency:'SAR ':'symbol':'1.0-2' }}
+                </p>
+              </div>
+
+
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Plant" class="contract-form-label">{{
+                  "contract.create.Plant" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{ group.itemOverviews[0].Plant || "-" }} -
+                  {{ group.itemOverviews[0].PlantDesc }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Tax code" class="contract-form-label">{{
+                  "contract.create.Tax code" | translate
+                  }}</nz-form-label>
+                <p>
+                  {{
+                  cs.userLanguage === "en"
+                  ? group.itemOverviews[0].TaxCodeDesc
+                  : group.itemOverviews[0]
+                  .TaxCodeDescAra || "-"
+                  }}
+                </p>
+              </div>
+            </div>
+            <!-- <div class="row w-100 my-1">
+      
+    </div> -->
+          </nz-collapse-panel>
+        </nz-collapse>
+
+        <!-- Service Line Items Panel -->
+        <nz-collapse nzAccordion [nzExpandIconPosition]="'right'" class="mt-4">
+          <nz-collapse-panel [nzHeader]="serviceLineItemheaderTemplate">
+            <ng-template #serviceLineItemheaderTemplate>
+              <span style="font-weight: bold">{{
+                "contract.create.Service Line Items" | translate
+                }}</span>
+            </ng-template>
+            <nz-table #editRowTable [nzData]="group.serviceLineItems">
+              <thead>
+                <tr>
+                  <th *ngFor="let item of serviceLineItemColumns">
+                    {{ item | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of group.serviceLineItems; let i = index" class="editable-row">
+                  <!-- <td>{{ item.lineNumber }}</td> -->
+                  <td>
+                    {{ item.LineNum || "-" }}
+                  </td>
+                  <td>{{ item.ShortText || "-" }}</td>
+                  <td>{{ item.SrQuan || "-" }}</td>
+                  <td>{{ item.SrUnit || "-" }}</td>
+                  <td>
+                    <div class="editable-cell" [hidden]="editId === item.LineNum" (click)="startEdit(item.LineNum)">
+                      {{ item.GrossPrice | currency:'SAR ':'symbol':'1.0-2' }}
+                    </div>
+                  <input [hidden]="editId !== item.LineNum" type="text" nz-input [(ngModel)]="item.GrossPrice"
+                    (ngModelChange)="onGrossPriceChange($event, group.year, i)" (blur)="stopEdit()"
+                    (keydown)="restrictToNumbers($event, item.GrossPrice)" />
+                  </td>
+                  <td>{{ item.Currency || "-" }}</td>
+                  <!-- <td>{{ item.CostCent || "-" }}</td>
+                  <td>{{ item.Order || "-" }}</td> -->
+                  <td>{{ (item.NetValue | currency:'SAR ':'symbol':'1.0-2') || "-" }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <p class="required-asterisk" *ngIf="isTargetValueExceeded"> {{ 'contract.create.Target Value Exceed Warning'
+              |
+              translate }}
+
+
+            </p>
+          </nz-collapse-panel>
+        </nz-collapse>
+
+        <!-- Account Assignment Panel -->
+        <nz-collapse nzAccordion [nzExpandIconPosition]="'right'" class="mt-4">
+          <nz-collapse-panel [nzHeader]="accountItemAssignmentheaderTemplate">
+            <ng-template #accountItemAssignmentheaderTemplate>
+              <span style="font-weight: bold">{{
+                "contract.create.Account Assignment" | translate
+                }}</span>
+            </ng-template>
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="GL Account" class="contract-form-label">{{
+                  "contract.create.GL Account" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  contractCreationDetails.Account_Assignment.results[0].GlAcc || "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Controlling Area" class="contract-form-label">{{
+                  "contract.create.Controlling Area" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].ContArea ||
+                  "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Profit Center" class="contract-form-label">{{
+                  "contract.create.Profit Center" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].ProfitCent ||
+                  "-"
+                  }}
+                </p>
+              </div>
+            </div>
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Fund" class="contract-form-label">{{
+                  "contract.create.Fund" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].Fund || "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Fund Center" class="contract-form-label">{{
+                  "contract.create.Fund Center" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].FundCent ||
+                  "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Commitment Item" class="contract-form-label">{{
+                  "contract.create.Commitment Item" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].CommItem ||
+                  "-"
+                  }}
+                </p>
+              </div>
+            </div>
+            <div class="row w-100 my-1">
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Recipient" class="contract-form-label">{{
+                  "contract.create.Recipient" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.accountAssignments[0].Recipient ||
+                  "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Fund" class="contract-form-label">{{
+                  "contract.create.Costcenter" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.serviceLineItems[0].CostCent || "-"
+                  }}
+                </p>
+              </div>
+              <div class="col-md-4 col-12 mt-3">
+                <nz-form-label nzFor="Fund" class="contract-form-label">{{
+                  "contract.create.Order" | translate
+                  }}</nz-form-label>
+
+                <p>
+                  {{
+                  group.serviceLineItems[0].Order || "-"
+                  }}
+                </p>
+              </div>
+            </div>
+          </nz-collapse-panel>
+        </nz-collapse>
+    </ng-container>
+    <!-- Nested Collapse Ends -->
+  </nz-collapse-panel>
+</nz-collapse>
+
+<div class="d-flex flex-row-reverse my-3">
+  <button nz-button nzType="primary" [disabled]="isTargetValueExceeded" appSubmitConfirmation  confirmModalTitle="submitConfirmation"confirmModalBody="COM.Do you want to Submit?"(confirmedAction)="onContractCreationSubmit()" >
+    {{ "contract.create.create contract" | translate }}
+  </button>
+</div>
+

@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+
+            <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+            <div class="container-fluid">
+                <!-- filter section starts -->
+                <div class="mt-4">
+                    <div class="FilterClass" (click)="checkDropdownData()">
+                        <span nz-icon nzType="filter" nzTheme="outline"></span>
+                    </div>
+                    <div *ngIf="showFilter" class="mt-2 boxClass">
+                        <h3>{{'RFP.Filter' | translate}}</h3>
+                        <div class="row">
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{'Project Name' | translate}}</nz-form-label>
+                                <input type="text" nz-input
+                                    placeholder="{{'contract.Details.SearchProjectName' | translate }}"
+                                    [(ngModel)]="searchValueProjectName" />
+                            </div>
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{'Type of Project' | translate}}</nz-form-label>
+                                <!-- <input type="text" nz-input
+                                    placeholder="{{'contract.Details.SearchProjectType' | translate }}"
+                                    [(ngModel)]="searchValueProjectType" /> -->
+                                <nz-select [(ngModel)]="searchValueProjectType" style="width: 100%"
+                                    nzPlaceHolder="{{'contract.Details.SearchProjectType' | translate }}">
+                                    <nz-option [nzValue]="''"
+                                        [nzLabel]="cs.userLanguage === 'en'? 'All Project Type': 'جميع أنواع المشاريع'">
+                                    </nz-option>
+                                    <nz-option *ngFor="let option of LookupData.projectTypeList"
+                                        [nzValue]="option.PrjTypeID"
+                                        [nzLabel]=" cs.userLanguage === 'en'? option.PrjTypeDescEN: option.PrjTypeDescAR">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{'Award Number' | translate}}</nz-form-label>
+                                <input type="text" nz-input
+                                    placeholder="{{'contract.Details.SearchAwardNumber' | translate }}"
+                                    [(ngModel)]="searchValueAwardNumber" />
+                            </div>
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{'Vendor Name' | translate}}</nz-form-label>
+                                <input type="text" nz-input placeholder="{{'contract.Details.SearchName' | translate }}"
+                                    [(ngModel)]="searchValueVendorName" />
+                            </div>
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{ 'contract.common.AwardDateFrom' | translate}}</nz-form-label>
+                                <input type="date" onkeydown="event.preventDefault()" nz-input
+                                    placeholder="{{'contract.Details.SearchAwardDateFrom' | translate }}"
+                                    [(ngModel)]="searchValueDatefrom" />
+                            </div>
+                            <div class="col-md-4 col-3">
+                                <nz-form-label>{{ 'contract.common.AwardDateTo' | translate}}</nz-form-label>
+                                <input type="date" onkeydown="event.preventDefault()" nz-input
+                                    placeholder="{{'contract.Details.SearchAwardDateTo' | translate }}"
+                                    [(ngModel)]="searchValueDateTo" />
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="d-flex justify-content-end">
+                                <button style="width: 150px;" nz-button nzSize="default" nzType="primary"
+                                    (click)="search()" class="search-button">{{ 'RFP.search' | translate }}</button>
+                                <button style="width: 150px; margin-inline-start: 20px;" nz-button nzSize="default"
+                                    (click)="reset()">{{ 'contract.common.Reset' | translate}}</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- filter section ends -->
+
+
+                <!-- list of contracts -->
+                <div class="row" style="margin-top: 1rem">
+                    <div class="col-12">
+                        <nz-table #sortTable nzShowSizeChanger [nzData]="listOfDisplayData" [nzPageSize]="5"
+                            [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+                            [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true"
+                            nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" nzTableLayout="fixed">
+                            <thead>
+                                <tr>
+                                    <th class="header" *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
+                                        [nzSortPriority]="column.priority">
+                                        {{ column.title | translate}}
+
+                                    </th>
+                                    <th class="header">{{ 'SLA' | translate }}</th>
+                                    <th class="header"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of sortTable.data">
+                                    <td>{{ data.ProjectName }}</td>
+                                    <td>{{ data.ProjectType | translate }}</td>
+                                    <td>{{ data.AwardNumber }}</td>
+                                    <td>{{ data.AwardDate }}</td>
+                                    <td>{{ this.cs.numberWithCommas(data.AwardAmount) }}</td>
+                                    <td>{{ data.VendorName }}</td>
+                                    <td *ngIf="cs.userLanguage=='ar'"
+                                        [ngStyle]="{ color: data.SLAIndicator=='P' ? '#005c99' : 'red' }">{{
+                                        data.SLAAR}}
+                                    </td>
+                                    <td *ngIf="cs.userLanguage=='en'"
+                                        [ngStyle]="{ color: data.SLAIndicator=='P' ? '#005c99' : 'red' }">{{data.SLAEN}}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button nz-button nzShape="round" nzType="default" nzType="default"
+                                            (click)="showDetails(data.AwardNumber, data.ProjectName)">
+                                            <span class="text-success" nz-icon nzType="edit" nzTheme="fill"></span>
+                                        </button>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

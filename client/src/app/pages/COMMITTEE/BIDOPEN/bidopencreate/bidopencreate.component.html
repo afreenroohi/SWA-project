@@ -1,0 +1,183 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+
+      <!-- * Bid Opening Main Form  -->
+      <form [formGroup]="bidopeningForm" autocomplete="off" fxLayout="column" fxLayout.xs="column" fxLayoutGap="1%"
+        fxFlexFill>
+
+        <!-- * Form Title -->
+        <h6>{{ "COM.BidOpeningForm" | translate }}</h6>
+        <nz-card nzType="inner" [nzTitle]="'COM.BidOpeningForm' | translate">
+          <div class="row w-100">
+            <!-- * RFP Number -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzRequired>{{
+                "COM.RFPNumber" | translate
+                }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="RFPNumber" style="width: 100%;"
+                  nzPlaceHolder="{{'COM.SelectRFPNumber' | translate}}" (ngModelChange)="ChangeRFP($event)"
+                  nzAllowClear>
+                  <nz-option *ngFor="let prnumber of PRNumber" [nzValue]="prnumber.RfpNo"
+                    [nzLabel]="prnumber.RfpNo + ' - ' + prnumber.RFPName">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- * Tender Name -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label for="TenderName">{{
+                "COM.TenderName" | translate
+                }}</nz-form-label>
+              <nz-form-control nzHasFeedback>
+                <nz-form-control>
+                  <input nz-input name="TenderName" type="text" id="TenderName" style="width: 100%;"
+                    formControlName="TenderName">
+                </nz-form-control>
+              </nz-form-control>
+            </div>
+
+            <!-- * Reference Number (PR Number) -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label for="ReferenceNumber">{{
+                "COM.ReferenceNumber" | translate
+                }}</nz-form-label>
+              <nz-form-control nzHasFeedback>
+                <nz-form-control>
+                  <input nz-input name="ReferenceNumber" type="text" id="ReferenceNumber" style="width: 100%;"
+                    formControlName="ReferenceNumber">
+                </nz-form-control>
+              </nz-form-control>
+            </div>
+
+            <!-- * Type of Purchase -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzFor="typeOfPurchase">{{"COM.TypeofPurchase" | translate}}</nz-form-label>
+              <nz-form-control>
+                <nz-select id="typeOfPurchase" formControlName="typeOfPurchase" style="width: 100%;"
+                  nzPlaceHolder="{{'COM.Selecttypeofpurchase' | translate}}"
+                  (ngModelChange)="ChangeTypePurchase($event)">
+                  <nz-option *ngFor="let purchase of TypeOfPurchase" [nzValue]="purchase.PurchaseTypeID"
+                    [nzLabel]="cs.userLanguage === 'en'? purchase.PurchaseTypeDesc: purchase.PurchaseTypeDescAr"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- * Type of Tendering -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzFor="TemderTypeID" nzRequired>{{"COM.TypeofTendering" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="TemderTypeID" style="width: 100%;"
+                  nzPlaceHolder="{{'COM.SelectTypeOfTendering' | translate}}">
+                  <nz-option *ngFor="let tender of Tenderingresult"
+                    [nzLabel]="cs.userLanguage === 'en'? tender.type : tender.typeAr" [nzValue]="tender.id"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- * Purchase Method -->
+            <div class="col-md-4 col-12 mt-3" *ngIf="isTypeOfPurchaseRFP">
+              <nz-form-label nzFor="CompetitionTypeID" nzRequired>{{"COM.Purchase method" | translate
+                }}</nz-form-label>
+              <nz-form-control>
+                <nz-select id="CompetitionTypeID" formControlName="CompetitionTypeID" style="width: 100%;">
+                  <nz-option *ngFor="let competetionType of competitionTypes"
+                    [nzLabel]="cs.userLanguage === 'en'? competetionType.CompetitionTypeDescEN : competetionType.CompetitionTypeDescAR"
+                    [nzValue]="competetionType.CompetitionTypeID">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- * Etimad Number -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzFor="Etimadnumber" nzRequired>{{"COM.EtimadNumber" | translate}}</nz-form-label>
+              <nz-form-control>
+                <input nz-input appNumeric formControlName="Etimadnumber"
+                  placeholder="{{'COM.EtimadNumber'| translate}}" style="width: 100%;"/>
+              </nz-form-control>
+            </div>
+
+            <!-- * Etimad Number -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzRequired>{{"COM.Date of submission Etimad" | translate}}</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [nzFormat]="dateFormat" [nzDisabledDate]="futureDateDisable"
+                  nzPlaceHolder="{{'COM.SelectDate'| translate}}" style="width: 100%;"
+                  formControlName="EtmdSubDate"></nz-date-picker>
+              </nz-form-control>
+            </div>
+
+
+
+            <!-- * Department -->
+            <div class="col-md-4 col-12 mt-3">
+              <nz-form-label nzFor="Department">{{"COM.Department" | translate}}</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="Department" style="width: 100%;">
+              </nz-form-control>
+            </div>
+          </div>
+
+          <!-- WIP US 73004 * Invitations sent to vendors start  -->
+          <!-- "bidopeningCommitteeForm.get('CompetitionTypeID')?.value === '01'" -->
+          <!-- Todo to review and update all the  -->
+          <!-- Commenting partial implementation to unblock go-live 
+            <nz-collapse class="mt-3" nzGhost nzAccordion *ngIf="role === this.COMMITTEE_ROLE.PROCUREMENT_MEMBER">
+            <nz-collapse-panel nzHeader="{{'COM.Invitations sent to Vendors' | translate }}">
+              <ng-container>
+                <div class="d-flex">
+                  <h6>{{"COM.AddVendors" | translate }}</h6>
+                  &nbsp; &nbsp;
+
+                  <button nz-button nzType="primary" [disabled]="role === 'MR' || bidsapproved || isFinancialoffer"
+                    nzSize="default" (click)="addNewInvitationSent()" nzShape="circle">
+                    <span nz-icon nzType="plus"></span>
+                  </button>
+                </div>
+
+                <div formArrayName="VendorInvitationsSent"
+                  *ngFor="let invitation of VendorInvitationsSent.controls; let invitationIndex = index">
+                  <div [formGroupName]="invitationIndex">
+                    <nz-form-label nzFor="InvitedVendor" nzRequired>{{invitationIndex + 1}}. {{'COM.Vendor' |
+                      translate}}</nz-form-label>
+                    <div fxLayout="row">
+                      <nz-form-control fxFlex="90">
+                        <input nz-input name="InvitedVendor" type="text" id="InvitedVendor" style="width: 100%;"
+                          formControlName="LmtdVendorName" (change)="addInviteVendor($event,invitationIndex)">
+                      </nz-form-control>
+                      <div fxFlex="10" fxLayoutAlign="center">
+                        <button nz-button nzType="primary" nzSize="default"
+                          (click)="deleteInviationVendor(invitationIndex)" nzShape="circle"
+                          [disabled]="VendorInvitationsSent.controls.length ===1 || role === 'MR' || bidsapproved || isFinancialoffer">
+                          <span nz-icon nzType="delete"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </nz-collapse-panel>
+          </nz-collapse> -->
+          <!-- Invitations sent to vendors end -->
+
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex mt-3">
+                <!-- * Action Button -->
+                <button nz-button nzType="primary" confirmModalTitle="submitConfirmation" appSubmitConfirmation (confirmedAction)="validateAndSubmit()"
+                  [disabled]="bidopeningForm.invalid" igxRipple>
+                  {{ "COM.Submit" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </nz-card>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<nz-input-group class="inputGrp" [nzSuffix]="showClear ? suffixIconCalendar: suffixIconCalenderClear" (mouseenter)="change()">
+    <input type="text" ngbDatepicker #db="ngbDatepicker" [formControlName]="ControlName" [firstDayOfWeek]="7" nz-input
+        [placeholder]="'COM.FormationDate'| translate" (click)="db.toggle()" />
+</nz-input-group>
+
+<ng-template #suffixIconCalendar>
+    <span nz-icon class="suffixIcon" nzType="calendar" nzTheme="outline" (click)="db.toggle()"></span>
+</ng-template>
+
+<ng-template #suffixIconCalenderClear>
+    <span nz-icon class="suffixIcon calendar" nzType="calendar" nzTheme="outline" (click)="db.toggle()"></span>
+    <span nz-icon class="suffixIcon clear" nzType="close-circle" nzTheme="fill" (click)="clearDate()"></span>
+</ng-template>

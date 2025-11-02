@@ -1,0 +1,47 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+     <div class="row mb-4 pb-4 border-set">
+      <div class="col-12 col-md-4">
+        <form [formGroup]="repForm">
+        <nz-form-label for="rfptype">{{
+          "RFP.Select RFP" | translate
+        }}</nz-form-label>
+        <nz-select formControlName="rfptype" style="width: 100%" nzAllowClear>
+          <nz-option
+            *ngFor="let o of FilterList"
+            [nzValue]="o.id"
+            [nzLabel]="cs.userLanguage === 'en' ? o.type : o.typeAr"
+          ></nz-option>
+        </nz-select>
+      </form>
+      </div>
+
+    <div class="col-12 col-md-8 text-center" style="margin-top: 1%">
+      <button
+        nz-button
+        nzType="primary"
+        style="margin-top: 1.4rem"
+        nzSize="default"
+        (click)="search()"
+        [class.f-right]="cs.userLanguage == 'en'"
+        [class.f-left]="cs.userLanguage == 'ar'"
+      >
+        {{ "RFP.search" | translate }}
+      </button>
+    </div>
+     </div>
+        
+      <app-rfptable [selectedType] = "selectedType"
+        *ngIf="listArray?.length"
+        [listOfColumn]="listOfColumnRFP"
+        [listArray]="listArray"
+        [Action]="mode"
+      >
+      </app-rfptable>
+
+    </div>
+    <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+  </div>
+</div>

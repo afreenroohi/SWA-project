@@ -1,0 +1,38 @@
+<div class="d-flex align-items-center flex-column mt-4">
+  <nz-upload [nzBeforeUpload]="beforeUpload" nzType="drag" class="filenet-upload" [nzMultiple]="multiple"
+    [nzDisabled]="disableUpload">
+
+    <svg width="60" height="40" viewBox="0 0 37 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M28.1839 26.6946H20.4601V18.8899H23.0126C23.66 18.8899 24.0425 18.1543 23.66 17.6247L18.6947 10.7542C18.3784 10.3128 17.7237 10.3128 17.4074 10.7542L12.4421 17.6247C12.0596 18.1543 12.4348 18.8899 13.0894 18.8899H15.642V26.6946H6.99136C3.12948 26.4812 0.0546875 22.8695 0.0546875 18.9561C0.0546875 16.2565 1.51852 13.9026 3.68853 12.63C3.48992 12.093 3.38694 11.5192 3.38694 10.916C3.38694 8.15755 5.61579 5.9287 8.37428 5.9287C8.97011 5.9287 9.54387 6.03168 10.0809 6.23029C11.6771 2.84655 15.1197 0.5 19.1213 0.5C24.2999 0.507356 28.5664 4.47222 29.0519 9.52576C33.0315 10.2099 36.0547 13.8952 36.0547 18.066C36.0547 22.5237 32.5827 26.3856 28.1839 26.6946Z"
+        fill="#D9D9D9" />
+    </svg>
+
+  </nz-upload>
+
+  <p class="mt-2 title">{{ 'DOC.Drag and drop file here' | translate }}</p>
+  <h2><span class="hr-line">_______________</span> {{'DOC.OR'| translate}} <span class="hr-line">_______________</span></h2>
+
+  <nz-upload [nzBeforeUpload]="beforeUpload" class="filenet-upload mt-2 choose-file-option" [nzMultiple]="multiple"
+    [nzDisabled]="disableUpload">
+    <button type="button" nz-button>
+      
+      {{'DOC.Choose File' | translate}}
+    </button>
+  </nz-upload>
+
+  <br />
+
+  <nz-upload [(nzFileList)]="fileList"></nz-upload>
+
+  <br />
+
+  <button nz-button [nzType]="'primary'" [nzLoading]="uploading" [nzSize]="'large'" (click)="handleUpload()"
+    [disabled]="fileList.length === 0">
+    {{
+    uploading
+    ? ("RFP.Uploading" | translate)
+    : ("RFP.Start Upload" | translate)
+    }}
+  </button>
+</div>

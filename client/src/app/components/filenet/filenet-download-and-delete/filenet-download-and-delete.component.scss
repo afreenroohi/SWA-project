@@ -1,0 +1,18 @@
+.outline-border {
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #005c99;
+    border-radius: 10px;
+    color: #005c99;
+    font-size: 15px;
+}
+
+.name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;   
+}
+
+.action{
+    cursor: pointer;
+    font-size: 20px;
+}

@@ -1,0 +1,319 @@
+@import '../../../../../../variables';
+
+.create__form__section {
+  .disable-class {
+    ::ng-deep input[type='text'] {
+      background-color: #efefef;
+      cursor: not-allowed;
+    }
+  }
+
+  input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+
+  input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #005c99;
+    ;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+
+  .disable-class-ta {
+    ::ng-deep textarea.ant-input {
+      background-color: #efefef;
+      cursor: not-allowed;
+    }
+  }
+
+  .committee-members-list,
+  .vendors-list {
+    ::ng-deep .ant-table-tbody {
+      .ant-table-placeholder {
+        display: none;
+      }
+    }
+
+    ::ng-deep .ant-table-pagination.ant-pagination {
+      display: none;
+    }
+
+    // ::ng-deep .ant-checkbox-inner {
+    //   border-radius: 50%;
+    // }
+  }
+
+  .vendors-list {
+    ::ng-deep .ant-table-tbody {
+      .ant-table-placeholder {
+        display: none;
+      }
+    }
+  }
+  // ::ng-deep .ant-table-thead > tr > th[colspan]:not([colspan='1']) {
+  //   text-align: left !important;
+  // }
+
+  .committe-head-members {
+    th, td {
+      text-align: start !important;
+    }
+    tr:first-of-type { 
+      th {
+        background-color: $dark-grey !important;
+      }
+    }
+  }
+  
+  .ant-collapse {
+    // background-color: $dark-grey;
+    // border: 1px solid $dark-grey;
+  
+    .ant-collapse-item {
+      // border: 0;
+      .ant-collapse-content {
+        border-top: 0 !important;
+      }    
+    }
+  }
+
+  .ant-btn.outline {
+    color: #65ba6c !important;
+    border-color: #65ba6c !important;
+  }
+}
+
+h6 {
+  font-size: 1rem !important;
+}
+
+.CommentCard {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  margin-top: 10px;
+  padding: 8px;
+}
+
+
+.gridInLineFormAttachmentPadding {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.reasonfordis {
+  width: 100%;
+}
+
+.icon-spin {
+  font-size: 30px;
+  color: #41ad4f;
+  display: flex;
+  justify-content: center;
+}
+
+.status-card-success {
+  width: fit-content;
+  background-color: #41ad4f21;
+  padding: 5px 8px 5px 8px;
+  border-radius: 5px;
+  border: 1px solid #41ad4f;
+  color: #41ad4f;
+}
+
+.status-card-error {
+  width: fit-content;
+  background-color: #fff2f0;
+  padding: 5px 8px 5px 8px;
+  border-radius: 5px;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+}
+.text-danger {
+  color: #dc3545;
+}
+
+::ng-deep .ant-modal.legal-evaluation {
+  .ant-modal-content {
+    width: 580px;
+    .ant-modal-body {
+      border-top: 4px solid rgb(66, 173, 78);
+      h6.eval-name {
+        font-size: 1.2rem !important;
+        text-transform: capitalize;
+      }
+      h6.vendor-name {
+        font-weight: 400;
+      }
+    }
+    .ant-select-single:not(.ant-select-customize-input) .ant-select-selector, .ant-input, .ant-input-number-input, .ant-picker {
+      height: 48px;
+    }
+    .ant-select-single .ant-select-selector .ant-select-selection-item {
+      line-height: 48px;
+    }
+    .form-footer-btns {
+      .ant-btn {
+        height: 48px;
+        font-family: 'Roboto';
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
+    .ant-form-item-label > label, .ant-select-selection-item {
+      font-size: 16px;
+      font-weight: 400;
+      font-family: 'Roboto';
+    }
+    .close {
+      cursor: pointer;
+    }
+  }
+}
+
+::ng-deep .ant-modal.bill-of-quantity {
+  .ant-modal-content {
+    border-top: 4px solid rgb(66, 173, 78);
+    .close {
+      cursor: pointer;
+    }
+  }
+}
+
+::ng-deep .modal-top-border {
+  border-top: 4px solid #005c99 !important;
+  
+
+}
+
+::ng-deep .ant-modal-header {
+  border-bottom: 0px !important;
+}
+::ng-deep .ant-modal-footer {
+  text-align: left !important;
+  border-top: 0px !important;
+  height: 55px !important;
+}
+
+// Drop-down Arrow alignment style
+::ng-deep [dir="rtl"] .ant-select-arrow {
+  right: 84% !important;
+}
+
+::ng-deep .fr-second-toolbar{
+  border: 0 !important;
+  background: none !important;
+}
+
+::ng-deep .fr-wrapper{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar.fr-top{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar .fr-newline{
+  background: none !important;
+  height: 0px !important;
+}
+
+::ng-deep .fr-box.fr-basic .fr-wrapper{
+  background: none !important;
+}
+
+.green-circle {
+  margin-top: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #005c99;
+}
+
+.vl{
+  border-left: 1px solid #D9D9D9;
+  position: absolute;
+  left: 46%;
+  right: 46%;
+  height: 115%;
+}
+
+.comment-content{
+  font-size: 18px;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+::ng-deep .ant-form-item{
+  margin-bottom: 0 !important;
+}
+
+::ng-deep .ant-modal-title{
+  font-size: 22px;
+}
+
+.closeIcon{
+  border: none;
+  background: none;
+  height: fit-content;
+  cursor: pointer;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  height: 615px; /* Set a fixed height for the carousel container */
+}
+
+nz-carousel {
+  width: 100%;
+}
+
+[nz-carousel-content] {
+  height: 100%;
+  overflow-y: auto; /* Ensure scrolling if content exceeds height */
+}
+
+.carousel-container button {
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.prev-btn {
+  left: 0;
+}
+
+.next-btn {
+  right: 0;
+}
+
+.carousel-container button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

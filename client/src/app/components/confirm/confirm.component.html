@@ -1,0 +1,41 @@
+<ng-container>
+    <header class="text-end">
+        <app-icon class="close" [icon]="IconList.close" (click)="onClose()"></app-icon>        
+    </header>
+    <section class="body-container text-center mb-5">
+        <div class="icon-container">
+            <app-icon [icon]="IconList.dottedQuestionBoundary"></app-icon>
+            <app-icon [icon]="IconList.questionMark" class="question-mark"></app-icon>
+        </div>
+        <h1> {{ config.titleText }} </h1>
+        <p> {{ config.bodyText }} </p>
+    </section>
+    <ng-container *ngIf="isReturn">
+        <div class="col-md-12 col-3 mb-3">
+            <p>{{ returnConfig?.label }}</p>
+            <nz-select style="width: 100%" [nzPlaceHolder]="returnConfig?.placeholder ?? ''" [(ngModel)]="selectedUser">
+              <nz-option *ngFor="let cmtof of listofUsers" [nzValue]="cmtof.CommitteeUserID"
+                [nzLabel]="cs.userLanguage === 'en' ? 
+                cmtof.CommitteeUserName : cmtof.CommitteeUserName_AR"></nz-option>
+            </nz-select>
+         </div>
+    </ng-container>
+    <ng-container *ngIf="isAssign">
+        <div class="col-md-12 col-3 mb-3">
+            <p>{{ assignConfig?.label }}</p>
+            <nz-select style="width: 100%" [nzPlaceHolder]="assignConfig?.placeholder ?? ''" [(ngModel)]="selectedUser">
+              <nz-option *ngFor="let cmtof of listofUsers" [nzValue]="cmtof.UserID"
+                [nzLabel]="cs.userLanguage === 'en' ? 
+                cmtof.NameEN : cmtof.NameAR"></nz-option>
+            </nz-select>
+         </div>
+    </ng-container>
+    <footer class="text-center">
+        <button class="me-2" nz-button nzType="primary" [disabled]="disableSubmission()" nzSize="large" (click)="onConfirm()">
+           {{ 'COM.Yes' | translate }}
+        </button>
+        <button nz-button nzType="default"  nzSize="large" (click)="onClose()">
+            {{ 'COM.No' | translate }}
+        </button>
+    </footer>
+</ng-container>

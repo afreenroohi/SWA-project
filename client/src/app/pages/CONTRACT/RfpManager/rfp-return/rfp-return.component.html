@@ -1,0 +1,3104 @@
+<div class="row mt-2">
+    <!-- <div class="col-4">
+        <button nz-button nzType="primary" (click)="backToDashboard()">
+            <span *ngIf="cs.userLanguage === 'en' " nz-icon nzType="left"></span>
+            <span class="mx-2" *ngIf="cs.userLanguage === 'ar' " nz-icon nzType="right"></span>
+            {{ 'contract.common.BackToDashboard' | translate }}
+        </button>
+    </div>
+    <div class="col-4" style="text-align: center;"> -->
+    <p class="heading">{{ 'contract.common.ContractDetails' | translate }}</p>
+    <!-- </div> -->
+</div>
+
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<!-- <div class="container-fluid" style="margin-top: 2rem;"> -->
+<nz-form [formGroup]="ContractForm">
+    <!-- <div class="create__form__section"> -->
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition">
+        <nz-collapse-panel nzHeader="{{ project_details | translate }}">
+
+            <div class="row">
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.common.ProjectName' | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="ProjectName" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.common.ProjectType' | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input disabled value="{{ContractForm.get('ProjectType')?.value | translate}}" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.common.AwardNumber' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="AwardNumber" />
+                    </nz-form-control>
+                </div>
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.common.AwardDate' | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="AwardDate" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.common.VendorName' | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="VendorName" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.PRnumber' | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="PRnumber" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.PrintAwardLetter' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="PrintAwardLetter" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ "contract.Details.PrintAwardDate" | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="PrintAwardDate">
+                        <input type="text" class="datepicker rtl" onkeydown="event.preventDefault()" ngbDatepicker
+                            #db="ngbDatepicker" [firstDayOfWeek]="7" (click)="db.toggle()"
+                            formControlName="PrintAwardDate" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.ProjectDuration' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="ProjectDuration" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ "RFP.Duration Type" | translate }}
+                    </nz-form-label>
+                    <nz-form-control *ngIf="this.cs.userLanguage === 'en'" nzHasFeedback>
+                        <input type="text" nz-input formControlName="DurationTypeEN" />
+                    </nz-form-control>
+                    <nz-form-control *ngIf="this.cs.userLanguage === 'ar'" nzHasFeedback>
+                        <input type="text" nz-input formControlName="DurationTypeAR" />
+                    </nz-form-control>
+                </div>
+
+
+
+                <div class="col-4 my-1">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div>
+                            <nz-form-label *ngIf="contractType != 'F' && contractType != 'T' && contractType != 'R'"
+                                >{{
+                                'contract.Details.ContractStartDate' | translate }}
+                            </nz-form-label>
+                            <nz-form-label *ngIf="contractType == 'F' || contractType == 'T' || contractType == 'R'"
+                                >{{
+                                'contract.Details.AgreementStartDate' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <div class="d-flex">
+                            <nz-form-label
+                                *ngIf="!this.ContractForm.get('ContractStartToggle')?.value">{{'contract.Details.Date'
+                                | translate }}</nz-form-label>
+                            <nz-form-label
+                                *ngIf="this.ContractForm.get('ContractStartToggle')?.value">{{'contract.Details.Text'
+                                | translate }}</nz-form-label>
+                            <nz-switch class="mx-1" style="font-size: 15px;"
+                                formControlName="ContractStartToggle"></nz-switch>
+                        </div>
+                    </div>
+
+                    <nz-form-control *ngIf="!this.ContractForm.get('ContractStartToggle')?.value" nzHasFeedback>
+                        <input nz-input formControlName="ContractStartDate" />
+                    </nz-form-control>
+                    <nz-form-control *ngIf="this.ContractForm.get('ContractStartToggle')?.value" nzHasFeedback>
+                        <input nz-input formControlName="ContractStartText" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label *ngIf="isCommNum">{{ 'contract.Details.CommercialRegistrationNumber' |
+                        translate
+                        }}
+                    </nz-form-label>
+                    <nz-form-label *ngIf="!isCommNum">{{ 'contract.Details.TradeLicNum' | translate }}:
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="RegNumber" />
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <nz-form-label>{{ 'contract.Details.Description' | translate }} </nz-form-label>
+                <nz-form-control nzHasFeedback>
+                    <textarea
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                        formControlName="ProcessDescription" cols="100" rows="2"></textarea>
+                </nz-form-control>
+            </div>
+
+            <div class="row">
+                <div class="col-4 my-4">
+                    <nz-form-label>{{ 'contract.Details.TotalAmount' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input disabled value="{{ ContractForm.get('Amount')?.value | number:'1.0-2' }}" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-8 my-4">
+                    <nz-form-label>{{ 'contract.Details.TotalAmountInWords' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="AmountInWords" />
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <!-- <div class="row w-100 my-3">
+                        <div class="col-md-6 mt-2 col-3">
+                            <nz-form-label>Response Bid Number : </nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <input nz-input formControlName="BidNumber" />
+                            </nz-form-control>
+                        </div>
+
+                        <div class="col-md-4 mt-2 col-3">
+                            <nz-form-label>Date of Response Bid Number : </nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <input nz-input formControlName="DateOfBid" />
+                            </nz-form-control>
+                        </div>
+                    </div> -->
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <!-- Bank Guarantee -->
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ bank_guarantee | translate }}">
+
+            <!-- <div class="d-flex">
+                        <input class="mx-1" [checked]="checkedGuarantee" disabled style="accent-color: green;"
+                            type="checkbox">
+                        <h3 class="mt-2">{{ 'contract.Details.BankGuarantee' | translate }}</h3>
+                    </div> -->
+            <div *ngIf="contractType == 'F' || contractType == 'T' || contractType == 'R'" class="d-flex">
+                <input class="mx-1" disabled style="accent-color: green;" type="checkbox" [checked]="checkedGuarantee">
+                <h3 class="mt-2 mx-1">{{ 'contract.Details.BankGuarantee' | translate }}</h3>
+            </div>
+            <div *ngIf="(contractType != 'F' && contractType != 'T' && contractType != 'R') || ((contractType == 'F' || contractType == 'T' || contractType == 'R') && checkedGuarantee) "
+                class="row w-100 my-3">
+                <!-- <div *ngIf="checkedGuarantee" class="row w-100 my-3"> -->
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ 'contract.Details.Number' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="GuranteeNumber">
+                        <input type="text" min="1" nz-input formControlName="GuranteeNumber" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.Percentage' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="GuranteePercent">
+                        <input type="number" onKeyPress="if(this.value.length==2) return false;" min="1" nz-input
+                            formControlName="GuranteePercent" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.Amount' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="GuranteeAmount">
+                        <input min="1" nz-input formControlName="GuranteeAmount" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ 'contract.Details.Currency' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="GuranteeCurrency">
+                        <input nz-input formControlName="GuranteeCurrency" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ 'contract.Details.IssuedBy' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="GuranteeIssuedBy">
+                        <nz-select name="select-validate"
+                            style="min-width: 100%"
+                            formControlName="GuranteeIssuedBy"
+                            nzPlaceHolder="{{'contract.Details.IssuedBy_ph' | translate}}">
+                            <nz-option nzDisabled nzValue="Select the bank" 
+                            nzLabel="{{'contract.Details.IssuedBy_ph' | translate}}"></nz-option>
+                            <nz-option *ngFor="let bank of bankList" 
+                            [nzValue]="bank.NameOfBank" [nzLabel]="bank.NameOfBank"></nz-option>
+                        </nz-select>
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ "contract.Details.SelectDateType" | translate }}</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="BgValidDateCal">
+                        <nz-select name="select-validate" formControlName="BgValidDateCal"
+                            (ngModelChange)="BgValiDateCalChange()" style="min-width: 100%" nzPlaceHolder="{{
+                                  'contract.Details.SelectDateType' | translate
+                                }}">
+                            <nz-option nzDisabled nzValue="Select Date type"
+                                nzLabel="{{ 'contract.Details.SelectDateType' | translate }}">
+                            </nz-option>
+                            <nz-option nzValue="H"
+                                nzLabel="{{ 'contract.Details.SelectDateType_opt1' | translate }}"></nz-option>
+                            <nz-option nzValue="G"
+                                nzLabel="{{ 'contract.Details.SelectDateType_opt2' | translate }}"></nz-option>
+                        </nz-select>
+                        <ng-template #BgValidDateCal let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{
+                                "contract.Details.SelectDateType_req" | translate }}
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1" *ngIf="ContractForm.get('BgValidDateCal')?.value !=''">
+                    <nz-form-label >{{ "contract.Details.DateOfIssue" | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="DateOfIssue">
+                        <nz-date-picker *ngIf="ContractForm.get('BgValidDateCal')?.value == 'G'"
+                            [nzDisabledDate]="maxDate" formControlName="DateOfIssue" onkeydown="event.preventDefault()"
+                            [ngClass]="
+                                  this.cs.userLanguage === 'en'
+                                    ? 'ant-picker-clearen'
+                                    : 'ant-picker-clearar'
+                                "></nz-date-picker>
+                        <input *ngIf="ContractForm.get('BgValidDateCal')?.value == 'H'" type="text"
+                            class="datepicker rtl" onkeydown="event.preventDefault()" ngbDatepicker #db="ngbDatepicker"
+                            [firstDayOfWeek]="7" (click)="db.toggle()" formControlName="DateOfIssue"
+                            placeholder="{{ 'contract.Details.DateOfIssue_ph' | translate }}" />
+                        <ng-template #DateOfIssue let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{
+                                "contract.Details.DateOfIssue_req" | translate
+                                }}
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-3" *ngIf="ContractForm.get('BgValidDateCal')?.value !=''">
+                    <nz-form-label >{{ "contract.Details.ValidTill" | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="ValidTill">
+                        <nz-date-picker *ngIf="ContractForm.get('BgValidDateCal')?.value == 'G'"
+                            [nzDisabledDate]="minDate" formControlName="ValidTill" onkeydown="event.preventDefault()"
+                            [ngClass]="
+                                  this.cs.userLanguage === 'en'
+                                    ? 'ant-picker-clearen'
+                                    : 'ant-picker-clearar'
+                                "></nz-date-picker>
+                        <input *ngIf="ContractForm.get('BgValidDateCal')?.value == 'H'" type="text"
+                            class="datepicker rtl" onkeydown="event.preventDefault()" ngbDatepicker #db="ngbDatepicker"
+                            [firstDayOfWeek]="7" (click)="db.toggle()" formControlName="ValidTill"
+                            placeholder="{{ 'contract.Details.ValidTill_ph' | translate }}" />
+                        <ng-template #ValidTill let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{
+                                "contract.Details.ValidTill_req" | translate
+                                }}
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ delegate_details | translate }}">
+            <div class="row w-100 my-2">
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.DelegateName' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="DeligateName"
+                            placeholder="{{ 'contract.Details.DelegateName_ph' | translate }}" />
+                    </nz-form-control>
+                </div>
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.Nationality' | translate }} </nz-form-label>
+
+                    <nz-form-control nzHasFeedback [nzErrorTip]="CommNation">
+                        <nz-select name="select-validate" formControlName="CommNation" style="min-width: 100%;"
+                            [ngModel]="'Select the Commisioner nationality'">
+                            <!-- <nz-option nzDisabled nzValue="Select the Commisioner nationality"
+                                        nzLabel="Select the Commisioner nationality">
+                                    </nz-option> -->
+                            <nz-option [nzValue]="ContractForm.get('CommNation')?.value"
+                                [nzLabel]="ContractForm.get('CommNation')?.value"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.ProofId' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="proofId">
+                        <nz-select name="select-validate" formControlName="proofId" style="min-width: 100%;"
+                            [ngModel]="'Select the Proof of Id'"
+                            nzPlaceHolder="{{ 'contract.Details.SelectProof' | translate }}">
+                            <nz-option nzDisabled nzValue="Select the Proof of Id"
+                                nzLabel="{{ 'contract.Details.SelectProof' | translate }}">
+                            </nz-option>
+                            <!-- <nz-option *ngFor="let data of idList" [nzValue]="data" [nzLabel]="data"></nz-option> -->
+                            <nz-option nzValue="N"
+                                nzLabel="{{ 'contract.Details.NationalId' | translate }}"></nz-option>
+                            <nz-option nzValue="R"
+                                nzLabel="{{ 'contract.Details.ResidenceNum' | translate }}"></nz-option>
+                            <nz-option nzValue="P"
+                                nzLabel="{{ 'contract.Details.PassportNumber' | translate }}"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+
+                <div class="col-6 my-1">
+                    <nz-form-label></nz-form-label>
+                    <nz-form-control>
+                        <input *ngIf="this.ContractForm.get('proofId')?.value == 'N' " type="number"
+                            oninput="validity.valid||(value='');" formControlName="NationalId"
+                            placeholder="{{ 'contract.Details.NationalId_ph' | translate }}" nz-input
+                            onKeyPress="if(this.value.length==10) return false;" />
+                        <input *ngIf="this.ContractForm.get('proofId')?.value == 'R' " type="number"
+                            oninput="validity.valid||(value='');" formControlName="ResidenceNumber"
+                            placeholder="{{ 'contract.Details.ResidenceNum_ph' | translate }}" nz-input
+                            onKeyPress="if(this.value.length==10) return false;" />
+                        <input *ngIf="this.ContractForm.get('proofId')?.value == 'P' " type="text"
+                            formControlName="PassportNumber" oninput="validity.valid||(value='');"
+                            placeholder="{{ 'contract.Details.PassportNumber_ph' | translate }}" nz-input
+                            onKeyPress="if(this.value.length==10) return false;" />
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <!-- <div class="row w-100 my-3">
+                    <div class="d-flex mt-4 w-50">
+                        <nz-form-label >Delegate Status : </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <nz-select name="select-validate" formControlName="delegateStatus"
+                                (ngModelChange)="delegateStatus()" style="min-width: 91%;"
+                                [ngModel]="'Select the deligate status'">
+                                <nz-option nzDisabled nzValue="Select the delegate status"
+                                    nzLabel="Select the delegate status">
+                                </nz-option>
+                                <nz-option *ngFor="let data of delegateList" [nzValue]="data"
+                                    [nzLabel]="data"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+
+                    </div> 
+                </div> -->
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ authorization | translate }}">
+            <div class="row my-2">
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.SignAuth' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="signAuth">
+                        <nz-select name="select-validate" formControlName="signAuth" style="min-width: 100%;"
+                            nzPlaceHolder="{{ 'contract.Details.SignAuth_ph' | translate }}">
+                            <nz-option nzDisabled nzValue="Select Signing Authorization"
+                                nzLabel="{{ 'contract.Details.SignAuth_ph' | translate }}">
+                            </nz-option>
+                            <!-- <nz-option *ngFor="let data of idList" [nzValue]="data" [nzLabel]="data"></nz-option> -->
+                            <nz-option nzValue="A" nzLabel="{{ 'contract.Details.SignAuth_opt1' | translate }}"></nz-option>
+                            <nz-option nzValue="D" nzLabel="{{ 'contract.Details.SignAuth_opt2' | translate }}"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+                <div *ngIf="ContractForm.get('signAuth')?.value == 'D'" class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.SelectAuth' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <nz-select name="select-validate" formControlName="authLetter" style="width: 100%;">
+                            <nz-option nzDisabled nzValue="Select Authorization" nzLabel="Select Authorization">
+                            </nz-option>
+                            <nz-option nzValue="C" nzLabel="{{ 'contract.Details.auth_option1' | translate }}"></nz-option>
+                            <nz-option nzValue="A"
+                                nzLabel="{{ 'contract.Details.auth_option2' | translate }}"></nz-option><!-- <nz-option *ngFor="let data of authList" [nzValue]="data" [nzLabel]="data"></nz-option> -->
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+                <ng-container *ngIf="ContractForm.get('signAuth')?.value == 'D'">
+                    <div class="col-6 my-1" *ngIf="ContractForm.get('authLetter')?.value == 'C'">
+                        <nz-form-label>{{ 'contract.Details.AuthNum' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="authLetterNumber">
+                            <input type="number" nz-input formControlName="authLetterNumber" />
+
+                        </nz-form-control>
+                    </div>
+                    <div class="col-6 my-1" *ngIf="ContractForm.get('authLetter')?.value == 'C'">
+                        <nz-form-label>{{ 'contract.Details.AuthDate' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="authLetterDate">
+                            <input nz-input formControlName="authLetterDate" />
+
+                        </nz-form-control>
+                    </div>
+                    <div class="col-6 my-1" *ngIf="ContractForm.get('authLetter')?.value == 'A'">
+                        <nz-form-label>{{ 'contract.Details.PowerNum' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="powerNumber">
+                            <input nz-input formControlName="powerNumber" />
+
+                        </nz-form-control>
+                    </div>
+                    <div class="col-6 my-1" *ngIf="ContractForm.get('authLetter')?.value == 'A'">
+                        <nz-form-label>{{ 'contract.Details.PowerDate' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="powerDate">
+                            <input nz-input formControlName="powerDate" />
+
+                        </nz-form-control>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ contractor_details | translate }}">
+            <div class="row my-2">
+                <div class="col-4 my-1">
+                    <nz-form-label nzRequired for="FinalApproval">{{
+                      "COM.FinalApproval" | translate
+                      }}</nz-form-label>
+                     <nz-form-control nzHasFeedback [nzErrorTip]="finalApproval">
+                       <nz-select formControlName="FinalApproval" style="width: 100%" nzPlaceHolder="
+                         {{'contract.Details.Select Final Approval' | translate}}" >
+                         <nz-option *ngFor="let option of finalApproverList" [nzValue]="option.domvalue_l" [nzLabel]="
+                             cs.userLanguage === 'en'
+                               ? option.DesEn
+                               : option.DesAr
+                           "></nz-option>
+                       </nz-select>
+                       <ng-template #finalApproval let-control>
+                         <ng-container *ngIf="control.hasError('required')">{{ "contract.Details.finalApproval_req" | translate }}
+                         </ng-container>
+                       </ng-template>
+                     </nz-form-control>
+                </div>
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ 'contract.Details.Company' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="company">
+                        <!-- <input nz-input formControlName="company" placeholder="Enter contarctor city" /> -->
+                        <nz-select name="select-validate" formControlName="company" style="min-width: 100%;"
+                            [ngModel]="'Select Evaluation Period'"
+                            nzPlaceHolder="{{ 'contract.Details.Company_ph' | translate }}">
+                            <nz-option nzDisabled nzValue="Select Entity type"
+                                nzLabel="{{ 'contract.Details.Company_ph' | translate }}">
+                            </nz-option>
+                            <nz-option nzValue="C"
+                                nzLabel="{{ 'contract.Details.Company_opt1' | translate }}"></nz-option>
+                            <nz-option nzValue="I"
+                                nzLabel="{{ 'contract.Details.Company_opt2' | translate }}"></nz-option>
+                            <nz-option nzValue="O"
+                                nzLabel="{{ 'contract.Details.Company_opt3' | translate }}"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+
+                <div *ngIf="this.ContractForm.get('company')?.value == 'O'" class="col-md-4 mt-2 col-3">
+                    <nz-form-label >{{ 'contract.Details.otherEntity' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="otherEntity" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label >{{ 'contract.Details.PermConAddress' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conAddress">
+                        <input nz-input formControlName="conAddress" placeholder="Enter contartor address" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.ConCity' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conCity">
+                        <input nz-input formControlName="conCity" placeholder="Enter contartor city" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.ConCountry' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conCountry">
+                        <!-- <input nz-input formControlName="conCountry" placeholder="Enter contartor country" /> -->
+                        <nz-select name="select-validate" formControlName="conCountry" style="min-width: 100%;">
+                            <nz-option nzDisabled nzValue="Select the Commisioner nationality"
+                                nzLabel="Select the Commisioner nationality">
+                            </nz-option>
+                            <nz-option [nzValue]="ContractForm.get('conCountry')?.value"
+                                [nzLabel]="ContractForm.get('conCountry')?.value"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.ConPhone' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conPhone">
+                        <input type="number" onKeyPress="if(this.value.length==10) return false;" nz-input
+                            formControlName="conPhone" placeholder="Enter contartor phone" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.MailBox' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="mailBox">
+                        <input type="number" onKeyPress="if(this.value.length==8) return false;" nz-input
+                            formControlName="mailBox" placeholder="Enter Additional Code" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.PostalCode' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="postalCode">
+                        <input type="number" onKeyPress="if(this.value.length==10) return false;" nz-input
+                            formControlName="postalCode" placeholder="Enter postal code" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.Email' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="eMail">
+                        <input type="email" nz-input formControlName="eMail" placeholder="Enter email" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-4 my-1">
+                    <nz-form-label>{{ 'contract.Details.BidNumSubmitted' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conBidNumber">
+                        <input type="text" nz-input formControlName="conBidNumber" placeholder="Enter bid number" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.DateOfOffer' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conDate">
+                        <input nz-input formControlName="conDate" placeholder="Enter offer date" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-6 my-1">
+                    <nz-form-label>{{ 'contract.Details.SignDate' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="conSignDate">
+                        <input nz-input formControlName="conSignDate" placeholder="Enter signing date" />
+
+                    </nz-form-control>
+                </div>
+
+                <!-- <div class="col-md-4 mt-2 col-3">
+                            <nz-form-label >{{ 'contract.Details.SignCity' | translate }} </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="signCity">
+                                <input nz-input formControlName="signCity" placeholder="Enter contartor city" />
+
+                            </nz-form-control>
+                        </div> -->
+
+
+
+                <!-- <div class="col-md-4 mt-2 col-3">
+                            <nz-form-label >Day of Signing of contract : </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="conSignDay">
+                                <input nz-input formControlName="conSignDay" placeholder="Enter signing day" />
+                                <ng-template #conSignDay let-control>
+                                    <ng-container *ngIf="control.hasError('required')">Day of Signing is required.
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </div> -->
+
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" *ngIf="contractType == 'I' || contractType == 'P'"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ duration_of_work | translate }}">
+            <!-- <input class="mx-2" style="accent-color: green;" type="checkbox" disabled [checked]="">
+                    <div class="row w-100">
+                        <nz-form-control nzHasFeedback>
+                            <textarea [froalaEditor]="options"
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="durationWork" placeholder="Enter duration of completion of work"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                    </div> -->
+            <div class="row w-100 mb-2">
+                <nz-form-control nzHasFeedback>
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: #008000;" type="checkbox" disabled
+                            [checked]="isTextDurationChecked" (change)="textDurationChange($event)">
+                        <h4 class="mt-2">{{ 'contract.Details.TextDuration' | translate }}</h4>
+                    </div>
+                    <div *ngIf="isTextDurationChecked">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="durationWork" type="text"
+                            placeholder="{{ 'contract.Details.TextDuration_ph' | translate }}" cols="100"
+                            rows="2"></textarea>
+                        <ng-template #durationWork let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{
+                                'contract.Details.DurationOfCompletion_req' | translate }}
+                            </ng-container>
+                        </ng-template>
+                    </div>
+                </nz-form-control>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="contractType != 'D' && contractType != 'E' && contractType != 'C' && contractType != 'M' && contractType != 'T' && contractType != 'G'  && contractType != 'R'"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ prog_work | translate }}">
+            <div class="row w-100">
+                <div *ngIf="contractType != 'F'" class="">
+                    <nz-form-label>{{ 'contract.Details.First' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="proFirst" placeholder="Enter first programme" cols="100"
+                            rows="2"></textarea>
+
+                    </nz-form-control>
+                </div>
+                <div *ngIf="contractType != 'F'" class="">
+                    <nz-form-label>{{ 'contract.Details.Second' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="proSecond" placeholder="Enter second programme" cols="100"
+                            rows="2"></textarea>
+
+                    </nz-form-control>
+                </div>
+
+                <div *ngIf="contractType=='F'" class="col-md-6 mt-4 col-3">
+                    <nz-form-label>{{'contract.Details.DaysOfAction' | translate}}: </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input placeholder="{{ 'contract.Details.EnterDaysOfAction' | translate }}"
+                            formControlName="DaysForAction" />
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" *ngIf="contractType != 'G' && contractType != 'F'"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ cont_evaluation | translate }}">
+            <div class="row w-100">
+                <div *ngIf="contractType != 'R' && contractType != 'T'" class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkEvaluation">
+                        <h3 class="mt-2">{{ 'contract.Details.ContEvaluation' | translate }}</h3>
+                    </div>
+                    <div *ngIf="checkEvaluation" class="row w-100 my-3">
+                        <div class="col-md-4 mt-2 col-3">
+                            <nz-form-label>{{ 'contract.Details.EvalPeriod' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="EvaluationPeriod">
+                                <nz-select name="select-validate" formControlName="EvaluationPeriod"
+                                    style="min-width: 100%;" [ngModel]="'Select Evaluation Period'">
+                                    <nz-option nzDisabled nzValue="Select Evaluation Period"
+                                        nzLabel="Select Evaluation Period">
+                                    </nz-option>
+                                    <nz-option nzValue="M"
+                                        nzLabel="{{ 'contract.Details.Monthly' | translate }}"></nz-option>
+                                    <nz-option nzValue="Q"
+                                        nzLabel="{{ 'contract.Details.Quarterly' | translate }}"></nz-option>
+                                    <nz-option nzValue="H"
+                                        nzLabel="{{ 'contract.Details.Half-Yearly' | translate }}"></nz-option>
+                                    <nz-option nzValue="A"
+                                        nzLabel="{{ 'contract.Details.Annual' | translate }}"></nz-option>
+                                    <nz-option nzValue="F"
+                                        nzLabel="{{ 'contract.Details.Final' | translate }}"></nz-option>
+                                </nz-select>
+                                <ng-template #EvaluationPeriod let-control>
+                                    <ng-container *ngIf="control.hasError('required')">Evaluation Period is
+                                        required.
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </div>
+                        <div class="row w-100 my-3">
+                            <div *ngIf="this.ContractForm.get('EvaluationPeriod')?.value && this.ContractForm.get('EvaluationPeriod')?.value != 'F'" class="col-md-6 mt-2 col-3">
+                                <!-- <nz-form-label >Evaluation Date: </nz-form-label> -->
+                                <nz-table nzBordered="true" #nzTable [nzData]="listOfContEvaluationData"
+                                    nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" nzTableLayout="fixed">
+                                    <thead>
+                                        <tr>
+                                            <th class="header" style="width: 100%;">{{
+                                                'contract.Details.EvalDate' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of listOfContEvaluationData;">
+                                            <td>{{data}}</td>
+                                            <!-- <td>
+                                                        <div [formGroupName]="i">
+                                                            <nz-date-picker [disabled]="true" class="manInp"
+                                                                formControlName="EvalDate"></nz-date-picker>
+                                                        </div>
+                                                    </td> -->
+                                        </tr>
+
+                                    </tbody>
+                                </nz-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="contractType=='R' || contractType=='T' || contractType=='D'" class="mt-2">
+                <div class="d-flex" style="justify-content: space-between;">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                            style="accent-color: green;" type="checkbox" [checked]="checkPerfEval">
+                        <nz-form-label>{{'contract.Details.ContractorPerfomanceEval' | translate }}
+                        </nz-form-label>
+                    </div>
+
+                    <!-- <h3 *ngIf="checkPerfEval && contractType!=='R' && contractType!=='T'">
+                        <span *ngIf="this.ContractForm.get('showPerfEval')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                        <span *ngIf="!this.ContractForm.get('showPerfEval')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                        <nz-switch formControlName="showPerfEval"></nz-switch>
+                    </h3> -->
+                </div>
+                <nz-form-control
+                *ngIf="checkPerfEval"
+                    nzHasFeedback>
+                    <textarea
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                        formControlName="PerfEval" type="text"
+                        placeholder="{{ 'contract.Details.EnterContractorPerfomanceEval' | translate}}" cols="100"
+                        rows="2"></textarea>
+                </nz-form-control>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="contractType != 'F' && contractType != 'T'  && contractType != 'R'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ downpayment | translate }}">
+            <div class="d-flex">
+                <input class="mx-2" disabled [checked]="checkDown" style="accent-color: green;" type="checkbox">
+                <nz-form-label>{{ 'contract.Details.DownPay' | translate }}</nz-form-label>
+            </div>
+            <div *ngIf="checkDown" class="row w-100 my-3">
+                <div class="col-md-4 col-3">
+                    <nz-form-label>{{ 'contract.Details.DownPercent' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="downPercent">
+                        <input type="number" onKeyPress="if(this.value.length==2) return false;" min="1" nz-input
+                            formControlName="downPercent" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-3">
+                    <nz-form-label>{{ 'contract.Details.DownRate' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="downRate">
+                        <input nz-input formControlName="downRate" onClick="this.select()" #myInput
+                            placeholder="Enter the rate of Downpayment" />
+
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-3">
+                    <nz-form-label>{{ 'contract.Details.DownAmount' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="downAmount">
+                        <input nz-input formControlName="downAmount" #myAmount
+                            placeholder="Enter the Downpayment amount" />
+
+                    </nz-form-control>
+                </div>
+
+
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ cont_copy | translate }}">
+            <div class="d-flex">
+                <input class="mx-2" disabled [checked]="selectAll" style="accent-color: green;" type="checkbox">
+                <nz-form-label>{{ 'contract.Details.CopyAll' | translate }}</nz-form-label>
+            </div>
+            <div class="d-flex mx-4" *ngFor="let copy of copyToList">
+                <input class="mx-2" disabled style="accent-color: green;" type="checkbox" [checked]="copy.isSelected">
+                <nz-form-label>{{copy.value}}</nz-form-label>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="((contractType=='D') || (contractType=='E') || (contractType=='R') || (contractType=='T') || (contractType=='F'))"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ gen_provision | translate }}">
+            <div class="row w-100">
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.RecordRetentionPeriod' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input placeholder="{{'contract.Details.EnterRecordRetentionPeriod' | translate}}"
+                            formControlName="RetentionPeriod" />
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.MaximumNumberOfDaysForRenewal' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterMaximumNumberOfDaysForRenewal' | translate }}"
+                            formControlName="RenewalDays" />
+                    </nz-form-control>
+                </div>
+                <div *ngIf="((contractType=='D') || (contractType=='E'))" class="col-md-6 mt-4 col-3">
+                    <nz-form-label>{{'contract.Details.ResponsePeriodFromRespreEntity' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterResponsePeriodFromRespreEntity' | translate}}"
+                            formControlName="ResponsePeriod" />
+                    </nz-form-control>
+                </div>
+                <div *ngIf="((contractType=='R') || (contractType=='T') || (contractType=='F'))"
+                    class="col-md-6 mt-4 col-3">
+                    <nz-form-label>{{'contract.Details.ResponseTimeFromContractPR' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterResponseTimeFromContractPR' | translate }}"
+                            formControlName="PurResponseTime" />
+                    </nz-form-control>
+                </div>
+                <div *ngIf="(contractType == 'D')" class="col-md-6 mt-4 col-3">
+                    <nz-form-label>{{'contract.Details.PeriodForContToReplaceRepre' | translate
+                        }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterPeriodForContToReplaceRepre' | translate }}"
+                            formControlName="ReplacePeriod" />
+                    </nz-form-control>
+                </div>
+            </div>
+            <div *ngIf="((contractType=='D') || (contractType=='E'))">
+                <h3 class="mt-4">{{'contract.Details.Arbitration' | translate }}</h3>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkFirstArb">
+                            <nz-form-label>{{'contract.Details.FirstArbitration' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkFirstArb">
+                            <span *ngIf="this.ContractForm.get('showFirstArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showFirstArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showFirstArb"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkFirstArb && this.ContractForm.get('showFirstArb')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstArb" type="text"
+                            placeholder="{{'contract.Details.EnterFirstArbitration' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkSecondArb">
+                            <nz-form-label>{{'contract.Details.SecondArbitration' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkSecondArb">
+                            <span *ngIf="this.ContractForm.get('showSecondArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showSecondArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showSecondArb"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkSecondArb && this.ContractForm.get('showSecondArb')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondArb" type="text"
+                            placeholder="{{'contract.Details.EnterSecondArbitration' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkThirdArb">
+                            <nz-form-label>{{'contract.Details.ThirdArbitration' | translate}}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkThirdArb">
+                            <span *ngIf="this.ContractForm.get('showThirdArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showThirdArb')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showThirdArb"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkThirdArb && this.ContractForm.get('showThirdArb')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdArb" type="text"
+                            placeholder="{{'contract.Details.EnterThirdArbitration' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div *ngIf="((contractType=='R') || (contractType=='T')|| (contractType=='F'))">
+                <h3 class="mt-4">{{'contract.Details.TermsOfAgreement' | translate }}</h3>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkFirstAgree"
+                                (click)="showFirstAgree()">
+                            <nz-form-label>{{'contract.Details.FirstTermsOfAgreement' | translate
+                                }}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkFirstAgree">
+                                    <span *ngIf="this.ContractForm.get('showFirstAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showFirstAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showFirstAgree"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkFirstAgree" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstAgree" type="text"
+                            placeholder="{{'contract.Details.EnterFirstTermsOfAgreement' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkSecondAgree"
+                                (click)="showSecondAgree()">
+                            <nz-form-label>{{'contract.Details.SecondTermsOfAgreement' |
+                                translate}}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkSecondAgree">
+                                    <span *ngIf="this.ContractForm.get('showSecondAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showSecondAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showSecondAgree"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkSecondAgree" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondAgree" type="text"
+                            placeholder="{{'contract.Details.EnterSecondTermsOfAgreement' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkThirdAgree"
+                                (click)="showThirdAgree()">
+                            <nz-form-label>{{'contract.Details.ThirdTermsOfAgreement' | translate
+                                }}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkThirdAgree">
+                                    <span *ngIf="this.ContractForm.get('showThirdAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showThirdAgree')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showThirdAgree"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkThirdAgree" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdAgree" type="text"
+                            placeholder="{{'contract.Details.EnterThirdTermsOfAgreement' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div class="row w-100 my-3" *ngIf="((contractType=='R') || (contractType=='T') || (contractType=='F'))">
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.AgreementPeriod' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <nz-select name="select-validate" formControlName="AgreePeriod" style="min-width: 100%;"
+                            nzPlaceHolder="{{'contract.Details.SelectAgreementPeriod' | translate }}">
+                            <nz-option nzDisabled nzValue="Select Agreement Period"
+                                nzLabel="{{'contract.Details.SelectAgreementPeriod' | translate }}">
+                            </nz-option>
+                            <nz-option nzValue="Open" nzLabel="{{'Open' | translate}}"></nz-option>
+                            <nz-option nzValue="Closed" nzLabel="{{'Closed' | translate}}"></nz-option>
+
+                        </nz-select>
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.NumberOfParties' | translate }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input placeholder="{{'contract.Details.EnterNumberOfParties' | translate}}"
+                            formControlName="NumberOfParties" />
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.PeriodForContToReplaceRepre' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterPeriodForContToReplaceRepre' | translate}}"
+                            formControlName="ReplacePeriod" />
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="((contractType=='D') || (contractType=='E') || (contractType=='R') || (contractType=='F') || (contractType=='T'))"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ implement_services | translate }}">
+            <div *ngIf="((contractType=='D') || (contractType=='E'))">
+                <h3 class="mt-4">{{'contract.Details.StartingABusiness' | translate }}</h3>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkFirstBusiness">
+                            <nz-form-label>{{'contract.Details.FirstBusiness' | translate}}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkFirstBusiness">
+                            <span *ngIf="this.ContractForm.get('showFirstBusiness')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showFirstBusiness')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showFirstBusiness"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkFirstBusiness && this.ContractForm.get('showFirstBusiness')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstBusiness" type="text"
+                            placeholder="{{'contract.Details.EnterFirstBusiness' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkSecondBusiness">
+                            <nz-form-label>{{'contract.Details.SecondBusiness' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkSecondBusiness">
+                            <span *ngIf="this.ContractForm.get('showSecondBusiness')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showSecondBusiness')?.value"
+                                style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showSecondBusiness"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkSecondBusiness && this.ContractForm.get('showSecondBusiness')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondBusiness" type="text"
+                            placeholder="{{'contract.Details.EnterSecondBusiness' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkThirdBusiness">
+                            <nz-form-label>{{'contract.Details.ThirdBusiness' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkThirdBusiness">
+                            <span *ngIf="this.ContractForm.get('showThirdBusiness')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showThirdBusiness')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showThirdBusiness"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkThirdBusiness && this.ContractForm.get('showThirdBusiness')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdBusiness" type="text"
+                            placeholder="{{'contract.Details.EnterThirdBusiness' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <h3 class="mt-4" *ngIf="contractType != 'D'">{{'contract.Details.WorkProgramme' | translate }}</h3>
+            <div *ngIf="contractType!='D'">
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkFirstWorkPro"
+                                (click)="showFirstWorkPro()">
+                            <nz-form-label>{{'contract.Details.FirstWorkProgramme' |
+                                translate }}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkFirstWorkPro">
+                                    <span *ngIf="this.ContractForm.get('showFirstWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showFirstWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showFirstWorkPro"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkFirstWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterFirstWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkSecondWorkPro"
+                                (click)="showSecondWorkPro()">
+                            <nz-form-label>{{'contract.Details.SecondWorkProgramme'
+                                |
+                                translate}}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkSecondWorkPro">
+                                    <span *ngIf="this.ContractForm.get('showSecondWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showSecondWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showSecondWorkPro"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkSecondWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterSecondWorkProgramme' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkThirdWorkPro"
+                                (click)="showThirdWorkPro()">
+                            <nz-form-label>{{'contract.Details.ThirdWorkProgramme' |
+                                translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkThirdWorkPro">
+                                    <span *ngIf="this.ContractForm.get('showThirdWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showThirdWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showThirdWorkPro"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkThirdWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterThirdWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="mx-2 my-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkFourthWorkPro"
+                                (click)="showFourthWorkPro()">
+                            <nz-form-label>{{'contract.Details.FourthWorkProgramme'
+                                |
+                                translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkFourthWorkPro">
+                                    <span *ngIf="this.ContractForm.get('showFourthWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showFourthWorkPro')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showFourthWorkPro"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkFourthWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FourthWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterFourthWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div class="row w-100 my-3">
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.TechnicalDisputeResolutionDays' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterTechnicalDisputeResolutionDays' | translate }}"
+                            formControlName="DisputeResolutionDays" />
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{'contract.Details.ResponsePeriodFromContractor' | translate }}
+                    </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input
+                            placeholder="{{'contract.Details.EnterResponsePeriodFromContractor' | translate}}"
+                            formControlName="ContRespPeriod" />
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-4 col-3">
+                    <nz-form-label>{{'contract.Details.InabilityToImplementShouldBeNotifiedPriorTo' | translate
+                        }} </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input placeholder="{{'contract.Details.EnterThePersonToBeNotifiedTo' | translate }}"
+                            formControlName="PriorNotifPerson" />
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" *ngIf="contractType == 'D'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ 'contract.Details.WorkProgramme' | translate }}">
+            <div *ngIf="contractType=='D'">
+                <div class="m-2 mt-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkFirstWorkPro"
+                                (click)="showFirstWorkPro()">
+                            <nz-form-label>{{'contract.Details.FirstWorkProgramme' | translate }}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkFirstWorkPro">
+                          <span *ngIf="this.ContractForm.get('showFirstWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                          <span *ngIf="!this.ContractForm.get('showFirstWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                          <nz-switch formControlName="showFirstWorkPro"></nz-switch>
+                        </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkFirstWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterFirstWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="m-2 mt-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkSecondWorkPro"
+                                (click)="showSecondWorkPro()">
+                            <nz-form-label>{{'contract.Details.SecondWorkProgramme' | translate}}:
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkSecondWorkPro">
+                          <span *ngIf="this.ContractForm.get('showSecondWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                          <span *ngIf="!this.ContractForm.get('showSecondWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                          <nz-switch formControlName="showSecondWorkPro"></nz-switch>
+                        </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkSecondWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterSecondWorkProgramme' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="m-2 mt-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkThirdWorkPro"
+                                (click)="showThirdWorkPro()">
+                            <nz-form-label>{{'contract.Details.ThirdWorkProgramme' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkThirdWorkPro">
+                          <span *ngIf="this.ContractForm.get('showThirdWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                          <span *ngIf="!this.ContractForm.get('showThirdWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                          <nz-switch formControlName="showThirdWorkPro"></nz-switch>
+                        </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkThirdWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterThirdWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="m-2 mt-4">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkFourthWorkPro"
+                                (click)="showFourthWorkPro()">
+                            <nz-form-label>{{'contract.Details.FourthWorkProgramme' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <!-- <h3 *ngIf="checkFourthWorkPro">
+                          <span *ngIf="this.ContractForm.get('showFourthWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                          <span *ngIf="!this.ContractForm.get('showFourthWorkPro')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                          <nz-switch formControlName="showFourthWorkPro"></nz-switch>
+                        </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkFourthWorkPro" nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FourthWorkPro" type="text"
+                            placeholder="{{'contract.Details.EnterFourthWorkProgramme' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="((contractType=='R') || (contractType=='T') || (contractType=='F'))" class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+        <nz-collapse-panel nzHeader="{{ finance_term | translate }}">
+            <div *ngIf="((contractType=='R') || (contractType=='T'))">
+                <h3 class="mt-4">{{'contract.Details.Invoices' | translate }}</h3>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkFirstInvoice">
+                            <nz-form-label>{{'contract.Details.FirstInvoice' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkFirstInvoice">
+                            <span *ngIf="this.ContractForm.get('showFirstInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showFirstInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showFirstInvoice"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control
+                        *ngIf="checkFirstInvoice && this.ContractForm.get('showFirstInvoice')?.value  && contractType !=='R'"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterFirstInvoice' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                    <nz-form-control
+                        *ngIf="checkFirstInvoice && contractType =='R' && this.ContractForm.get('showFirstInvoice')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterFirstInvoice' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkSecondInvoice">
+                            <nz-form-label>{{'contract.Details.SecondInvoice'| translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkSecondInvoice">
+                            <span *ngIf="this.ContractForm.get('showSecondInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showSecondInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showSecondInvoice"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control
+                        *ngIf="checkSecondInvoice && this.ContractForm.get('showSecondInvoice')?.value && contractType !=='R'"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterSecondInvoice' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                    <nz-form-control
+                        *ngIf="checkSecondInvoice && contractType =='R' && this.ContractForm.get('showSecondInvoice')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="SecondInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterSecondInvoice' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkThirdInvoice">
+                            <nz-form-label>{{'contract.Details.ThirdInvoice' | translate}}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkThirdInvoice">
+                            <span *ngIf="this.ContractForm.get('showThirdInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showThirdInvoice')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showThirdInvoice"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control
+                        *ngIf="checkThirdInvoice && this.ContractForm.get('showThirdInvoice')?.value && contractType !=='R'"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterThirdInvoice' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                    <nz-form-control
+                        *ngIf="checkThirdInvoice && contractType =='R' && this.ContractForm.get('showThirdInvoice')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ThirdInvoice" type="text"
+                            placeholder="{{'contract.Details.EnterThirdInvoice' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+            <div *ngIf="contractType == 'F' || contractType == 'T' || contractType == 'R'">
+                <h3 class="mt-4">{{'contract.Details.ReferenceToPrices' | translate }}</h3>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkFirstPrices">
+                            <nz-form-label>{{'contract.Details.ReferenceToPrices' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkFirstPrices">
+                            <span *ngIf="this.ContractForm.get('showFirstPrices')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showFirstPrices')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showFirstPrices"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkFirstPrices && this.ContractForm.get('showFirstPrices')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstPrices" type="text"
+                            placeholder="{{'contract.Details.EnterFirstPrices' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="contractType=='D' || contractType=='E' || contractType=='G'" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ insurance_head | translate }}" [nzExtra]="toggle">
+
+            <div class="p-2">
+                <div class="d-flex" style="justify-content: space-between;">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                            style="accent-color: green;" type="checkbox" [checked]="checkInsurance"
+                            (click)="showInsurance()">
+                        <nz-form-label>{{ 'Insurance' | translate }}
+                        </nz-form-label>
+                    </div>
+
+                    <h3 *ngIf="checkInsurance">
+                        <span *ngIf="this.ContractForm.get('showDynamicInsurance')?.value" style="padding-top: 2%;">{{
+                            'contract.common.dynamic' | translate }} </span>
+                        <span *ngIf="!this.ContractForm.get('showDynamicInsurance')?.value" style="padding-top: 2%;">{{
+                            'contract.common.static' | translate }} </span>
+                        <nz-switch formControlName="showDynamicInsurance"></nz-switch>
+                    </h3>
+                </div>
+                <nz-form-control *ngIf="checkInsurance && this.ContractForm.get('showDynamicInsurance')?.value"
+                    nzHasFeedback>
+                    <textarea
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                        formControlName="Insurance" type="text" placeholder="{{ 'Insurance_ph' | translate }}"
+                        cols="100" rows="2"></textarea>
+                </nz-form-control>
+            </div>
+
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <!-- * Penalties Section -->
+    
+    <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+        <nz-collapse-panel nzHeader="{{ penalties_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+
+                    <!-- Method For Calculating Fines starts -->
+                    <ng-container *ngIf="contractType == 'D'">
+                        <nz-form-label>
+                            {{ 'contract.Details.MethodForCalFines' | translate }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input type="text" step="any" nz-input formControlName="MtdCalcFines"
+                                placeholder="{{ 'contract.Details.MethodForCalFines' | translate }}" />
+                        </nz-form-control>
+                    </ng-container>
+                    <!-- Method For Calculating Fines ends -->
+
+
+                    <!-- Penalty Percent starts -->
+                    <ng-container
+                        *ngIf="contractType=='C' || contractType=='P' || contractType=='E' || contractType=='D' || contractType=='F' || contractType=='T' || contractType=='G' ">
+                        <nz-form-label >{{
+                            'contract.Details.Penalty_percent' | translate }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="FinePercent">
+                            <input type="text" oninput="this.value>100 ? this.value=100: this.value" step="any"
+                                min="1" max="100" nz-input formControlName="FinePercent"
+                                placeholder="{{ 'contract.Details.Penalty_percent_ph' | translate }}"
+                                [inputMask]="percentageInputMask" />
+                            <ng-template #FinePercent let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                    'contract.Details.Penalty_percent_req' | translate }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </ng-container>
+                    <!-- Panalty Percent ends -->
+
+                    <!-- * Weekly Penalty Percentage -->
+                    <!-- <ng-container *ngIf="contractType!=='M'">
+                        <nz-form-label >{{
+                            'contract.Details.Weekly Penalty Percentage' | translate }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="WeeklyPenaltyPercentageErrorTemplate">
+                            <input type="text" oninput="this.value>100 ? this.value=100: this.value" step="any"
+                                min="1" max="100" nz-input formControlName="WeeklyPnltyPerctg"
+                                placeholder="{{ 'contract.Details.Enter Weekly Penalty Percentage' | translate }}"
+                                [inputMask]="percentageInputMask" />
+                            <ng-template #WeeklyPenaltyPercentageErrorTemplate let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                    'contract.Details.Weekly Penalty Percentage is required' | translate }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </ng-container> -->
+
+                    <!-- * Maximum Penalty Percentage -->
+                    <!-- <ng-container>
+                        <nz-form-label >{{
+                            'contract.Details.Maximum Penalty Percentage' | translate }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="MaximumPenaltyPercentageErrorTemplate">
+                            <input type="text" oninput="this.value>100 ? this.value=100: this.value" step="any"
+                                min="1" max="100" nz-input formControlName="MaximumPnltyPerctg"
+                                placeholder="{{ 'contract.Details.Enter Maximum Penalty Percentage' | translate }}"
+                                [inputMask]="percentageInputMask" />
+                            <ng-template #MaximumPenaltyPercentageErrorTemplate let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                    'contract.Details.Maximum Penalty Percentage is required' | translate }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </ng-container> -->
+
+
+                    <div
+                        [ngClass]="((contractType=='G') || (contractType=='D')  || contractType == 'T' )? 'penalties-flex-G': 'penalties-flex'">
+                        <input
+                            *ngIf="contractType !='G' && contractType !='D' && contractType != 'T'  && contractType != 'F'"
+                            class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                            style="accent-color: green;" type="checkbox" disabled [checked]="checkPenalties"
+                            (click)="showPenalties();">
+                        <h3 *ngIf="contractType !='F'" class="mt-2">{{ 'contract.Details.Penalties_4.2' |
+                            translate }}</h3>
+                    </div>
+
+                    <div *ngIf="checkPenalties">
+
+                        <!-- Penalty First starts -->
+                        <ng-container *ngIf="contractType!='F' && contractType!='G'">
+                            <nz-form-label >{{
+                                'contract.Details.Penalties_first' | translate }}</nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="FineFirst">
+                                <textarea
+                                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                    nz-input formControlName="FineFirst" type="text"
+                                    placeholder="{{ 'contract.Details.Penalties_first_ph' | translate }}"
+                                    cols="100" rows="2"></textarea>
+                                <ng-template #FineFirst let-control>
+                                    <ng-container *ngIf="control.hasError('required')">{{
+                                        'contract.Details.Penalties_first_req' | translate }}
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <br>
+                        </ng-container>
+                        <!-- Penalty First ends -->
+
+                        <!-- Penalty Second starts -->
+                        <ng-container
+                            *ngIf="contractType=='C' || contractType=='P' || contractType=='D' || contractType=='E'">
+                            <nz-form-label >{{
+                                'contract.Details.Penalties_second' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="FineSecond">
+                                <textarea
+                                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                    nz-input formControlName="FineSecond" type="text"
+                                    placeholder="{{ 'contract.Details.Penalties_second_ph' | translate }} "
+                                    cols="100" rows="2"></textarea>
+                                <ng-template #FineSecond let-control>
+                                    <ng-container *ngIf="control.hasError('required')">{{
+                                        'contract.Details.Penalties_second_req' | translate }}
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <br>
+                        </ng-container>
+                        <!-- Penalty Second ends -->
+
+
+                        <!-- Penalty percent starts -->
+                        <ng-container *ngIf="contractType == 'I' || contractType == 'M' || contractType == 'R'">
+                            <nz-form-label >{{
+                                'contract.Details.Penalty_percent' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="FinePercent">
+                                <input type="text" oninput="this.value>100 ? this.value=100: this.value"
+                                    step="any" min="1" max="100" nz-input formControlName="FinePercent"
+                                    placeholder="{{ 'contract.Details.Penalty_percent_ph' | translate }}"
+                                    [inputMask]="percentageInputMask" />
+                                <ng-template #FinePercent let-control>
+                                    <ng-container *ngIf="control.hasError('required')">{{
+                                        'contract.Details.Penalty_percent_req' | translate }}
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <br>
+                        </ng-container>
+                        <!-- Penalty percent ends -->
+
+
+                        <!-- Penalty third starts -->
+                        <ng-container *ngIf="contractType == 'I' || contractType == 'M' || contractType == 'R'">
+                            <nz-form-label >{{
+                                'contract.Details.Penalties_third' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="FineThird">
+                                <textarea
+                                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                    nz-input formControlName="FineThird" type="text"
+                                    placeholder="{{ 'contract.Details.Penalties_third_ph' | translate }} "
+                                    cols="100" rows="2"></textarea>
+
+                                <ng-template #FineThird let-control>
+                                    <ng-container *ngIf="control.hasError('required')">{{
+                                        'contract.Details.Penalties_third_req' | translate }}
+                                    </ng-container>
+
+                                </ng-template>
+                            </nz-form-control>
+                            <br>
+                        </ng-container>
+                        <!-- Penalty third ends -->
+
+
+                        <!-- Penalty Fourth starts -->
+                        <ng-container *ngIf="contractType=='P'">
+                            <nz-form-label >{{
+                                'contract.Details.Penalties_fourth' | translate }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback [nzErrorTip]="FineFourth">
+                                <textarea
+                                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                    nz-input formControlName="FineFourth" type="text"
+                                    placeholder="{{ 'contract.Details.Penalties_fourth_ph' | translate }} "
+                                    cols="100" rows="2"></textarea>
+                                <ng-template #FineFourth let-control>
+
+                                    <ng-container *ngIf="control.hasError('required')">{{
+                                        'contract.Details.Penalties_fourth_req' | translate }}
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                            <br>
+                        </ng-container>
+                        <!-- Penalty Fourth ends -->
+
+                    </div>
+
+                    <!-- Penalty percent starts -->
+                    <ng-container *ngIf="!checkPenalties && contractType == 'R'">
+                        <nz-form-label >{{
+                            'contract.Details.Penalty_percent' | translate }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="FinePercent">
+                            <input type="text" oninput="this.value>100 ? this.value=100: this.value" step="any"
+                                min="1" max="100" nz-input formControlName="FinePercent"
+                                placeholder="{{ 'contract.Details.Penalty_percent_ph' | translate }}"
+                                [inputMask]="percentageInputMask" />
+                            <ng-template #FinePercent let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                    'contract.Details.Penalty_percent_req' | translate }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                        <br>
+                    </ng-container>
+                    <!-- Penalty percent ends -->
+
+                    <!-- Penalty Text -->
+                    <div
+                        *ngIf="(!checkPenalties && (contractType == 'I' || contractType == 'C' || contractType == 'M'  || contractType == 'P')) || contractType == 'G'">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                            nz-input formControlName="FineText" type="text"
+                            placeholder="{{ 'contract.Details.Penalties_ph' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" *ngIf="contractType!='R' && contractType != 'T'"
+        class="mt-4">
+        <nz-collapse-panel nzHeader="{{ extracts_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkExtracts">
+                        <h3 class="mt-2">{{ 'contract.Details.Extracts' | translate }}</h3>
+                    </div>
+                    <div *ngIf="checkExtracts">
+                        <nz-form-label>{{ 'contract.Details.Exe_fir' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="ExtractFirst">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ExtractFirst" placeholder="Enter first section of Extracts" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+
+                        <nz-form-label>{{ 'contract.Details.Exe_sec' | translate }} </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="ExtractSecond">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ExtractSecond" placeholder="Enter second section of Extracts"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+
+                        <nz-form-label>{{ 'contract.Details.Exe_third' | translate }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback [nzErrorTip]="ExtractThird">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ExtractThird" placeholder="Enter third section of Extracts" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="contractType != 'C' && contractType != 'F' && contractType != 'T' && contractType != 'R'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ quant_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkTableQuant">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_quant' | translate }}</h3>
+                    </div>
+                    <nz-form-label *ngIf="checkTableQuant">{{ 'contract.Details.Text_quant' |
+                        translate }}
+                    </nz-form-label>
+                    <nz-form-control *ngIf="checkTableQuant" nzHasFeedback [nzErrorTip]="TableQP">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="TableQP" placeholder="Enter table of quantities and prices" cols="100"
+                            rows="2"></textarea>
+
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ scope_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                [checked]="checkScope">
+                            <nz-form-label>{{ 'contract.Details.Text_scope' | translate }}</nz-form-label>
+                        </div>
+                        <!-- <h3 *ngIf="checkScope">
+                                    <span *ngIf="this.ContractForm.get('showDynamicScope')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.dynamic' | translate }} </span>
+                                    <span *ngIf="!this.ContractForm.get('showDynamicScope')?.value"
+                                        style="padding-top: 2%;">{{
+                                        'contract.common.static' | translate }} </span>
+                                    <nz-switch formControlName="showDynamicScope"></nz-switch>
+                                </h3> -->
+                    </div>
+                    <nz-form-control *ngIf="checkScope" nzHasFeedback [nzErrorTip]="WorkScope">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="WorkScope" type="text"
+                            placeholder="{{ 'contract.Details.Text_scope_ph' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+
+                    <div *ngIf="contractType=='G'" class="d-flex mt-4" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                [checked]="checkLocation">
+                            <nz-form-label>{{ 'contract.Details.Text_location' | translate }}</nz-form-label>
+                        </div>
+                        <h3 *ngIf="checkLocation">
+                            <span *ngIf="this.ContractForm.get('showDynamicLocation')?.value"
+                                style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showDynamicLocation')?.value"
+                                style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showDynamicLocation"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="contractType=='G' && this.ContractForm.get('showDynamicLocation')?.value"
+                        nzHasFeedback [nzErrorTip]="Location">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="Location" type="text"
+                            placeholder="{{ 'contract.Details.Text_location_ph' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+                <br>
+
+                <!-- worksite -->
+                <div class="p-2" *ngIf="contractType == 'M'">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                style="accent-color: green;" type="checkbox" disabled [checked]="checkWorkSite">
+                            <nz-form-label>{{'contract.Details.WorkSite' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkWorkSite">
+                            <span *ngIf="this.ContractForm.get('showDynamicWorkSite')?.value"
+                                style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showDynamicWorkSite')?.value"
+                                style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showDynamicWorkSite"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkWorkSite && this.ContractForm.get('showDynamicWorkSite')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="WorkSite" type="text"
+                            placeholder="{{'contract.Details.EnterWorkSite' | translate}}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="contractType!='G' && contractType!='F' && contractType!='R' && contractType !='P'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ place_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkPlace">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_place' | translate }}</h3>
+                    </div>
+                    <nz-form-label *ngIf="checkPlace">{{ place_head | translate }}
+                    </nz-form-label>
+                    <nz-form-control *ngIf="checkPlace" nzHasFeedback [nzErrorTip]="ExePlace">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ExePlace" placeholder="Enter place of execution of work" cols="100"
+                            rows="2"></textarea>
+
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel *ngIf="contractType=='P'" nzHeader="{{ 'contract.Details.Text_place' | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkPlace">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_place' | translate }}</h3>
+                    </div>
+                    <nz-form-control *ngIf="checkPlace" nzHasFeedback [nzErrorTip]="ExePlace">
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="ExePlace" placeholder="Enter place of execution of work" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="((contractType=='R') || (contractType=='T') || (contractType=='F'))" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ beneficiary_section | translate }}">
+            <div>
+                <h3 class="mt-4">{{'contract.Details.Beneficiary' | translate }}</h3>
+                <div class="p-2">
+                    <div class="d-flex" style="justify-content: space-between;">
+                        <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                            <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}" disabled
+                                style="accent-color: green;" type="checkbox" [checked]="checkFirstBenef">
+                            <nz-form-label>{{'contract.Details.Beneficiary' | translate }}
+                            </nz-form-label>
+                        </div>
+
+                        <h3 *ngIf="checkFirstBenef">
+                            <span *ngIf="this.ContractForm.get('showFirstBenef')?.value" style="padding-top: 2%;">{{
+                                'contract.common.dynamic' | translate }} </span>
+                            <span *ngIf="!this.ContractForm.get('showFirstBenef')?.value" style="padding-top: 2%;">{{
+                                'contract.common.static' | translate }} </span>
+                            <nz-switch formControlName="showFirstBenef"></nz-switch>
+                        </h3>
+                    </div>
+                    <nz-form-control *ngIf="checkFirstBenef && this.ContractForm.get('showFirstBenef')?.value"
+                        nzHasFeedback>
+                        <textarea
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                            formControlName="FirstBenef" type="text"
+                            placeholder="{{'contract.Details.EnterBeneficiary' | translate }}" cols="100"
+                            rows="2"></textarea>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition"
+        *ngIf="contractType!='G' && contractType!='F' && contractType!='R' && contractType !='P'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ manpower_head | translate }}">
+            <div class=" row w-100">
+                <h3>{{ 'contract.Details.ManPower' | translate }} </h3>
+                <nz-table #manPower *ngIf="ContractForm.controls['ManPower'].value"
+                    [nzData]="ContractForm.controls['ManPower'].value" nzBordered="true"
+                    nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" nzTableLayout="fixed">
+                    <thead>
+                        <tr>
+                            <th class="header" style="width: 10%;">{{ 'contract.Details.SiNo' | translate }}
+                            </th>
+                            <th class="header" style="width: 15%;">{{ 'contract.Details.JobTitle' | translate }}
+                            </th>
+                            <th class="header" style="width: 28%;">{{ 'contract.Details.Qualification' |
+                                translate }}</th>
+                            <th class="header" style="width: 25%;">{{ 'contract.Details.Experience' | translate
+                                }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of Manpower.controls; let i = index;" formArrayName="ManPower">
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input [disabled]="true" class="manInp" type="text" maxlength="300"
+                                        formControlName="ItemNo">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" maxlength="300" formControlName="JobTitle">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" maxlength="300" formControlName="ExpBasicHr">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" maxlength="300" formControlName="SpeExp">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ pay_head | translate }}">
+            <div class=" row w-100">
+                <!-- <h3>{{ 'contract.Details.PaySchedule' | translate }} </h3> -->
+                <nz-table #PaymentSchedule *ngIf="ContractForm.controls['ContPayment'].value"
+                    [nzData]="ContractForm.controls['ContPayment'].value" nzBordered="true"
+                    nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" nzTableLayout="fixed">
+                    <thead>
+                        <tr>
+                            <th class="header" style="width: 20%;">{{ 'contract.Details.SiNo' | translate }}
+                            </th>
+                            <th class="header" style="width: 30%;">{{ 'contract.Details.Desc' | translate }}
+                            </th>
+                            <th class="header" style="width: 25%;">{{ 'contract.Details.Percent' | translate }}
+                            </th>
+                            <th class="header" style="width: 25%;">{{ 'contract.Details.Amount_SAR' | translate
+                                }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of ContPayment.controls; let i = index;" formArrayName="ContPayment">
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" maxlength="300" formControlName="ItemNo">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" maxlength="300" formControlName="Descr">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="number" maxlength="300" formControlName="Percentage">
+                                </div>
+                            </td>
+                            <td>
+                                <div [formGroupName]="i">
+                                    <input class="manInp" type="text" formControlName="PayAmount">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>{{ 'totalPercentage' | translate }}</b></td>
+                            <td colspan="2"><b>{{totalPercentage | number:'1.0-2'}}</b></td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <h4 *ngIf="contractType!='F' && contractType!='R'">{{
+                    'contract.Details.OtherNotes' | translate
+                    }} </h4>
+                <nz-form-control *ngIf="contractType!='F' && contractType!='R'" nzHasFeedback>
+                    <textarea
+                        oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                        formControlName="PaySchedule" cols="100" rows="2"></textarea>
+
+                </nz-form-control>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="contractType!='R'">
+        <nz-collapse-panel nzHeader="{{ specs_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkSpecs">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_specs' | translate }}</h3>
+                    </div>
+                    <div *ngIf="checkSpecs" class="p-2">
+                        <div *ngIf="contractType!='F' && contractType !='P'" class="d-flex"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkSpecsTeam">
+                                <nz-form-label>{{ 'contract.Details.Team_specs' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsTeam">
+                                <span *ngIf="this.ContractForm.get('showSpecsTeam')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsTeam')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsTeam"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType != 'F' && contractType !='P' && checkSpecsTeam && this.ContractForm.get('showSpecsTeam')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsTeam">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsTeam" type="text" placeholder="Enter Team Specification"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='D' && contractType!='C' && contractType != 'F' && contractType != 'G' && contractType!='P' && contractType!='T'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkSpecsMat">
+                                <nz-form-label>{{ 'contract.Details.Mat_specs' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsMat">
+                                <span *ngIf="this.ContractForm.get('showSpecsMat')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsMat')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsMat"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='D' && contractType != 'F' && contractType!='C' && contractType != 'G' && contractType!='P' && contractType!='T' && checkSpecsMat && this.ContractForm.get('showSpecsMat')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsMat">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsMat" type="text" placeholder="Enter Material Specification"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='D' && contractType != 'F' && contractType != 'E' && contractType!='C' && contractType!='P' && contractType!='G' && contractType!='T'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkSpecsEqui">
+                                <nz-form-label>{{ 'contract.Details.Equi_specs' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsEqui">
+                                <span *ngIf="this.ContractForm.get('showSpecsEqui')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsEqui')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsEqui"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='D' && contractType != 'F' && contractType != 'E' && contractType!='C' && contractType!='G' && contractType!='P' && checkSpecsEqui && this.ContractForm.get('showSpecsEqui')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsEqui">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsEqui" type="text" placeholder="Enter Equipment Specification"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='F' && contractType!='G' && contractType != 'E' && contractType !='P'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkSpecsWork">
+                                <nz-form-label *ngIf="contractType!='C' && contractType!='P'">{{
+                                    'contract.Details.Work_specs' |
+                                    translate }}
+                                </nz-form-label>
+                                <nz-form-label *ngIf="contractType=='C' || contractType=='P'">{{
+                                    'contract.Details.Work_specs_cs' |
+                                    translate }}
+                                </nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsWork">
+                                <span *ngIf="this.ContractForm.get('showSpecsWork')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsWork')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsWork"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='F' && contractType!='G' && contractType != 'E' && contractType !='P' && checkSpecsWork && this.ContractForm.get('showSpecsWork')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsWork">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsWork" type="text" placeholder="Enter Work Carryout Methods"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkSpecsQual">
+                                <nz-form-label>{{ 'contract.Details.Qual_specs' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsQual">
+                                <span *ngIf="this.ContractForm.get('showSpecsQual')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsQual')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsQual"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control *ngIf="checkSpecsQual && this.ContractForm.get('showSpecsQual')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsQual">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsQual" type="text" placeholder="Enter Quality Specification"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+
+                        <div *ngIf="contractType == 'P'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                    style="accent-color: green;" type="checkbox" disabled [checked]="checkSpecsSafety"
+                                    (click)="showSpecsSafety()">
+                                <nz-form-label>{{ 'contract.Details.Safety_specs' | translate }}
+                                </nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsSafety">
+                                <span *ngIf="this.ContractForm.get('showSpecsSafety')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsSafety')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsSafety"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType == 'P' && checkSpecsSafety && this.ContractForm.get('showSpecsSafety')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsSafety">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsSafety" type="text"
+                                placeholder="{{ 'contract.Details.Safety_specs_ph' | translate }}" cols="100"
+                                rows="2"></textarea>
+                            <ng-template #SpecsSafety let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                    'contract.Details.Safety_specs_req'
+                                    | translate }}
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+
+                        <ng-container *ngIf="contractType == 'P'">
+                            <div class="d-flex mt-4" style="justify-content: space-between;">
+                              <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                  style="accent-color: green;" type="checkbox" [checked]="checkSpecsWorkGroup"
+                                  (click)="showSpecsWorkGroup()">
+                                <nz-form-label>{{ 'contract.Details.WorkGroup_specs' | translate }}
+                                </nz-form-label>
+                              </div>
+                              <h3 *ngIf="checkSpecsWorkGroup">
+                                <span *ngIf="this.ContractForm.get('showSpecsWorkGroup')?.value" style="padding-top: 2%;">{{
+                                  'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsWorkGroup')?.value" style="padding-top: 2%;">{{
+                                  'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsWorkGroup"></nz-switch>
+                              </h3>
+                            </div>
+                            <nz-form-control *ngIf="checkSpecsWorkGroup && this.ContractForm.get('showSpecsWorkGroup')?.value"
+                              nzHasFeedback [nzErrorTip]="SpecsWorkGroup">
+                              <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsWorkGroup" type="text"
+                                placeholder="{{ 'contract.Details.WorkGroup_specs_ph' | translate }}" cols="100"
+                                rows="2"></textarea>
+                              <ng-template #SpecsWorkGroup let-control>
+                                <ng-container *ngIf="control.hasError('required')">{{
+                                  'contract.Details.WorkGroup_specs_req'
+                                  | translate }}
+                                </ng-container>
+                              </ng-template>
+                            </nz-form-control>
+                          </ng-container>
+
+                    <ng-container *ngIf="contractType == 'P'">
+                        <div class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" nz-tooltip nzTooltipTitle="{{ 'print' | translate }}"
+                                    style="accent-color: green;" type="checkbox" disabled [checked]="checkSpecsImplServ"
+                                    (click)="showSpecsImplServ()">
+                                <nz-form-label>{{ 'contract.Details.ImplServ_specs' | translate }}
+                                </nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkSpecsImplServ">
+                                <span *ngIf="this.ContractForm.get('showSpecsImplServ')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showSpecsImplServ')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showSpecsImplServ"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control *ngIf="checkSpecsImplServ && this.ContractForm.get('showSpecsImplServ')?.value"
+                            nzHasFeedback [nzErrorTip]="SpecsImplServ">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="SpecsImplServ" type="text"
+                                placeholder="{{ 'contract.Details.ImplServ_specs_ph' | translate }}" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+                    </ng-container>
+
+                </div>
+            </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ content_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkContent">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_content' | translate }}</h3>
+                    </div>
+                    <div *ngIf="checkContent" class="p-2">
+                        <div *ngIf="contractType!='D' && contractType != 'E' && contractType!='C' && contractType!='T'"
+                            class="d-flex" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkContentMand">
+                                <nz-form-label>{{ 'contract.Details.Mand_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkContentMand">
+                                <span *ngIf="this.ContractForm.get('showContentMand')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showContentMand')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showContentMand"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='D' && contractType != 'E' && contractType!='C' && contractType!='T' && checkContentMand && this.ContractForm.get('showContentMand')?.value"
+                            nzHasFeedback [nzErrorTip]="ContentMand">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ContentMand" type="text" placeholder="Enter Mandatory Terms" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='G' && contractType != 'F'" class="d-flex mt-4"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkContentRatio">
+                                <nz-form-label>{{ 'contract.Details.Ratio_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkContentRatio">
+                                <span *ngIf="this.ContractForm.get('showContentRatio')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showContentRatio')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showContentRatio"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='G' && contractType != 'F' && checkContentRatio && this.ContractForm.get('showContentRatio')?.value"
+                            nzHasFeedback [nzErrorTip]="ContentRatio">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ContentRatio" type="text" placeholder="Enter Local content Ratio"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='D' && contractType != 'E' && contractType != 'F' && contractType!='C' && contractType !='T' && contractType !='R'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkContentShare">
+                                <nz-form-label>{{ 'contract.Details.Share_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkContentShare">
+                                <span *ngIf="this.ContractForm.get('showContentShare')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showContentShare')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showContentShare"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='D' && contractType != 'E' && contractType != 'F' && contractType!='C' && contractType !='T' && checkContentShare && this.ContractForm.get('showContentShare')?.value"
+                            nzHasFeedback [nzErrorTip]="ContentShare">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ContentShare" type="text" placeholder="Enter National Products share"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" *ngIf="contractType != 'F'" class="mt-4">
+        <nz-collapse-panel nzHeader="{{ detail_head | translate }}">
+            <div class="row w-100">
+                <div class="mt-2">
+                    <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                        <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                            [checked]="checkTerms">
+                        <h3 class="mt-2">{{ 'contract.Details.Text_term' | translate }}</h3>
+                    </div>
+                    <div *ngIf="checkTerms" class="p-2">
+                        <div *ngIf="contractType != 'F'" class="d-flex" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsInsur">
+                                <nz-form-label>{{ 'contract.Details.Insur_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsInsur">
+                                <span *ngIf="this.ContractForm.get('showTermsInsur')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsInsur')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsInsur"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType != 'F' && checkTermsInsur && this.ContractForm.get('showTermsInsur')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsInsur">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsInsur" type="text" placeholder="Enter Insurance Requirements"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='G' && contractType != 'F' && contractType != 'R'" class="d-flex mt-4"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsHours">
+                                <nz-form-label>{{ 'contract.Details.Hours_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsHours">
+                                <span *ngIf="this.ContractForm.get('showTermsHours')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsHours')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsHours"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='G' && contractType != 'F' && contractType != 'R' && checkTermsHours && this.ContractForm.get('showTermsHours')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsHours">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsHours" type="text" placeholder="Enter Working Hours Follow-up"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='G' && contractType != 'F' && contractType != 'R' && this.contractType != 'M'" class="d-flex mt-4"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsFollow">
+                                <nz-form-label>{{ 'contract.Details.Follow_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsFollow">
+                                <span *ngIf="this.ContractForm.get('showTermsFollow')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsFollow')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsFollow"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='G' && contractType != 'F' && contractType != 'R' && this.contractType != 'M' && checkTermsFollow && this.ContractForm.get('showTermsFollow')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsFollow">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsFollow" type="text" placeholder="Enter Working Hours Follow-up"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='D' && contractType != 'F' && contractType != 'E' && contractType!='G' && contractType!='C' && contractType!='P' && contractType != 'R' && contractType != 'T'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsInsp">
+                                <nz-form-label>{{ 'contract.Details.Insp_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsInsp">
+                                <span *ngIf="this.ContractForm.get('showTermsInsp')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsInsp')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsInsp"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='D' && contractType != 'F' && contractType != 'E' && contractType!='G' && contractType!='C' && contractType!='P' && contractType != 'R' && contractType != 'T' && checkTermsInsp && this.ContractForm.get('showTermsInsp')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsInsp">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsInsp" type="text" placeholder="Enter Inspection Save charts"
+                                cols="100" rows="2"></textarea>
+                        </nz-form-control>
+                        <div *ngIf="contractType != 'D' && contractType != 'E' && contractType != 'C' && contractType != 'T' && contractType != 'G' && contractType != 'P' && contractType !='R' && contractType !='F'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsChart">
+                                <nz-form-label>{{ 'contract.Details.Chart_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsChart">
+                                <span *ngIf="this.ContractForm.get('showTermsChart')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsChart')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsChart"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType != 'D' && contractType != 'E' && contractType != 'C' && contractType != 'T' && contractType != 'G' && contractType != 'P' && contractType !='R' && contractType !='F' && checkTermsChart && this.ContractForm.get('showTermsChart')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsChart">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsChart" type="text" placeholder="Enter Inspection Save charts"
+                                cols="100" rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType!='G' && contractType != 'F'" class="d-flex mt-4"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsTrain">
+                                <nz-form-label>{{ 'contract.Details.Train_cont' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsTrain">
+                                <span *ngIf="this.ContractForm.get('showTermsTrain')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsTrain')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsTrain"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType!='G' && contractType != 'F' && checkTermsTrain && this.ContractForm.get('showTermsTrain')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsTrain">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsTrain" type="text" placeholder="Enter Saudi Training" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+                        <div *ngIf="contractType != 'G' && contractType != 'T' && contractType !='F'"
+                            class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkTermsReport">
+                                <!-- <nz-form-label *ngIf="contractType == 'P'"> {{
+                                            'contract.Details.Report_cont_services' | translate }} </nz-form-label> -->
+                                <nz-form-label> {{
+                                    'contract.Details.Report_cont' | translate }} </nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkTermsReport">
+                                <span *ngIf="this.ContractForm.get('showTermsReport')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showTermsReport')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showTermsReport"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType != 'G' && contractType != 'T' && contractType !='F' && checkTermsReport && this.ContractForm.get('showTermsReport')?.value"
+                            nzHasFeedback [nzErrorTip]="TermsReport">
+
+                            <textarea *ngIf="contractType != 'P'"
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsReport" type="text"
+                                placeholder="{{ 'contract.Details.Report_cont_ph' | translate }}" cols="100"
+                                rows="2"></textarea>
+
+                            <textarea *ngIf="contractType == 'P'"
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="TermsReport" type="text"
+                                placeholder="{{ 'contract.Details.Report_cont_ph_services' | translate }}" cols="100"
+                                rows="2"></textarea>
+
+                        </nz-form-control>
+
+                        <div *ngIf="contractType=='T'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkNatureSepclCond">
+                                <nz-form-label>{{'contract.Details.SpecialConditionToTheNatureOfServices' |
+                                    translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkNatureSepclCond">
+                                <span *ngIf="this.ContractForm.get('showNatureSepclCond')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showNatureSepclCond')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showNatureSepclCond"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType=='T' && checkNatureSepclCond && this.ContractForm.get('showNatureSepclCond')?.value"
+                            nzHasFeedback [nzErrorTip]="NatureSepclCond">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="NatureSepclCond" type="text"
+                                placeholder="{{'contract.Details.EnterSpecialConditionToTheNatureOfServices' | translate }}"
+                                cols="100" rows="2"></textarea>
+                        </nz-form-control>
+
+
+                        <div *ngIf="contractType=='T' || contractType=='C'" class="d-flex mt-4"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkWorkSuppServ">
+                                <nz-form-label>{{'contract.Details.SupportServicesNecessaryToCarryOutTheWork'
+                                    | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkWorkSuppServ">
+                                <span *ngIf="this.ContractForm.get('showWorkSuppServ')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showWorkSuppServ')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showWorkSuppServ"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="(contractType=='T' || contractType=='C') && checkWorkSuppServ && this.ContractForm.get('showWorkSuppServ')?.value"
+                            nzHasFeedback [nzErrorTip]="WorkSuppServ">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="WorkSuppServ" type="text"
+                                placeholder="{{'contract.Details.EnterSupportServicesNecessaryToCarryOutTheWork' | translate }}"
+                                cols="100" rows="2"></textarea>
+                        </nz-form-control>
+
+                        <div *ngIf="contractType=='T'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkServProgRep">
+                                <nz-form-label>{{'contract.Details.ServiceProgressReports' |
+                                    translate }}
+                                </nz-form-label>
+                                <!-- <nz-form-label
+                                            *ngIf="contractType == 'G'">{{'contract.Details.ServiceProgressReportsGeneral'
+                                            | translate }}
+                                        </nz-form-label> -->
+                            </div>
+                            <h3 *ngIf="checkServProgRep">
+                                <span *ngIf="this.ContractForm.get('showServProgRep')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showServProgRep')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showServProgRep"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType=='T' && checkServProgRep && this.ContractForm.get('showServProgRep')?.value"
+                            nzHasFeedback [nzErrorTip]="ServProgRep">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ServProgRep" type="text"
+                                placeholder="{{'contract.Details.EnterServiceProgressReports' | translate }}" cols="100"
+                                rows="2"></textarea>
+                        </nz-form-control>
+
+                        <div *ngIf="contractType=='T'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkProfRules">
+                                <nz-form-label>{{'contract.Details.RulesAndPrinciplesOfTheProfession' |
+                                    translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkProfRules">
+                                <span *ngIf="this.ContractForm.get('showProfRules')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showProfRules')?.value" style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showProfRules"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="contractType=='T' && checkProfRules && this.ContractForm.get('showProfRules')?.value"
+                            nzHasFeedback [nzErrorTip]="ProfRules">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ProfRules" type="text"
+                                placeholder="{{'contract.Details.EnterRulesAndPrinciplesOfTheProfession' | translate }}"
+                                cols="100" rows="2"></textarea>
+                        </nz-form-control>
+
+                        <div *ngIf="contractType=='C' || contractType=='T'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkModernSkills">
+                                <nz-form-label>{{'contract.Details.UsingModernSkillsAndMethods' | translate
+                                    }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkModernSkills">
+                                <span *ngIf="this.ContractForm.get('showModernSkills')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showModernSkills')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showModernSkills"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="(contractType=='C' || contractType=='T') && checkModernSkills && this.ContractForm.get('showModernSkills')?.value"
+                            nzHasFeedback [nzErrorTip]="ModernSkills">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="ModernSkills" type="text"
+                                placeholder="{{'contract.Details.EnterUsingModernSkillsAndMethods' | translate }}"
+                                cols="100" rows="2"></textarea>
+                        </nz-form-control>
+
+                        <div *ngIf="contractType=='G'" class="d-flex mt-4" style="justify-content: space-between;">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkWarrantPeriod">
+                                <nz-form-label>{{'contract.Details.WarrantPeriod' | translate }}</nz-form-label>
+                            </div>
+                            <h3 *ngIf="checkWarrantPeriod">
+                                <span *ngIf="this.ContractForm.get('showWarrantPeriod')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.dynamic' | translate }} </span>
+                                <span *ngIf="!this.ContractForm.get('showWarrantPeriod')?.value"
+                                    style="padding-top: 2%;">{{
+                                    'contract.common.static' | translate }} </span>
+                                <nz-switch formControlName="showWarrantPeriod"></nz-switch>
+                            </h3>
+                        </div>
+                        <nz-form-control
+                            *ngIf="(contractType=='G' || contractType == 'F') && checkWarrantPeriod && this.ContractForm.get('showWarrantPeriod')?.value"
+                            nzHasFeedback [nzErrorTip]="WarrantPeriod">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="WarrantPeriod" type="text"
+                                placeholder="{{'contract.Details.EnterWarrantPeriod' | translate }}" cols="100"
+                                rows="2"></textarea>
+                        </nz-form-control>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+        <nz-collapse-panel nzHeader="{{ appendix_head | translate }}">
+            <!-- <div class="row w-100">
+                        <div class="mt-2">
+                            <div style="display: flex; margin: -1%; margin-bottom: 1%;">
+                                <input class="mx-2" style="accent-color: green;" type="checkbox" disabled
+                                    [checked]="checkAppendix">
+                                <h3 class="mt-2">{{ 'contract.Details.Appendix' | translate }}</h3>
+                            </div>
+                            <nz-form-label *ngIf="checkAppendix" >{{ 'contract.Details.Appendix' | translate
+                                }}
+                            </nz-form-label> -->
+            <nz-form-control nzHasFeedback>
+                <textarea
+                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                    formControlName="Accessories" placeholder="Enter Appendix" cols="100" rows="2"></textarea>
+
+            </nz-form-control>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzActive="true" nzHeader="{{ 'contract.Comment.Comment' | translate }}">
+            <div class="row w-100 my-3">
+                <div class="mt-2">
+                    <!-- <nz-form-label class="text-bold" >{{ 'contract.Comment.Comment' | translate }} :
+                            </nz-form-label> -->
+                    <nz-form-control nzHasFeedback [nzErrorTip]="Comment">
+                        <div class="d-flex">
+                            <textarea
+                                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' nz-input
+                                formControlName="Comment" cols="30" rows="2"
+                                placeholder="{{ 'contract.Comment.Comment_ph' | translate }} :"></textarea>
+                            <button class="editBtn">
+                                <span class="text-success text-24 mx-2 pointer-click" nz-icon nzType="comment"
+                                    nzTheme="outline" nz-tooltip
+                                    nzTooltipTitle="{{ 'contract.Comment.Comment_tt' | translate }} :"
+                                    (click)="showHideComments()"></span>
+                            </button>
+                        </div>
+
+                        <ng-template #Comment let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{ 'contract.Comment.Comment_req' |
+                                translate }} :
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <!-- <div class="row w-100" *ngIf="contractDetails">
+                <div class="mt-2">
+                    <nz-form-label>{{ 'contract.Details.Attachments' | translate }}: </nz-form-label>
+                    <div [formGroup]="getAttachFormGroupView(createFGParams)">
+                        <file-uploader class="gridInLineFormAttachmentPadding" [paramsPToC]="paramsForDocHandle"
+                            (onUploadFile)="onFileUpload($event, '')"></file-uploader>
+                    </div>
+                </div>
+            </div> -->
+
+    <!-- <div class="row w-100 my-3" *ngIf="contractDetails">
+        <div class="mt-2">
+            <h4>{{ 'contract.Details.Attachments' | translate }} :</h4>
+            <div class="row mx-2">
+                <div class="col-12">
+                    <p style="position: relative; font-size: 0.9rem"><b>{{ "RFP.Note" | translate }}</b></p>
+                    <ul>
+                        <li>
+                            <span style="position: relative; font-size: 0.9rem">{{
+                                "RFP.Max40" | translate
+                                }}</span>
+                        </li>
+                    </ul>
+
+                    <br />
+                </div>
+            </div>
+            <div [formGroup]="getAttachFormGroup(createFGParams)">
+                <file-uploader class="gridInLineFormAttachmentPadding" [paramsPToC]="paramsForDocHandle"
+                    [username]="user_name" (onUploadFile)="onFileUpload($event, '')"></file-uploader>
+            </div>
+        </div>
+    </div> -->
+
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Attachments' | translate }}">
+            <div class="row mt-4">
+                <div class="col-12">
+                <!-- <nz-form-label><b style="font-size: 20px;">{{ "RFP.Attachments" | translate }}</b></nz-form-label> -->
+                <span style="position: relative; font-size: 0.9rem"
+                        ><b>{{ "RFP.Note" | translate }}</b></span>
+                <ul class="mt-2">
+                    <li>
+                    <span style="position: relative; font-size: 0.9rem">{{
+                        "RFP.Maxium" | translate
+                    }}</span>
+                    </li>
+                </ul>
+                <br />
+        
+                <app-filenet class="mt-3" (uploadSuccess)="fileSapUpload($event)" [maxLimit]="42960"
+                    (deleteFile)="fileSapDelete($event)" [fileList]="fileNetList"></app-filenet>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+
+    <div class="footer mb-4 d-flex" style="justify-content: space-between;">
+        <div>
+            <button class="btn-lg" (click)="downloadPDF('view')" nz-button nzType="default" style="border: 1px solid #005c99; color: #005c99;">
+                <!-- <span class="mx-1" nz-icon nzType="search" nzTheme="outline"></span> -->
+                {{'View PDF' | translate}}
+            </button>
+            <button class="btn-lg mx-4" (click)="downloadPDF('download')" nz-button nzType="default" style="border: 1px solid #005c99; color: #005c99;">
+                <!-- <span class="mx-1" nz-icon nzType="download" nzTheme="outline"></span> -->
+                {{'Download PDF' | translate}}
+            </button>
+        </div>
+        <div style="align-items: end;">
+            <!-- RMI Submit scenario buttons -->
+            <button *ngIf="this.status.RFPManagerRMI" class="btn-lg" nz-button nzType="primary"
+                [disabled]="!ContractForm?.valid" appSubmitConfirmation confirmModalTitle="submitConfirmation"confirmModalBody="COM.Do you want to Submit?"
+                (confirmedAction)="submit()" igxRipple>
+                {{'contract.buttons.Submit' | translate}}
+            </button>
+
+            <!-- Approval Scenario buttons -->
+            <button *ngIf="checkRFP && status.contractHeadApproval" class="btn-lg" nz-button nzType="primary"
+                [disabled]="!ContractForm?.valid"appSubmitConfirmation confirmModalTitle="assignConfirmation" confirmModalBody="COM.Do you want to Assign?"
+                (confirmedAction)="assign()" igxRipple>
+                {{ 'contract.buttons.AssignToRFP' | translate }}
+            </button>
+            <button
+                *ngIf="status.RFPManagerApproval || status.contractHeadApproval || status.contractManagerApproval || status.SSDirectorApproval"
+                class="btn-lg mx-4" nz-button nzType="primary" [disabled]="!ContractForm?.valid" appSubmitConfirmation confirmModalTitle="COM.confirmationApproval"
+                confirmModalBody="COM.Do you want to Approve?"
+                (confirmedAction)="getOTP('APP')" igxRipple>
+                {{'contract.buttons.Approve' | translate}}
+            </button>
+            <button
+                *ngIf="status.RFPManagerApproval || status.contractHeadApproval || status.contractManagerApproval || status.SSDirectorApproval"
+                class="btn-lg" nz-button nzDanger nzType="default" [disabled]="!ContractForm?.valid" appSubmitConfirmation confirmModalTitle="returnConfirmation" confirmModalBody="COM.Do you want to Return?"
+                (confirmedAction)="reject()" igxRipple>
+                {{'contract.buttons.Reject' | translate}}
+            </button>
+        </div>
+        
+    </div>
+
+    
+    <!-- </div> -->
+</nz-form>
+<!-- </div> -->
+
+<!-- * Comments model Starts -->
+<app-comments [showComments]="showComments" [award_number]="award_number">
+</app-comments>
+<!-- * Comments model Ends -->
+
+<!-- OTP Implementation -->
+<app-approval-otp (otpValue)="SubmitOTP($event)" [isOTPVisible]="getOTPModel" (updateOTPVisible)="updateOTP($event)">
+</app-approval-otp>
+<app-approval-otp (otpValue)="SubmitOTPReject($event)" [isOTPVisible]="getOTPModelReject"
+    (updateOTPVisible)="updateOTP($event)">
+</app-approval-otp>

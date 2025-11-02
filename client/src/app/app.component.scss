@@ -1,0 +1,216 @@
+@import '../_variables.scss';
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+  top: 0 !important;
+}
+
+nz-content {
+  overflow-y: auto;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  padding: 40px;
+  margin-top: 1.2rem;
+}
+
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+
+  border-right: none;
+}
+
+.ant-menu {
+  background-color: #f7f8fa !important;
+}
+
+.ant-menu-submenu-open {
+  background-color: $primary !important;
+  color: white !important;
+}
+
+::ng-deep.ant-menu-light .ant-menu-submenu-open .ant-menu-submenu-title:hover {
+  color: white;
+}
+
+
+
+.ant-layout {
+
+  height: 100vh;
+  background: #f7f8fa
+}
+
+.ant-layout-header {
+  height: 80px;
+  border-bottom: 4px solid #f7f8fa;
+}
+
+nz-sider {
+  position: fixed !important;
+  width: 250px !important;
+  max-width: 250px !important;
+  overflow-y: auto;
+  top: 0 !important;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
+}
+
+.menu-sidebar {
+  position: relative;
+  background: white;
+  background-image: url('../assets/logo/menu-background.svg');
+  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  border-inline-end: 4px solid #f7f8fa;
+  overflow-x: hidden;
+}
+
+.menu {
+  color: #7d947d;
+
+  // .menu-items {
+  // border-top: 1px solid $primary;
+  // }
+}
+
+.copy-right-container {
+  position: absolute;
+  bottom: 1rem;
+}
+
+.logo-container {
+  width: 250px;
+  height: 80px;
+  border-inline-end: 4px solid #f7f8fa;
+  border-bottom: 4px solid #f7f8fa;
+}
+
+.ant-right-layout {
+  margin-left: 250px
+}
+
+.ant-left-layout {
+  margin-right: 250px
+}
+
+.ant-top-layout {
+  margin-top: 80px
+}
+
+nz-footer {
+  text-align: center;
+}
+
+h6 {
+  font-size: 2rem !important;
+}
+
+[dir="ltr"] .ant-layout-footer {
+
+  background: none;
+  text-align: left;
+}
+
+[dir="rtl"] .ant-layout-footer {
+
+  background: none;
+  text-align: right;
+}
+
+::ng-deep .ant-table-pagination>* {
+  margin-inline: 5px !important;
+}
+
+
+::ng-deep [dir="rtl"] .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+.ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  padding-right: 0px !important;
+}
+
+::ng-deep [dir="rtl"] .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow {
+  margin-inline-start: 75% !important;
+}
+
+::ng-deep .ant-menu-submenu-arrow {
+  margin-inline-start: 75% !important;
+}
+
+// user logged in icon re-size
+.ant-avatar.ant-avatar-icon {
+  font-size: 15px !important;
+}
+
+.ant-avatar {
+  height: 25px !important;
+  width: 25px !important;
+  line-height: 25px !important;
+}
+
+::ng-deep .ant-menu-submenu .ant-menu-submenu-arrow {
+  color: $primary !important;
+}
+
+::ng-deep .ant-menu-submenu-open .ant-menu-submenu-arrow {
+  color: white !important;
+}
+
+::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
+::ng-deep .ant-menu-item:active {
+  background-color: #f1f1f1;
+}
+
+::ng-deep .ant-modal.change-role {
+  .ant-modal-header {
+    border-bottom: 0;
+    .title {
+      font-family: Roboto;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 35px;
+      text-align: left;
+      color: #000000;
+    }
+    .anticon-close {
+      height: 16.41px;
+      svg {
+        width: 16.41px;
+        height: 16.4px;
+        color: #E1E1E1;
+      }
+    }
+  }
+  .ant-modal-content {
+    border-top: 5px solid $primary;
+    .ant-modal-body {
+      padding-top: 0;
+    }
+  }
+}
+
+::ng-deep .ant-select-multiple .ant-select-selector {
+  height: 4rem;
+  align-items: baseline;
+}

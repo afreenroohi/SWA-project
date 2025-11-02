@@ -1,0 +1,120 @@
+<nz-table #editRowTable nzBordered [nzData]="splittedBudgetDetails">
+  <thead>
+    <tr>
+      <ng-container *ngFor="let columns of budgetPlannerColumns; let i = index">
+        <th>{{ budgetPlannerColumns[i] | translate }}</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let budget of editRowTable.data" class="editable-row">
+      <td>{{ budget.year }}</td>
+
+      <td>
+        <ng-container
+          *ngIf="
+            isSameCommitmentAndInternalOrder | async;
+            else showCommitmentIdfields
+          "
+        >
+          <td>{{ budget.commitmentId || '-' }}</td>
+        </ng-container>
+        <ng-template #showCommitmentIdfields>
+          <div
+            class="editable-cell"
+            [hidden]="editId === budget.year"
+            (click)="startEdit(budget.year, budget.commitmentId)"
+          >
+            {{ budget.commitmentId || '-'}}
+          </div>
+          <div [hidden]="editId !== budget.year" (blur)="stopEdit()">
+            <nz-select
+              nzShowSearch
+              style="width: 100%"
+              [(ngModel)]="budget.commitmentId"
+              (ngModelChange)="updateCommitment(budget.year, $event)"
+              required
+            >
+              <nz-option
+                *ngFor="let commitItem of commitmentItems"
+                [nzValue]="commitItem.Commitmentitem"
+                [nzLabel]="
+                  commitItem.Commitmentitem + '-' + commitItem.Description
+                "
+              >
+              </nz-option>
+            </nz-select>
+          </div>
+        </ng-template>
+      </td>
+      <td>
+        <ng-container
+          *ngIf="
+            isSameCommitmentAndInternalOrder | async;
+            else showinternalOrderfields
+          "
+        >
+          <td>{{ budget.internalOrder || '-' }}</td>
+        </ng-container>
+        <ng-template #showinternalOrderfields>
+          <div
+            class="editable-cell"
+            [hidden]="editId === budget.year"
+            (click)="startEdit(budget.year, budget.commitmentId)"
+          >
+            {{ budget.internalOrder || '-' }}
+          </div>
+          <div [hidden]="editId !== budget.year" (blur)="stopEdit()">
+            <nz-select
+              nzShowSearch
+              style="width: 100%"
+              
+              [(ngModel)]="budget.internalOrder"
+              (ngModelChange)="updateInternalOrder(budget.year, $event)"
+            >
+              <nz-option
+                *ngFor="let internalOrder of internalOrderItems"
+                [nzValue]="internalOrder.InternalOrder"
+                [nzLabel]="internalOrder.InternalOrder"
+              >
+              </nz-option>
+            </nz-select>
+          </div>
+        </ng-template>
+      </td>
+
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === budget.year"
+          (click)="startEdit(budget.year, budget.commitmentId)"
+        >
+          {{ budget.budget | number : "1.2-2" }}
+        </div>
+        <input
+          [hidden]="editId !== budget.year"
+          type="number"
+          nz-input
+          [(ngModel)]="budget.budget"
+          (change)="onSplittedBudgetUpdate()"
+          (blur)="stopEdit()"
+          (keydown)="onSplittedBudgetEditKeyDown($event)"
+
+        />
+      </td>
+
+      <!-- <td>
+          <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(budget.year)">Delete</a>
+        </td> -->
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3">Total</td>
+      <td class="total-budget">{{ getTotalBudget() | number : "1.2-2" }}</td>
+    </tr>
+  </tfoot>
+</nz-table>
+<p class="error"  *ngIf="isBudgetAllocationExcceds">
+    {{errorMessage}}
+</p>

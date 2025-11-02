@@ -1,0 +1,180 @@
+<form [formGroup]="budgetPlannerForm">
+  <!--*Budget planner step 1-->
+  <div class="budget-planner-step-1">
+    <div class="total-budget-kpi">
+      <app-kpi-card
+        [kpiHeading]="budgetDetails.kpiHeading"
+        [kpiDescription]="budgetDetails.kpiDescription"
+      ></app-kpi-card>
+      <app-kpi-card
+        [kpiHeading]="leftOverBudgetdetails.kpiHeading"
+        [kpiDescription]="leftOverBudgetdetails.kpiDescription"
+      ></app-kpi-card>
+    </div>
+    <div class="budget-split-option">
+      <div class="total-budget-split">
+        <nz-form-label nzRequired>{{
+          "RFP.Budget Split" | translate
+        }}</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            formControlName="totalNoOfYearsForBudget"
+          />
+        </nz-form-control>
+        <div
+          *ngIf="
+            budgetPlannerForm.controls['totalNoOfYearsForBudget'].touched &&
+            budgetPlannerForm.controls['totalNoOfYearsForBudget'].invalid
+          "
+        >
+          <small
+            class="error"
+            *ngIf="
+              budgetPlannerForm.controls['totalNoOfYearsForBudget'].hasError(
+                'required'
+              )
+            "
+          >
+            This field is required.
+          </small>
+
+          <small
+            class="error"
+            *ngIf="
+              budgetPlannerForm.controls['totalNoOfYearsForBudget'].hasError(
+                'min'
+              )
+            "
+          >
+            Value must be at least 1.
+          </small>
+          <small
+            class="error"
+            *ngIf="
+              budgetPlannerForm.controls['totalNoOfYearsForBudget'].hasError(
+                'max'
+              )
+            "
+          >
+            Value must be less than 10.
+          </small>
+        </div>
+      </div>
+      <div class="commitment-item-internal-order">
+        <nz-form-label>{{
+          "RFP.Same Commitment and Internal Order" | translate
+        }}</nz-form-label>
+        <nz-form-control>
+          <nz-switch
+            formControlName="isSameCommitmentAndInternalOrder"
+          ></nz-switch>
+        </nz-form-control>
+      </div>
+      <button
+      nz-button
+      nzType="primary"
+      nzSize="default"
+      (click)="onGeneratePlan()"
+    >
+      {{ "RFP.Generate Plan" | translate }}
+    </button>
+    </div>
+    <ng-container *ngIf="isSameCommitmentAndInternalOrder$ | async">
+      <div class="commitment-item-internal-order-selection">
+        <div class="commitment-item">
+          <nz-form-label nzRequired>{{
+            "RFP.Commitment Item" | translate
+          }}</nz-form-label>
+          <nz-select
+            nzShowSearch
+            style="width: 100%"
+            nzAllowClear
+            formControlName="commitmentItem"
+            required
+          >
+            <nz-option
+              *ngFor="let commitItem of commitmentItems"
+              [nzValue]="commitItem.Commitmentitem"
+              [nzLabel]="
+                commitItem.Commitmentitem + '-' + commitItem.Description
+              "
+            >
+            </nz-option>
+          </nz-select>
+          <div
+            *ngIf="
+              budgetPlannerForm.controls['commitmentItem'].touched &&
+              budgetPlannerForm.controls['commitmentItem'].invalid
+            "
+          >
+            <small
+              class="error"
+              *ngIf="
+                budgetPlannerForm.controls['commitmentItem'].hasError(
+                  'required'
+                )
+              "
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+        <div class="internal-order">
+          <nz-form-label>{{
+            "RFP.Internal Order" | translate
+          }}</nz-form-label>
+          <nz-select
+            nzShowSearch
+            style="width: 100%"
+            nzAllowClear
+            formControlName="internalOrder"
+          >
+            <nz-option
+              *ngFor="let internalOrder of internalOrderItems"
+              [nzValue]="internalOrder.InternalOrder"
+              [nzLabel]="internalOrder.InternalOrder"
+            >
+            </nz-option>
+          </nz-select>
+          <!-- <div
+            *ngIf="
+              budgetPlannerForm.controls['internalOrder'].touched &&
+              budgetPlannerForm.controls['internalOrder'].invalid
+            "
+          >
+            <small
+              class="error"
+              *ngIf="
+                budgetPlannerForm.controls['internalOrder'].hasError('required')
+              "
+            >
+              This field is required.
+            </small>
+          </div> -->
+        </div>
+      
+      </div>
+    </ng-container>
+  </div>
+</form>
+<div
+  class="plan-budget-alert"
+  *ngIf="this.splittedBudgetDetails.length === 0; else budgetDetailsTemplate"
+>
+  <img src="assets/illustrations/Analysis.png" alt="Analysis inp" />
+  <h3>{{ "RFP.Budget planning description" | translate }}</h3>
+</div>
+<ng-template #budgetDetailsTemplate>
+  <div class="budget-details">
+    <app-budget-planner-table
+      [splittedBudgetDetails]="this.splittedBudgetDetails"
+      [commitmentItems]="commitmentItems"
+      [isSameCommitmentAndInternalOrder]="isSameCommitmentAndInternalOrder$"
+      [totalBudget]="budgetDetails.kpiHeading"
+      (consumedBudget)="getConsumedBudget($event)"
+      (updatedsplittedBudgetDetails)="getUpdatedsplittedBudgetDetails($event)"
+    ></app-budget-planner-table>
+  </div>
+</ng-template>

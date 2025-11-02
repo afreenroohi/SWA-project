@@ -1,0 +1,285 @@
+<p class="create_sla_head">{{ "sla.Select SLA list" | translate }}</p>
+<div class="col-12 col-md-8 text-center">
+  <nz-select style="width: 100%" [(ngModel)]="selectedValue"
+    [nzPlaceHolder]="this.translate.instant('sla.Select SLA list')" nzAllowClear>
+    <nz-option *ngFor="let o of FilterList" [nzValue]="o.key" [nzLabel]="cs.userLanguage === 'en' ? o.type : o.typeAr">
+    </nz-option>
+  </nz-select>
+</div>
+
+<div class="col-12 col-md-8 text-center" style="margin-top: 1%">
+  <button nz-button nzType="primary" style="margin-top: 1.4rem" nzSize="default" (click)="search()"
+    [class.f-right]="cs.userLanguage == 'en'" [class.f-left]="cs.userLanguage == 'ar'">
+    {{ "RFP.search" | translate }}
+  </button>
+</div>
+<br />
+<nz-table #nzTable [nzData]="slaData" nzBordered *ngIf="slaData.length !== 0 ">
+  <thead>
+    <tr>
+      <th colspan="3">{{ "sla.WfDeptDesc" | translate}}</th>
+      <th colspan="3">{{ "sla.CurrLevel" | translate }}</th>
+      <th colspan="3">{{ "sla.Description" | translate }}</th>
+      <th colspan="3">{{ "sla.SlaDays" | translate }}</th>
+      <th colspan="3">{{ 'COM.Action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody style="text-align: center">
+    <tr *ngFor="let sla of nzTable.data; let i = index">
+      <ng-container>
+        <td colspan="3">{{cs.userLanguage === 'en'
+          ? sla.WfDeptDesc
+          : sla.WfDeptDesc_Ar}} </td>
+        <td colspan="3"> {{sla.CurrLevel}} </td>
+        <td colspan="3"> {{cs.userLanguage === 'en'
+          ? sla.Description
+          : sla.Description_Ar}} </td>
+        <td colspan="3" *ngIf="selectedRecord != i"> {{sla.Sla}} </td>
+        <td colspan="3" *ngIf="selectedRecord == i">
+          <nz-input-number nz-input [ngModel]="sla.Sla" (ngModelChange)="slaChanged($event)" style="width: 100%">
+          </nz-input-number>
+        </td>
+        <td>
+          <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+            nzSize="default" nz-tooltip (click)="editSLA(i, sla)" *ngIf="selectedRecord !== i"
+            nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <app-icon [icon]="IconList.edit"></app-icon>
+            <!-- {{ 'RFP.Edit' | translate }} -->
+          </button>
+
+
+          <button nz-button nzType="primary" [disabled]="newValue == ''" nzSize="default" *ngIf="selectedRecord == i"
+            (click)="changeSLA(sla)" style="margin: 0 10px 0 10px;">
+            <span>{{ 'COM.Save' | translate}}</span>
+          </button>
+
+          <button nz-button nzType="default" nzSize="default" *ngIf="selectedRecord == i" (click)="cancelSLA()">
+            <span>{{ 'COM.Cancel' | translate}}</span>
+          </button>
+
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-table #nzCommitee [nzData]="committeeData" nzBordered *ngIf="committeeData.length !== 0">
+  <thead>
+    <tr>
+      <th colspan="3">{{ "sla.CommitteeId" | translate }}</th>
+      <th colspan="3">{{ "sla.CommitteeRole" | translate }}</th>
+      <th colspan="3">{{ "sla.CommitteeApproverActionMenu" | translate}}</th>
+      <th colspan="3">{{ "sla.CommitteeLgdinusrAction" | translate }}</th>
+      <th colspan="3">{{ 'sla.Sla' | translate}}</th>
+      <th colspan="3">{{ 'sla.SlaUnit' | translate}}</th>
+      <th colspan="3">{{ 'COM.Action' | translate}}</th>
+
+    </tr>
+  </thead>
+  <tbody style="text-align: center">
+    <tr *ngFor="let committee of nzCommitee.data; let i = index">
+      <ng-container>
+        <td colspan="3"> {{cs.userLanguage === 'en'? committee.CommitteeId_En: committee.CommitteeId_AR}} </td>
+        <td colspan="3"> {{cs.userLanguage === 'en'? committee.CommitteeRole_En: committee.CommitteeRole_Ar}} </td>
+        <td colspan="3"> {{cs.userLanguage === 'en'? committee.CommitteeApproverActionMenu_En:
+          committee.CommitteeApproverActionMenu_Ar}} </td>
+        <td colspan="3"> {{cs.userLanguage === 'en'? committee.CommitteeLgdinusrAction_En:
+          committee.CommitteeLgdinusrAction_Ar}} </td>
+        <td colspan="3" *ngIf="selectedRecord != i"> {{committee.Sla}} </td>
+        <td colspan="3"> {{cs.userLanguage === 'en'? committee.SlaUnit_En: committee.SlaUnit_Ar}} </td>
+        <td colspan="3" *ngIf="selectedRecord == i">
+          <nz-input-number nz-input [ngModel]="committee.Sla" (ngModelChange)="slaChanged($event)" style="width: 100%">
+          </nz-input-number>
+        </td>
+        <td>
+          <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+            nzSize="default" nz-tooltip (click)="editSLA(i, committee)" *ngIf="selectedRecord !== i"
+            nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <app-icon [icon]="IconList.edit"></app-icon>
+            <!-- {{ 'RFP.Edit' | translate }} -->
+          </button>
+
+
+          <button nz-button nzType="primary" [disabled]="newValue == ''" nzSize="default" *ngIf="selectedRecord == i"
+            (click)="changecommitteeSLA(committee)" style="margin: 0 10px 0 10px;">
+            <span>{{ 'COM.Save' | translate}}</span>
+          </button>
+
+          <button nz-button nzType="default" nzSize="default" *ngIf="selectedRecord == i" (click)="cancelSLA()">
+            <span>{{ 'COM.Cancel' | translate}}</span>
+          </button>
+
+        </td>
+
+      </ng-container>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-table #nzContract [nzData]="contractData" nzBordered *ngIf="contractData.length !== 0">
+  <thead>
+    <tr>
+      <th colspan="3">{{ "sla.ContractLgdinUsrAction" | translate}}</th>
+      <th colspan="3">{{ "sla.ContractRole" | translate }}</th>
+      <th colspan="3">{{ "sla.Description" | translate }}</th>
+      <th colspan="3">{{ 'sla.SlaUnit' | translate}}</th>
+      <th colspan="3">{{ "sla.Sla" | translate }}</th>
+      <th colspan="3">{{ 'COM.Action' | translate}}</th>
+    </tr>
+  </thead>
+  <tbody style="text-align: center">
+    <tr *ngFor="let contract of nzContract.data; let i = index">
+      <ng-container>
+        <td colspan="3"> {{contract.ContractLgdinUsrAction}} </td>
+        <td colspan="3"> {{contract.ContractRole}} </td>
+        <td colspan="3"> {{contract.Description}} </td>
+        <td colspan="3"> {{contract.SlaUnit}} </td>
+        <td colspan="3" *ngIf="selectedRecord != i"> {{contract.Sla}} </td>
+        <td colspan="3" *ngIf="selectedRecord == i">
+          <nz-input-number nz-input [ngModel]="contract.Sla" (ngModelChange)="slaChanged($event)" style="width: 100%">
+          </nz-input-number>
+        </td>
+        <td>
+          <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+            nzSize="default" nz-tooltip (click)="editSLA(i, contract)" *ngIf="selectedRecord !== i"
+            nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <app-icon [icon]="IconList.edit"></app-icon>
+            <!-- {{ 'RFP.Edit' | translate }} -->
+          </button>
+
+
+          <button nz-button nzType="primary" [disabled]="newValue == ''" nzSize="default" *ngIf="selectedRecord == i"
+            (click)="changecontractSLA(contract)" style="margin: 0 10px 0 10px;">
+            <span>{{ 'COM.Save' | translate}}</span>
+          </button>
+
+          <button nz-button nzType="default" nzSize="default" *ngIf="selectedRecord == i" (click)="cancelSLA()">
+            <span>{{ 'COM.Cancel' | translate}}</span>
+          </button>
+
+        </td>
+
+      </ng-container>
+    </tr>
+  </tbody>
+</nz-table>
+
+<ng-container *ngIf="cocSlaData.length !== 0">
+
+  <!-- * Add COC SLA Button -->
+  <div nz-row nzJustify="end" class="mb-2">
+    <div nz-col>
+      <button nz-button nzType="primary" nzSize="default" (click)="openCOCModel('create')">
+        {{ "RFP.Add" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- * List table -->
+  <nz-table #nzCoc [nzData]="cocSlaData" nzBordered *ngIf="cocSlaData.length !== 0">
+    <thead>
+      <tr>
+        <th colspan="3">{{ "COC.Role" | translate }}</th>
+        <th colspan="3">{{ "sla.Description" | translate }}</th>
+        <th colspan="3">{{ 'sla.SlaUnit' | translate}}</th>
+        <th colspan="3">{{ "sla.Sla" | translate }}</th>
+        <th colspan="3">{{ 'COM.Action' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center">
+      <tr *ngFor="let coc of nzCoc.data">
+        <ng-container>
+          <td colspan="3"> {{cs.userLanguage === 'en'? coc.RoleDescEn : coc.RoleDescAr}} </td>
+          <td colspan="3"> {{coc.Description}} </td>
+          <td colspan="3"> {{cs.userLanguage === 'en'? coc.SLAUnitDescEn : coc.SLAUnitDescAr}} </td>
+          <td colspan="3"> {{coc.Sla}} </td>
+          <td>
+            <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+              nzSize="default" nz-tooltip (click)="editCocData(coc)" nzTooltipTitle="{{ 'RFP.Edit' | translate }}"
+              nzTooltipPlacement="bottomLeft" [nzTooltipArrowPointAtCenter]="true">
+              <app-icon [icon]="IconList.edit"></app-icon>
+            </button>
+
+          </td>
+
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <nz-modal [(nzVisible)]="isAddCOCModelVisible" [nzFooter]=null [nzAutofocus]=null>
+    <ng-container *nzModalContent>
+
+      <ng-container *ngIf="adminForm">
+        <h3>{{ 'sla.Sla' | translate }}</h3>
+
+        <form nz-form [formGroup]="adminForm" nzLayout="horizontal">
+
+          <div nz-row [nzGutter]="['16', '8']">
+
+            <!-- * Role Dropdown -->
+            <div nz-col nzSpan="24">
+              <nz-form-label nzRequired>{{ "COC.Role" | translate }}</nz-form-label>
+              <nz-select formControlName="ContractRole" [nzLoading]="cocLookupLoading">
+                <nz-option *ngFor="let role of roleLookUpDisplay" [nzValue]="role.CocRole"
+                  [nzLabel]="cs.userLanguage === 'en'? role.RoleDescEn : role.RoleDescAr"></nz-option>
+                <small *ngIf="adminForm.get('ContractRole')?.touched && adminForm.get('ContractRole')?.invalid">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </nz-select>
+            </div>
+
+            <!-- * SLA -->
+            <div nz-col nzSpan="12">
+              <nz-form-label nzRequired>{{ "sla.Sla" | translate }}</nz-form-label>
+              <nz-input-number formControlName="Sla" [nzMin]="1" [nzMax]="100" [nzStep]="1"
+                [nzPrecision]="0"></nz-input-number>
+            </div>
+
+            <!-- * Unit Dropdown -->
+            <div nz-col nzSpan="12">
+              <nz-form-label nzRequired>{{ "sla.SlaUnit" | translate }}</nz-form-label>
+              <nz-select formControlName="SlaUnit" [nzLoading]="cocLookupLoading">
+                <nz-option *ngFor="let unit of unitLookUp" [nzValue]="unit.SLAUnitID"
+                  [nzLabel]="cs.userLanguage === 'en'? unit.SLAUnitDescEn : unit.SLAUnitDescAr"></nz-option>
+                <small *ngIf="adminForm.get('ContractRole')?.touched && adminForm.get('ContractRole')?.invalid">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </nz-select>
+            </div>
+
+            <!-- * Description -->
+            <div nz-col nzSpan="24">
+              <nz-form-label nzRequired>{{ "COC.Description" | translate }}</nz-form-label>
+              <textarea rows="4" nz-input formControlName="Description"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+            </div>
+
+            <div nz-col nzSpan="24">
+              <div nz-row nzJustify="end" [nzGutter]="16">
+                <div nz-col>
+                  <button nz-button nzType="default" nzSize="default" (click)="openCOCModel()">
+                    {{ "RFP.Cancel" | translate }}
+                  </button>
+                </div>
+                <div nz-col>
+                  <button nz-button nzType="primary" nzSize="default" [disabled]="adminForm.invalid"
+                    (click)="submitAddCOC()">
+                    {{ "RFP.Submit" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </ng-container>
+
+    </ng-container>
+  </nz-modal>
+
+</ng-container>

@@ -1,0 +1,47 @@
+.search-box {
+  padding: 8px;
+}
+
+.search-box input {
+  width: 188px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.search-box button {
+  width: 90px;
+}
+
+.search-button {
+  margin-right: 8px;
+}
+
+.download-mom {
+  width: 120px;
+  height: 38px;
+  line-height: 38px;
+  border-radius: 2px 0px 0px 0px;
+
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+::ng-deep .ant-table-column-sorter-up {
+  color: black !important;
+}
+::ng-deep .ant-table-column-sorter-down {
+  color: black !important;
+}
+
+::ng-deep .ant-table-filter-trigger{
+  color: #4E4D4D;
+  font-size: 16px;
+}
+
+.header {
+  background-color: #F5F5F5;
+  font-weight: bold;
+  font-family: 'Roboto';
+}

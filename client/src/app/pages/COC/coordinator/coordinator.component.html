@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-12 mt-5"><nz-tabset>
+  <nz-tab [nzTitle]="titleTemplate" style="margin-left: 0% !important;">
+    <ng-template #titleTemplate>
+      <span nz-icon nzType="email"></span>
+      {{ 'COC.Coordinator' | translate }}
+    </ng-template>
+    <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+    <div class="container-fluid">
+      <div class="row" style="margin-top: 3rem">
+        <div class="col-12">
+          <nz-table
+            #nzTable
+            nzShowSizeChanger
+            [nzData]="listOfDisplayData"
+            [nzPageSize]="5"
+            [nzTotal]="1000"
+            [nzPageIndex]="1"
+            [nzFrontPagination]="true"
+            [nzPageSizeOptions]="[5,10,15,20,25]"
+            nzBordered="true"
+            nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
+            nzTableLayout="fixed"
+          >
+            <thead>
+              <tr>
+                <th *ngFor="let column of listOfColumn">
+                  {{ cs.userLanguage === "en" ? column.title : column.titleAr }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of nzTable.data; let i = index">
+                <!-- <td>{{ i + 1 }}</td> -->
+                <td>{{ data.CocNumber }}</td>
+                <td>{{ data.ContractNo }}</td>
+                <td>{{ data.ProjectName }}</td>
+                <td>{{ data.SlaDueDays }}</td>
+                <td>
+                  <button
+                    nz-button
+                    nzType="default"
+                    (click)="navigate(data.CocNumber,data.PoNumber,data.PoItemNo,data.ContractNo)"
+                    nzSize="default"
+                    nzShape="circle"
+                  >
+                    <span nz-icon nzType="edit"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="title1Template" style="margin-left: 0% !important;">
+      <ng-template #title1Template>
+        <span nz-icon nzType="email"></span>
+        {{ 'COC.SES' | translate }}
+      </ng-template>
+        <app-seslist></app-seslist>
+    </nz-tab>
+</nz-tabset>
+</div>
+</div>
+</div>
+
+

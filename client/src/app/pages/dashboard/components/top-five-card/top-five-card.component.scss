@@ -1,0 +1,64 @@
+:host {
+
+    .card {
+
+        border-width: thin;
+        border-radius: 1rem;
+        border-style: solid;
+        border-color: #bcc2be;
+        box-shadow: 1px 1px 6px gray;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .card-header {
+
+            .card-title {
+                font-weight: 700;
+                font-size: 1rem;
+                margin-bottom: 0;
+            }
+
+        }
+
+        .card-body {
+
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .item-heading {
+                font-weight: 600;
+                font-size: 0.75rem;
+                color: #575957;
+            }
+
+            .item {
+
+                display: flex;
+                gap: 1%;
+
+                .sno {
+                    width: 10%;
+                    margin-bottom: 0;
+                }
+
+                .item-title {
+                    width: 68%;
+                    margin-bottom: 0;
+                }
+
+                .item-value {
+                    width: 20%;
+                    text-align: right;
+                    margin-bottom: 0;
+                }
+
+            }
+
+        }
+
+    }
+
+}

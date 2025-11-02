@@ -1,0 +1,481 @@
+<!-- ----------------- For normal scenarios ----------------  -->
+<div *ngIf="docParamsValue.srcType === 'normal'" fxLayout="column" fxLayoutAlign="none" fxFlex="100%">
+  <!-- Drag and Drop Box -->
+  <ng-container *ngIf="displayMode === 'edit' ? true : false">
+    <ng-container *ngIf="
+        (!files && documentsList.value.length === 0 && !isFilesGetInProg) ||
+        this.docParams.value.multipleFiles === true
+      ">
+      <!-- [formGroup]="masterFormGroup" -->
+      <file-drag-drop fxLayout="row" fxLayoutAlign="start center" fxFlex="100%" [emitFromParent]="emitToDragDrop"
+        (emitToParent)="emitFromDragDrop($event)"></file-drag-drop>
+    </ng-container>
+  </ng-container>
+
+  <!-- Fetching documents -->
+  <div *ngIf="isFilesGetInProg" class="mt-2">
+    <div class="py-1 mb-1 ml-1 mr-1 viewModeBorder" fxLayout="row" fxLayoutAlign="center center" fxFlex="100%">
+      <div fxLayout="row" fxLayoutAlign="center center" class="docName loadingLabel">
+        <div>{{ "DOC.Fetchingdocuments" | translate }}</div>
+
+        <div class="docNzSpin">
+          <nz-spin nzSimple></nz-spin>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document List -->
+  <div *ngIf="(documentsList && documentsList.value) || isFilesUploading" fxLayout="column" fxLayoutAlign="none"
+    fxFlex="100%" class="mt-2">
+    <ng-container *ngIf="documentsList && documentsList.value">
+      <ng-container *ngFor="let doc of documentsList.value; let id = index">
+        <div class="py-1 mb-1 ml-1 mr-1 viewModeBorder" fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+          <div fxLayout="row" fxFlex="60%" fxLayoutAlign="start center" class="mx-2 d-flex">
+            <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+            <span class="px-2 mt-1 docName ellipsisText docDisplayName">
+              {{ this.removeIdFromDocName(doc) }}
+              <!-- doc.DocName -->
+            </span>
+            <!-- </div>
+          <div
+            fxLayout="row"
+            fxFlex="40%"
+            fxLayoutAlign="end center"
+            class="mx-2"
+          > -->
+          <span nz-icon nzType="download" nzTheme="outline" *ngIf="doc?.downloading == false || !doc?.downloading" (click)="downloadDocsCall(doc, id)"
+          class="docNzIconClickable"></span>
+
+          <span nz-icon nzType="loading" nzTheme="outline" *ngIf="doc?.downloading == true"
+          class="docNzIconClickable"></span>
+
+            <ng-container *ngIf="(displayMode === 'edit' ? true : false) && doc.UploadedBy==username">
+              <span nz-icon nzType="delete" nzTheme="outline" class="docNzIconClickable" (click)="setDocsToDelete(doc)"
+                nz-popconfirm nzPopconfirmTitle="{{
+                  'DOC.Areyousureyouwanttodelete' | translate
+                }}" nzOkText="{{ 'DOC.Yes' | translate }}" nzCancelText="{{ 'DOC.Cancel' | translate }}"
+                (nzOnConfirm)="removeUploadedDocument(docToDelete)"></span>
+              <!-- <span
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                
+                class="docNzIcon"
+                ><a
+                  nz-popconfirm
+                  nzPopconfirmTitle="{{
+                    'DOC.Areyousureyouwanttodelete' | translate
+                  }}"
+                  nzOkText="{{ 'DOC.Yes' | translate }}"
+                  nzCancelText="{{ 'DOC.Cancel' | translate }}"
+                  (nzOnConfirm)="removeUploadedDocument(docToDelete)"
+                ></a
+              ></span> -->
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="isFilesUploading">
+      <ng-container *ngFor="let file of files">
+        <div class="py-1 mb-1 ml-1 mr-1 viewModeBorder" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100%">
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+            <div fxLayout="row" fxFlex="95%" fxLayoutAlign="start center">
+              <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon p-2"></span>
+              <p class="docName ellipsisText m-0">
+                <span style="color: #505050">{{
+                  "DOC.Uploading" | translate
+                  }}</span>&nbsp;
+                <span style="color: #707070; font-style: italic">{{
+                  file.name
+                  }}</span>
+              </p>
+            </div>
+
+            <div>
+              <span style="padding-top: 0.5rem">
+                <nz-spin nzSimple style="padding-top: 0.5rem"></nz-spin>
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="
+        documentsList.value.length === 0 &&
+        displayMode != 'edit' &&
+        !isFilesGetInProg
+      ">
+      <!-- <div
+        class="px-1 py-2 ml-1 mr-1 viewModeBorder"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxFlex="100%"
+      > -->
+
+      <div class="row viewModeBorder" style="margin-inline: 0%;">
+        <div class="col-8">
+          <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+          <span class="docName ellipsisText docDisplayName">
+            {{ "DOC.Nodocuments" | translate }}
+          </span>
+        </div>
+
+        <div class="col-4">
+          <span nz-icon nzType="info-circle" nzTheme="outline" class="docNzIcon"></span>
+        </div>
+      </div>
+      <!-- <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start center">
+        
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="20%"
+          fxLayoutAlign="end center"
+          class="mx-2"
+        >
+          
+        </div> -->
+      <!-- </div> -->
+    </ng-container>
+  </div>
+
+  <!-- Document List For Save Later -->
+  <div *ngIf="
+      fileListSaveLater &&
+      fileListSaveLater.length > 0 &&
+      docParams.value.saveLater
+    " fxLayout="column" fxLayoutAlign="none" fxFlex="100%" class="mt-2">
+    <ng-container *ngFor="let file of fileListSaveLater">
+      <div class="py-1 mb-1 ml-1 mr-1 viewModeBorder" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100%">
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+          <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start center" class="mx-2">
+            <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+            <span class="px-2 mt-1 docName ellipsisText docDisplayName">
+              {{ file.name }}
+            </span>
+          </div>
+          <div fxLayout="row" fxFlex="20%" fxLayoutAlign="end center" class="mx-2">
+            <span nz-icon nzType="delete" nzTheme="outline" (click)="deleteFilesInSaveLater(file)"></span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="error" *ngIf="error">Only one file at time allow</div>
+</div>
+
+<!-- ----------------- For inline single document ----------------  -->
+<div *ngIf="docParamsValue.srcType === 'table' && !docParamsValue.multipleFiles" fxLayout="column" fxLayoutAlign="none"
+  fxFlex="100%">
+  <!-- Drag and Drop Box -->
+  <ng-container *ngIf="displayMode === 'edit' ? true : false">
+    <ng-container *ngIf="
+        (!files && documentsList.value.length === 0 && !isFilesGetInProg) ||
+        this.docParams.value.multipleFiles === true
+      ">
+      <file-drag-drop fxLayout="row" fxLayoutAlign="start center" fxFlex="100%" [emitFromParent]="emitToDragDrop"
+        (emitToParent)="emitFromDragDrop($event)"></file-drag-drop>
+    </ng-container>
+  </ng-container>
+
+  <!-- Fetching documents -->
+  <div *ngIf="isFilesGetInProg">
+    <div class="ml-1 mr-1 row keyValueLabel">
+      <p class="docName col-sm-10">{{ "DOC.Fetchingdocuments" | translate }}</p>
+    </div>
+  </div>
+
+  <!-- Document List -->
+  <div *ngIf="(documentsList && documentsList.value) || isFilesUploading" fxLayout="column" fxLayoutAlign="none"
+    fxFlex="100%">
+    <ng-container *ngFor="let doc of documentsList.value; let id = index">
+      <div class="py-1 ml-1 mr-1 viewModeBorder" fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+        <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start center">
+          <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+          <span class="docName ellipsisText docDisplayName">
+            {{ this.removeIdFromDocName(doc) }}
+            <!-- doc.DocName -->
+          </span>
+          <!-- </div>
+        <div
+          fxLayout="row"
+          fxFlex="20%"
+          fxLayoutAlign="end center"
+          class="mx-2"
+        > -->
+          <span nz-icon nzType="download" nzTheme="outline" *ngIf="doc?.downloading == false || !doc?.downloading" (click)="downloadDocsCall(doc, id)"
+            class="docNzIconClickable"></span>
+
+          <span nz-icon nzType="loading" nzTheme="outline" *ngIf="doc?.downloading == true"
+            class="docNzIconClickable"></span>
+
+          <ng-container *ngIf="displayMode === 'edit' ? true : false">
+            <span nz-icon nzType="delete" nzTheme="outline" class="docNzIconClickable" (click)="setDocsToDelete(doc)"
+              nz-popconfirm nzPopconfirmTitle="{{
+                'DOC.Areyousureyouwanttodelete' | translate
+              }}" nzOkText="{{ 'DOC.Yes' | translate }}" nzCancelText="{{ 'DOC.Cancel' | translate }}"
+              (nzOnConfirm)="removeUploadedDocument(docToDelete)"></span>
+            <!-- <a
+              nz-popconfirm
+              nzPopconfirmTitle="{{
+                'DOC.Areyousureyouwanttodelete' | translate
+              }}"
+              nzOkText="{{ 'DOC.Yes' | translate }}"
+              nzCancelText="{{ 'DOC.Cancel' | translate }}"
+              (nzOnConfirm)="removeUploadedDocument(docToDelete)"
+            >
+              <span
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                (click)="setDocsToDelete(doc)"
+                class="docNzIcon"
+              ></span
+            ></a> -->
+          </ng-container>
+          <!-- </button> -->
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="isFilesUploading">
+      <ng-container *ngFor="let file of files">
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+            <div fxLayout="row" fxFlex="95%" fxLayoutAlign="start center">
+              <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon p-2"></span>
+              <p class="docName ellipsisText m-0">
+                <span style="color: #505050">{{
+                  "DOC.Uploading" | translate
+                  }}</span>&nbsp;
+                <span style="color: #707070; font-style: italic">{{
+                  file.name
+                  }}</span>
+              </p>
+            </div>
+
+            <div>
+              <span style="padding-top: 0.5rem">
+                <nz-spin nzSimple style="padding-top: 0.5rem"></nz-spin>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="documentsList.value.length === 0 && displayMode != 'edit'">
+      <div class="row viewModeBorder py-1" style="margin-inline: 0%;">
+        <div class="col-8">
+          <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+          <span class="docName ellipsisText docDisplayName">
+            {{ "DOC.Nodocuments" | translate }}
+          </span>
+        </div>
+
+        <div class="col-4">
+          <span nz-icon nzType="info-circle" nzTheme="outline" class="docNzIcon"></span>
+        </div>
+      </div>
+      <!-- <div
+        class="py-1 ml-1 mr-1 viewModeBorder"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxFlex="100%"
+      >
+        <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start center">
+          <span
+            nz-icon
+            nzType="file-text"
+            nzTheme="outline"
+            class="docNzIcon"
+          ></span>
+          <p class="docName ellipsisText docDisplayName">
+            {{ "DOC.Nodocuments" | translate }}
+          </p>
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="20%"
+          fxLayoutAlign="end center"
+          class="mx-2"
+        >
+          <span
+            nz-icon
+            nzType="info-circle"
+            nzTheme="outline"
+            class="docNzIcon"
+          ></span>
+        </div>
+      </div> -->
+    </ng-container>
+  </div>
+
+  <div class="error" *ngIf="error">Only one file at time allow</div>
+</div>
+
+<!-- ----------------- For Inline Table Multiple Documents ----------------  -->
+<ng-container *ngIf="
+    docParamsValue.srcType === 'table' && docParamsValue.multipleFiles === true
+  ">
+  <div class="py-1 ml-1 mr-1 viewModeBorder" fxLayout="row" fxLayoutAlign="start center" fxFlex="100%"
+    style="height: 32px;">
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="80%">
+      <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+      <span class="docName ellipsisText docDisplayName">
+        {{ this.returnFileNameTableCase(this.documentsList.value) }}
+      </span>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end center" fxFlex="20%" class="mx-2">
+      <ng-container *ngIf="this.documentsList.value.length > 0 || displayMode === 'edit'">
+        <span nz-icon nzType="export" nzTheme="outline" (click)="docDialogOpen()" class="docNzIconClickable"></span>
+      </ng-container>
+
+      <ng-container *ngIf="displayMode != 'edit' && this.documentsList.value.length === 0">
+        <span nz-icon nzType="info-circle" nzTheme="outline" class="docNzIcon"></span>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Dialog for inline document -->
+
+<nz-modal [(nzVisible)]="docDialogVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+  (nzOnCancel)="docDialogClose()">
+  <ng-template #modalTitle>
+    <div class="title-container">
+      <span nz-icon nzType="upload" nzTheme="outline" class="docNzIcon"></span>
+      <div class="docModalHeadText">{{ "DOC.Documents" | translate }}</div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div fxLayout="column">
+      <!-- Drag and Drop Box -->
+      <ng-container *ngIf="displayMode === 'edit' ? true : false">
+        <ng-container *ngIf="
+            (!files && documentsList.value.length === 0 && !isFilesGetInProg) ||
+            this.docParams.value.multipleFiles === true
+          ">
+          <file-drag-drop [emitFromParent]="emitToDragDrop" (emitToParent)="emitFromDragDrop($event)"></file-drag-drop>
+        </ng-container>
+      </ng-container>
+
+      <!-- Fetching documents -->
+      <div *ngIf="isFilesGetInProg">
+        <div class="ml-1 mr-1 row keyValueLabel">
+          <p class="docName col-sm-10">
+            {{ "DOC.Fetchingdocuments" | translate }}
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="
+          (documentsList &&
+            documentsList.value &&
+            documentsList.value.length > 0) ||
+          isFilesUploading
+        " fxLayout="column" fxLayoutAlign="none" fxFlex="100%" class="mt-2">
+        <ng-container *ngIf="documentsList && documentsList.value">
+          <ng-container *ngFor="let doc of documentsList.value; let id = index">
+            <div class="py-1 mb-1 ml-1 mr-1 viewModeBorder" fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+              <div fxLayout="row" fxFlex="60%" fxLayoutAlign="start center" class="mx-2">
+                <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon"></span>
+                <span class="px-2 mt-1 docName ellipsisText docDisplayName">
+                  {{ this.removeIdFromDocName(doc) }}
+                  <!-- doc.DocName -->
+                </span>
+                <!-- </div>
+              <div
+                fxLayout="row"
+                fxFlex="40%"
+                fxLayoutAlign="end center"
+                class="mx-2"
+              > -->
+              <span nz-icon nzType="download" nzTheme="outline" *ngIf="doc?.downloading == false || !doc?.downloading" (click)="downloadDocsCall(doc, id)"
+              class="docNzIconClickable"></span>
+  
+              <span nz-icon nzType="loading" nzTheme="outline" *ngIf="doc?.downloading == true"
+              class="docNzIconClickable"></span>
+
+                <ng-container *ngIf="displayMode === 'edit' ? true : false">
+                  <span nz-icon nzType="delete" nzTheme="outline" class="docNzIconClickable"
+                    (click)="setDocsToDelete(doc)" nz-popconfirm nzPopconfirmTitle="{{
+                      'DOC.Areyousureyouwanttodelete' | translate
+                    }}" nzOkText="{{ 'DOC.Yes' | translate }}" nzCancelText="{{ 'DOC.Cancel' | translate }}"
+                    (nzOnConfirm)="removeUploadedDocument(docToDelete)"></span>
+                  <!-- <span
+                    nz-icon
+                    nzType="delete"
+                    nzTheme="outline"
+                    (click)="setDocsToDelete(doc)"
+                    class="docNzIcon"
+                    ><a
+                      nz-popconfirm
+                      nzPopconfirmTitle="{{
+                        'DOC.Areyousureyouwanttodelete' | translate
+                      }}"
+                      nzOkText="{{ 'DOC.Yes' | translate }}"
+                      nzCancelText="{{ 'DOC.Cancel' | translate }}"
+                      (nzOnConfirm)="removeUploadedDocument(docToDelete)"
+                    ></a
+                  ></span> -->
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="isFilesUploading">
+            <ng-container *ngFor="let file of files">
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100%">
+                <div fxLayout="row" fxFlex="95%" fxLayoutAlign="start center">
+                  <span nz-icon nzType="file-text" nzTheme="outline" class="docNzIcon p-2"></span>
+                  <p class="docName ellipsisText m-0">
+                    <span style="color: #505050">{{
+                      "DOC.Uploading" | translate
+                      }}</span>&nbsp;
+                    <span style="color: #707070; font-style: italic">{{
+                      file.name
+                      }}</span>
+                  </p>
+                </div>
+
+                <div>
+                  <span style="padding-top: 0.5rem">
+                    <nz-spin nzSimple style="padding-top: 0.5rem"></nz-spin>
+                  </span>
+                </div>
+              </div>
+              <!-- </div> -->
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="docDialogClose()" [nzLoading]="isFilesUploading">
+      {{ "COMMON.Close" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- Tooltips -->
+<!-- +++TEMPCMT -->
+<!-- <div #deleteTooltip="tooltip" igxTooltip>
+  {{ "DOC.Deletefile" | translate }}
+</div>
+
+<div #downloadTooltip="tooltip" igxTooltip>
+  {{ "DOC.Downloadfile" | translate }}
+</div> -->

@@ -1,0 +1,354 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+<!-- <nz-layout style="height: 100vh"
+  style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
+<nz-layout>
+  <nz-header>
+    <div nz-row nzJustify="space-between" nzAlign="middle">
+      <div nz-col nzSpan="12">
+        <div nz-row nzAlign="middle">
+          <div class="logo-container">
+            <a href="/">
+              <img [src]="logoSrc" width="220px" height="77px" alt="logo" />
+            </a>
+          </div>
+          &nbsp; &nbsp;
+          <button
+            nz-button
+            nzType="primary"
+            *ngIf="cs.userLanguage === 'ar'"
+            (click)="onChangeLang('en')"
+          >
+            <span> English</span>
+          </button>
+
+          <button
+            nz-button
+            nzType="primary"
+            *ngIf="cs.userLanguage === 'en'"
+            (click)="onChangeLang('ar')"
+          >
+            <span> العربیة </span> &nbsp; &nbsp;
+          </button>
+
+          &nbsp; &nbsp;
+
+          <ng-container *ngIf="enableTestLogon">
+            <input
+              placeholder="Userid"
+              [(ngModel)]="ProxyUserId"
+              style="display: inline; height: 32px; width: auto"
+            />
+            &nbsp; &nbsp;
+            <button
+              nz-button
+              nzType="primary"
+              [ngStyle]="{
+                'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+              }"
+              (click)="getNavItem(ProxyUserId)"
+            >
+              {{ "RFP.TestLogin" | translate }}
+            </button>
+            &nbsp; &nbsp;
+          </ng-container>
+
+          <button
+            *ngIf="enableproxy"
+            nz-button
+            nzType="primary"
+            [ngStyle]="{
+              'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+            }"
+            (click)="openUsrMdl()"
+          >
+            {{ "COM.ChangeUsr" | translate }}
+          </button>
+        </div>
+      </div>
+      <div nz-col nzSpan="4">
+        <div style="text-align: center" *ngIf="isUserLoggedIn">
+          &nbsp;
+          <nz-avatar
+            nzIcon="user"
+            *ngIf="isUserLoggedIn"
+            style="background-color: var(--primary-color)"
+          ></nz-avatar>
+          &nbsp;
+          <span *ngIf="dispname" style="color: black">{{ dispname }}</span>
+        </div>
+      </div>
+    </div>
+  </nz-header>
+
+  <nz-layout
+    class="ant-top-layout"
+  >
+    <nz-sider
+      class="menu-sidebar"
+      nzCollapsible
+      [(nzCollapsed)]="isCollapsed"
+      [nzTrigger]="null"
+    >
+      <ul
+        nz-menu
+        class="menu"
+        nzMode="inline"
+        [nzInlineCollapsed]="isCollapsed"
+      >
+        <ng-container *ngFor="let item of navItems">
+          <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
+            <li
+              nz-submenu
+              class="menu-items"
+              style="font-size: 0.8rem"
+              [nzTitle]="
+                cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr
+              "
+              [(nzOpen)]="item.isOpen"
+              (nzOpenChange)="openHandler(item)"
+            >
+              <ul>
+              <li style="font-size: 0.8rem" [ngStyle]="{
+                  'padding-left': cs.userLanguage === 'en' ? '20px' : '',
+                  'padding-right': cs.userLanguage === 'ar' ? '20px' : ''
+                }" nz-menu-item *ngFor="let subItem of item.navItem" [nzSelected]="subItem.name == cs.activeMenu">
+                <!-- External link -->
+                <ng-container *ngIf="subItem.external; else internalLink">
+                  <a [href]="cs.userLanguage === 'ar' ? subItem.linkAr : subItem.linkEn" target="_blank" rel="noopener"
+                    style="display: flex; align-items: center; width: 100%">
+                    <ng-container *ngIf="getIsNewIcon(subItem.iconName); else normalIcon">
+                      <app-icon style="line-height: 0px !important" [icon]="subItem.iconName"></app-icon>
+                    </ng-container>
+                    <ng-template #normalIcon>
+                      <span nz-icon [nzType]="subItem.iconName"></span>
+                    </ng-template>
+                    &nbsp;&nbsp; &nbsp;
+                    <span style="font-size: 0.6rem" [ngStyle]="{
+                        'max-width': '100%',
+                        'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
+                        'white-space': 'break-spaces',
+                        'line-height': '20px'
+                      }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
+                      {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                    </span>
+                  </a>
+                </ng-container>
+              
+                <!-- Internal link -->
+                <ng-template #internalLink>
+                  <div (click)="navigate(subItem)" style="display: flex; align-items: center; width: 100%">
+                    <ng-container *ngIf="getIsNewIcon(subItem.iconName); else normalIconInt">
+                      <app-icon style="line-height: 0px !important" [icon]="subItem.iconName"></app-icon>
+                    </ng-container>
+                    <ng-template #normalIconInt>
+                      <span nz-icon [nzType]="subItem.iconName"></span>
+                    </ng-template>
+                    &nbsp;&nbsp; &nbsp;
+                    <span style="font-size: 0.6rem" [ngStyle]="{
+                        'max-width': '100%',
+                        'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
+                        'white-space': 'break-spaces',
+                        'line-height': '20px'
+                      }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
+                      {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                    </span>
+                  </div>
+                </ng-template>
+              </li>
+
+              </ul>
+            </li>
+          </ng-container>
+          <ng-template #noSubMenu>
+            <li
+              nz-menu-item
+              class="menu-items"
+              style="font-size: 0.8rem"
+              (click)="navigate(item)"
+            >
+                <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalIcon">
+                  <app-icon
+                    style="line-height: 0px !important"
+                    [icon]="item.ModuleIcon"
+                  ></app-icon>
+                </ng-container>
+                <ng-template #normalIcon>
+                  <span nz-icon [nzType]="item.ModuleIcon"></span>
+                </ng-template>
+                <span
+                  style="font-size: 0.6rem"
+                  [ngStyle]="{
+                    'max-width': '100%',
+                    'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
+                    'white-space': 'break-spaces',
+                    'line-height': '20px'
+                  }"
+                  nz-tooltip
+                  [nzTooltipTitle]="
+                    cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr
+                  ">
+                    {{
+                      cs.userLanguage === "en"
+                        ? (item.Module | uppercase) : item.ModuleAr
+                    }}
+                </span>
+            </li>
+          </ng-template>
+        </ng-container>
+      </ul>
+
+      <div class="copy-right-container row">
+        <label
+          >© {{ currentYear }}
+          {{ "COMMON.CopyrightAllRightsReserved" | translate }}</label
+        >
+        <label
+          >{{ "COMMON.Version" | translate }} - {{ applicationVersion }}</label
+        >
+      </div>
+    </nz-sider>
+
+    <!-- <nz-content [ngStyle]="{
+        'margin-left': cs.userLanguage === 'en' ? '200px' : '',
+        'margin-right': cs.userLanguage === 'ar' ? '190px' : ''
+      }"
+      style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
+    <nz-content [class]="cs.userLanguage === 'en' ? 'ant-right-layout' : 'ant-left-layout'" style="background-color: white">
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+
+<!-- * Multi Role Modal -->
+<nz-modal
+  [(nzVisible)]="openMdl"
+  nzWidth="500px"
+  [nzTitle]="modalTitleboq"
+  [nzContent]="modalContenboq"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="openUsrMdl()"
+  nzClassName="change-role"
+  nzWrapClassName="change-role"
+>
+  <ng-template #modalTitleboq>
+    <div class="row">
+      <div class="col-11 title">{{ "COM.SelectUsr" | translate }}</div>
+      <button
+        class="col-1"
+        nz-button
+        nzType="link"
+        (click)="openUsrMdl()"
+      >
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+  <ng-template #modalContenboq>
+    <div class="col-md-12 col-3">
+      <div nz-form [formGroup]="roleForm">
+        <!-- * RFP Role -->
+        <!-- <nz-form-label for="rfpRole">{{
+          "RFP Role" | translate
+        }}</nz-form-label>
+        <nz-form-control style="width: 97%">
+          <nz-select
+            id="rfpRole"
+            style="width: 100%"
+            nzPlaceHolder="{{ 'COM.LoginAs' | translate }}"
+            formControlName="rfpRole"
+          >
+            <nz-option
+              *ngFor="let role of rfpRoles"
+              [nzValue]="role"
+              [nzLabel]="
+                cs.userLanguage === 'en'
+                  ? role.UIRoleDescEN
+                  : role.UIRoleDescAR
+              "
+            ></nz-option>
+          </nz-select>
+        </nz-form-control> -->
+        <!-- * Committee Role -->
+         <ng-container *ngIf="committeeRoles?.length > 1">
+           <nz-form-label for="committeeRole">{{
+             "Committee Role" | translate
+           }}</nz-form-label>
+           <nz-form-control style="width: 97%">
+             <nz-select
+               id="committeeRole"
+               style="width: 100%"
+               nzPlaceHolder="{{ 'COM.LoginAs' | translate }}"
+               formControlName="committeeRole"
+             >
+               <nz-option
+                 *ngFor="let role of committeeRoles"
+                 [nzValue]="role"
+                 [nzLabel]="
+                   cs.userLanguage === 'en'
+                     ? role.UIRoleDescEN
+                     : role.UIRoleDescAR
+                 "
+               ></nz-option>
+             </nz-select>
+           </nz-form-control>
+         </ng-container>
+        <!-- * Contract Role -->
+         <ng-container *ngIf="contractRoles?.length > 1">
+           <nz-form-label for="contractRole">{{
+             "Contract Role" | translate
+           }}</nz-form-label>
+           <nz-form-control style="width: 97%">
+             <nz-select
+               id="contractRole"
+               style="width: 100%"
+               nzPlaceHolder="{{ 'COM.LoginAs' | translate }}"
+               formControlName="contractRole"
+             >
+               <nz-option
+                 *ngFor="let role of contractRoles"
+                 [nzValue]="role"
+                 [nzLabel]="
+                   cs.userLanguage === 'en'
+                     ? role.RoleDescEn
+                     : role.RoleDescAr
+                 "
+               ></nz-option>
+             </nz-select>
+           </nz-form-control>
+         </ng-container>
+        <!-- * CoC Role -->
+         <ng-container *ngIf="cocRoles?.length > 1">
+           <nz-form-label for="cocRole">{{
+             "CoC Role" | translate
+           }}</nz-form-label>
+           <nz-form-control style="width: 97%">
+             <nz-select
+               id="cocRole"
+               style="width: 100%"
+               nzPlaceHolder="{{ 'COM.LoginAs' | translate }}"
+               formControlName="cocRole"
+             >
+               <nz-option
+                 *ngFor="let role of cocRoles"
+                 [nzValue]="role"
+                 [nzLabel]="
+                   cs.userLanguage === 'en'
+                     ? role.RoleDescEn
+                     : role.RoleDescAr
+                 "
+               ></nz-option>
+             </nz-select>
+           </nz-form-control>
+         </ng-container>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="okOnbehalf()">
+      {{ "RFP.Submit" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>

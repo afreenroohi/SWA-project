@@ -1,0 +1,41 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+<!-- * Main Container -->
+<div class="container-fluid">
+  <!-- * Title -->
+  <h1>{{ "COM.UploadSign" | translate }}</h1>
+
+  <!-- * File Uploader -->
+  <div class="row">
+    <div class="col-4">
+      <nz-upload [nzShowUploadList]="false" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload"
+        [nzShowButton]="fileList.length == 0" [nzFileType]="'image/png,image/jpeg'" [nzAccept]="'image/png,image/jpeg'">
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          {{ "COM.Upload" | translate }}
+        </button>
+      </nz-upload>
+    </div>
+  </div>
+
+  <!-- * Uplaoded Signature Preview -->
+  <div class="row mb-3">
+    <div class="col-auto">
+      <div class="image-area" *ngIf="previewImage">
+        <img [src]="previewImage" alt="signature" />
+        <a class="remove-image" (click)="removeImage()">&#215;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- * Submit button -->
+  <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="submitSignature()"
+    [disabled]="fileList.length === 0">
+    {{ uploading ? ("RFP.Uploading" | translate) : ("RFP.Submit" | translate) }}
+  </button>
+</div>
+
+<!--* OTP MODAL-->
+<app-approval-otp (otpValue)="verifyOTP($event)" [isOTPVisible]="isOTPVisible"
+  (updateOTPVisible)="updateOTPVisible($event)">
+</app-approval-otp>

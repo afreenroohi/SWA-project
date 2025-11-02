@@ -1,0 +1,78 @@
+<nz-modal [(nzVisible)]="showComments" [nzWidth]="800" [nzContent]="modalContent"
+    [nzFooter]="modalFooter" (nzOnCancel)="showHideComments()">
+    <div *nzModalTitle class="heading d-flex" style="justify-content: space-between;">
+      <h3>{{ 'COM.CommentHistory' | translate}}</h3>
+      <button class="closeIcon" (click)="showHideComments()">
+          <img src="../../../../../assets/logo/CloseIcon.svg" alt="">
+      </button>
+    </div>
+
+    <ng-template #modalContent>
+        <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+        <ng-container *ngFor="let comment of listOfCommentData; index as i;">
+          <div nz-row class="mb-3" [nzGutter]="16">
+      
+            <div nz-col>
+              <div class="green-circle"></div>
+              <div *ngIf="i != (listOfCommentData.length-1)" class="vl" [ngStyle]="{'top': comment.CommentsTxt ? '' : '45%'}"></div>
+            </div>
+      
+            <div nz-col style="max-width: 96%;">
+              <div nz-row [innerHTML]="comment.CommentsTxt" class="comment-content" *ngIf="comment.CommentsTxt;else emptyContent">{{comment.CommentsTxt}}
+                  <!-- <textarea [froalaEditor]="options" style="border: 0 !important;" [froalaView]="comment.CommentsTxt" disabled></textarea> -->
+              </div>
+              <div nz-row>
+                <div nz-col>{{'contract.common.By' | translate}} <span>{{cs.userLanguage === 'en' ? comment.CmtByEn:
+                    comment.CmtByAr}}</span></div>
+                &nbsp;
+                <span>-</span>
+                &nbsp;
+                <div nz-col>{{comment.comment_date}}</div>
+              </div>
+            </div>
+      
+          </div>
+        </ng-container>
+        <ng-template #emptyContent>
+          --
+        </ng-template>
+        <ng-container *ngIf="listOfCommentData.length == 0">
+          <div style="text-align: center;">
+            <img src="../../../../../assets/logo/no_data.png" alt="">
+            <h4>{{ 'contract.Comment.NoComment' | translate }}</h4>
+          </div>
+        </ng-container>
+        
+    </ng-template>
+
+    <ng-template #modalFooter>
+      <button class="btn-lg" style="width: 25%" nz-button nzType="primary" (click)="showHideComments()">
+        {{ "COMMON.Close" | translate }}
+      </button>
+    </ng-template>
+  </nz-modal>
+
+
+<!-- <nz-table [ngStyle]="{direction: textDir} " #nzTable nzShowSizeChanger [nzData]="listOfCommentData" [nzPageSize]="5"
+    [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]"
+    nzBordered="true" nzNoResult="{{ 'contract.Comment.NoComment' | translate }}" nzTableLayout="fixed">
+    <thead>
+        <tr>
+            <th class="header" style="width: 20%;">{{ 'contract.Comment.Comment_by' | translate }}</th>
+            <th class="header" style="width: 20%;">{{ 'contract.Comment.Role' | translate }}</th>
+            <th class="header" style="width: 45%;">{{ 'contract.Comment.Comment' | translate }}</th>
+            <th class="header" style="width: 15%;">{{ 'COM.CommentedOn' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of nzTable.data">
+            <td *ngIf="cs.userLanguage=='en'">{{data.CmtByEn}}</td>
+            <td *ngIf="cs.userLanguage=='ar'">{{data.CmtByAr}}</td>
+            <td>{{ data.Role | translate }}</td>
+            <td style="padding: 0 !important;">
+                <textarea [froalaEditor]="options" style="border: 0 !important;" [froalaView]="data.CommentsTxt" disabled></textarea>
+            </td>
+            <td>{{data.comment_date}}</td>
+        </tr>
+    </tbody>
+</nz-table> -->

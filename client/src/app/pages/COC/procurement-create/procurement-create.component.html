@@ -1,0 +1,435 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid" style="margin-top: 3rem">
+  <nz-form [formGroup]="CocForm">
+    <div class="create__form__section">
+      <div class="row w-100 my-3">
+        <div class="col-md-12 col-3">
+          <nz-form-label >{{
+            "COC.ProjectName" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="ProjectName">
+            <input nz-input formControlName="ProjectName" />
+            <ng-template #ProjectName let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.ProjectNamereq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        
+        <div class="col-md-4 col-3">
+          <nz-form-label  >{{ "COC.CocNumber" | translate }}</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="CocNumber" />
+            
+          </nz-form-control>
+      </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.ProjectNumber" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="ProjectNumber">
+            <nz-input-number nz-input formControlName="ProjectNumber">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="ProjectNumber" /> -->
+            <ng-template #ProjectNumber let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.ProjectNumber" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PrjStartDate" | translate
+          }}</nz-form-label>
+          <br />
+          <nz-date-picker
+            [nzFormat]="dateFormat"
+            [(ngModel)]="PrjStartDate"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="Role != 'Owner' ? 'true' : 'false'"
+            style="width: 100%"
+          ></nz-date-picker>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PercentCompletion" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="PercentCompletion">
+            <input nz-input formControlName="PercentCompletion" />
+            <ng-template #PercentCompletion let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.PercentCompletionreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.VendorName" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="VendorName">
+            <input nz-input formControlName="VendorName" />
+            <ng-template #VendorName let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.VendorNamereq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PoNumber" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="PoNumber">
+            <nz-input-number nz-input formControlName="PoNumber">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="PoNumber" /> -->
+            <ng-template #PoNumber let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.PoNumberreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PoItemNo" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="PoItemNo">
+            <nz-input-number nz-input formControlName="PoItemNo">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="PoItemNo" /> -->
+            <ng-template #PoItemNo let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.PoItemNo" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PoIssueDate" | translate
+          }}</nz-form-label>
+          <br />
+          <nz-date-picker
+            [(ngModel)]="PoIssueDate"
+            [ngModelOptions]="{ standalone: true }"
+            style="width: 100%"
+            [disabled]="Role != 'Owner' ? 'true' : 'false'"
+          ></nz-date-picker>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.PhaseName" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="PhaseName">
+            <input nz-input formControlName="PhaseName" />
+            <ng-template #PhaseName let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.PhaseName" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label>{{ "COC.InvNumber" | translate }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="InvNumber">
+            <nz-input-number nz-input formControlName="InvNumber" [nzMin]="0">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="InvNumber" /> -->
+            <ng-template #InvNumber let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.InvNumber" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label>{{ "COC.InvIssueDate" | translate }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="InvIssueDate">
+            <nz-date-picker
+              [nzFormat]="dateFormat"
+              [(ngModel)]="InvIssueDate"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="Role != 'Owner' ? 'true' : 'false'"
+              style="width: 100%"
+            ></nz-date-picker>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label>{{ "COC.InvAmount" | translate }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="InvAmount">
+            <nz-input-number nz-input formControlName="InvAmount">
+            </nz-input-number>
+            <ng-template #InvAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.InvAmountreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label nzRequired>{{ "COC.Penalties" | translate }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="Penalties">
+            <nz-input-number nz-input
+             formControlName="Penalties"
+             (change)="setInvSes($event)"
+             [nzMin]="0"
+             >
+            </nz-input-number>
+            <ng-template #Penalties let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.Penaltiesreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.CocAmount" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="CocAmount">
+            <nz-input-number nz-input formControlName="CocAmount">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="CocAmount" /> -->
+            <ng-template #CocAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.CocAmountreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{ "COC.SESAmt" | translate }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="CocAmount">
+            <nz-input-number nz-input formControlName="SesAmount" [nzMin]="0">
+            </nz-input-number>
+            <!-- <input nz-input type="number" formControlName="CocAmount" /> -->
+            <ng-template #CocAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.AmountReq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+      </div>
+
+      
+      <div class="col-md-4 col-3">
+        <nz-form-label >{{ "COC.RetnAmount" | translate }}</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="CocAmount">
+          <nz-input-number
+        style="width: 100%;"
+        formControlName="RetentionField"
+        [nzMin]="1"
+        [nzMax]="100"
+        [nzStep]="1"
+      ></nz-input-number>
+          <ng-template #CocAmount let-control>
+            <ng-container *ngIf="control.hasError('required')">{{
+              "COC.AmountReq" | translate
+            }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+    </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.ContractAmount" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="ContractAmount">
+            <nz-input-number nz-input formControlName="ContractAmount">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="ContractAmount" /> -->
+            <ng-template #ContractAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.ContractAmountreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.DisbursedAmount" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="DisbursedAmount">
+            <nz-input-number nz-input formControlName="DisbursedAmount">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="DisbursedAmount" /> -->
+            <ng-template #DisbursedAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.DisbursedAmountreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-4 col-3">
+          <nz-form-label >{{
+            "COC.ContractRemAmount" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="ContractRemAmount">
+            <nz-input-number nz-input formControlName="ContractRemAmount">
+            </nz-input-number>
+            <!-- <input nz-input formControlName="ContractRemAmount" /> -->
+            <ng-template #ContractRemAmount let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.ContractRemAmountreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-12 col-3">
+          <nz-form-label >{{
+            "COC.ProjectOwnerComments" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="Comments">
+            <textarea
+              nz-input
+              formControlName="Comments"
+              [disabled]="true"
+              style="height: 120px;"
+            ></textarea>
+            <ng-template #Comments let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.Commentsreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+
+        <div class="col-md-12 col-3">
+          <nz-form-label >{{
+            "COC.ProcurementOfficerComments" | translate
+          }}</nz-form-label>
+          <nz-form-control nzHasFeedback [nzErrorTip]="Comments1">
+            <textarea
+              nz-input
+              formControlName="ProcurComments"
+              style="height: 120px;"
+            ></textarea>
+            <ng-template #Comments1 let-control>
+              <ng-container *ngIf="control.hasError('required')">{{
+                "COC.Commentsreq" | translate
+              }}</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </div>
+      
+
+        <div class="col-12 mt-3" style="margin-top: 1rem; margin-bottom: 1rem">
+          <div *ngIf="uploadedfiles" style="margin-top: 10px;"></div>
+              <div *ngFor="let file of uploadedfiles ;let i = index">
+                  <p>{{ file.AttchId }}
+                    &nbsp; 
+                    <span> <button
+                   nz-button
+                   nzType="primary"
+                   nzSize="default"
+                   (click)="downloadFile(file)">
+                   {{ "RFP.Download" | translate }}
+                 </button></span>
+
+                 <!-- &nbsp;  
+                 <span> <button
+                nz-button
+                nzType="primary"
+                nzSize="default"
+                (click)="deleteFile(file)">
+                {{ "RFP.Delete" | translate }}
+              </button></span> -->
+                  </p>
+                 
+             </div>
+          </div>
+
+      </div>
+    </div>
+
+    <!-- <div class="create__form__section mt-2">
+      <div class="row">
+        <div class="col-6">
+          <h6>{{ "RFP.Attachments" | translate }}</h6>
+          <ul style="margin-top: 4px">
+            <li>
+              <span style="position: relative; font-size: 0.9rem"
+                ><b>{{ "RFP.Note" | translate }}</b></span
+              >
+            </li>
+            <li>
+              <span style="position: relative; font-size: 0.9rem">{{
+                "RFP.Maxium" | translate
+              }}</span>
+            </li>
+          </ul>
+
+          <br />
+          <nz-upload
+            [(nzFileList)]="fileList"
+            [nzBeforeUpload]="beforeUpload"
+            nzType="drag"
+            style="height: 60% !important"
+            [nzMultiple]="true"
+          >
+            <p class="ant-upload-drag-icon">
+              <span nz-icon nzType="inbox"></span>
+            </p>
+            <p class="ant-upload-text">
+              {{ "COMMON.Drag" | translate }}
+            </p>
+          </nz-upload>
+        </div>
+        <div
+          class="col-12 mt-3"
+          style="margin-top: 1rem; margin-bottom: 1rem"
+        ></div>
+
+        <div class="col-12 mb-3" style="margin-top: 1rem">
+          <button
+            nz-button
+            [nzType]="'primary'"
+            [nzLoading]="uploading"
+            (click)="handleUpload()"
+            [disabled]="fileList.length === 0"
+            style="margin-top: 16px"
+          >
+            {{ uploading ? "Uploading" : "Start Upload" }}
+          </button>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-1">
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="default"
+          [disabled]="!CocForm?.valid"
+          (click)="submit('Save')"
+        >
+          {{ "RFP.Save" | translate }}
+        </button>
+      </div>
+    </div>
+  </nz-form>
+</div>

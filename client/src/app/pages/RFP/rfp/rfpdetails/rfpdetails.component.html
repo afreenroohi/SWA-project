@@ -1,0 +1,136 @@
+<div *ngIf="Action === 'budget'">
+  <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+    <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Request For Budget Allocation'| translate }}">
+
+    <div class="row">
+     
+      <div class="col-12 mt-1">
+        <div class="row">
+          <div class="col-4 mt-4">
+            <div class="row">
+              <div class="col-10">
+                <b> {{ "RFP.Select Project" | translate }}</b>
+              </div>
+                <p>{{ detArray.ProjName }}</p>
+            </div>
+          </div>
+
+          <div class="col-4 mt-4" *ngIf="detArray?.Unplanned !== 'X'">
+            <div class="row">
+              <div class="col-10">
+                <b> {{ "RFP.Transfered Budget Project Name" | translate }}</b>
+              </div>
+              <p>
+                {{ detArray.TrfProjName }}
+              </p>
+            </div>
+          </div>
+
+          <div class="col-4 mt-4" *ngIf="detArray?.Unplanned">
+            <div class="row">
+              <div class="col-10">
+                <b> {{ "RFP.UnplannedProj" | translate }}</b>
+              </div>
+              <p>
+                {{ detArray.UpProjName }}
+              </p>
+            </div>
+          </div>
+
+        
+          <div class="col-4 mt-4">
+            <div class="row">
+              <div class="col-10">
+                <b>{{ "RFP.Budget Type" | translate }}</b>
+              </div>
+              <p>
+                {{ detArray.ProjTypeText }}
+              </p>
+            </div>
+          </div>
+
+          <div class="col-4 mt-4">
+            <div class="row">
+              <div class="col-10">
+                <b>{{ "RFP.Amount" | translate }}</b>
+              </div>
+              <p>
+                {{  cs.numberWithCommas(detArray.ProjTypeAmt) }}
+              </p>
+            </div>
+          </div>
+
+      
+          <div class="col-4 mt-4">
+            <div class="row">
+              <div class="col-10">
+                <b>{{ "RFP.Transfered Budget Amount" | translate }}</b>
+              </div>
+              <p>
+                {{  cs.numberWithCommas(detArray.TrfProjAmt) }}
+              </p>
+            </div>
+          </div>
+
+          <div class="col-4 mt-4">
+            <div class="row">
+              <div class="col-10">
+                <b>{{ "RFP.Status" | translate }}</b>
+              </div>
+              <p>
+                {{  cs.returnStatus(detArray.Status) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    </nz-collapse-panel>
+  </nz-collapse>
+
+ 
+    <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+      <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Project Justification'| translate }}">
+
+    <div class="row">
+      <div class="col-12">
+        {{ detArray.Justification }}
+      </div>
+    </div>
+ 
+</nz-collapse-panel>
+</nz-collapse>
+
+
+<nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
+  <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Attachments'| translate }}">
+ 
+    <div class="col-12 mt-2 mb-2">
+      <app-filenet class="mt-3" [fileList]="this.detArray.BaReqToBaNavg.results" [showUpload]="false" [hideDelete]="true"></app-filenet>
+    </div>
+    <!-- <div class="col-4 mt-2" *ngIf="this.detArray.BaReqToBaNavg">
+      <div class="row">
+        <div class="col" *ngFor="let b of this.detArray.BaReqToBaNavg.results">
+          <p>{{ b.AttchId.split('/')[1] }} &nbsp;&nbsp;
+             <button
+            nz-button
+            nzType="primary"
+            nzSize="default"
+            (click)="downloadFile(b)"
+            nzShape="circle"
+          >
+            <span nz-icon nzType="download"></span>
+          </button>
+         </p>
+        </div>
+      </div>
+    
+
+  
+
+
+    <div class="col-10"></div>
+  </div> -->
+</nz-collapse-panel>
+</nz-collapse>

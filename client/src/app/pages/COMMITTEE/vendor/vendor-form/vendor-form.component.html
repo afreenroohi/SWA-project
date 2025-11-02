@@ -1,0 +1,431 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <form
+        [formGroup]="vendorForm"
+        autocomplete="off"
+        fxLayout="column"
+        fxLayout.xs="column"
+        fxLayoutGap="1%"
+        fxFlexFill
+      >
+        <div class="create__form__section">
+          <header>{{ "COM.Vendor Creation" | translate | titlecase }}</header>
+
+          <div class="my-3">
+            <nz-collapse nzAccordian nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  #address
+                  [nzHeader]="addressHeader"
+                  [nzActive]="panels[0].active"
+                  [nzExpandedIcon]="addressExpandedIcon"
+                >
+                  <div formGroupName="AddressGroup" class="row">
+                    <div class="col-md-8 col-sm-12 mt-3">
+                        <nz-form-label>{{
+                            "COM.Vendor Name" | translate
+                        }}</nz-form-label>
+                        <nz-form-control>
+                            <input
+                            nz-input
+                            type="text"
+                            id="NameOrg"
+                            style="width: 100%"
+                            formControlName="NameOrg"
+                            />
+                        </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Building Number" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                        nz-input
+                        type="text"
+                        id="BuildingNo"
+                        style="width: 100%"
+                        formControlName="BuildingNo"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-8 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Street" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                        nz-input
+                        type="text"
+                        id="Street"
+                        style="width: 100%"
+                        formControlName="Street"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.City" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                        nz-input
+                        type="text"
+                        id="City"
+                        style="width: 100%"
+                        formControlName="City"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Country" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-select
+                          style="width: 100%"
+                          [nzPlaceHolder]="'COM.Select Country' | translate"
+                          formControlName="CountryId"
+                          id="CountryId"
+                          nzAllowClear
+                          nzShowSearch
+                        >
+                          <nz-option
+                            *ngFor="let country of countryList"
+                            [nzValue]="country.Land1"
+                            [nzLabel]="
+                                  cs.userLanguage === 'en'
+                                  ? country.Landx50En
+                                  : country.Landx50Ar
+                                  "
+                            >
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Zip Code" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                        nz-input
+                        appNumeric
+                        type="text"
+                        id="ZipCode"
+                        style="width: 100%"
+                        formControlName="ZipCode"
+                        maxLength="5"
+                        />
+                      </nz-form-control>
+                    </div>
+                  </div>
+                  <ng-template #addressHeader>
+                    <span> {{ "COM.Address Details" | translate }} </span>
+                  </ng-template>
+                  <ng-template #addressExpandedIcon let-active>
+                    {{ active }}
+                    <span
+                      nz-icon
+                      nzType="left"
+                      class="ant-collapse-arrow"
+                      [nzRotate]="address.nzActive ? 90 : -90"
+                    ></span>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <nz-collapse nzAccordian nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  #contact
+                  [nzHeader]="contactHeader"
+                  [nzActive]="panels[1].active"
+                  [nzExpandedIcon]="contactExpandedIcon"
+                >
+                  <div formGroupName="ContactGroup" class="row">
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Phone Number" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          appNumeric
+                          type="text"
+                          id="PhoneNo"
+                          style="width: 100%"
+                          formControlName="PhoneNo"
+                          maxLength="10"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.Email" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          type="email"
+                          id="Email"
+                          style="width: 100%"
+                          pattern="\d*"
+                          formControlName="Email"
+                        />
+                      </nz-form-control>
+                    </div>
+                  </div>
+                  <ng-template #contactHeader>
+                    <span> {{ "COM.Contact Details" | translate }} </span>
+                  </ng-template>
+                  <ng-template #contactExpandedIcon let-active>
+                    {{ active }}
+                    <span
+                      nz-icon
+                      nzType="left"
+                      class="ant-collapse-arrow"
+                      [nzRotate]="contact.nzActive ? 90 : -90"
+                    ></span>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <nz-collapse nzAccordian nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  #bank
+                  [nzHeader]="bankHeader"
+                  [nzActive]="panels[2].active"
+                  [nzExpandedIcon]="bankExpandedIcon"
+                >
+                  <nz-table nzBordered [nzData]="['']" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>{{"COM.S No" | translate}}</th>
+                        <th>{{"COM.Bank" | translate}}</th>
+                        <th>{{"COM.Account Number" | translate}}</th>
+                        <th>{{"COM.IBAN" | translate}}</th>
+                        <th>{{"COM.Country" | translate}}</th>
+                        <th>{{"RFP.Action" | translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="BankArray">
+                        <tr *ngFor="let bank of bankArray?.controls; let index = index" [formGroupName]="index">
+                          <td>{{index + 1}}</td>
+                          <td>          
+                            <nz-select
+                              (ngModelChange)="setBankCountry(index)"
+                              style="width: 100%"
+                              [nzPlaceHolder]="'COM.Select Bank' | translate"
+                              formControlName="Bank"
+                              id="Bank"
+                              nzAllowClear
+                              nzShowSearch
+                            >
+                              <nz-option
+                                *ngFor="let bank of bankList"
+                                [nzValue]="bank.Bankkeys"
+                                [nzLabel]="bank.NameOfBank"
+                                >
+                              </nz-option>
+                           </nz-select>
+                          </td>
+                          <td>
+                            <input
+                              nz-input
+                              type="text"
+                              id="AccountNo"
+                              style="width: 100%"
+                              formControlName="AccountNo"
+                              maxlength="18"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              nz-input
+                              type="text"
+                              id="IBAN"
+                              style="width: 100%"
+                              formControlName="IBAN"
+                              maxlength="24"
+                            />
+                          </td>
+                          <td>{{getCoutryName(bank.value.Country)}}</td>
+                          <td>
+                            <div class="d-flex">
+                              <button [disabled]="bank.invalid" nz-button nzType="default" nzSize="default" class="action-btn mx-1" (click)="addBank()">
+                                <app-icon [icon]="iconList.addplus"></app-icon>
+                              </button>
+                              <button [disabled]="bankArray.controls.length === 1" nz-button nzType="default" nzSize="default" class="action-btn mx-1" (click)="deleteBank(index)">
+                                <app-icon [icon]="iconList.deleteIcon"></app-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                    </tbody>
+                  </nz-table>
+                  <ng-template #bankHeader>
+                    <span> {{ "COM.Bank Details" | translate }} </span>
+                  </ng-template>
+                  <ng-template #bankExpandedIcon let-active>
+                    {{ active }}
+                    <span
+                      nz-icon
+                      nzType="left"
+                      class="ant-collapse-arrow"
+                      [nzRotate]="bank.nzActive ? 90 : -90"
+                    ></span>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <nz-collapse nzAccordian nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  #commerical
+                  [nzHeader]="commericalHeader"
+                  [nzActive]="panels[3].active"
+                  [nzExpandedIcon]="commericalExpandedIcon"
+                >
+                  <div formGroupName="CommercialGroup" class="row">
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label nzRequired>{{
+                        "COM.Registration Number" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          appNumeric
+                          type="text"
+                          id="CrNumber"
+                          style="width: 100%"
+                          formControlName="CrNumber"
+                          maxLength="10"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label nzRequired>{{
+                        "COM.Valid From" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-date-picker formControlName="ValidFrom" 
+                            [nzFormat]="'yyyy/MM/dd'" style="width: 100%;"></nz-date-picker>
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                        <nz-form-label nzRequired>{{
+                          "COM.Valid To" | translate
+                        }}</nz-form-label>
+                        <nz-form-control>
+                          <nz-date-picker formControlName="ValidTo" 
+                              [nzFormat]="'yyyy/MM/dd'" style="width: 100%;"></nz-date-picker>
+                        </nz-form-control>
+                    </div>
+                  </div>
+                  <ng-template #commericalHeader>
+                    <span> {{ "COM.Commerical Registration Details" | translate }} </span>
+                  </ng-template>
+                  <ng-template #commericalExpandedIcon let-active>
+                    {{ active }}
+                    <span
+                      nz-icon
+                      nzType="left"
+                      class="ant-collapse-arrow"
+                      [nzRotate]="commerical.nzActive ? 90 : -90"
+                    ></span>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <nz-collapse nzAccordian nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  #taxAccount
+                  [nzHeader]="taxAccountHeader"
+                  [nzActive]="panels[4].active"
+                  [nzExpandedIcon]="taxAccountExpandedIcon"
+                >
+                  <div formGroupName="TaxAccountGroup" class="row">
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label nzRequired>{{
+                        "COM.Tax Number" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          type="text"
+                          id="TaxNumber"
+                          style="width: 100%"
+                          formControlName="TaxNumber"
+                          maxLength="15"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label nzRequired>{{
+                        "COM.Reconciliation Account" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-select
+                            style="width: 100%"
+                            [nzPlaceHolder]="'COM.Select Reconciliation Account' | translate"
+                            formControlName="ReconciliationAcct"
+                            id="ReconciliationAcct"
+                            nzAllowClear
+                            nzShowSearch
+                          >
+                            <nz-option
+                              *ngFor="let account of glAccountList"
+                              [nzValue]="account.GLAccount"
+                              [nzLabel]="account.GLAccount + '-' + account.GLText"
+                              >
+                            </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </div>
+                  </div>
+                  <ng-template #taxAccountHeader>
+                    <span> {{ "COM.Tax and Accounting Details" | translate }} </span>
+                  </ng-template>
+                  <ng-template #taxAccountExpandedIcon let-active>
+                    {{ active }}
+                    <span
+                      nz-icon
+                      nzType="left"
+                      class="ant-collapse-arrow"
+                      [nzRotate]="taxAccount.nzActive ? 90 : -90"
+                    ></span>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+
+              <div class="row">
+                <!-- * Actions Buttons -->
+                <div class="col-md-9 col-sm-12">
+                  <button
+                    *ngFor="let button of actionButtons"
+                    (click)="button.action()"
+                    [disabled]="button.validation()"
+                    class="me-2"
+                    nz-button
+                    nzType="primary"
+                  >
+                    {{
+                      cs.userLanguage === "en"
+                      ? button.BUTTON_EN
+                      : button.BUTTON_AR
+                    }}
+                  </button>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- * OTP MODAL-->
+<app-approval-otp
+  (otpValue)="SubmitOTP($event)"
+  [isOTPVisible]="getOTPModel"
+  (updateOTPVisible)="updateOTP($event)"
+>
+</app-approval-otp>

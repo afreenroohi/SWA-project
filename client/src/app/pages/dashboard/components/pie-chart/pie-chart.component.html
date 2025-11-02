@@ -1,0 +1,63 @@
+<div class="pie-chart-wrapper">
+  <div class="pie-chart-heading-and-filter">
+    <div class="pie-chart-heading">
+      <h3>
+        {{ pieChartHeading }}
+      </h3>
+    </div>
+    <div *ngIf="filterSet.length" class="pie-chart-filter">
+        <button  nz-popconfirm
+        [nzPopconfirmTitle]="filterSetTemplate"
+        [nzPopconfirmShowArrow]="false"
+        (nzOnConfirm)="onApplyFilters()"
+        (nzOnCancel)="onReset()"
+        
+        [nzOkText]="'Dashboard.Apply' | translate"
+        [nzCancelText]="'Dashboard.Reset' | translate"
+        nzPopconfirmPlacement="bottom" nz-button nzType="default" >
+            <i nz-icon nzType="filter" nzTheme="outline"></i>
+            {{'Dashboard.Filter' | translate}}
+          </button>
+          <ng-template #filterSetTemplate>
+            <div class="filter-set-container">
+              <div class="filter-set" *ngFor="let filter of filterSet" [style]="{ width: filter.width }">
+                <nz-form-item>
+                  <nz-form-label>
+                    {{filter.lableName | translate}}
+                  </nz-form-label>
+                  <nz-select [nzPlaceHolder]="'COMMON.Select' | translate"   [(ngModel)]="selectedFilterValues[filter.lableName]"
+                  (ngModelChange)="onFilterChange(filter.lableName, $event)"
+                      [nzDisabled]="disabledFilter[filter.lableName]"
+                    [nzAllowClear]="true"
+                    name="{{filter.lableName}}" >
+                    <ng-container *ngFor="let item of filter.dropDown">
+                      <nz-option  [nzValue]="item.value" [nzLabel]="cs.userLanguage === 'en' ? item.label.en : item.label.ar"></nz-option>
+                    </ng-container>
+                  </nz-select>
+              </nz-form-item>
+              </div>
+            </div>
+          
+          </ng-template>
+    </div>
+  </div>
+  <div class="pie-chart-content-wrapper" *ngIf="isLablesPresent; else noData">
+<div class="pie-chart-content">
+    <canvas
+      baseChart
+      [data]="pieChartData"
+      [options]="pieChartOptions"
+      [type]="'pie'"
+    >
+    </canvas>
+</div>
+
+  </div>
+</div>
+
+<ng-template #noData>
+  <div class="no-data-message">
+    <p>{{'Dashboard.No data for selected filter' | translate}}</p>
+    <button nz-button nzType="primary" (click)="onReset()"  >{{'Dashboard.Reset' | translate}}</button>
+  </div>
+</ng-template>

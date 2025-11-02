@@ -1,0 +1,18 @@
+<div class="budget-stepper">
+  <div class="stepper-container-wrapper">
+    <ng-container *ngFor="let step of stepperList;let last = last" >
+      <div class="stepper-container">
+        <div class="step-counter">
+          {{ step.sNo }}
+        </div>
+        <div class="step-description">
+          {{ cs.userLanguage === 'en' ? step.titleEN : step.titleAR }}
+        </div>
+      </div>
+      <div class="step-divider" *ngIf="!last">
+        <div class="step-divider-line"></div>
+      </div>
+    </ng-container>
+  </div>
+  <nz-divider></nz-divider>
+</div>

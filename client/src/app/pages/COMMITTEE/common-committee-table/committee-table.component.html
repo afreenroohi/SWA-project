@@ -1,0 +1,136 @@
+<nz-table #nzTable nzShowSizeChanger [nzData]="listOfDisplayData" [nzPageSize]="5" [nzTotal]="1000" [nzPageIndex]="1"
+  [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true"
+  (nzPageIndexChange)="onPageIndexChange($event)" [nzNoResult]="loadDataOrNoDataTemplate">
+  <thead>
+    <tr>
+      <th *ngFor="let column of listOfColumn" class="header" [nzSortFn]="column.sortFn"
+        [nzSortDirections]="column.sortDirections" [nzFilterMultiple]="column.filterMultiple"
+        [nzFilters]="commonService.userLanguage === 'en' ? column.listOfFilter : column.listOfFilterAr"
+        [nzFilterFn]="column.filterFn" [nzCustomFilter]="column.title === 'Tender Name'">
+        {{ commonService.userLanguage === 'en'? column.title : column.titleAr }}
+        <nz-filter-trigger *ngIf="column.title === 'Tender Name'" [(nzVisible)]="visible"
+          [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+          <span nz-icon nzType="search"></span>
+        </nz-filter-trigger>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of nzTable.data">
+      <td *ngIf="StepStatus !== 'BL'">{{ data.TndrName }}</td>
+      <!-- * RFP Number -->
+      <td
+        *ngIf="StepStatus == 'BO' || StepStatus == 'BAP' || StepStatus == 'BDFO' || StepStatus == 'PR' || StepStatus == 'BE' || StepStatus == 'BQ' || StepStatus == 'DP' || StepStatus == 'TE' || StepStatus === 'VN' || StepStatus === 'CO'">
+        {{data.RFPNumber}}
+      </td>
+      <!-- * Etimad Number -->
+      <td
+        *ngIf="StepStatus == 'BO' || StepStatus == 'BAP' || StepStatus == 'BDFO' || StepStatus == 'PR' || StepStatus == 'BE' || StepStatus == 'BQ' || StepStatus == 'DP' || StepStatus == 'TE' || StepStatus === 'VN' || StepStatus === 'CO'">
+        {{data.EtimadNo}}</td>
+      <td *ngIf="StepStatus == 'DP' || StepStatus === 'CO' || StepStatus !== 'BL'" nzso>{{ data.PurReqNo }}</td>
+      <td *ngIf="StepStatus !== 'BL'">{{ cs.returnTypeOfEnvlope(data.TndrTypeID) }}</td>
+      <td *ngIf="StepStatus !== 'BL' && StepStatus !== 'DP' && StepStatus !== 'CO'">{{ cs.userLanguage === 'en' ? data.CompetitionTypeDescEN :
+        data.CompetitionTypeDescAR }}</td>
+      <td *ngIf="StepStatus !== 'BL' && StepStatus !== 'CO'">{{ data.BidOpngDateFrmtd === '//' ? '--' : data.BidOpngDateFrmtd }}</td>
+      <td *ngIf="StepStatus !== 'BL'"> <nz-badge
+          [nzStatus]="data.TndrStatus == 'S' ?  'processing' : data.TndrStatus == 'D' ? 'warning' : data.TndrStatus == 'C' || data.TndrStatus == 'A' ? 'success' : data.TndrStatus == 'R' ? 'error' : 'default'   ">{{
+          cs.returnStatusComt(data.TndrStatus)}}</nz-badge></td>
+      <td *ngIf="StepStatus !== 'BL' && StepStatus !== 'VN' && StepStatus !== 'CO'">{{ cs.userLanguage === 'en' ? data.CurrentApproverEN : data.CurrentApproverAR }}
+      </td>
+      <ng-container *ngIf="StepStatus !== 'CO'">
+        <td *ngIf="data.CommitteeID === '04' && StepStatus !== 'BL'; else notDP">
+          <span>{{data.AsgnDPEvalCmtOfficerName? cs.userLanguage === 'en' ?
+              data.AsgnDPEvalCmtOfficerName : data.AsgnDPEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) }}</span>
+        </td>
+        <ng-template #notDP>
+          <td [ngSwitch]="StepStatus" *ngIf="StepStatus !== 'BL'">
+            <span *ngSwitchCase="'DP'">{{data.AsgnDPEvalCmtOfficerName? cs.userLanguage === 'en' ?
+              data.AsgnDPEvalCmtOfficerName : data.AsgnDPEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) }}</span>
+            <span *ngSwitchCase="'BE'">{{data.AsgnEvalCmtOfficerName ? cs.userLanguage === 'en' ?
+              data.AsgnEvalCmtOfficerName : data.AsgnEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) }}</span>
+            <span *ngSwitchCase="'BQ'">{{data.AsgnQualCmtOfficerName? cs.userLanguage === 'en' ? data.AsgnQualCmtOfficerName
+              : data.AsgnQualCmtOfficerName_AR: ('COM.NotAssinged' | translate) }}</span>
+            <span *ngSwitchCase="'BO'">{{cs.userLanguage === 'en' ? data.AsgnOpngCmtOfficerName :
+              data.AsgnOpngCmtOfficerName_AR }}</span>
+            <span *ngSwitchCase="'BAP'">{{cs.userLanguage === 'en' ? data.AsgnOpngCmtOfficerName :
+              data.AsgnOpngCmtOfficerName_AR }}</span>
+            <span *ngSwitchCase="'PR'">{{cs.userLanguage === 'en' ? data.AsgnOpngCmtOfficerName :
+              data.AsgnOpngCmtOfficerName_AR }}</span>
+            <span *ngSwitchCase="'BDFO'">{{cs.userLanguage === 'en' ? data.AsgnOpngCmtOfficerName :
+              data.AsgnOpngCmtOfficerName_AR }}</span>
+            <span *ngSwitchCase="'TE'">{{data.PurTypID === 'D' ? data.AsgnDPEvalCmtOfficerName? cs.userLanguage === 'en' ?
+              data.AsgnDPEvalCmtOfficerName : data.AsgnDPEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) : 
+              data.AsgnEvalCmtOfficerName ? cs.userLanguage === 'en' ?
+              data.AsgnEvalCmtOfficerName : data.AsgnEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) }}</span>
+            <span *ngSwitchCase="'VN'">{{data.PurTypID === 'D' ? data.AsgnDPEvalCmtOfficerName? cs.userLanguage === 'en' ?
+              data.AsgnDPEvalCmtOfficerName : data.AsgnDPEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) : 
+              data.AsgnEvalCmtOfficerName ? cs.userLanguage === 'en' ?
+              data.AsgnEvalCmtOfficerName : data.AsgnEvalCmtOfficerName_AR : ('COM.NotAssinged' | translate) }}</span>
+          </td>
+        </ng-template>
+      </ng-container>
+      <td *ngIf="StepStatus !== 'BL'">
+        <button nz-button nzType="default" nzSize="default" style="border-color: #fff !important; padding: 0%;"
+          (click)="openForm(data)">
+          <!-- <span nz-icon nzType="edit"></span> -->
+          <app-icon [icon]="IconList.edit"></app-icon>
+        </button>
+      </td>
+      <td *ngIf="StepStatus == 'BL'">{{data.RFPNumber}}</td>
+      <td *ngIf="StepStatus == 'BL'">{{data.TndrName}}</td>
+      <td *ngIf="StepStatus == 'BL'">{{data.TndrID}}</td>
+      <td *ngIf="StepStatus == 'BL'">{{data.EtimadNo}}</td>
+      <td *ngIf="StepStatus == 'BL'"> <nz-badge
+          [nzStatus]="data.TndrStatus == 'S' ?  'processing' : data.TndrStatus == 'D' ? 'warning' : data.TndrStatus == 'C' || data.TndrStatus == 'A' ? 'success' : data.TndrStatus == 'R' ? 'error' : 'default'   ">{{
+          cs.returnStatus(data.TndrStatus)}}</nz-badge> </td>
+      <td *ngIf="StepStatus == 'BL'">{{data.BidOpngDateFrmtd}}</td>
+      <td *ngIf="StepStatus == 'BL'">{{ cs.returnTypeOfEnvlope(data.TndrTypeID) }}</td>
+      <td *ngIf="StepStatus === 'BL'">{{ cs.userLanguage === 'en' ? data.CompetitionTypeDescEN :
+        data.CompetitionTypeDescAR }}
+      </td>
+      <td *ngIf="StepStatus == 'BL'">{{ cs.returnPurchaseType(data.PurTypID) }}</td>
+      <td *ngIf="StepStatus == 'BL'">{{cs.userLanguage === 'en' ? data.CurrentApproverEN : data.CurrentApproverAR}}</td>
+      <td *ngIf="StepStatus !== 'VN'">
+        <a class="download-mom" nzType="primary" nz-button nz-dropdown [nzDropdownMenu]="downloadMomMenu"
+          [nzClickHide]="false" *ngIf="data.to_MomVisibility?.results?.length">
+          {{ "RFP.Download" | translate }}
+          <span nz-icon nzType="download"></span>
+        </a>
+        <nz-dropdown-menu #downloadMomMenu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item *ngFor="let button of data.to_MomVisibility?.results"
+              (click)="downloadMoM(button)">
+              {{ cs.userLanguage === 'en' ? button.MomDecEn : button.MomDecAr }}
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </td>
+      <td *ngIf="StepStatus !== 'VN'" [ngStyle]="{
+                color: data.SLAind === 'N' ? 'red' : 'green', direction: cs.userLanguage === 'en' ? '' : 'ltr'
+              }">{{ cs.userLanguage === 'en'? data.SLAen : data.SLAar }}</td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #loadDataOrNoDataTemplate>
+  <ng-container *ngIf="loading;else emptyTemplate">
+    <div class="table-content">
+      <nz-spin nzSimple></nz-spin>
+    </div>
+  </ng-container>
+  <ng-template #emptyTemplate>
+    <app-no-data-found *ngIf="listOfDisplayData.length === 0"></app-no-data-found>
+  </ng-template>
+</ng-template>
+
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="{{ 'RFP.search' | translate }}" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">{{ 'RFP.search' |
+        translate }}</button>
+      <button nz-button nzSize="small" (click)="reset()">{{ 'COM.Cancel' | translate }}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

@@ -1,0 +1,14 @@
+<div *ngIf="showUpload">
+    <app-filenet-upload [multiple]="multiple" [maxLimit]="maxLimit" [fileType]="fileType" [disableUpload]="disableUpload" (uploadSuccess)="fileUploaded($event)">
+
+    </app-filenet-upload>
+</div>
+
+<br/>
+
+<div *ngIf="fileList?.length">
+    <app-filenet-download-and-delete [fileList]="fileList" [hideDelete]="hideDelete" (deleteFile)="fileDeleted($event)">
+
+    </app-filenet-download-and-delete>
+</div>
+

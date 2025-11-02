@@ -1,0 +1,344 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+
+    <div class="row mt-3 mx-2">
+
+        <!-- * Title -->
+        <h3 class="col-6">
+            {{'COC.Create COC' | translate}}
+        </h3>
+
+        <!-- * Back Button -->
+        <div class="col-6" style="justify-items: end;">
+            <button [class.float-right]="cs.userLanguage === 'en'" [class.float-left]="cs.userLanguage !== 'en'"
+                nz-button nzType="primary" nzSize="default" (click)="back()">
+                {{'COMMON.Back' | translate}}
+            </button>
+        </div>
+
+    </div>
+
+    <ng-container *ngIf="!showContractDetailsList; else contractListTableTemplate ">
+        <div class="row mt-3 mx-2">
+            <h4>{{ 'COC.Department Name' | translate }} : {{selectedDepartmentName}}</h4>
+            <!-- * Tabs Header -->
+            <nz-tabset [nzSelectedIndex]="selectedTabIndex" (nzSelectedIndexChange)="updateSelectedTabIndex($event)">
+
+                <!-- * List of open Contract -->
+                <nz-tab [nzTitle]="titleTemplate" style="margin-left: 0% !important;">
+                    <ng-template #titleTemplate>
+                        <span nz-icon nzType="email"></span>
+                        {{'COC.List of open contract' | translate}}
+                    </ng-template>
+
+                    <nz-table #displayOpenContractData nzShowSizeChanger [nzData]="displayOpenContract" [nzPageSize]="5"
+                        [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+                        [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" [nzNoResult]=noTableData>
+                        <thead>
+                            <tr>
+                                <th>{{'Table.SI No' | translate}}</th>
+                                <th nzCustomFilter> {{'COC.ContractNumber' | translate}}
+                                    <nz-filter-trigger [nzActive]="openContractSearchObject.DocumentNo.value.length > 0"
+                                        [(nzVisible)]="openContractSearchObject.DocumentNo.visible"
+                                        [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'COC.VendorName' | translate}}
+                                    <nz-filter-trigger [nzActive]="openContractSearchObject.VendorName.value.length > 0"
+                                        [(nzVisible)]="openContractSearchObject.VendorName.visible"
+                                        [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'COC.ProjectName' | translate}}
+                                    <nz-filter-trigger [nzActive]="openContractSearchObject.ProjName.value.length > 0"
+                                        [(nzVisible)]="openContractSearchObject.ProjName.visible"
+                                        [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'RFP.RFP Number' | translate}}
+                                    <nz-filter-trigger [nzActive]="openContractSearchObject.RfpNo.value.length > 0"
+                                        [(nzVisible)]="openContractSearchObject.RfpNo.visible"
+                                        [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'contract.Details.PRnumber' | translate}}
+                                    <nz-filter-trigger [nzActive]="openContractSearchObject.PrNo.value.length > 0"
+                                        [(nzVisible)]="openContractSearchObject.PrNo.visible"
+                                        [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th [nzWidth]="'5px'">{{'RFP.Action' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of displayOpenContractData.data; let i = index">
+                                <tr>
+                                    <td>{{data.SiNo}} </td>
+                                    <td>{{data.DocumentNo}}</td>
+                                    <td>{{data.VendorName}}</td>
+                                    <td>{{data.ProjName}}</td>
+                                    <td>{{data.RfpNo}}</td>
+                                    <td>{{data.PrNo}}</td>
+                                    <td>
+                                        <button nz-button nzType="text" nzSize="default"
+                                            (click)="openContractDetailsList(data)"><span nz-icon nzType="right"
+                                                nzTheme="outline"></span></button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+
+                <!-- * List of Open PO Without Contract -->
+                <nz-tab [nzTitle]="titleTemplate1" style="margin-left: 0% !important;">
+                    <ng-template #titleTemplate1>
+                        <span nz-icon nzType="email"></span>
+                        {{'COC.List of open PO without contract'| translate}}
+                    </ng-template>
+
+                    <nz-table #openPoWithoutContractData nzShowSizeChanger [nzData]="displayOpenPoWithoutContract"
+                        [nzPageSize]="5" [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1"
+                        [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true"
+                        [nzNoResult]=noTableData>
+                        <thead>
+                            <tr>
+                                <th>{{'Table.SI No' | translate}}</th>
+                                <th nzCustomFilter> {{'COC.PoNumber' | translate}}
+                                    <nz-filter-trigger [nzActive]="openPOSearchObject.DocumentNo.value.length > 0"
+                                        [(nzVisible)]="openPOSearchObject.DocumentNo.visible"
+                                        [nzDropdownMenu]="openPoMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'COC.VendorName' | translate}}
+                                    <nz-filter-trigger [nzActive]="openPOSearchObject.VendorName.value.length > 0"
+                                        [(nzVisible)]="openPOSearchObject.VendorName.visible"
+                                        [nzDropdownMenu]="openPoMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'COC.ProjectName' | translate}}
+                                    <nz-filter-trigger [nzActive]="openPOSearchObject.ProjName.value.length > 0"
+                                        [(nzVisible)]="openPOSearchObject.ProjName.visible"
+                                        [nzDropdownMenu]="openPoMenu" [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'RFP.RFP Number' | translate}}
+                                    <nz-filter-trigger [nzActive]="openPOSearchObject.RfpNo.value.length > 0"
+                                        [(nzVisible)]="openPOSearchObject.RfpNo.visible" [nzDropdownMenu]="openPoMenu"
+                                        [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th nzCustomFilter> {{'contract.Details.PRnumber' | translate}}
+                                    <nz-filter-trigger [nzActive]="openPOSearchObject.PrNo.value.length > 0"
+                                        [(nzVisible)]="openPOSearchObject.PrNo.visible" [nzDropdownMenu]="openPoMenu"
+                                        [nzHasBackdrop]="true">
+                                        <span nz-icon nzType="search"></span>
+                                    </nz-filter-trigger>
+                                </th>
+                                <th [nzWidth]="'5px'">{{'RFP.Action' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of openPoWithoutContractData.data; let i = index">
+                                <tr>
+                                    <td>{{data.SiNo}}</td>
+                                    <td>{{data.DocumentNo}}</td>
+                                    <td>{{data.VendorName}}</td>
+                                    <td>{{data.ProjName}}</td>
+                                    <td>{{data.RfpNo}}</td>
+                                    <td>{{data.PrNo}}</td>
+                                    <td>
+                                        <button nz-button nzType="text" nzSize="default"
+                                            (click)="openPODetailsList(data)"><span nz-icon nzType="right"
+                                                nzTheme="outline"></span></button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+
+            </nz-tabset>
+        </div>
+    </ng-container>
+
+    <ng-template #contractListTableTemplate>
+        <ng-container *ngIf="!showPODetailsList; else POTableTemplate">
+            <div class="row mt-3 mx-2">
+                <h4>{{ 'COC.Department Name' | translate }} : {{selectedDepartmentName}}</h4>
+                <h4 *ngIf="docType === 'CONTRACT'">{{ 'COC.ProjectName' | translate }} : {{selectedProjectName}}</h4>
+
+                <nz-table class="mt-2" #nzTable nzShowSizeChanger [nzData]="displayContractDetailsList" [nzPageSize]="5"
+                    [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+                    [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" [nzNoResult]=noTableData>
+                    <thead>
+                        <tr>
+                            <th [nzChecked]="isAllContractDetailsChecked" nzLabel="Select all"
+                                (nzCheckedChange)="onAllChecked($event, 'contract')">
+                            </th>
+                            <th>{{'Table.SI No' | translate}}</th>
+                            <!-- <th nzCustomFilter> {{'COC.ContractNumber' | translate}}
+                                <nz-filter-trigger [nzActive]="openContractSearchObject.DocumentNo.value.length > 0"
+                                    [(nzVisible)]="openContractSearchObject.DocumentNo.visible"
+                                    [nzDropdownMenu]="openContractMenu" [nzHasBackdrop]="true">
+                                    <span nz-icon nzType="search"></span>
+                                </nz-filter-trigger>
+                            </th> -->
+                            <th>{{'COC.ContractNumber' | translate}}</th>
+                            <th>{{'COC.Contract Item Number' | translate}}</th>
+                            <th>{{'COC.VendorName' | translate}}</th>
+                            <th>{{'COC.PoNumber' | translate}}</th>
+                            <!-- <th>PO Item Number</th> -->
+                            <th>{{'COC.Description' | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let data of nzTable.data; let i = index">
+                            <tr>
+                                <td [(nzChecked)]="data.checked">
+                                </td>
+                                <td>{{data.SiNo}}</td>
+                                <td>{{data.ContractNumber}}</td>
+                                <td>{{data.ContractItemNumber}}</td>
+                                <td>{{data.VendorName}}</td>
+                                <td>{{data.PoNumber}}</td>
+                                <!-- <td>{{data.PoItemNumber}}</td> -->
+                                <td>{{data.PoItemDesc}}</td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </nz-table>
+
+            </div>
+
+            <div class="mt-2">
+                <button nz-button nzType="primary" (click)="postCotractSelection()"
+                    [disabled]="!isAllContractDetailsNotChecked">{{'COC.Continue' | translate}}</button>
+            </div>
+        </ng-container>
+        <ng-template #POTableTemplate>
+
+            <div class="row mt-3 mx-2">
+                <h4>{{ 'COC.Department Name' | translate }} : {{selectedDepartmentName}}</h4>
+                <h4>{{ 'COC.ProjectName' | translate }} : {{selectedProjectName}}</h4>
+                <h4 *ngIf="docType === 'CONTRACT'">{{ 'COC.ContractNumber' | translate }} : {{docNumber}}</h4>
+
+                <ng-container *ngIf="poDetailsList && poDetailsList.length">
+                    <nz-table #nzTable nzShowSizeChanger [nzData]="poDetailsList" [nzPageSize]="5"
+                        [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+                        [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true"
+                        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{'Table.SI No' | translate}}</th>
+                                <th>{{'COC.VendorName' | translate}}</th>
+                                <th *ngIf="docType === 'CONTRACT'">{{'COC.Contract Item Number' | translate}}</th>
+                                <th>{{'COC.PoNumber' | translate}}</th>
+                                <th>{{'COC.PoItemNo' | translate}}</th>
+                                <th>{{'COC.SES Number' | translate}}</th>
+                                <th>{{'COC.SESAmt' | translate}}</th>
+                                 <th>{{'COC.SES Remaining Amount' | translate}}</th>
+                                <th>{{'COC.PO Amount' | translate}}</th>
+                                <th>{{'COC.CocAmount' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of nzTable.data; let i = index">
+                                <tr>
+                                    <td [(nzChecked)]="data.checked" (nzCheckedChange)="resetValue($event, data.SiNo)">
+                                    </td>
+                                    <td>{{data.SiNo}}</td>
+                                    <td>{{data.VendorName}}</td>
+                                    <td *ngIf="docType === 'CONTRACT'">{{data.ContractItem}}</td>
+                                    <td>{{data.PoNo}}</td>
+                                    <td>{{data.PoItemNo}}</td>
+                                    <td *ngIf="SERVICE_PO_CODE === data.ItemCategory; else emptyDataTemplate">
+                                        {{data.SesNo}}</td>
+                                    <td *ngIf="SERVICE_PO_CODE === data.ItemCategory; else emptyDataTemplate">
+                                        {{data.SesAmount}}</td>
+                                    <td *ngIf="SERVICE_PO_CODE === data.ItemCategory; else emptyDataTemplate">
+                                        {{data.SesRemainingAmt}}</td>
+                                    <td *ngIf="SERVICE_PO_CODE !== data.ItemCategory; else emptyDataTemplate">
+                                        {{data.PoAmount}}</td>
+                                    <!-- <td>{{data.CocAmount}}</td> -->
+                                     <td>
+                                        <ng-container *ngIf="data.checked; else editCocAmountTemplate">
+                                            <nz-input-number [(ngModel)]="data.CocAmount" [nzMin]="0"
+                                                [nzMax]="getCOCAmountMax(data.SesRemainingAmt, data.PoRemainingAmt)"
+                                                [nzPrecision]="2" [nzStep]="1" style="width: 180px" 
+                                                (ngModelChange)="transformComma($event, data.SiNo)"></nz-input-number>
+
+                                            <small *ngIf="getErrors(data.CocAmount)" style="color: red;">
+                                                {{'COC.Enter COC Amount' | translate}}
+                                            </small>
+
+                                        </ng-container>
+                                        <ng-template #editCocAmountTemplate>
+                                            {{data.CocAmount}}
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </nz-table>
+                </ng-container>
+                <app-no-data-found *ngIf="!poDetailsList || !poDetailsList.length"></app-no-data-found>
+            </div>
+
+            <div class="mt-5">
+                <button nz-button nzType="primary" (click)="createCOC()"
+                    [disabled]="isSelectedPOInValid">{{'COC.Continue' | translate}}</button>
+            </div>
+        </ng-template>
+    </ng-template>
+</div>
+
+<ng-template #emptyDataTemplate>
+    <td>--</td>
+</ng-template>
+
+<ng-template #noTableData>
+    <app-no-data-found></app-no-data-found>
+</ng-template>
+
+<!-- * Search Menu for Open Contract list -->
+<nz-dropdown-menu #openContractMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input #inputContractSearch [placeholder]="translate.instant('RFP.search')" />
+            <button nz-button nzSize="small" nzType="primary"
+                (click)="searchOpenContract(inputContractSearch.value); inputContractSearch.value = ''"
+                [ngClass]="cs.userLanguage === 'en'? 'search-button-en': 'search-button-ar'">{{'RFP.search' |
+                translate}}</button>
+            <button nz-button nzSize="small" (click)="resetSearch()">{{'contract.common.Reset' |
+                translate}}</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<!-- * Search Menu for Open PO List -->
+<nz-dropdown-menu #openPoMenu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input #inputPOSearch [placeholder]="translate.instant('RFP.search')" />
+            <button nz-button nzSize="small" nzType="primary"
+                (click)="searchOpenPO(inputPOSearch.value); inputPOSearch.value = ''"
+                [ngClass]="cs.userLanguage === 'en'? 'search-button-en': 'search-button-ar'">{{'RFP.search' |
+                translate}}</button>
+            <button nz-button nzSize="small" (click)="resetSearch()">{{'contract.common.Reset' |
+                translate}}</button>
+        </div>
+    </div>
+</nz-dropdown-menu>

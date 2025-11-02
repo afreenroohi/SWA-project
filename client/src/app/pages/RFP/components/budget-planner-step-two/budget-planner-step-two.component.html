@@ -1,0 +1,57 @@
+<div class="BOQ-per-year-container">
+    <nz-collapse>
+        <nz-collapse-panel
+        
+          *ngFor="let budget of splitedBudget; let i = index"
+          [nzHeader]="expandedIcon"
+          [nzActive]="isPanelActive"
+        >
+
+        <app-budget-planner-boq-tabel [BOQItems]="budget.BOQItems" [BOQItemsMaster]="BOQMasterData" [isViewOnlyMode]="isViewOnlyMode" (itemUpdated)="onQuantityUpdated($event, i)" (addItem)="onAddBOQItem($event, i)" (addRowToBOQ)="onUpdatedBOQ($event,i)" [budget]="budget.budgetWithVAT" ></app-budget-planner-boq-tabel>
+          <ng-template #expandedIcon let-active>
+            <div class="budget-header-container">
+                <div class="budget-header-item">
+                    <p class="budget-header">
+                        {{ "RFP.Year" | translate }}
+                    </p>
+                    <p class="budget-header-description">
+                        {{budget.year}}
+                    </p>
+                </div>
+                <div class="budget-header-item">
+                    <p class="budget-header">
+                        {{ "contract.create.Commitment Item" | translate }}
+                    </p>
+                    <p class="budget-header-description">
+                        
+                        {{budget.committeItem}}
+                    </p>
+                </div>
+                <div class="budget-header-item">
+                    <p class="budget-header">
+                        {{ "RFP.Internal Order" | translate }}
+                        
+                    </p>
+                    <p class="budget-header-description">
+                        
+                        {{budget.internalOrder}}
+                    </p>
+                </div>
+                <div class="budget-header-item">
+                    <p class="budget-header">
+                        {{ "RFP.Budget with VAT(SAR)" | translate }}
+
+                    </p>
+                    <p class="budget-header-description">
+                        
+                        {{budget.budgetWithVAT}}
+                    </p>
+                </div>
+            </div>
+          </ng-template>
+        </nz-collapse-panel>
+      </nz-collapse>
+</div>
+<p class="error" *ngIf="errorMessage">
+    {{errorMessage}}
+</p>

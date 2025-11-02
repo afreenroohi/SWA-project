@@ -1,0 +1,40 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row" style="margin-top: 3rem">
+    <div class="col-12">
+      <nz-table
+        #nzTable
+        nzShowSizeChanger
+        [nzData]="listOfDisplayData"
+        [nzPageSize]="5"
+        [nzTotal]="1000"
+        [nzPageIndex]="1"
+        [nzFrontPagination]="true"
+        [nzPageSizeOptions]="[5,10,15,20,25]"
+        nzBordered="true"
+        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
+        nzTableLayout="fixed"
+      >
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn"  [nzSortFn]="column.sortFn" 
+                  
+            [nzSortDirections]="column.sortDirections" >
+              {{ cs.userLanguage === "en" ? column.title : column.titleAr }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of nzTable.data; let i = index">
+            <!-- <td>{{ i + 1 }}</td> -->
+            <td>{{ data.CocNumber }}</td>
+            <td>{{ cs.numberWithCommas(data.CocAmount) }}</td>
+            <td>{{ data.SesNo }}</td>
+            <td>{{  cs.returnDate(data.SesCreationDate) }}</td>
+            <td>{{ data.ContractNo }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

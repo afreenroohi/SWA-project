@@ -1,0 +1,278 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <p class="create_budget_head">{{ "RFP.BudgetAllocation" | translate }}</p>
+    <div class="col-12">
+      
+        <!-- <div class="create__form__section"> -->
+          <nz-collapse class="border-block mt-2" [nzExpandIconPosition]="expandIconPosition">
+            <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Budget Allocation' | translate }}">
+              <form [formGroup]="rfpForm" autocomplete="off" fxLayout="column" fxLayout.xs="column" fxLayoutGap="1%" fxFlexFill>
+              <div class="row w-100 ">
+                <div class="col-4  mt-3">
+
+                  <nz-form-label nzRequired>{{
+                    "RFP.Select Project" | translate
+                    }}</nz-form-label>
+
+                  <nz-form-control nzHasFeedback [nzErrorTip]="ProjErrorTpl">
+                    <nz-select nzShowSearch formControlName="ProjectId" [nzPlaceHolder]="this.translate.instant('RFP.SelectProj')" style="width: 100%" nzAllowClear>
+                      <nz-option *ngFor="let o of projects" [nzValue]="o.ProjId"
+                        [nzLabel]="cs.userLanguage === 'en'?  o.ProjId + '-' + o.ProjName :o.ProjId + '-' + o.ProjName "></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                  <ng-template #ProjErrorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">{{
+                      "RFP.ProjReq" | translate
+                      }}</ng-container>
+                  </ng-template>
+                </div>
+
+                <div class="col-8"></div>
+
+                <div class="col-12 mt-3">
+                  <nz-form-label for="UnplannedProj">{{
+                    "RFP.UnplannedProj" | translate
+                    }}</nz-form-label>
+                  <nz-form-control>
+                    <nz-switch [ngModel]="isUnplanned" nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
+                      formControlName="Unplanned" (ngModelChange)="handleManSwt($event)"
+                      nzUnCheckedChildren="{{ 'RFP.No' | translate }}"></nz-switch>
+                  </nz-form-control>
+                </div>
+
+
+
+                <div class="col-md-4 col-12 mt-3" *ngIf="isUnplanned">
+                  <nz-form-label nzRequired for="UpProjName">{{
+                    "RFP.NewProj" | translate
+                    }}</nz-form-label>
+                  <input nz-input formControlName="UpProjName" />
+
+                </div>
+
+                <div class="col-md-4 col-12 mt-3" *ngIf="!isUnplanned">
+                  <nz-form-label nzRequired>{{
+                    "RFP.Transfered Budget Project Name" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="ProjErrorTpl">
+                    <nz-select nzShowSearch formControlName="TrfProjid" style="width: 100%" [nzPlaceHolder]="this.translate.instant('RFP.SelectProj')" nzAllowClear>
+                      <nz-option *ngFor="let o of projects" [nzValue]="o.ProjId"
+                        [nzLabel]="cs.userLanguage === 'en'?  o.ProjId + '-' + o.ProjName :o.ProjId + '-' + o.ProjName "></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                  <!-- <ng-template #ProjErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">{{
+                  "RFP.BudProjReq" | translate
+                }}</ng-container>
+              </ng-template> -->
+                </div>
+
+
+
+                <div class="col-md-4 col-12 mt-3">
+                  <nz-form-label nzRequired for="AmtType">{{
+                    "RFP.Select Project Type" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="ptErrorTpl">
+                    <nz-select nzShowSearch (ngModelChange)="handleProjTyChange($event)" [nzPlaceHolder]="this.translate.instant('RFP.Select Budget Type')" formControlName="AmtType"
+                      style="width: 100%" nzAllowClear>
+                      <nz-option *ngFor="let o of certs" [nzValue]="o.id"
+                        [nzLabel]="cs.userLanguage === 'en'? o.value : o.valueAr"></nz-option>
+                    </nz-select>
+                    <ng-template #ptErrorTpl let-control>
+                      <ng-container *ngIf="
+                      (control.dirty || control.touched) &&
+                      control.invalid &&
+                      control.hasError('required')
+                    ">{{ "RFP.Select Project Type" | translate }}</ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-12 mt-3" *ngIf="opex">
+                  <nz-form-label nzRequired for="Opex">{{
+                    "RFP.Opex Amount" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="capErrorTpl">
+                    <nz-input-number nz-input formControlName="Opex" [nzMin]="0"
+                      (change)="transformComma($event,'Opex')" style="width: 100%;" [nzPlaceHolder]="this.translate.instant('RFP.Enter Amount')" (keydown)="restrictZero($event)"></nz-input-number>
+
+                    <ng-template #capErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">{{
+                        "RFP.Opex Amount" | translate
+                        }}</ng-container>
+                    </ng-template>
+                    <small *ngIf=" rfpForm.get('Opex')?.hasError('min')">
+                      {{ "RFP.zero is not acceptable" | translate}}
+                      </small>
+                  </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-12 mt-3" *ngIf="capex">
+                  <nz-form-label nzRequired for="Capex">{{
+                    "RFP.Capex Amount" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="capErrorTpl">
+                    <nz-input-number nz-input formControlName="Capex" [nzMin]="0"
+                      (change)="transformComma($event,'Capex')" style="width: 100%;" [nzPlaceHolder]="this.translate.instant('RFP.Enter Amount')" (keydown)="restrictZero($event)"></nz-input-number>
+                    <!-- <input nz-input formControlName="Capex" /> -->
+                    <ng-template #capErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">{{
+                        "RFP.Capex Amount" | translate
+                        }}</ng-container>
+                    </ng-template>
+                    <small *ngIf=" rfpForm.get('Capex')?.hasError('min')">
+                      {{ "RFP.zero is not acceptable" | translate}}
+                      </small>
+                  </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-12 mt-3" *ngIf="Supply">
+                  <nz-form-label nzRequired for="Supply">{{
+                    "RFP.Supply Amount" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="suppErrorTpl">
+                    <nz-input-number nz-input formControlName="Supply" (change)="transformComma($event,'Supply')"
+                      [nzMin]="0" style="width: 100%;" [nzPlaceHolder]="this.translate.instant('RFP.Enter Amount')" (keydown)="restrictZero($event)"></nz-input-number>
+                    <!-- <input nz-input formControlName="Supply" /> -->
+                    <ng-template #suppErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">{{
+                        "RFP.Supply Amount" | translate
+                        }}</ng-container>
+                    </ng-template>
+                    <small *ngIf=" rfpForm.get('Supply')?.hasError('min')">
+                      {{ "RFP.zero is not acceptable" | translate}}
+                      </small>
+                  </nz-form-control>
+                </div>
+
+                <div class="col-md-4 col-12 mt-3">
+                  <nz-form-label nzRequired for="Budamt">{{
+                    "RFP.Transfered Budget Amount" | translate
+                    }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="EstErrorTpl">
+                    <nz-input-number nz-input formControlName="Budamt" [nzMin]="0"
+                      (change)="transformComma($event,'Budamt')" style="width: 100%;" [nzPlaceHolder]="this.translate.instant('RFP.Enter Amount')" (keydown)="restrictZero($event)"></nz-input-number>
+                    <!-- <input nz-input formControlName="Budamt" /> -->
+                    <ng-template #EstErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">{{
+                        "RFP.Transfered Budget Amount" | translate
+                        }}</ng-container>
+                    </ng-template>
+                    <small *ngIf=" rfpForm.get('Budamt')?.hasError('min')">
+                      {{ "RFP.zero is not acceptable" | translate}}
+                      </small>
+                  </nz-form-control>
+                </div>
+
+                <div class="col-12 mt-3">
+                  <nz-form-label nzRequired for="ProjJust">
+                    {{ "RFP.Project Justification" | translate }}</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzErrorTip]="ProjJusErrorTpl">
+                    <textarea rows="4" nz-input formControlName="ProjJust" [placeholder]="this.translate.instant('RFP.Add Justification')"></textarea>
+                    <ng-template #ProjJusErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('required')">{{
+                        "RFP.Project Justification" | translate
+                        }}</ng-container>
+                      <ng-container *ngIf="control.hasError('maxlength')">{{
+                        "RFP.300MaxCharactersError" | translate
+                        }}</ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </div>
+              </div>
+            </form>
+            </nz-collapse-panel>
+          </nz-collapse>
+
+          <!-- </div>
+
+        <div class="create__form__section mt-2"> -->
+          <nz-collapse class="border-block mt-4" [nzExpandIconPosition]="expandIconPosition">
+            <nz-collapse-panel nzHeader="{{ 'RFP.Attachments' | translate }}">
+              <div class="row">
+                <div class="col-12">
+                  <!-- <h6>{{ "RFP.Attachments" | translate }}</h6> -->
+                  <ul style="margin-top: 4px">
+                    <li>
+                      <span style="position: relative; font-size: 0.9rem"><b>{{ "RFP.Note" | translate }}</b></span>
+                    </li>
+                    <li>
+                      <span style="position: relative; font-size: 0.9rem">{{
+                        "RFP.Maxium" | translate
+                        }}</span>
+                    </li>
+                  </ul>
+
+                  <br />
+                  <app-filenet class="mt-3" (uploadSuccess)="fileSapUpload($event)" [maxLimit]="42960"
+                    (deleteFile)="fileSapDelete($event)" [fileList]="fileNetList"></app-filenet>
+
+                  <!-- <nz-upload
+                [(nzFileList)]="fileList"
+                [nzBeforeUpload]="beforeUpload"
+                nzType="drag"
+                style="height: 60% !important"
+                [nzMultiple]="true"
+              >
+                <p class="ant-upload-drag-icon">
+                  <span nz-icon nzType="inbox"></span>
+                </p>
+                <p class="ant-upload-text">
+                  {{ "COMMON.Drag" | translate }}
+                </p>
+              </nz-upload> -->
+                </div>
+                <div class="col-12 mt-3" style="margin-top: 1rem; margin-bottom: 1rem">
+                  <!-- <div formArrayName="Attachments" *ngFor="let photo in Attachments; let i = index;">
+                  <div [formGroupName]="i">
+                    <span>{{ photo.value.file.name }} &nbsp;  
+                        <button nz-button nzType="primary" nzSize="default" style="margin-top: 1.5rem;"
+                        
+                        (click)="removeDoc(i)" nzShape="circle"><span nz-icon nzType="delete"></span></button>
+                      </span>
+                  
+                  </div>
+              </div> -->
+                  <div *ngIf="uploadedfiles" style="margin-top: 10px;"></div>
+                  <div *ngFor="let file of uploadedfiles ;let i = index">
+                    <span>{{ file }} &nbsp;
+                    </span>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- <div class="col-12 mb-3" style="margin-top: 1rem">
+              <button
+                nz-button
+                [nzType]="'primary'"
+                [nzLoading]="uploading"
+                (click)="handleUpload()"
+                [disabled]="fileList.length === 0"
+                style="margin-top: 16px"
+              >
+                {{ uploading ? ('RFP.Uploading' | translate) : ("RFP.Start Upload" | translate) }}
+              </button>
+              &nbsp;&nbsp;&nbsp;
+            </div> -->
+
+            </nz-collapse-panel>
+          </nz-collapse>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex mt-3">
+                <button nz-button nzType="primary" (click)="submitCase()" [disabled]="!rfpForm?.valid" igxRipple>
+                  {{ "RFP.Save" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        <!-- </div> -->
+      
+    </div>
+  </div>
+</div>

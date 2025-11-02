@@ -1,0 +1,39 @@
+.create__form__section {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-top: 3px solid #41ad4f;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.editBtn {
+    background-color: transparent;
+    border: none;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 5%;
+}
+
+::ng-deep .ant-form-item-children-icon {
+    color: #41ad4f !important;
+}
+
+.box {
+    margin: 2%;
+    padding: 5%;
+    background-color: #efefef;
+    border-radius: 2px;
+}
+
+::ng-deep [dir="rtl"] .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    padding-left: 25px !important;
+  }
+  
+::ng-deep [dir="rtl"] .ant-select-arrow {
+    left: 11px !important;
+    right: auto !important;
+}

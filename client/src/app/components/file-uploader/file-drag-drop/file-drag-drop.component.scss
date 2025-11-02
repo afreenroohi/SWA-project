@@ -1,0 +1,118 @@
+.browseClass {
+    text-decoration: underline !important;
+    color: #3366ff !important;
+    cursor: pointer !important;
+}
+
+.dragarea {
+    border: 2px groove #FFFFFF;
+    padding: 1rem;
+}
+
+.droparea {
+    // font-size: 1.5rem;
+    border: 2px dashed #bbb;
+    padding: 1rem;
+    background-color: #eff;
+    color: #aaa;
+    border-radius: 10px;
+}
+
+
+.buttonCust {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.browseClass {
+    text-decoration: underline !important;
+    color: #3366ff !important;
+    cursor: pointer !important;
+}
+
+.title-container {
+    display: flex;
+
+    igx-icon {
+        margin-right: 8px;
+    }
+}
+
+.docModalHeadIcon {
+    font-size: large;
+}
+
+.docModalHeadText {
+    font-size: large;
+    font-weight: bold;
+}
+
+.docIconsInlineSingle {
+    font-size: large !important;
+    padding-top: 0.16rem !important;
+}
+
+.iconButton {
+    cursor: pointer;
+}
+
+.loadingLabel {
+    margin: 0.1rem !important;
+}
+
+.loadingText {
+    padding-top: 3% !important;
+}
+
+// ----------------------------------------------------------
+
+.viewModeBorder {
+    // border: 1px solid #707070;
+    // border-radius: 10px;
+
+    border: 1px solid #dadada !important;
+    border-radius: 5px !important;
+    box-shadow: 0px 0px 3px 1px #ebebeb !important;
+}
+
+.ellipsisText {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+.uploadSpinClass {
+    width: 100%;
+    height: 100%;
+}
+
+.docNzSpin {
+    padding-top: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.docNzIcon {
+    font-size: 20px;
+    color: #009f4e;
+    width: 2rem;
+    padding: 5px;
+}
+
+.docNzIconClickable {
+    font-size: 20px;
+    color: #747474;
+    width: 2rem;
+    padding: 5px;
+}
+
+.docNzIconClickable:hover {
+    transform: scale(1.2);
+    color: #009f4e;
+}
+
+.docDisplayName {
+    margin: 0 !important;
+    padding: 0.5rem !important;
+    color: #707070;
+}

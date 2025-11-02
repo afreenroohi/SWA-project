@@ -1,0 +1,49 @@
+:host {
+
+    display: block;
+    padding: 2rem;
+    border-color: black;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 2rem;
+    width: 100%;
+
+    .table-container {
+
+        .table-container-header {
+
+            display: flex;
+            justify-content: space-between;
+
+            .table-search-container {
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+                width: 56%;
+
+                .download-btn {
+
+                    height: 31px;
+                    width: 50px;
+                    border-radius: 2px;
+
+                    i {
+                        font-size: 15px;
+                    }
+
+                }
+
+            }
+
+        }
+
+        nz-pagination {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+    }
+
+}

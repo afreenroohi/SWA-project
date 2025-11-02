@@ -1,0 +1,48 @@
+.close {
+    cursor: pointer;
+}
+.body-container {
+    h1 {
+        font-family: Roboto;
+        font-size: 34px;
+        font-weight: 600;
+        line-height: 35px;
+        text-align: center;
+
+    }
+    p {
+        font-family: Roboto;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 35px;
+        text-align: center;
+        color: #4E4D4D;
+    }    
+
+    .icon-container {
+        width: 92.03px;
+        height: 92.03px;
+        margin: auto;
+        margin-bottom: 30px;
+        .question-mark {
+            position: relative;
+            top: -77%;
+        }
+    }
+}
+
+.ant-btn {
+    width: 100px;
+    height: 48px;
+    margin-left: 0;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25px;
+    &.ant-btn-primary {
+        margin-left: 8px;
+    }
+}
+.ant-btn:not(.ant-btn-primary) {
+    background-color: #F5F5F5;
+}

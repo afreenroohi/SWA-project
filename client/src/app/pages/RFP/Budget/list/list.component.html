@@ -1,0 +1,133 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="repForm">
+      <div class="row mb-4 pb-4 border-set">
+        <div class="col-12 col-md-4">
+          <nz-form-label for="rfptype">{{
+            "RFP.Select Project" | translate
+          }}</nz-form-label>
+          <nz-select formControlName="trasferBugetFrom" [nzPlaceHolder]="translate.instant('RFP.SelectProj')" style="width: 100%" nzAllowClear>
+            <nz-option
+              *ngFor="let o of projects"
+              [nzValue]="o.ProjId"
+              [nzLabel]="cs.userLanguage === 'en'?  o.ProjId + '-' + o.ProjName :o.ProjId + '-' + o.ProjName "
+            ></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <nz-form-label for="rfptype">{{
+            "RFP.Transfered Budget Project Name" | translate
+          }}</nz-form-label>
+          <nz-select formControlName="trasferBugetTo" [nzPlaceHolder]="translate.instant('RFP.SelectProj')" style="width: 100%" nzAllowClear>
+            <nz-option
+              *ngFor="let o of projects"
+              [nzValue]="o.ProjId"
+              [nzLabel]="cs.userLanguage === 'en'?  o.ProjId + '-' + o.ProjName :o.ProjId + '-' + o.ProjName "
+            ></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <nz-form-label for="rfptype">{{
+            "RFP.NewProj" | translate
+          }}</nz-form-label>
+          <input nz-input formControlName="projectName" />
+        </div>
+
+        <div class="col-12 col-md-4">
+          <nz-form-label for="rfptype">{{
+            "RFP.Select Project Type" | translate
+          }}</nz-form-label>
+          <nz-select formControlName="budgetType" [nzPlaceHolder]="translate.instant('RFP.Select Budget Type')" style="width: 100%" nzAllowClear>
+            <nz-option
+              *ngFor="let o of budgetTypes"
+              [nzValue]="o.BudgetypeID"
+              [nzLabel]="cs.userLanguage === 'en'? o.BudgetypeDesc : o.BudgetypeDescAR"
+            ></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <button
+          nz-button
+          nzType="primary"
+          style="margin-top: 2rem"
+          nzSize="default"
+          (click)="search()"
+        >
+          {{ "RFP.search" | translate }}
+        </button>
+        </div>
+      </div>
+      </form>
+
+      <nz-table #nzTable *ngIf="listOfDisplayData?.length" nzShowSizeChanger [nzData]="listOfDisplayData" [nzPageSize]="5"
+        [nzTotal]="100" [nzPageIndex]="1" [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]"
+        nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn; index as i" [class.last-col]="column.title == 'Status' || column.title == 'Action'" [class.hide-filter]="column.title !== 'Status'" 
+            [nzSortFn]="column.sortFn || false" 
+            [nzSortDirections]="column.sortDirections || []"
+            [nzFilters]="column.listOfFilter || []"
+            [nzFilterFn]="column.filterFn || false"
+            [nzFilterMultiple]="column.filterMultiple || false">
+              {{ cs.userLanguage === 'en'? column.title : column.titleAr }}
+              
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of nzTable.data">
+            <td>{{ data.ProjName }}</td>
+            <td>{{ data.TrfProjName }}</td>
+            <td>{{ data.UpProjName }}</td>
+            <td>{{ data.TrfProjAmt }}</td>
+            <td>{{ cs.returnAmtType(data.ProjTypeText) }}</td>
+            <td>{{ cs.numberWithCommas(data.ProjTypeAmt) }}</td>
+            <td>{{ cs.returnStatus(data.Status) }}</td>
+            <td>
+              <app-icon [icon]="IconList.viewEye" (click)="openDetails(data.ProjId, data.ProjType,data.TrfProjid)"></app-icon>
+
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <app-no-data-found *ngIf="!listOfDisplayData?.length"></app-no-data-found>
+      
+
+      <nz-modal [(nzVisible)]="showDetails" [nzFooter]="modalFooter" [nzTitle]="modalTitleboq"   
+      [nzWidth]="1180" [nzClosable]="showDetails" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+          <app-rfpdetails *ngIf="detArray" Action="budget" [detArray]="detArray"></app-rfpdetails>
+        </ng-container>
+
+        <ng-template #modalTitleboq>
+          <div style="display: flex; justify-content: space-between">
+            <div>
+              <p class="create_budget_head"> {{
+              "RFP.Request For Budget Allocation" | translate
+              }}</p>
+            </div>
+            <button nz-button nzType="primary" nzShape="circle" (click)="handleCancel()"><span nz-icon
+                nzType="close"></span></button>
+          </div>
+        </ng-template>
+
+        <ng-template #modalFooter>
+             
+        </ng-template>
+      </nz-modal>
+
+      <!-- <nz-drawer [nzVisible]="showDetails" [nzWidth]="1180" [nzClosable]="false" (nzOnClose)="close()"> -->
+        <!-- <ng-container  [ngStyle]="{'DIRECTION': cs.userLanguage === 'en'?  'LTR' : 'RTL'}"> -->
+          <!-- <app-rfpdetails *ngIf="detArray" Action="budget" [detArray]="detArray"></app-rfpdetails> -->
+        <!-- </ng-container> -->
+      <!-- </nz-drawer> -->
+
+    </div>
+  </div>

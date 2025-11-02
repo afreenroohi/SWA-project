@@ -1,0 +1,91 @@
+:host {
+
+    .dashboard {
+
+        display: grid;
+        row-gap: 1rem;
+
+        nz-select { 
+            width: 100%;
+        }
+
+        .row {
+            --bs-gutter-y: 1rem;
+        }
+
+        .dashboard-options {
+
+            display: flex;
+            justify-content: space-between;
+
+            .option {
+
+                width: 20%;
+                nz-form-item {
+                    margin-bottom: 0px;
+                }
+
+                nz-form-label {
+                    display: flex;
+                    justify-content: flex-start;
+                }
+
+            }
+        }
+
+        .scroll-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .dashboard-table {
+                display: grid;
+                place-items: start;
+
+                dashboard-table {
+                    min-width: 75rem;
+                    max-width: 100%;
+                    width: 100%;
+            }
+
+        }
+
+        .dashboard-charts.row {
+
+            .col-6 {
+                height: 50vh;
+            }
+
+            .col-12 {
+                height: 90vh;
+            }
+
+        }
+
+        .dashboard-cards {
+            position: relative;
+            overflow: hidden;
+
+            .card-scroll-container {
+                display: flex;
+                gap: 1rem;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+                padding: 1rem 1rem; 
+                scrollbar-width: none;
+                    -ms-overflow-style: none;
+                
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+            }
+
+            .card-items {
+                min-width: 283PX;
+                flex: 0 0 auto;
+            }
+        }
+
+    }
+}

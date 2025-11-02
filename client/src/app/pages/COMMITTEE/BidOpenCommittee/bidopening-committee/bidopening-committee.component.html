@@ -1,0 +1,2004 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <form
+        [formGroup]="bidopeningCommitteeForm"
+        autocomplete="off"
+        fxLayout="column"
+        fxLayout.xs="column"
+        fxLayoutGap="1%"
+        fxFlexFill
+      >
+        <div class="create__form__section">
+          <header>{{ "COM.BidOpeningCommitteeForm" | translate }}</header>
+          <div class="my-3">
+            <!-- * Tender Details Collapse -->
+            <nz-collapse class="mb-3" nzAccordion nzExpandIconPosition="right">
+              <nz-collapse-panel
+                [nzHeader]="'COM.TenderDetails' | translate"
+                #TenderDetails
+                [nzActive]="panels[0].active"
+                [nzExpandedIcon]="expandedIcon"
+              >
+                <div class="row w-100">
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label for="TenderName">{{
+                      "COM.TenderName" | translate
+                    }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          name="TenderName"
+                          type="text"
+                          id="TenderName"
+                          style="width: 100%"
+                          formControlName="TenderName"
+                        />
+                      </nz-form-control>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label *ngIf="openingDataBasedonTenderType()">{{
+                      "COM.OpeningDate" | translate
+                    }}</nz-form-label>
+                    <nz-form-label *ngIf="!openingDataBasedonTenderType()">{{
+                      "COM.TechnicalOfferOpeningDate" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker
+                        style="width: 100%"
+                        [nzFormat]="dateFormat"
+                        formControlName="openingDate"
+                        (ngModelChange)="resetFinanceOfferOpeningDate()"
+                      ></nz-date-picker>
+                    </nz-form-control>
+                  </div>
+                  <div *ngIf="!openingDataBasedonTenderType()" class="col-md-4 col-12 mt-3">
+                  
+                    <nz-form-label >{{
+                      "COM.FinancialOfferOpeningDate" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker
+                        style="width: 100%"
+                        [nzFormat]="dateFormat"
+                        formControlName="FinanceOfferOpeningDate"
+                      ></nz-date-picker>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label for="ReferenceNumber">{{
+                      "COM.ReferenceNumber" | translate
+                    }}</nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          name="ReferenceNumber"
+                          type="text"
+                          id="ReferenceNumber"
+                          style="width: 100%"
+                          formControlName="ReferenceNumber"
+                        />
+                      </nz-form-control>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="typeOfPurchase">{{
+                      "COM.TypeofPurchase" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-select
+                        id="typeOfPurchase"
+                        formControlName="typeOfPurchase"
+                        style="width: 100%"
+                      >
+                        <nz-option
+                          *ngFor="let purchase of TypeOfPurchase"
+                          [nzValue]="purchase.PurchaseTypeID"
+                          [nzLabel]="
+                            commonService.userLanguage === 'en'
+                              ? purchase.PurchaseTypeDesc
+                              : purchase.PurchaseTypeDescAr
+                          "
+                        >
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="typeOfTendering"
+                      >{{ "COM.TypeofTendering" | translate }}
+                    </nz-form-label>
+                    <nz-form-control>
+                      <nz-select
+                        id="typeOfTendering"
+                        formControlName="typeOfTendering"
+                        style="width: 100%"
+                      >
+                        <nz-option
+                          *ngFor="let tender of Tenderingresult"
+                          [nzLabel]="
+                            commonService.userLanguage === 'en'
+                              ? tender.type
+                              : tender.typeAr
+                          "
+                          [nzValue]="tender.id"
+                        >
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="Etimadnumber">{{
+                      "COM.EtimadNumber" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-input-number
+                        nz-input
+                        formControlName="Etimadnumber"
+                        [nzMin]="0"
+                        style="width: 100%"
+                      >
+                      </nz-input-number>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="EtmdSubDate">{{
+                      "COM.Date of submission Etimad" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker
+                        style="width: 100%"
+                        [nzFormat]="dateFormat"
+                        [nzDisabledDate]="disabledFutureDate"
+                        formControlName="EtmdSubDate"
+                      ></nz-date-picker>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="CommitteeHead">{{
+                      "COM.Committeehead" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <input
+                        nz-input
+                        name="CommitteeHead"
+                        type="text"
+                        id="CommitteeHead"
+                        style="width: 100%"
+                        formControlName="CommitteeHead"
+                      />
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="Department">{{
+                      "COM.Department" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <input
+                        nz-input
+                        formControlName="Department"
+                        style="width: 100%"
+                      />
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label
+                      nzFor="SubmissionDate"
+                      nzRequired
+                      *ngIf="isOfficer"
+                      >{{
+                        "COM.Date for submitting quotation" | translate
+                      }}</nz-form-label
+                    >
+                    <nz-form-label nzFor="SubmissionDate" *ngIf="!isOfficer">{{
+                      "COM.Date for submitting quotation" | translate
+                    }}</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker
+                        style="width: 100%"
+                        [nzFormat]="dateFormat"
+                        [nzDisabledDate]="disabledFutureDate"
+                        formControlName="SubmissionDate"
+                      ></nz-date-picker>
+                    </nz-form-control>
+                  </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="Number of vendors">{{
+                      "COM.Number of vendors" | translate
+                    }}</nz-form-label>
+                    <nz-input-number
+                    
+                    [nzMin]="1"
+                    [nzMax]="10"
+                    [nzStep]="1"
+                    
+                    [nzDisabled]="!disableNoBuyerAndVendor()"
+
+                    style="width: 100%"
+                    formControlName="NoOfVndrs"
+                  ></nz-input-number>
+              
+                    </div>
+                  <div class="col-md-4 col-12 mt-3">
+                    <nz-form-label nzFor="Number of buyers">{{
+                      "COM.Number of buyers" | translate
+                    }}</nz-form-label>
+                    <nz-input-number
+                    [nzDisabled]="!disableNoBuyerAndVendor()"
+                    
+                    [nzMin]="1"
+                    [nzMax]="10"
+                    [nzStep]="1"
+                    style="width: 100%"
+                    formControlName="NoOfByres"
+                  ></nz-input-number>
+              
+                    </div>
+
+                  <!-- * Purchase Method -->  
+                  <div *ngIf="CommitteeID !== '04'" class="col-md-4 col-12 mt-3">
+                    <nz-form-label
+                      nzFor="CompetitionTypeID"
+                      nzRequired
+                      >{{ "COM.Purchase method" | translate }}</nz-form-label
+                    >
+                    <nz-form-control>
+                      <nz-select
+                        id="CompetitionTypeID"
+                        formControlName="CompetitionTypeID"
+                        style="width: 100%"
+                      >
+                        <nz-option
+                          *ngFor="let competetionType of competitionTypes"
+                          [nzLabel]="
+                            commonService.userLanguage === 'en'
+                              ? competetionType.CompetitionTypeDescEN
+                              : competetionType.CompetitionTypeDescAR
+                          "
+                          [nzValue]="competetionType.CompetitionTypeID"
+                        >
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </div>
+
+                  <ng-container *ngIf="role === 'CH'">
+                    <div class="col-md-4 col-12 mt-3">
+                      <nz-form-label nzFor="CmtFrmtnOrdrNo">{{
+                        "COM.FormationNumber" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-input-number
+                          nz-input
+                          formControlName="CmtFrmtnOrdrNo"
+                          [nzMin]="0"
+                          style="width: 100%"
+                        >
+                        </nz-input-number>
+                      </nz-form-control>
+                    </div>
+
+                    <div class="col-md-4 col-12 mt-3">
+                      <nz-form-label>{{
+                        "COM.FormationDate" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-date-picker
+                          style="width: 100%"
+                          [nzFormat]="dateFormat"
+                          [nzDisabledDate]="futureDateDisable"
+                          formControlName="CmtFrmtnOrdrDate"
+                        ></nz-date-picker>
+                      </nz-form-control>
+                    </div>
+                  </ng-container>
+                </div>
+                <ng-template #expandedIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="TenderDetails.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+
+            <!-- committee head comments -->
+            <nz-collapse
+              class="mb-3"
+              nzExpandIconPosition="right"
+              nzAccordion
+              *ngIf="!isChaiman"
+            >
+              <nz-collapse-panel
+                nzHeader="{{ 'COM.CommitteeHeadComments' | translate }}"
+                #CommitteeHeadComments
+                [nzActive]="panels[1].active"
+                [nzExpandedIcon]="expandedIcon"
+              >
+                <div class="row">
+                  <div class="col-md-12 col-12">
+                    <nz-form-control>
+                      <nz-input-group
+                        class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                      >
+                        <textarea
+                          nz-input
+                          formControlName="ChairmanCmnts"
+                        ></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </div>
+                </div>
+                <ng-template #expandedIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="CommitteeHeadComments.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+
+            <nz-collapse class="mb-3" nzExpandIconPosition="right" nzAccordion>
+              <nz-collapse-panel
+                [nzHeader]="committeeMembersHeader"
+                #CommitteeMembers
+                [nzActive]="panels[2].active"
+                [nzExpandedIcon]="CommitteeMembersExpandedIcon"
+              >
+              <ng-template #committeeMembersHeader>
+                <span> {{ "COM.CommitteeMembers" | translate }} </span>
+                
+              </ng-template>
+                <!-- * Committee Member Table -->
+
+                <div class="col-md-12 col-12 mt-3">
+                  <!-- <nz-form-label nzFor="committeeHeadMembers">{{"COM.CommitteeMembers" | translate}}
+              
+                       </nz-form-label> -->
+
+                  <nz-form-control>
+                    <nz-table
+                      class="committe-head-members"
+                      nzBordered
+                      #basicTable
+                      name="committeeHeadMembers"
+                      [nzData]="committeeMembersList"
+                    >
+                      <thead>
+                        <tr>
+                          <th colspan="6" class="header">
+                            {{ "COM.FixedMembers" | translate }}
+                            <span class="required-asterisk"> *</span>
+                          </th>
+
+                          <!-- Hiding backup members for opening committee as per the request of ALA.
+              
+                            <th colspan="3">{{'COM.BackupMembers' | translate}}</th> -->
+                        </tr>
+
+                        <tr>
+                          <th colspan="3" class="header">
+                            {{ "COM.Department" | translate }}
+                          </th>
+
+                          <th colspan="3" class="header">
+                            {{ "COM.Members" | translate }}
+                          </th>
+
+                          <!-- Hiding backup members for opening committee as per the request of ALA.
+              
+                            <th colspan="3">{{'COM.Member' | translate}}</th> -->
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr *ngFor="let data of basicTable.data; let i = index">
+                          <td
+                            colspan="3"
+                            *ngIf="
+                              data.CommitteeRole && data.CommitteeId == CommitteeID
+                            "
+                          >
+                            {{
+                              this.commonService.returnDepartment(
+                                data.CommitteeRole
+                              )
+                            }}
+                          </td>
+
+                          <td colspan="3" *ngIf="data.CommitteeId == CommitteeID">
+                            <input
+                              type="checkbox"
+                              *ngIf="data.CommitteeUserName"
+                              name="member-{{ i }}"
+                              [disabled]="
+                                role === 'MR' ||
+                                bidsapproved ||
+                                (role === 'OF' &&
+                                  (LogdInUsrID === data.CommitteeUser ))
+                              "
+                              [checked]="data.isChecked"
+                              [value]="data.CommitteeUserName"
+                              (click)="onmemberChange($event, i)"
+                            />
+
+                            {{
+                              this.commonService.userLanguage === "en"
+                                ? data.CommitteeUserName
+                                : data.CommitteeUserName_AR
+                            }}
+                          </td>
+
+                          <!-- Hiding backup members for opening committee as per the request of ALA.
+              
+                            <td colspan="3" *ngIf="data.CommitteeId == '01'">
+              
+                             <input type="checkbox" *ngIf="data.CommitteeBkpUserName" name="member-{{i}}"
+              
+                              [disabled]="role === 'MR' || bidsapproved" [value]="data.CommitteeBkpUserName"
+              
+                              (click)="onmemberChange($event,'Backup', i)" [checked]="data.SelectedMbr === 'B' " />
+              
+                             {{this.commonService.userLanguage === 'en'? data.CommitteeBkpUserName :
+              
+                             data.CommitteeBkpUserName_AR}}
+              
+                            </td>
+              
+                           -->
+                        </tr>
+                      </tbody>
+                    </nz-table>
+                  </nz-form-control>
+                </div>
+
+                <ng-template #CommitteeMembersExpandedIcon let-active>
+                  {{ active }}
+
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="CommitteeMembers.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+
+            <!-- <div class="col-md-12 col-12 mt-3" *ngIf="bidsapproved || isFinancialoffer">
+              <nz-form-label nzFor="noVenders">{{"COM.NumberofVendors"| translate}}</nz-form-label>
+              <nz-form-control>
+                <input nz-input name="noVenders" type="text" id="noVenders" style="width: 100%;"
+                  formControlName="noVenders">
+              </nz-form-control>
+            </div>
+            <div class="col-md-12 col-12 mt-3" *ngIf="bidsapproved || isFinancialoffer">
+              <div>
+                <nz-collapse nzExpandIconPosition="right" nzAccordion>
+                  <nz-collapse-panel [nzHeader]="VendorName | translate" #p [nzActive]="panelActive" [nzExpandedIcon]="expandedIcon">
+                    <p style="margin:0;" *ngFor="let item of vendorlistname">
+                      {{item?.VendorName}}
+                    </p>
+                      <ng-template #expandedIcon let-active>
+                    {{ active }}
+                    <span nz-icon nzType="right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></span>
+                  </ng-template>
+                  </nz-collapse-panel>
+                </nz-collapse>
+              </div>
+            </div> -->
+
+            <!-- * Invitations sent to vendors start -->
+            <nz-collapse
+              class="mb-3"
+              nzExpandIconPosition="right"
+              nzAccordion
+              *ngIf="
+                bidopeningCommitteeForm.get('CompetitionTypeID')?.value === '01'
+              "
+            >
+              <nz-collapse-panel
+                nzHeader="{{ 'COM.Invitations sent to Vendors' | translate }}"
+                #p
+                [nzActive]="panels[3].active"
+                [nzExpandedIcon]="expandedIcon"
+              >
+                <ng-container>
+                  <div class="d-flex">
+                    <h6>{{ "COM.AddVendors" | translate }}</h6>
+                    
+                    &nbsp; &nbsp;
+
+                    <!-- WIP US 73004 <button nz-button nzType="primary" disabled -->
+                    <button
+                      nz-button
+                      nzType="primary"
+                      [disabled]="
+                        role === 'MR' || bidsapproved || isFinancialoffer || role === 'CH'
+                      "
+                      nzSize="default"
+                      (click)="addNewInvitationSent()"
+
+                      nzShape="circle"
+                    >
+                      <span nz-icon nzType="plus"></span>
+                    </button>
+                  </div>
+
+                  <div
+                    formArrayName="vendorInvitationsSent"
+                    *ngFor="
+                      let invitation of VendorInvitationsSent.controls;
+                      let invitationIndex = index
+                    "
+                  >
+                    <div [formGroupName]="invitationIndex">
+                      <nz-form-label nzFor="InvitedVendor" nzRequired
+                        >{{ invitationIndex + 1 }}.
+                        {{ "COM.Vendor" | translate }}</nz-form-label
+                      >
+                      <div fxLayout="row">
+                        <nz-form-control fxFlex="90">
+                          <!-- WIP US 73004 <input nz-input name="InvitedVendor" type="text" id="InvitedVendor" style="width: 100%;"
+                            formControlName="LmtdVendorName" (change)="addInviteVendor($event,invitationIndex)" readonly> -->
+                          <input
+                            nz-input
+                            name="InvitedVendor"
+                            type="text"
+                            id="InvitedVendor"
+                            style="width: 100%"
+                            formControlName="LmtdVendorName"
+                            (change)="addInviteVendor($event, invitationIndex)"
+                          />
+                        </nz-form-control>
+                        <div fxFlex="10" fxLayoutAlign="center">
+                          <!-- WIP US 73004 <button nz-button nzType="primary" nzSize="default"
+                            (click)="deleteInviationVendor(invitationIndex)" nzShape="circle"
+                            [disabled]="VendorInvitationsSent.controls.length === 1 || role === 'MR' || bidsapproved || isFinancialoffer"> -->
+                          <button
+                            nz-button
+                            nzType="primary"
+                            nzSize="default"
+                            (click)="deleteInviationVendor(invitationIndex)"
+                            nzShape="circle"
+                            [disabled]="
+                              VendorInvitationsSent.controls.length === 1 ||
+                              role === 'MR' ||
+                              bidsapproved ||
+                              isFinancialoffer || this.role === 'CH'
+                            "
+                          >
+                            <span nz-icon nzType="delete"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #expandedIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="p.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+            <!-- Invitations sent to vendors end -->
+
+            <nz-collapse
+              class="mb-3"
+              nzExpandIconPosition="right"
+              nzAccordion
+              *ngIf="
+                isOfficer ||
+                isMember ||
+                bidsapproved ||
+                isFinancialoffer ||
+                isChaiman
+              "
+            >
+              <nz-collapse-panel
+              [nzHeader]="bidOpenData?.[0]?.FinancialOffer === 'X' ? ('COM.Technically Passed Vendors' | translate) : ('COM.AddVendors' | translate)"
+                #p
+                [nzActive]="panels[3].active"
+                [nzExpandedIcon]="expandedIcon"
+              >
+                <!--form member above will be same-->
+
+                <div
+                  class="d-flex mt-3"
+                  *ngIf="
+                    isOfficer ||
+                    isMember ||
+                    bidsapproved ||
+                    isFinancialoffer ||
+                    isChaiman
+                  "
+                >
+                <h6 *ngIf="this.bidOpenData?.[0]?.FinancialOffer === 'X'">{{ "COM.Technically Passed Vendors" | translate }}</h6>
+                <h6 *ngIf="this.bidOpenData?.[0]?.FinancialOffer !== 'X'">{{ "COM.AddVendors" | translate }}</h6>
+                  &nbsp; &nbsp;
+                </div>
+
+                <div
+                  formArrayName="addVender"
+                  *ngFor="
+                    let vn of VendorFormGroup.controls;
+                    let i = index;
+                    let first = first;
+                    let last = last
+                  "
+                >
+                  <div
+                    [formGroupName]="i"
+                    *ngIf="
+                      isOfficer ||
+                      isMember ||
+                      bidsapproved ||
+                      isFinancialoffer ||
+                      isChaiman
+                    "
+                    class="row"
+                  >
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label for="VendorId" nzRequired>{{
+                        "COM.slNo" | translate
+                      }}</nz-form-label>
+                      <input nz-input type="text" formControlName="VendorId" />
+                    </div>
+
+                    <div
+                      class="col-md-4 col-sm-12 mt-3"
+                      *ngIf="
+                        bidopeningCommitteeForm.controls['CompetitionTypeID']
+                          .value == 01
+                      "
+                    >
+                      <nz-form-label nzFor="Vender" nzRequired>{{
+                        "COM.Vendor" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-select
+                          style="width: 100%"
+                          nzPlaceHolder="Select vendor"
+                          formControlName="VendorName"
+                          [disabled]="role === 'MR'"
+                          name="VendorName"
+                          nzAllowClear
+                          (ngModelChange)="onVendorChange($event,i)"
+                        >
+                        <!-- *ngFor="let vendor of inviteVendorsList" -->
+                          <nz-option
+                            *ngFor="let vendor of getVendorDropdownlist()"
+                            [nzValue]="vendor"
+                            [nzLabel]="vendor"
+                          >
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </div>
+                    <div
+                      class="col-md-4 col-sm-12 mt-3"
+                      *ngIf="
+                        bidopeningCommitteeForm.controls['CompetitionTypeID']
+                          .value != 01
+                      "
+                    >
+                      <nz-form-label nzFor="Vender" nzRequired>{{
+                        "COM.Vendor" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          nz-input
+                          [disabled]="role === 'MR'"
+                          name="VendorName"
+                          type="text"
+                          id="Vender"
+                          style="width: 100%"
+                          formControlName="VendorName"
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <nz-form-label nzRequired  nzFor="VenderCommercialNumber">
+                        {{ "COM.VendorCommercialNumber" | translate }}
+                      </nz-form-label>
+                      <nz-form-control>
+                        <!-- Commercial no. should be only 10 digits, positive, non-decimal number validated by regex pattern [disabled]="role === 'MR'" -->
+
+                        <nz-input-number
+                          nz-input
+                          formControlName="VendorCommercialNo"
+                          [nzMin]="0"
+                            [nzPrecision]="0" 
+                            [nzFormatter]="formatVendorNumber"
+                            (ngModelChange)="onCommercialNoValueChange($event, i)"
+                          style="width: 100%"
+                          
+                        >
+                        </nz-input-number>
+
+                        <!--  <input type="number" style="width: 100%;" nz-input formControlName="VendorCommercialNo"
+                          onKeyPress="if(this.value.length > 10) return false;" (keydown)="restrictZero($event)"> -->
+                      </nz-form-control>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12 mt-3" style="display: none">
+                      <nz-form-control>
+                        <input
+                          type="text"
+                          style="width: 100%"
+                          nz-input
+                          formControlName="VendorGUID"
+                        />
+                      </nz-form-control>
+                    </div>
+
+                    <div
+                      class="col-md-4 col-sm-12 mt-3"
+                      *ngIf="!isDisabledPrice"
+                    >
+                      <nz-form-label
+                        nzFor="Price"
+                        nzRequired
+                        *ngIf="isOfficer"
+                        >{{ "COM.Price" | translate }}</nz-form-label
+                      >
+                      <nz-form-label nzFor="Price" *ngIf="!isOfficer">{{
+                        "COM.Price" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                          type="text"
+                          nz-input
+                          formControlName="Price"
+                          style="width: 100%"
+                          appTwoDigitDecimalNumbers
+                        />
+                      </nz-form-control>
+                    </div>
+                    <div
+                      class="col-md-4 col-sm-12 mt-3"
+                      *ngIf="isDisabledPrice"
+                    >
+                      <nz-form-label nzFor="Price">{{
+                        "COM.Price" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-input-number
+                          nz-input
+                          formControlName="Price"
+                          [nzMin]="0"
+                          style="width: 100%"
+                        >
+                        </nz-input-number>
+                      </nz-form-control>
+                    </div>
+                    <div
+                      class="col-md-4 col-sm-12 mt-3"
+                    >
+                      <nz-form-label nzRequired nzFor="Initial gurantee value">{{
+                        "COM.Initial Gurantee Value" | translate
+                      }}</nz-form-label>
+                      <nz-form-control>
+                        <input
+                        nz-input
+                        [disabled]="role === 'MR'"
+                        name="Initial gurantee value"
+                        type="text"
+                        id="Initial gurantee value"
+                        style="width: 100%"
+                        formControlName="InitialGuranteeValue"
+                        maxlength="40"
+
+                        />
+                      </nz-form-control>
+                    </div>
+
+                    <div
+                      class="col-md-2 col-sm-12 add-vendor-btn-col"
+                      *ngIf="isOfficer ||
+                          isMember ||
+                          bidsapproved ||
+                          isFinancialoffer ||
+                          isChaiman
+                      "
+                    >
+                      <button
+                        *ngIf="last"
+                        nz-button
+                        [disabled]="
+                          role === 'MR' ||
+                          role === 'CH' ||
+                          bidsapproved ||
+                          isFinancialoffer
+                        "
+                        nzType="primary"
+                        nzSize="default"
+                        (click)="addveders(i)"
+                        nzShape="circle"
+                      >
+                        <span nz-icon nzType="plus"></span>
+                      </button>
+                      &nbsp; &nbsp;
+                      <button
+                        [disabled]="isMember"
+                        nz-button
+                        nzType="primary"
+                        nzSize="default"
+                        [disabled]="
+                          vendorList?.length === 1 ||
+                          role === 'MR' ||
+                          role === 'CH' ||
+                          bidsapproved ||
+                          isFinancialoffer
+                        "
+                        (click)="removeVendor(i, vn)"
+                        nzShape="circle"
+                      >
+                        <span nz-icon nzType="delete"></span>
+                      </button>
+                    </div>
+
+                    <div class="col-md-10"></div>
+                    <div class="col-md-4 col-sm-12 mt-3">
+                      <button
+                        class="outline ms-2"
+                        nz-button
+                        nzSize="large"
+                        (click)="showHideComments(i, vn)"
+                      >
+                        <!-- <span nz-icon nzType="comment" nzTheme="outline"></span> -->
+                        {{ "COM.CommentHistory" | translate }}
+                      </button>
+                      <button
+                        class="outline ms-2"
+                        nzSize="large"
+                        nz-button
+                        (click)="showHideAddComments(i, vn)"
+                      >
+                        <!-- <span nz-icon nzType="plus"></span> -->
+                        {{ "COM.AddComments" | translate }}
+                      </button>
+                    </div>
+
+                    <ng-container *ngIf="isVendorDetailsRequired">
+                      <!-- * Vendor Contact Details -->
+                      <div class="col-12 mt-3">
+                        <nz-collapse nzAccordian nzExpandIconPosition="right">
+                          <nz-collapse-panel
+                            #address
+                            [nzHeader]="addressHeader"
+                            [nzActive]="panels[3].panels[5].active"
+                            [nzExpandedIcon]="addressExpandedIcon"
+                          >
+                            <div class="row">
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label>{{
+                                  "COM.Building Number" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                  nz-input
+                                  appNumeric
+                                  type="text"
+                                  id="BuildingNo"
+                                  style="width: 100%"
+                                  formControlName="BuildingNo"
+                                  />
+                                </nz-form-control>
+                              </div>
+                              <div class="col-md-8 col-sm-12 mt-3">
+                                <nz-form-label>{{
+                                  "COM.Street" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                  nz-input
+                                  type="text"
+                                  id="Street"
+                                  style="width: 100%"
+                                  formControlName="Street"
+                                  />
+                                </nz-form-control>
+                              </div>
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label nzRequired>{{
+                                  "COM.City" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                  nz-input
+                                  type="text"
+                                  id="City"
+                                  style="width: 100%"
+                                  formControlName="City"
+                                  />
+                                </nz-form-control>
+                              </div>
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label nzRequired>{{
+                                  "COM.Country" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <nz-select
+                                    style="width: 100%"
+                                    [nzPlaceHolder]="'COM.Select Country' | translate"
+                                    formControlName="CountryId"
+                                    id="CountryId"
+                                    nzAllowClear
+                                    nzShowSearch
+                                  >
+                                    <nz-option
+                                      *ngFor="let country of countryList"
+                                      [nzValue]="country.Land1"
+                                      [nzLabel]="
+                                            commonService.userLanguage === 'en'
+                                            ? country.Landx50En
+                                            : country.Landx50Ar
+                                            "
+                                      >
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </div>
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label nzRequired>{{
+                                  "COM.Zip Code" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                  nz-input
+                                  appNumeric
+                                  type="text"
+                                  id="ZipCode"
+                                  style="width: 100%"
+                                  formControlName="ZipCode"
+                                  maxLength="5"
+                                  />
+                                  <small class="required-message" *ngIf="VendorFormGroup.controls[i].get('ZipCode')?.touched
+                                  && VendorFormGroup.controls[i].get('ZipCode')?.errors?.minlength">{{
+                                    "COM.MinLength" | translate:{value: '5'}
+                                  }}</small>
+                                </nz-form-control>
+                              </div>
+                            </div>
+                            <ng-template #addressHeader>
+                              <span> {{ "COM.Address Details" | translate }} </span>
+                              <span class="required-asterisk"> *</span>
+                            </ng-template>
+                            <ng-template #addressExpandedIcon let-active>
+                              {{ active }}
+                              <span
+                                nz-icon
+                                nzType="left"
+                                class="ant-collapse-arrow"
+                                [nzRotate]="address.nzActive ? 90 : -90"
+                              ></span>
+                            </ng-template>
+                          </nz-collapse-panel>
+                        </nz-collapse>
+                      </div>
+                      <!-- * Contact Details -->
+                       <div class="col-12 mt-3">
+                        <nz-collapse nzAccordian nzExpandIconPosition="right">
+                          <nz-collapse-panel
+                            #contact
+                            [nzHeader]="contactHeader"
+                            [nzActive]="panels[3].panels[6].active"
+                            [nzExpandedIcon]="contactExpandedIcon"
+                          >
+                            <div class="row">
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label nzRequired>{{
+                                  "COM.Phone Number" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                    nz-input
+                                    appNumeric
+                                    type="text"
+                                    id="PhoneNo"
+                                    style="width: 100%"
+                                    formControlName="PhoneNo"
+                                    maxLength="10"
+                                  />
+                                </nz-form-control>
+                                <small class="required-message" *ngIf="VendorFormGroup.controls[i].get('PhoneNo')?.touched
+                                  && VendorFormGroup.controls[i].get('PhoneNo')?.errors?.minlength">{{
+                                    "COM.MinLength" | translate:{value: '10'}
+                                  }}</small>
+                              </div>
+                              <div class="col-md-4 col-sm-12 mt-3">
+                                <nz-form-label nzRequired>{{
+                                  "COM.Email" | translate
+                                }}</nz-form-label>
+                                <nz-form-control>
+                                  <input
+                                    nz-input
+                                    type="email"
+                                    id="Email"
+                                    style="width: 100%"
+                                    pattern="\d*"
+                                    formControlName="Email"
+                                  />
+                                </nz-form-control>
+                                <small class="required-message" *ngIf="VendorFormGroup.controls[i].get('Email')?.touched
+                                  && VendorFormGroup.controls[i].get('Email')?.errors?.email">{{
+                                    "COM.EmailFormat" | translate
+                                  }}</small>
+                              </div>
+                            </div>
+                            <ng-template #contactHeader>
+                              <span> {{ "COM.Contact Details" | translate }} </span>
+                              <span class="required-asterisk"> *</span>
+                            </ng-template>
+                            <ng-template #contactExpandedIcon let-active>
+                              {{ active }}
+                              <span
+                                nz-icon
+                                nzType="left"
+                                class="ant-collapse-arrow"
+                                [nzRotate]="contact.nzActive ? 90 : -90"
+                              ></span>
+                            </ng-template>
+                          </nz-collapse-panel>
+                        </nz-collapse>
+                       </div>
+                    </ng-container>
+                  
+                    <!-- * Check List Collapse -->
+                    <div class="col-md-12 col-12 mt-3 table-responsive">
+                      <nz-collapse nzAccordion nzExpandIconPosition="right">
+                        <nz-collapse-panel
+                          [nzHeader]="checkListHeader"
+                          #Checklist
+                          [nzActive]="panels[3].panels[0].active"
+                          [nzExpandedIcon]="ChecklistExpandedIcon"
+                        >
+                        <ng-template #checkListHeader>
+                          <span> {{ "COM.CertificatesTitle" | translate }} </span>
+                          <span class="required-asterisk"> *</span>
+                        </ng-template>
+                          <p style="margin: 0">
+                            <nz-table class="check-list" nzBordered>
+                              <thead>
+                                <tr>
+                                  <th>{{ "COM.Srno" | translate }}</th>
+                                  <th style="text-align: left">
+                                    {{ "COM.CertificatesTitle" | translate }}
+                                  </th>
+                                  <th>{{ "COM.Status" | translate }}</th>
+                                  <th>{{ "COM.Attachments" | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                formArrayName="CheckList"
+                                *ngFor="
+                                  let Y of checkListFormGroups(i)?.controls;
+                                  let iy = index
+                                "
+                              >
+                                <tr [formGroupName]="iy">
+                                  <td>{{ iy + 1 }}</td>
+                                  <td
+                                    *ngIf="commonService.userLanguage === 'en'"
+                                  >
+                                    {{ Y.value.ChecklistName }}
+                                    <span *ngIf="madateAttachmentChecklistIndicator(Y.value.ChecklistId)" class="required-asterisk"> *</span>
+                                  </td>
+                                  <td
+                                  *ngIf="commonService.userLanguage !== 'en'"
+                                  >
+                                  {{ Y.value.ChecklistNameAr }}
+                                  <span *ngIf="madateAttachmentChecklistIndicator(Y.value.ChecklistId)" class="required-asterisk"> *</span>
+                                  </td>
+                                  <td>
+                                    <nz-form-control>
+                                      <nz-select
+                                        nzPlaceHolder="Select status"
+                                        formControlName="ChecklistType"
+                                        name="status"
+                                        nzAllowClear
+                                        (ngModelChange)="changeStatus(i, iy, Status)"
+                                      >
+                                        <nz-option
+                                          *ngFor="let status of Status"
+                                          [nzValue]="status.ChklstTypeID"
+                                          [nzLabel]="
+                                            commonService.userLanguage === 'en'
+                                              ? status.ChklstTypeDesc
+                                              : status.ChklstTypeDesc_ar
+                                          "
+                                        >
+                                        </nz-option>
+                                      </nz-select>
+                                    </nz-form-control>
+                                  </td>
+                                  <td>
+                                    <div>
+                                      <button
+                                        nz-button
+                                        nzType="primary"
+                                        disabled="{{
+                                          !Y.value.IsAttachmentValid
+                                        }}"
+                                        (click)="
+                                          showChkAttachModal(
+                                            i,
+                                            Y.value.ChecklistId
+                                              ? Y.value.ChecklistId
+                                              : iy + 1
+                                          )
+                                        "
+                                      >
+                                        <span
+                                          nz-icon
+                                          nzType="paper-clip"
+                                          nzTheme="outline"
+                                        ></span>
+                                        <span>{{
+                                          "COM.Attachments" | translate
+                                        }}</span>
+                                      </button>
+                                    </div>
+                                    <ng-container> </ng-container>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </nz-table>
+                          </p>
+                          <ng-template #ChecklistExpandedIcon let-active>
+                            {{ active }}
+                            <span
+                              nz-icon
+                              nzType="left"
+                              class="ant-collapse-arrow"
+                              [nzRotate]="Checklist.nzActive ? 90 : -90"
+                            ></span>
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </nz-collapse>
+                    </div>
+
+                    <!-- <div class="col-md-12 col-12 mt-3">
+                      <nz-form-label nzFor="Comments">{{"COM.Comments" | translate}}</nz-form-label>
+                      <nz-form-control>
+                        <nz-input-group class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                          <textarea nz-input formControlName="Comments"></textarea>
+                        </nz-input-group>
+                      </nz-form-control>
+                    </div> -->
+                    <div
+                      class="col-12 mt-3"
+                      *ngIf="
+                        (isOfficer ||
+                          isMember ||
+                          bidsapproved ||
+                          isFinancialoffer ||
+                          isChaiman) &&
+                        isNotOneEnvelope
+                      "
+                    >
+                      <nz-collapse nzAccordion nzExpandIconPosition="right">
+                        <nz-collapse-panel
+                          [nzHeader]="attachmentHeader"
+                          #attachment
+                          [nzActive]="panels[3].panels[1].active"
+                          [nzExpandedIcon]="attachmentExpandedIcon"
+                        >
+                          <!-- <nz-form-label nzFor="AttachmentCmnts" nzRequired>{{"COM.attachment" | translate}}</nz-form-label> -->
+                          <nz-form-control>
+                            <nz-input-group
+                              class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                            >
+                              <textarea
+                                nz-input
+                                formControlName="AttachmentCmnts"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+
+                          <ng-template #attachmentExpandedIcon let-active>
+                            {{ active }}
+                            <span
+                              nz-icon
+                              nzType="left"
+                              class="ant-collapse-arrow"
+                              [nzRotate]="attachment.nzActive ? 90 : -90"
+                            ></span>
+                          </ng-template>
+
+                          <ng-template #attachmentHeader>
+                            <span> {{ "COM.attachment" | translate }} </span>
+                            <span class="required-asterisk"> *</span>
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </nz-collapse>
+                    </div>
+                    <div
+                      class="col-12 mt-3"
+                      *ngIf="
+                        isOfficer ||
+                        isMember ||
+                        bidsapproved ||
+                        isFinancialoffer ||
+                        isChaiman
+                      "
+                    >
+                      <nz-collapse nzAccordion nzExpandIconPosition="right">
+                        <nz-collapse-panel
+                          [nzHeader]="cooHeader"
+                          #coo
+                          [nzActive]="panels[3].panels[2].active"
+                          [nzExpandedIcon]="cooExpandedIcon"
+                          
+                        >
+                          <!-- <nz-form-label nzFor="COO" nzRequired>{{"COM.COO" | translate}}</nz-form-label> -->
+                          <nz-form-control>
+                            <nz-input-group
+                              class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                            >
+                              <textarea
+                                nz-input
+                                formControlName="ContentOffer"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+
+                          <ng-template #cooExpandedIcon let-active>
+                            {{ active }}
+                            <span
+                              nz-icon
+                              nzType="left"
+                              class="ant-collapse-arrow"
+                              [nzRotate]="coo.nzActive ? 90 : -90"
+                            ></span>
+                          </ng-template>
+
+                          <ng-template #cooHeader>
+                            <span> {{ "COM.COO" | translate }} </span>
+                            <span class="required-asterisk"> *</span>
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </nz-collapse>
+                    </div>
+
+                    <!-- * Committee Comments -->
+                    <div
+                      class="col-12 mt-3"
+                      *ngIf="
+                        isOfficer ||
+                        isMember ||
+                        bidsapproved ||
+                        isFinancialoffer ||
+                        isChaiman
+                      "
+                    >
+                      <nz-collapse nzAccordion nzExpandIconPosition="right">
+                        <nz-collapse-panel
+                          [nzHeader]="momHeader"
+                          #MOM
+                          [nzActive]="panels[3].panels[3].active"
+                          [nzExpandedIcon]="MOMExpandedIcon"
+                        >
+                          <!-- <nz-form-label nzFor="MOM" nzRequired>{{"COM.MOM" | translate}}</nz-form-label> -->
+                          <nz-form-control>
+                            <nz-input-group
+                              class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                            >
+                              <textarea
+                                
+                                nz-input
+                                formControlName="MOMDts"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+                          <ng-template #MOMExpandedIcon let-active>
+                            {{ active }}
+                            <span
+                              nz-icon
+                              nzType="left"
+                              class="ant-collapse-arrow"
+                              [nzRotate]="MOM.nzActive ? 90 : -90"
+                            ></span>
+                          </ng-template>
+                          <ng-template #momHeader>
+                            <span> {{ "COM.MOM" | translate }} </span>
+                            
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </nz-collapse>
+                    </div>
+
+                    <!-- * Committee Comments For Financial Offer -->
+                    <div class="col-12 mt-3" *ngIf="showFinancialOfferComments">
+                      <nz-collapse nzAccordion nzExpandIconPosition="right">
+                        <nz-collapse-panel
+                          [nzHeader]="financialOfferCmntsHeader"
+                          #FinancialOfferCmnts
+                          [nzActive]="panels[3].panels[4].active"
+                          [nzExpandedIcon]="FinancialOfferCmntsExpandedIcon"
+                        >
+                          <!-- <nz-form-label nzFor="FinancialOfferCmnts" nzRequired>{{'COM.Committee Comments for Financial offer' |
+                            translate}}</nz-form-label> -->
+                          <nz-form-control>
+                            <nz-input-group
+                              class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                            >
+                              <textarea
+                                nz-input
+                                formControlName="FinancialOfferCmnts"
+                              ></textarea>
+                            </nz-input-group>
+                          </nz-form-control>
+
+                          <ng-template
+                            #FinancialOfferCmntsExpandedIcon
+                            let-active
+                          >
+                            {{ active }}
+                            <span
+                              nz-icon
+                              nzType="left"
+                              class="ant-collapse-arrow"
+                              [nzRotate]="
+                                FinancialOfferCmnts.nzActive ? 90 : -90
+                              "
+                            ></span>
+                          </ng-template>
+
+                          <ng-template #financialOfferCmntsHeader>
+                            
+                              {{
+                                "COM.Committee Comments for Financial offer"
+                                  | translate
+                              }}
+                            
+                          </ng-template>
+                        </nz-collapse-panel>
+                      </nz-collapse>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #expandedIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="p.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>          
+
+            <nz-collapse
+              class="mb-3"
+              nzExpandIconPosition="right"
+              nzAccordion
+              *ngIf="isChaiman"
+            >
+              <nz-collapse-panel
+                [nzHeader]="commentsHeader"
+                #Comments
+                [nzActive]="panels[4].active"
+                [nzExpandedIcon]="CommentsExpandIcon"
+              >
+                <div class="col-md-12 col-12 mb-3">
+                  <!-- <nz-form-label nzFor="Comments" nzRequired>{{"COM.Comments" | translate}}</nz-form-label> -->
+                  <nz-form-control>
+                    <nz-input-group
+                      class="ant-input-affix-wrapper-textarea-with-clear-btn"
+                    >
+                      <textarea nz-input formControlName="ChairmanCmnts"></textarea>
+                    </nz-input-group>
+                  </nz-form-control>
+                </div>
+
+                <ng-template #commentsHeader>
+                  <span class="ng-required">
+                    {{ "COM.CommitteeHeadComments" | translate }}
+                  </span>
+                </ng-template>
+                <ng-template #CommentsExpandIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="Comments.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+
+            <nz-collapse nzExpandIconPosition="right" nzAccordion>
+              <nz-collapse-panel
+                [nzHeader]="'COM.attachment' | translate"
+                #attachment
+                [nzActive]="panels[5].active"
+                [nzExpandedIcon]="attachmentExpandedIcon"
+              >
+                <div class="row">
+                  <div class="col-12">
+                    <p style="position: relative; font-size: 0.9rem">
+                      <b>{{ "RFP.Note" | translate }}</b>
+                    </p>
+                    <ul style="margin-top: 4px">
+                      <li>
+                        <span style="position: relative; font-size: 0.9rem">{{
+                          "RFP.Max40" | translate
+                        }}</span>
+                      </li>
+                    </ul>
+
+                    <br />
+
+                    <app-filenet
+                      class="mt-3"
+                      (uploadSuccess)="fileSapUpload($event)"
+                      [maxLimit]="42960"
+                      (deleteFile)="fileSapDelete($event)"
+                      [fileList]="fileNetList"
+                    ></app-filenet>
+                  </div>
+                </div>
+                <ng-template #attachmentExpandedIcon let-active>
+                  {{ active }}
+                  <span
+                    nz-icon
+                    nzType="left"
+                    class="ant-collapse-arrow"
+                    [nzRotate]="attachment.nzActive ? 90 : -90"
+                  ></span>
+                </ng-template>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
+
+          <!-- -----------------------TENDER COMMENTS---------------------------------------------------- -->
+
+          <div class="row mb-3">
+            <!-- Download MOM -->
+            <div class="col-md-8 col-sm-12">
+              <a nz-button nzSize="large" *ngIf="data.to_MomVisibility?.results.length > 0" nz-dropdown [nzDropdownMenu]="downloadMomMenu" [nzClickHide]="false"
+              class="mt-1">
+              <span nz-icon nzType="download" nzTheme="outline"></span>
+              {{ "COM.DownloadMOM" | translate }}
+              <span nz-icon nzType="down"></span>
+            </a>
+            <nz-dropdown-menu #downloadMomMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item *ngFor="let button of data.to_MomVisibility?.results"
+                  (click)="dynamicDownloadMoM(button)">
+                  {{ cs.userLanguage === 'en' ? button.MomDecEn : button.MomDecAr }}
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+            </div>
+            <div class="col-md-4 col-sm-12 text-right">
+              <button
+                class="outline ms-2"
+                nzSize="large"
+                nz-button
+                (click)="showHideCommentsT()"
+              >
+                {{ "COM.CommentHistory" | translate }}
+              </button>
+              <button
+                class="outline ms-2"
+                nzSize="large"
+                nz-button
+                (click)="showHideAddCommentsT()"
+              >
+                {{ "COM.AddComments" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button
+                *ngFor="let button of actionButtons"
+                (click)="button.action()"
+                class="me-2"
+                nz-button
+                nzType="primary"
+              >
+                {{
+                  commonService.userLanguage === "en"
+                    ? button.BUTTON_EN
+                    : button.BUTTON_AR
+                }}
+              </button>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-12">
+              <div class="form-footer-btns d-flex">
+
+                <button class="me-2" nz-button nzType="primary" *ngIf="isChaiman" (click)="showConfirm()"
+                  [disabled]="bidopeningCommitteeForm.invalid" igxRipple>
+                  {{ "COM.Assignofficer" | translate }}
+                </button>
+
+                
+                <button class="me-2" appSubmitConfirmation confirmModalTitle="saveConfirmation" confirmModalBody="COM.Do you want to Save as Draft?"
+                  *ngIf="isOfficer && !isFinancialoffer" nz-button nzType="default" nzSize="large" (confirmedAction)="saveAsDraft()"
+                  [disabled]="bidopeningCommitteeForm.invalid" igxRipple>
+                  {{ "COM.SaveasDraft" | translate }}
+                </button>
+                <button class="me-2" appSubmitConfirmation *ngIf="isOfficer && !isFinancialoffer" nz-button confirmModalTitle="submitConfirmation"confirmModalBody="COM.Do you want to Submit?"
+                  nzType="primary" (confirmedAction)="submitFromOfficer()" [disabled]="bidopeningCommitteeForm.invalid"
+                  igxRipple>
+                  {{ "COM.Submit" | translate }}
+                </button>
+
+                
+                <button class="me-2" appSubmitConfirmation confirmModalTitle="returnConfirmation" confirmModalBody="COM.Do you want to Return?"
+                  *ngIf="isMember || isChaimanReturn" nz-button nzType="primary" (confirmedAction)="ReturnToOfficer()"
+                  [disabled]="bidopeningCommitteeForm.invalid" igxRipple>
+                  {{ "COM.ReturnBidOpen" | translate }}
+                </button>
+                <button class="me-2" *ngIf="isMember" nz-button nzType="primary" confirmModalTitle="confirmationApproval"
+                  confirmModalBody="COM.Do you want to Approve?" (click)="submitFromMember()"
+                  [disabled]="bidopeningCommitteeForm.invalid" igxRipple>
+                  {{ "COM.Approve" | translate }}
+                </button>
+
+                
+
+                <button class="me-2" *ngIf="bidsapproved" appSubmitConfirmation nz-button nzType="primary"
+                  confirmModalTitle="assignConfirmation" confirmModalBody="COM.Do you want to Assign?"
+                  (confirmedAction)="assignToBidEvaluationCommittee()" [disabled]="bidopeningCommitteeForm.invalid"
+                  igxRipple>
+                  {{ "COM.AsiigntoBidevalcommittee" | translate }}
+                </button>
+
+                
+                <button class="me-2" appSubmitConfirmation confirmModalTitle="saveConfirmation" confirmModalBody="COM.Do you want to Save as Draft?"
+                  *ngIf="isFinancialoffer && role !== 'MR' " nz-button nzType="default" nzSize="large"
+                  (confirmedAction)="saveAsDraftfromFinancialoffer()" igxRipple>
+                  {{ "COM.SaveasDraft" | translate | uppercase }}
+                </button>
+                <button class="me-2" appSubmitConfirmation confirmModalTitle="submitConfirmation" confirmModalBody="COM.Do you want to Submit?" *ngIf="isFinancialoffer && role !== 'MR'" nz-button
+                  nzType="primary" nzSize="large" (confirmedAction)="submitFromFinancialoffer()" igxRipple>
+                  {{ "COM.Submit" | translate | uppercase }}
+                </button>
+            
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- attachement model -->
+<nz-modal
+  [(nzVisible)]="IsAttachmentModel"
+  nzClassName="modal-top-border"
+  [nzTitle]="modalTitleAttach"
+  [nzContent]="modalContentAttach"
+  [nzFooter]="modalFooterAttach"
+  (nzOnCancel)="handleAttachModalCancel()"
+>
+  <ng-template #modalTitleAttach>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{ "COM.Attachments" | translate }}</div>
+      <button nz-button nzType="link" (click)="handleAttachModalCancel()">
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+  <ng-template #modalContentAttach>
+    <div
+      [formGroup]="
+        getAttachFormGroup(testFnParams(SelectedvendorId, SelectedcheckListId))
+      "
+    >
+      <file-uploader
+        class="gridInLineFormAttachmentPadding"
+        [paramsPToC]="paramsForDocHandle"
+        (onUploadFile)="onFileUpload($event, '')"
+      >
+      </file-uploader>
+    </div>
+  </ng-template>
+  <ng-template #modalFooterAttach>
+    <!-- <span>Modal Footer:</span> -->
+  </ng-template>
+</nz-modal>
+
+<!--comments model-->
+<!-- <nz-modal [(nzVisible)]="showComments" [nzTitle]="modalTitle1" [nzContent]="modalContent1" [nzFooter]="modalFooter1"
+  (nzOnCancel)="showHideCommentsclose()">
+  <ng-template #modalTitle1>
+    <div style="display: flex; justify-content: space-between">
+      <div> {{ 'COM.CommentHistory' | translate }}</div>
+      <button nz-button nzType="primary" nzShape="circle" (click)="showHideCommentsclose()"><span nz-icon
+          nzType="close"></span></button>
+    </div>
+
+  </ng-template>
+
+  <ng-template #modalContent1>
+    <div class="CommentCard" *ngFor="let comment of commentsArray">
+      <div>
+        <p style="margin: 0 !important"> <b>{{ 'COM.Comments' | translate }}</b> <br> {{comment.Comments}}</p>
+        <p style="margin: 0 !important"><b>{{ 'COM.CommentedBy' | translate }} </b><br>
+          {{ commonService.userLanguage === 'en'? comment.CmntdMemberName : comment.CmntdMemberName_AR }}</p>
+          <p style="margin: 0 !important">
+            <b>{{ "COM.CommentedOn" | translate}} </b><br />
+            {{commentDate(comment.CmntdDate)}}
+            </p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter1>
+    <button nz-button nzType="default" (click)="showHideCommentsclose()">{{ 'RFP.Close' | translate }}</button>
+  </ng-template>
+</nz-modal> -->
+
+<nz-modal
+  [(nzVisible)]="showComments"
+  [nzWidth]="800"
+  [nzTitle]="modalTitle1"
+  [nzContent]="modalContent1"
+  nzClassName="modal-top-border"
+  [nzFooter]="modalFooter1"
+  (nzOnCancel)="showHideCommentsclose()"
+>
+  <ng-template #modalTitle1>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{ "COM.CommentHistory" | translate }}</div>
+      <button
+        nz-button
+        nzType="link"
+        nzShape="circle"
+        (click)="showHideCommentsclose()"
+      >
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalContent1>
+    <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+    <div class="px-4">
+      <ng-container *ngFor="let comment of commentsArray; index as i">
+        <div nz-row class="mb-3" [nzGutter]="16">
+          <div nz-col>
+            <div class="green-circle"></div>
+            <div
+              *ngIf="i != commentsArray.length - 1"
+              class="vl"
+              [ngStyle]="{ top: comment.Comments ? '' : '45%' }"
+            ></div>
+          </div>
+
+          <div nz-col style="max-width: 96%">
+            <div
+              nz-row
+              [innerHTML]="comment.Comments"
+              class="comment-content"
+              *ngIf="comment.Comments; else emptyContent"
+            >
+              {{ comment.Comments }}
+              <!-- <textarea [froalaEditor]="options" style="border: 0 !important;" [froalaView]="comment.CommentsTxt" disabled></textarea> -->
+            </div>
+            <div nz-row>
+              <div nz-col>
+                {{ "COM.CommentedBy" | translate }}
+                <span>
+                  {{
+                    commonService.userLanguage === "en"
+                      ? comment.CmntdMemberName
+                      : comment.CmntdMemberName_AR
+                  }}</span
+                >
+              </div>
+              &nbsp;
+              <span>-</span>
+              &nbsp;
+              <div nz-col>{{ commentDate(comment.CmntdDate) }}</div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #emptyContent> -- </ng-template>
+      <ng-container *ngIf="commentsArray.length == 0">
+        <div style="text-align: center">
+          <img src="../../../../../assets/logo/no_data.png" alt="" />
+          <h4>{{ "contract.Comment.NoComment" | translate }}</h4>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter1>
+    <button
+      class="btn-lg"
+      style="width: 25%; float: inline-end"
+      nz-button
+      nzType="primary"
+      (click)="showHideCommentsclose()"
+    >
+      {{ "COMMON.Close" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!--add comments model-->
+<nz-modal
+  [(nzVisible)]="showAddComments"
+  [nzTitle]="modalTitlec"
+  [nzContent]="modalContentl2"
+  [nzFooter]="modalFooterl"
+  (nzOnCancel)="showHideAddCommentsclose()"
+>
+  <ng-template #modalTitlec>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{ "RFP.Comments" | translate }}</div>
+      <button
+        nz-button
+        nzType="link"
+        nzShape="circle"
+        (click)="showHideAddCommentsclose()"
+      >
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+  {{ selectedVendor }}
+  <ng-template #modalContentl2>
+    <div class="col-md-12 col-3 mt-3">
+      <nz-form-label> {{ "COM.vComments" | translate }}</nz-form-label>
+      <nz-form-control>
+        <textarea
+          nz-input
+          [(ngModel)]="Vcmt"
+          [ngModelOptions]="{ standalone: true }"
+          style="height: 100px"
+        ></textarea>
+      </nz-form-control>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooterl>
+    <button
+      type="button"
+      nz-button
+      nzType="default"
+      (click)="addComments(Vcmt, savedVendor, selectedVendor)"
+    >
+      {{ "RFP.Submit" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- <nz-modal [(nzVisible)]="showCommentsT" [nzTitle]="modalTitleT1" [nzContent]="modalContentT2" [nzFooter]="modalFooterT"
+  (nzOnCancel)="showHideCommentsclose()">
+  <ng-template #modalTitleT1>
+    <div style="display: flex; justify-content: space-between">
+      <div> {{ 'COM.CommentHistory' | translate }}</div>
+      <button nz-button nzType="primary" nzShape="circle" (click)="showHideCommentsclose()"><span nz-icon
+          nzType="close"></span></button>
+    </div>
+
+  </ng-template>
+  
+  <ng-template #modalContentT2>
+    <div class="CommentCard" *ngFor="let comment of commentsArray">
+      <div>
+        <p style="margin: 0 !important"> <b>{{ 'COM.Comments' | translate }}</b>
+          <br> {{comment.Comments}}
+        </p>
+        <p style="margin: 0 !important"><b>{{ 'COM.CommentedBy' | translate }} </b><br>
+          {{ commonService.userLanguage === 'en'? comment.CmntdMemberName : comment.CmntdMemberName_AR }}</p>
+          <p style="margin: 0 !important">
+            <b>{{ "COM.CommentedOn" | translate}} </b><br />
+            {{commentDate(comment.CmntdDate)}}
+            </p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooterT>
+    <button nz-button nzType="default" (click)="showHideCommentsclose()">{{ 'RFP.Close' | translate }}</button>
+  </ng-template>
+</nz-modal> -->
+
+<nz-modal
+  [(nzVisible)]="showCommentsT"
+  [nzWidth]="800"
+  [nzTitle]="modalTitleT1"
+  [nzContent]="modalContentT2"
+  nzClassName="modal-top-border"
+  [nzFooter]="modalFooterT"
+  (nzOnCancel)="showHideCommentsclose()"
+>
+  <ng-template #modalTitleT1>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{ "COM.CommentHistory" | translate }}</div>
+      <button
+        nz-button
+        nzType="link"
+        nzShape="circle"
+        (click)="showHideCommentsclose()"
+      >
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalContentT2>
+    <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+    <div class="px-4">
+      <ng-container *ngFor="let comment of commentsArray; index as i">
+        <div nz-row class="mb-3" [nzGutter]="16">
+          <div nz-col>
+            <div class="green-circle"></div>
+            <div
+              *ngIf="i != commentsArray.length - 1"
+              class="vl"
+              [ngStyle]="{ top: comment.Comments ? '' : '45%' }"
+            ></div>
+          </div>
+
+          <div nz-col style="max-width: 96%">
+            <div
+              nz-row
+              [innerHTML]="comment.Comments"
+              class="comment-content"
+              *ngIf="comment.Comments; else emptyContent"
+            >
+              {{ comment.Comments }}
+              <!-- <textarea [froalaEditor]="options" style="border: 0 !important;" [froalaView]="comment.CommentsTxt" disabled></textarea> -->
+            </div>
+            <div nz-row>
+              <div nz-col>
+                {{ "COM.CommentedBy" | translate }}
+                <span>
+                  {{
+                    commonService.userLanguage === "en"
+                      ? comment.CmntdMemberName
+                      : comment.CmntdMemberName_AR
+                  }}</span
+                >
+              </div>
+              &nbsp;
+              <span>-</span>
+              &nbsp;
+              <div nz-col>{{ commentDate(comment.CmntdDate) }}</div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #emptyContent> -- </ng-template>
+      <ng-container *ngIf="commentsArray.length == 0">
+        <div style="text-align: center">
+          <img src="../../../../../assets/logo/no_data.png" alt="" />
+          <h4>{{ "contract.Comment.NoComment" | translate }}</h4>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooterT>
+    <button
+      class="btn-lg"
+      style="width: 25%; float: inline-end"
+      nz-button
+      nzType="primary"
+      (click)="showHideCommentsclose()"
+    >
+      {{ "COMMON.Close" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="showAddCommentsT"
+  [nzTitle]="modalTitlecT1"
+  [nzContent]="modalContentlT1"
+  [nzFooter]="modalFooterlT1"
+  (nzOnCancel)="showHideAddCommentsclose()"
+>
+  <ng-template #modalTitlecT1>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{ "RFP.Comments" | translate }}</div>
+      <button
+        nz-button
+        nzType="link"
+        nzShape="circle"
+        (click)="showHideAddCommentsclose()"
+      >
+        <span nz-icon nzType="close"></span>
+      </button>
+    </div>
+  </ng-template>
+  {{ selectedVendor }}
+  <ng-template #modalContentlT1>
+    <div class="col-md-12 col-3 mt-3">
+      <nz-form-label> {{ "COM.vComments" | translate }}</nz-form-label>
+      <nz-form-control>
+        <textarea
+          nz-input
+          [(ngModel)]="Tcmt"
+          [ngModelOptions]="{ standalone: true }"
+          style="height: 100px"
+        ></textarea>
+      </nz-form-control>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooterlT1>
+    <button nz-button nzType="default" (click)="addCommentsT(Tcmt)">
+      {{ "RFP.Submit" | translate }}
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- * OTP MODEL-->
+<app-approval-otp
+  (otpValue)="SubmitOTP($event)"
+  [isOTPVisible]="getOTPModel"
+  (updateOTPVisible)="updateOTP($event)"
+>
+</app-approval-otp>
+
+<nz-modal
+  [(nzVisible)]="approvedConfirmation"
+  [nzFooter]="null"
+  [nzWidth]="660"
+  (nzOnCancel)="showHideApprove()"
+>
+  <ng-container *nzModalContent>
+    <div class="delete-comfirm-icon-cont">
+      <app-icon class="delete-icon"[icon]="IconList.delete"></app-icon>
+    </div>
+      <h3 class="delete-confirmation-des">{{"DOC.Areyousureyouwanttodelete" | translate}}</h3>
+      <p class="delete-confirmation-des">{{"RFP.Delete Vendor alert" | translate}}</p>
+      <div class="delete-confirmation-action">
+
+      <button
+      nz-button
+      nzType="primary"
+      (click)="onVendorDeleteConfirmation()"
+
+    >
+    {{"RFP.Yes" | translate}}
+    </button>
+      <button
+      nz-button
+      nzType="default"
+      (click)="showHideApprove()"
+    >
+    {{"RFP.No" | translate}}
+    </button>
+  </div>
+
+  </ng-container>
+
+
+  
+</nz-modal>
+

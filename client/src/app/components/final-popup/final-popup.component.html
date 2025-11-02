@@ -1,0 +1,18 @@
+<ng-container>
+    <!-- <header>
+        <app-icon class="close" [icon]="icon.close" (click)="closeModal()"></app-icon>
+    </header> -->
+    <section class="body-container text-center mb-5">
+        <ng-container *ngIf="checkStatus('success')">
+            <div class="icon-container">
+                <app-icon class="close" [icon]="icon.approve"></app-icon>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="checkStatus('error')">
+            <div class="icon-container">
+                <app-icon class="close" [icon]="icon.failure"></app-icon>
+            </div>
+        </ng-container>
+        <p>{{ message }}</p>
+    </section>
+</ng-container>

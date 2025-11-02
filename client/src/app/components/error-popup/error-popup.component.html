@@ -1,0 +1,13 @@
+<ng-container>
+    <header>
+        <h4>
+            {{"contract.common.required" | translate}}
+        </h4>
+        <app-icon class="close" [icon]="IconList.close" (click)="onClose()"></app-icon>        
+    </header>
+    <section [style]="{'max-height': sectionHeight, height: 'auto', 'overflow-y': 'auto'}">
+        <div class="error" *ngFor="let error of errorList">
+            <p>{{error}}</p>
+        </div>
+    </section>
+</ng-container>

@@ -1,0 +1,156 @@
+// Custom Theming for NG-ZORRO
+// For more information: https://ng.ant.design/docs/customize-theme/en
+
+@import "../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+
+// Override less variables to here
+// View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
+
+// @primary-color: #1890ff;
+
+// -------- override less variables -----------
+@primary-color: #005c99;
+
+
+.ant-upload.ant-upload-drag {
+
+  height: 60% !important;
+}
+
+.ant-form-item-label>label::after {
+  content: '' !important;
+}
+
+
+// .ant-select-item-option-content {
+//   text-align: right;
+//   }
+
+[dir="rtl"] .ant-select-item-option-content {
+  display: flex;
+  justify-content: end;
+}
+
+.ant-tabs-content {
+  display: inline !important;
+}
+
+[dir="rtl"] .ant-table table {
+
+  text-align: right !important;
+}
+
+[dir="rtl"] .ant-modal {
+  direction: rtl;
+}
+
+
+// [dir="rtl"] .ant-modal-title {
+//   text-align: left !important;
+// }
+[dir="rtl"] .ant-table-thead>tr>th {
+  text-align: right !important;
+}
+
+.ant-modal-close {
+  display: none;
+}
+
+// [dir="rtl"] .ant-modal-close {
+// left: 0 !important;
+// display: none;
+// text-align: right !important;
+// }
+
+// [dir="rtl"] .ant-modal-title {
+// position: absolute;
+// right: 15px !important;
+// }
+// [dir="rtl"] .ant-table-pagination-right {
+
+//justify-content: flex-start;
+// }
+
+[dir="rtl"] .ant-pagination-prev {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .ant-pagination-next {
+  transform: rotate(180deg);
+}
+
+
+.menu-sidebar {
+  text-align: center !important;
+}
+
+
+[dir="rtl"] .ant-input-number-input {
+  text-align: right !important;
+  padding-right: 30px !important;
+
+}
+
+[dir="rtl"] .search-box {
+  text-align: right !important;
+  direction: rtl;
+}
+
+.ant-input-number-input {
+  width: 100% !important;
+}
+
+nz-date-picker {
+  width: 100% !important;
+}
+
+nz-number-input {
+  width: 100% !important;
+}
+
+.ant-table {
+
+  background: transparent !important;
+}
+
+.border-block {
+  border-top: 1px solid @primary-color;
+  border-bottom: 1px solid @primary-color;
+}
+
+[dir="rtl"] [nz-carousel-content] {
+  direction: rtl;
+}
+
+[dir="rtl"] .prev-btn {
+  direction: ltr;
+}
+
+[dir="rtl"] .next-btn {
+  direction: ltr;
+}
+[dir="rtl"] .ant-drawer {
+  direction: rtl;
+}
+
+// ::-webkit-datetime-edit { color: transparent; }
+// :focus::-webkit-datetime-edit { color: #000; }
+
+// [dir="ltr"] .login_copyright {
+//   font-size: 9px;
+//   padding: 0px;
+//   margin: 0px;
+//   font-weight: normal;
+//   color: #4b4a4a;
+//   text-align: left;
+// }
+
+// [dir="rtl"] .login_copyright {
+//   font-size: 9px;
+//   padding: 0px;
+//   margin: 0px;
+//   font-weight: normal;
+//   color: #4b4a4a;
+//   text-align: right;
+// }

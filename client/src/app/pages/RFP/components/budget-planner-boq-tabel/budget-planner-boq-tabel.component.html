@@ -1,0 +1,97 @@
+<nz-table #editRowTable nzBordered [nzData]="BOQItems">
+  <thead>
+    <tr>
+      <ng-container
+        *ngFor="let columns of filteredBudgetPlannerBOQColumns; let i = index"
+      >
+        <th>{{ filteredBudgetPlannerBOQColumns[i] | translate }}</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let budget of editRowTable.data; let index = index" class="editable-row">
+      <td style="width: 30%">
+        <ng-container *ngIf="isViewOnlyMode; else showItemName">
+          <td>{{ budget.itemName }}</td>
+        </ng-container>
+        <ng-template #showItemName>
+
+        <div
+          class="editable-cell"
+          [hidden]="editId === budget.itemName"
+          (click)="startEdit(budget.itemName)"
+        >
+          {{ budget.itemName }}
+        </div>
+        <div [hidden]="editId !== budget.itemName">
+          <nz-select
+            nzShowSearch
+            style="width: 100%"
+            nzAllowClear
+            [(ngModel)]="budget.itemName"
+            (nzBlur)="stopEdit()"
+            (ngModelChange)="onItemNameChange($event)"
+            required
+          >
+            <nz-option
+              *ngFor="let item of BOQItemNameList"
+              [nzValue]="item"
+              [nzLabel]="item"
+            >
+            </nz-option>
+          </nz-select>
+        </div>
+    </ng-template>
+
+      </td>
+      <ng-container *ngIf="isViewOnlyMode; else showQuantity">
+        <td>{{ budget.quantity }}</td>
+
+        </ng-container>
+        <ng-template #showQuantity>
+
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === budget.itemName"
+          (click)="startEdit(budget.itemName)"
+        >
+          {{ budget.quantity }}
+        </div>
+        <input
+          [hidden]="editId !== budget.itemName"
+          type="text"
+          nz-input
+          [(ngModel)]="budget.quantity"
+          (ngModelChange)="emitItemUpdate(budget.itemName, $event, index)"
+          (blur)="stopEdit()"
+        />
+      </td>
+</ng-template>
+
+      <td *ngIf="isFinTeam">{{ budget.remainingQuantity }}</td>
+      <td>{{ budget.estUnitPrice }}</td>
+      <td>{{ budget.totalEstimatedPriceWithVAT | number : "1.2-2"}}</td>
+      <td>{{ budget.totalEstimatedPriceWithoutVAT | number : "1.2-2"}}</td>
+      <td *ngIf="isFinTeam">
+        <a  (click)="addRow(budget.itemName,index )" [class.disabled]="BOQItems.length === totalNoItem"> Add </a>
+        <a
+          nz-popconfirm
+          [class.disabled]="isViewOnlyMode"
+          nzPopconfirmTitle="Sure to delete?"
+          (nzOnConfirm)="deleteRow(budget.itemName, index)"
+          >Delete</a
+        >
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td [attr.colspan]="isFinTeam ? 5 : 4">Total</td>
+      <td>{{ getTotalBudget() | number : "1.2-2" }}</td>
+    </tr>
+  </tfoot>
+</nz-table>
+<p class="errorMessage" *ngIf="errorMessage">
+  {{errorMessage}}
+</p>

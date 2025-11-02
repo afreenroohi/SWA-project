@@ -1,0 +1,24 @@
+::ng-deep{
+    .filenet-upload .ant-upload.ant-upload-drag {
+        height: 11rem !important;
+        width: 11rem;
+        border-radius: 7rem;
+        border: 5px solid #d2d2d2 !important;
+        background: #d2d2d236;
+    }
+    
+    .filenet-upload .ant-upload.ant-upload-select {
+        padding: 1.5rem 6rem;
+        background: #F6F6F6;
+    }
+} 
+.hr-line{
+    color: #d2d2d2;
+    position: relative;
+    bottom: 7px;
+}
+
+.title {
+    font-size: 24px; 
+    margin-bottom: 10px;
+}

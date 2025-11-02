@@ -1,0 +1,137 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="5"
+  [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+  [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+  <thead>
+    <tr>
+      <th *ngFor="let column of listOfColumn; index as i" [nzSortFn]="column.sortFn" [nzSortDirections]="column.sortDirections"
+        [nzCustomFilter]="column.title === 'Project Name'"
+        [nzFilterMultiple]="column.filterMultiple"
+        [nzFilters]="cs.userLanguage === 'en' ? column.listOfFilter : column.listOfFilterAr"
+        [nzFilterFn]="column.filterFn"
+        [ngStyle]="{'width': i===listOfColumn.length-1 ? '19%' : '' }">
+        {{ cs.userLanguage === 'en'? column.title : column.titleAr }}
+        <nz-filter-trigger *ngIf="column.title === 'Project Name' " [(nzVisible)]="visible"
+          [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+          <span nz-icon nzType="search"></span>
+        </nz-filter-trigger>
+        <nz-filter-trigger *ngIf="column.title === 'Status' " [(nzVisible)]="statusvisible"
+          [nzActive]="searchValue.length > 0" [nzDropdownMenu]="statusMenu">
+          <span nz-icon nzType="search"></span>
+        </nz-filter-trigger>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of nzTable.data">
+      <td>{{ data.RfpName }}</td>
+      <td>{{ data.RfpNo }}</td>
+      <td>{{ +data.RfpVersion }}</td>
+      <td>{{ data.PurchaseReqNo }}</td>
+      <td *ngIf="listOfColumn[2].id === 3 && Action !== 'MG' ">{{ data.Data1 }}</td>
+      <td>{{ +(data.CreatedOn) ? (+(data.CreatedOn) | date: 'dd/MM/yyyy') : '' }}</td>
+
+
+      <!--applicable for manager dashboad-->
+      <td *ngIf="Action === 'MG'">{{ data.DeptText }}</td>
+      <td *ngIf="Action === 'MG'">{{ cs.userLanguage === 'en' ? 
+      data.WfPendingDpt : data.WfPendingDptAr }}</td>
+      <td *ngIf="Action === 'MG' || Action === 'reopen' || Action === 'edit'"
+      >{{ cs.userLanguage === 'en' ? data.WfPendUsrEn : data.WfPendUsrAr }}</td>
+      <!--end of columns for manager dashboad-->
+
+
+      <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td>
+      <td [ngStyle]="{
+        color: data.SlaInd === 'N' ? 'red' : 'green'
+      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td>
+      
+      <td style="padding: 0%; padding-inline: 0.5%;">
+        <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+          (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
+          nzTooltipTitle="{{ 'RFP.View' | translate }}" nzTooltipPlacement="bottomLeft"
+          [nzTooltipArrowPointAtCenter]="true">
+          <app-icon [icon]="IconList.open"></app-icon>
+        </button>
+
+        <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+          *ngIf="Action === 'edit' && (data.RfpStatus != 'A' && data.RfpStatus != 'S' && data.RfpStatus != 'C')"
+          nzSize="default" nz-popconfirm nzPopconfirmTitle="{{ 'RFP.Cancel' | translate }}"
+          (nzOnConfirm)="confirm(data.RfpNo, data.RfpVersion,'cancel')" (nzOnCancel)="cancel()" nz-tooltip
+          nzTooltipTitle="{{ 'RFP.Cancel' | translate }}" nzTooltipPlacement="bottomLeft"
+          [nzTooltipArrowPointAtCenter]="true">
+          <app-icon [icon]="IconList.deleteIcon"></app-icon>
+          <!-- {{ 'RFP.Cancel' | translate }} -->
+        </button>
+        <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+          *ngIf="Action === 'edit' && (data.RfpStatus === 'D' || data.RfpStatus === 'R')"
+          (click)="navigate(data.RfpNo, data.RfpVersion)" nzSize="default" nz-tooltip
+          nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
+          [nzTooltipArrowPointAtCenter]="true">
+          <app-icon [icon]="IconList.edit"></app-icon>
+          <!-- {{ 'RFP.Edit' | translate }} -->
+        </button>
+
+        <button nz-button nzType="default" *ngIf="Action === 'reopen'"
+          (click)="navigate(data.RfpNo, data.RfpVersion, 'reopen')" nzSize="default" nzShape="round" nz-tooltip
+          nzTooltipTitle="{{ 'RFP.ReOpen' | translate }}" nzTooltipPlacement="bottomLeft"
+          [nzTooltipArrowPointAtCenter]="true">
+          <span nz-icon nzType="diff"></span>
+          <!-- {{ 'RFP.ReOpen' | translate }} -->
+        </button>
+
+        <!--
+        &nbsp; &nbsp;
+        <button
+          nz-button
+          nzType="default"
+          *ngIf="Action === 'approve'"
+          (click)="openModel()"
+          nzSize="default"
+          nzShape="round">
+          <span nz-icon nzType="diff"></span>
+        </button> -->
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<!-- <nz-modal [(nzVisible)]="isVisible" nzTitle="Workflow Inbox" (nzOnCancel)="handleCancel()">
+  <div *nzModalContent>
+  </div>
+  <div *nzModalFooter>
+
+
+    <button nz-button nzType="primary" (click)="handleOk()">Custom Submit</button>
+  </div>
+</nz-modal> -->
+<nz-drawer [nzVisible]="showDetails" [nzWidth]="1180" [nzClosable]="false" (nzOnClose)="close()">
+  <ng-container *nzDrawerContent>
+    <app-rfpdetails *ngIf="detArray" [Actiondet]="Actiondet" [detArray]="detArray"></app-rfpdetails>
+  </ng-container>
+</nz-drawer>
+
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="{{ 'RFP.search' | translate }}" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">{{ 'RFP.search' |
+        translate }}</button>
+      <button nz-button nzSize="small" (click)="reset()">{{ 'RFP.Cancel' | translate }}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+
+
+<nz-dropdown-menu #statusMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="{{ 'RFP.search' | translate }}" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="searchStatus()" class="search-button">{{ 'RFP.search' |
+        translate }}</button>
+      <button nz-button nzSize="small" (click)="reset()">{{ 'RFP.Cancel' | translate }}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

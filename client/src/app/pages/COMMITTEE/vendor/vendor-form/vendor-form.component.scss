@@ -1,0 +1,124 @@
+@import '../../../../../variables';
+
+.create__form__section {
+  .disable-class {
+    ::ng-deep input[type='text'] {
+      background-color: #efefef;
+      cursor: not-allowed;
+    }
+  }
+
+  input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+
+  input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #005c99;
+    ;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+
+  .disable-class-ta {
+    ::ng-deep textarea.ant-input {
+      background-color: #efefef;
+      cursor: not-allowed;
+    }
+  }
+  
+  .ant-collapse {
+    background-color: $dark-grey;
+    border: 1px solid $dark-grey;
+  
+    .ant-collapse-item {
+      border: 0;
+      .ant-collapse-content {
+        border-top: 0 !important;
+      }    
+    }
+  }
+
+  .ant-btn.outline {
+    color: #65ba6c !important;
+    border-color: #65ba6c !important;
+  }
+}
+
+::ng-deep .modal-top-border {
+  border-top: 4px solid #005c99 !important;
+  
+
+}
+
+::ng-deep .ant-modal-header {
+  border-bottom: 0px !important;
+}
+::ng-deep .ant-modal-footer {
+  text-align: left !important;
+  border-top: 0px !important;
+  height: 55px !important;
+}
+
+// Drop-down Arrow alignment style
+::ng-deep [dir="rtl"] .ant-select-arrow {
+  right: 84% !important;
+}
+
+::ng-deep .fr-second-toolbar{
+  border: 0 !important;
+  background: none !important;
+}
+
+::ng-deep .fr-wrapper{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar.fr-top{
+  border: 0 !important;
+}
+
+::ng-deep .fr-toolbar .fr-newline{
+  background: none !important;
+  height: 0px !important;
+}
+
+::ng-deep .fr-box.fr-basic .fr-wrapper{
+  background: none !important;
+}
+
+::ng-deep .ant-form-item{
+  margin-bottom: 0 !important;
+}
+
+::ng-deep .ant-modal-title{
+  font-size: 22px;
+}
+
+.action-btn {
+  padding: 0%;
+  border: none;
+}
+
+
+
+

@@ -1,0 +1,46 @@
+.create__form__section {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-top: 3px solid #41ad4f;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.create__form__section {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-top: 3px solid #41ad4f;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+h6 {
+  font: Roboto;
+  font-size: 22px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.datepicker {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #d9d9d9;
+}
+
+.datepicker :active ::selection {
+  border: hsl(0, 96%, 48%) 2px solid;
+}
+
+.ant-btn.ant-btn-primary {
+  width: 107px;
+  height: 48px;
+  text-transform: uppercase;
+}
+
+::ng-deep ngb-datepicker {
+  background-color: #ffff !important;
+}

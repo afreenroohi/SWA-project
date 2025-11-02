@@ -1,0 +1,59 @@
+<div nz-row nzJustify="space-between">
+  <div nz-col>
+    <!-- * Delegation Screen Title -->
+    <h2>{{ 'Admin.RFPMaintenance.RFP Maintenance' | translate }}</h2>
+  </div>
+</div>
+
+<!-- * Table  -->
+<nz-table #nzTable class="mt-5" [nzData]="dataSource" nzBordered>
+  <thead>
+    <tr>
+      <th>{{ "COM.RFPNumber" | translate }}</th>
+      <th>{{ "COM.Department" | translate }}</th>
+      <!-- <th>{{ "Admin.RFPMaintenance.Approver Role" | translate }}</th> -->
+      <th>{{ "Admin.RFPMaintenance.Current Approver" | translate }}</th>
+      <th>{{ "RFP.Action" | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dataItem of nzTable.data; let i = index">
+      <ng-container>
+        <td> {{dataItem.RfpNo}} </td>
+        <td> {{commonService.userLanguage === 'en'? dataItem.WFDeptDescEN : dataItem.WFDeptDescAR}} </td>
+        <!-- <td> {{commonService.userLanguage === 'en'? dataItem.ApproverRoleDescEN : dataItem.ApproverRoleDescAR}} </td> -->
+        <td>
+          <ng-container *ngIf="dataItem.RfpNo !== editingRFPNumber; else dropdownTemplate">
+            {{commonService.userLanguage === 'en'? dataItem.UserName : dataItem.UserNameAR}}
+          </ng-container>
+
+          <ng-template #dropdownTemplate>
+            <nz-select [(ngModel)]="newApprover" style="width: 100%;">
+              <nz-option *ngFor="let user of userList" [nzValue]="user.UserId"
+                [nzLabel]="commonService.userLanguage === 'en' ? user.NameEn : user.NameAr"></nz-option>
+            </nz-select>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="dataItem.RfpNo !== editingRFPNumber; else actionButtons">
+            <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
+              nzSize="default" nz-tooltip nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
+              [nzTooltipArrowPointAtCenter]="true" (click)="editCurrentApprover(dataItem)">
+              <app-icon [icon]="IconList.edit"></app-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #actionButtons>
+            <button nz-button nzType="primary" nzSize="default" style="margin: 0 10px 0 10px;" (click)="saveNewApprover()" [disabled]="newApprover === ''">
+              <span>{{ 'COM.Save' | translate}}</span>
+            </button>
+
+            <button nz-button nzType="default" nzSize="default" (click)="editCurrentApprover()">
+              <span>{{ 'COM.Cancel' | translate}}</span>
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</nz-table>

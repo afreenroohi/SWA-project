@@ -1,0 +1,67 @@
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="isBudgetPlannerVisible"
+  [nzWidth]="1200"
+  [nzBodyStyle]="{ overflow: 'auto' }"
+  [nzTitle]="'RFP.Create Budget Planning' | translate"
+  nzPlacement="right"
+  nzTitle="Basic Drawer"
+  [nzFooter]="footerTpl"
+  (nzOnClose)="closeBudgetPlannerVisible()"
+>
+  <ng-container *nzDrawerContent>
+    <app-budget-planner-stepper></app-budget-planner-stepper>
+    <ng-container *ngIf="currentStep === 1">
+        <!--*Budget planner step 1-->
+      <app-budget-planner-step-one
+        [budgetDetails]="budgetDetails"
+        [rfpNo]="rfpNo"
+        [rfpVersion]="rfpVersion"
+      ></app-budget-planner-step-one>
+      <!--*Budget planner step 1-->
+    </ng-container>
+    <ng-container *ngIf="currentStep === 2">
+        <app-budget-planner-step-two 
+        [rfpNo]="rfpNo"
+        [rfpVersion]="rfpVersion"
+        (onSuccessfullBudgetCreation)="closeBudgetPlannerVisible()"
+        ></app-budget-planner-step-two>
+    </ng-container>
+
+  </ng-container>
+</nz-drawer>
+
+<ng-template #footerTpl>
+  <div style="float: right">
+    <button  [disabled]="currentStep === 1" nz-button style="margin-right: 8px" (click)="prevStep()">
+      {{ "RFP.PREV" | translate }}
+    </button>
+    <button [disabled]="currentStep === 2 || isNextStepButtonDisabled" nz-button style="margin-right: 8px" (click)="nextStep()">
+      {{ "RFP.NEXT" | translate }}
+    </button>
+    <button
+    *ngIf="currentStep === 2"
+    nz-button
+    style="margin-right: 8px"
+    (click)="saveAsDraftBudget()"
+    >
+    {{ "RFP.SaveAs" | translate }}
+    </button>
+    <button
+    *ngIf="currentStep === 1"
+    nz-button
+      style="margin-right: 8px"
+      (click)="saveAsDraftBudgetPlan()"
+    >
+    {{ "RFP.SaveAs" | translate }}
+
+    </button>
+    <button [disabled]="currentStep === 1" nz-button nzType="primary" (click)="createBudget()">
+      {{ "RFP.Submit" | translate }}
+
+    </button>
+  </div>
+</ng-template>
+<ng-template #loading>
+  <p>Loading commitment items...</p>
+</ng-template>

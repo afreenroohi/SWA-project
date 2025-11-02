@@ -1,0 +1,37 @@
+::ng-deep .otp-modal {
+    border-top: 4px solid #005c99 !important;
+}
+
+::ng-deep .otp-modal .ant-modal-header {
+    border-bottom: none !important;
+}
+
+::ng-deep .otp-modal .ant-modal-content {
+    padding: 3% !important;
+}
+
+::ng-deep .ant-form-item {
+    margin-bottom: 0 !important;
+}
+
+::ng-deep .otp-modal .ant-modal-title {
+    font-size: 22px;
+}
+
+::ng-deep .otp-modal .ant-modal-footer {
+    border-top: none !important;
+}
+
+::ng-deep .otp-modal .ant-modal-footer {   
+    padding-inline-end: 5.5% !important;
+}
+::ng-deep [dir="rtl"] .otp-modal .ant-modal-footer {   
+    padding-inline-end: 3% !important;
+}
+
+.closeIcon {
+    border: none;
+    background: none;
+    height: fit-content;
+    cursor: pointer;
+}

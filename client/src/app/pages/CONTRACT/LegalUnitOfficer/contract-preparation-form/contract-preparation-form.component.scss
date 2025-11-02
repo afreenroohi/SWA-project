@@ -1,0 +1,153 @@
+.header {
+    background-color: #005c99;
+    color: #fff;
+}
+
+.create__form__section {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-top: 3px solid #41ad4f;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.address {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 100%;
+    border-top: 1px solid #41ad4f;
+    border-bottom: 1px solid #41ad4f;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.editBtn {
+    background-color: transparent;
+    border: none;
+}
+
+.footer {
+    // text-align: center;
+    margin-top: 7%;
+}
+
+::ng-deep .ant-form-item-children-icon .anticon-check-circle-fill{
+    color: #41ad4f !important;
+}
+
+.transBtn {
+    background-color: transparent;
+    color: #005c99;
+    border: none;
+    font-size: 20px;
+}
+
+.manInp {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.box {
+    margin: 2%;
+    padding: 5%;
+    background-color: #efefef;
+    border-radius: 2px;
+}
+
+.error {
+    color: red;
+}
+
+::ng-deep .ant-collapse-header {
+    font-weight: bold !important;
+}
+
+.datepicker {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #d9d9d9;
+}
+
+.datepicker :active ::selection {
+    border: hsl(0, 96%, 48%) 2px solid;
+    // box-shadow: #41ad4f;
+}
+
+
+// * Penalties
+.penalties-flex {
+    display: flex; 
+    margin: -1%; 
+    margin-bottom: 1%; 
+    margin-top: 1%;
+}
+.penalties-flex-G {
+    display: flex; 
+    margin: 0; 
+    margin-bottom: 1%; 
+    margin-top: 1%;
+}
+
+::ng-deep [dir="rtl"] .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    padding-left: 25px !important;
+  }
+::ng-deep [dir="rtl"] .ant-select-arrow {
+    left: 11px !important;
+    right: auto !important;
+}
+
+::ng-deep .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after{
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*' !important;
+}
+
+::ng-deep .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before{
+    content: '' !important;
+}
+
+::ng-deep .ant-form-item-children-icon .anticon-close-circle-fill{
+    color: #ff4d4f !important;
+}
+
+::ng-deep .ant-picker-clear{
+    position: relative !important;
+    transform: translateY(0);
+}
+.ant-picker-clearar{
+    ::ng-deep .ant-picker-clear{
+        margin-left: -14px;
+    }
+}
+.ant-picker-clearen{
+    ::ng-deep .ant-picker-clear{
+        margin-right: -19px;
+    }
+}
+.ant-picker-clearen1{
+    ::ng-deep .ant-picker-clear{
+        margin-right: -17px;
+    }
+}

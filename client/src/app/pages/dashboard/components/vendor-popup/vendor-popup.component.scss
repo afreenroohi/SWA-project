@@ -1,0 +1,21 @@
+:host {
+
+    .vendor-popup {
+ 
+        h2, h3, p {
+            margin-bottom: 0;
+        }
+
+        .vendor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vendor-details {
+            margin-bottom: 1rem;
+        }
+
+    }
+
+} 

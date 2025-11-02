@@ -1,0 +1,91 @@
+*{
+    font-family: 'Roboto';
+}
+
+.heading{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.create__form__section {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-top: 3px solid #41ad4f;
+    border-radius: 5px;
+    background-color: white;
+}
+
+::ng-deep .ant-form-item-children-icon {
+    color: #41ad4f !important;
+}
+::ng-deep [dir="rtl"] .ant-form-item-has-feedback.ant-form-item-has-success .ant-form-item-children-icon {
+    right:unset;
+    left: 0;
+}
+
+::ng-deep [dir="rtl"] .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    padding-left: 25px !important;
+  }
+::ng-deep [dir="rtl"] .ant-select-arrow {
+    left: 11px !important;
+    right: auto !important;
+}
+
+::ng-deep [dir="rtl"] .ant-modal-footer .ant-btn + .ant-btn:not(.ant-dropdown-trigger){
+    margin-bottom: 0;
+    margin-right: 8px;
+}
+
+::ng-deep .ant-modal-footer .ant-btn{
+    height: 40px;
+    width: 25%;
+}
+
+::ng-deep .ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    height: 32.5px !important;
+}
+
+::ng-deep .ant-select-selection-item { 
+    line-height: 30px !important;
+}
+
+::ng-deep .ant-modal{
+    border-top: 4px solid #005c99 !important;
+}
+
+::ng-deep .ant-modal-header {
+    border-bottom: none !important;
+}
+
+::ng-deep .ant-modal-content {
+    padding: 3% !important;
+}
+
+::ng-deep .ant-form-item{
+    margin-bottom: 0 !important;
+}
+
+::ng-deep .ant-modal-title{
+    font-size: 22px;
+}
+
+::ng-deep .ant-modal-footer {
+    border-top: none !important;
+}
+
+::ng-deep .ant-modal-footer {   
+    padding-inline-end: 5.5% !important;
+}
+::ng-deep [dir="rtl"] .ant-modal-footer {   
+    padding-inline-end: 3% !important;
+}
+
+.closeIcon{
+    border: none;
+    background: none;
+    height: fit-content;
+    cursor: pointer;
+}

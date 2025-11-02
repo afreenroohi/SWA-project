@@ -1,0 +1,31 @@
+.budget-stepper{
+    height: auto;
+    width: 100%;
+}
+.stepper-container-wrapper{
+    height: auto;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    
+}
+.stepper-container{
+    height: auto;
+    width: auto;
+    display: flex;
+    justify-content: start;
+    gap: 1rem;
+}
+.step-divider{
+    height: auto;
+    width: auto;
+    display: flex;
+    padding: 0% 3rem;
+    align-items: center;
+}
+.step-divider-line{
+    height: .5rem;
+    width: 10rem;
+    background-color: rgb(231, 231, 231);
+    
+}

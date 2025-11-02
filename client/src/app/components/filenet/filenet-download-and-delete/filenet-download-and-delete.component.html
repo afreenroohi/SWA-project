@@ -1,0 +1,14 @@
+<div class="">
+    <div *ngFor="let file of fileList; let id = index" class="outline-border">
+        <label class="file-name">
+            <span class="name" title="{{file.FileName}}">{{file.FileName}}&nbsp;</span>
+            <span nz-icon nzType="download" nzTheme="outline" class="action" *ngIf="file?.downloading == false || !file?.downloading" (click)="downloadFile(file.FilenetID, id)"></span>&nbsp;
+            
+            <span nz-icon nzType="loading" nzTheme="outline" *ngIf="file?.downloading == true"class="docNzIconClickable"></span>&nbsp;
+            
+            <ng-container *ngIf="file?.CommitteeUser == userId || file?.UserId === userId || (!file?.CommitteeUser && !file?.UserId)">
+                <span nz-icon nzType="delete" nzTheme="outline" class="action" (click)="deleteFromFileNet(file.FilenetID)" *ngIf="!hideDelete"></span>
+            </ng-container>
+        </label>
+    </div>
+</div>

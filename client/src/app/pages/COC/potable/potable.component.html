@@ -1,0 +1,76 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row" style="margin-top: 3rem">
+    <div class="col-12">
+      <nz-table
+        #nzTable
+        nzShowSizeChanger
+        [nzData]="listOfDisplayData"
+        nzBordered="true"
+        [nzPageSize]="5"
+        [nzTotal]="1000"
+        [nzPageIndex]="1"
+        [nzFrontPagination]="true"
+        [nzPageSizeOptions]="[5,10,15,20,25]"
+        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
+        nzTableLayout="fixed"
+      >
+        <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" >
+              {{ cs.userLanguage === "en" ? column.title : column.titleAr }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of nzTable.data; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ data.PoNum }}</td>
+            <td>{{ data.PoItemNum }}</td>
+            <td>{{ cs.numberWithCommas(data.PoAmount) }}</td>
+            <td>{{ cs.numberWithCommas(data.PoRemainAmount) }}</td>
+
+            <td >
+              <button
+              *ngIf="data.CocNumber == ''"
+                nz-button
+                nzType="default"
+                (click)="
+                  navigate(
+          
+                    data.PoNum,
+                    data.PoItemNum,
+                    data.ContractNo,
+                    data.PoAmount,
+                    data.CocNumber
+                  )
+                "
+                nzSize="default"
+                nzShape="circle"
+              >
+                <span nz-icon nzType="plus"></span>
+              </button>
+          
+              <button
+                nz-button
+                nzType="default"
+                (click)="
+                  navigate(
+                    data.PoNum,
+                    data.PoItemNum,
+                    data.ContractNo,
+                    data.PoAmount
+                  )
+                "
+                nzSize="default"
+                nzShape="circle"
+              >
+                <span nz-icon nzType="edit"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

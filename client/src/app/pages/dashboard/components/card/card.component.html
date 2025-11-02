@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-body">
+        <div class="card-heading">
+            <p class="card-title">{{ title | translate }}</p>
+        </div>
+        <div class="card-content">
+            <ng-container *ngIf="secondaryValue">
+                <p class="value">{{ secondaryValue }}</p>
+                <p class="subtitle">{{ secondaryDescription | translate }}</p>
+                <p>/</p>
+            </ng-container>
+            <p class="value">{{ value }}</p>
+            <p class="subtitle">{{ description | translate }}</p>
+        </div>
+        <div class="card-icon" [class.ar-icon]="cs.userLanguage === 'ar'" [class.en-icon]="cs.userLanguage === 'en'">
+            <app-icon [icon]="icon"></app-icon>
+        </div>
+    </div>
+    <div class="card-footer">
+        <p (click)="toggleViewDetails()" class="card-footer-text">{{'Dashboard.View Details' | translate}} ></p>
+    </div>
+</div>

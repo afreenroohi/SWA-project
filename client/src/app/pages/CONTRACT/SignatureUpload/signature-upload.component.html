@@ -1,0 +1,72 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="upload-container">
+  <ng-container *ngIf="showSignature">
+    <h1>{{ "COM.UploadSign" | translate }}</h1>
+    <div class="mb-3">
+      <div class="col-4">
+        <nz-upload [nzShowUploadList]="false" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload"
+          [nzShowButton]="fileList.length == 0" [nzFileType]="'image/png,image/jpeg'"
+          [nzAccept]="'image/png,image/jpeg'">
+          <button nz-button>
+            <span nz-icon nzType="upload"></span>
+            {{ "COM.Upload" | translate }}
+          </button>
+        </nz-upload>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="col-auto">
+        <div class="image-area" *ngIf="previewImage">
+          <img [src]="previewImage" alt="signature" />
+          <a class="remove-image" (click)="removeImage()">&#215;</a>
+        </div>
+      </div>
+    </div>
+    <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="submitSignature()"
+      [disabled]="fileList.length === 0">
+      {{
+      uploading
+      ? ("RFP.Uploading" | translate)
+      : ("RFP.Submit" | translate)
+      }}
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="showInitial">
+    <h1>{{ "COM.UploadInitial" | translate }}</h1>
+    <div class="row">
+      <div class="col-4">
+        <nz-upload [nzShowUploadList]="false" [(nzFileList)]="initialList" [nzBeforeUpload]="beforeUploadInitial"
+          [nzShowButton]="initialList.length == 0" [nzFileType]="'image/png,image/jpeg'"
+          [nzAccept]="'image/png,image/jpeg'">
+          <button nz-button>
+            <span nz-icon nzType="upload"></span>
+            {{ "COM.Upload" | translate }}
+          </button>
+        </nz-upload>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-auto">
+        <div class="image-area" *ngIf="previewInitial">
+          <img [src]="previewInitial" alt="initial" />
+          <a class="remove-image" (click)="removeInitial()">&#215;</a>
+        </div>
+      </div>
+    </div>
+    <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="submitInitial()"
+      [disabled]="initialList.length === 0">
+      {{
+      uploading
+      ? ("RFP.Uploading" | translate)
+      : ("RFP.Submit" | translate)
+      }}
+    </button>
+  </ng-container>
+
+</div>
+
+<!--OTP MODAL-->
+<app-approval-otp (otpValue)="verifyOTP($event)" [isOTPVisible]="isOTPVisible"
+  (updateOTPVisible)="updateOTPVisible($event)">
+</app-approval-otp>

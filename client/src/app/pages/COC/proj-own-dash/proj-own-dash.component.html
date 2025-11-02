@@ -1,0 +1,88 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<h2> {{ 'COC.COC Action' | translate }} </h2>
+<div *ngIf="listOfDisplayData.length" class="container-fluid">
+  <div class="row" style="margin-top: 3rem">
+    <div class="col-12">
+      <nz-table #nzTable nzShowSizeChanger [nzData]="listOfDisplayData" [nzPageSize]="5" [nzTotal]="1000"
+        [nzPageIndex]="1" [nzFrontPagination]="true" [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true"
+        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" nzTableLayout="fixed">
+        <thead>
+          <tr>
+            <ng-container *ngFor="let column of listOfColumn">
+              <ng-container *ngIf="column.title === 'COC.ContractNumber' || column.title === 'COC.PoNumber'; else tableTitleWithoutFilter">
+
+                <th *ngIf="column.title === 'COC.ContractNumber'" nzCustomFilter> {{ column.title | translate }}
+                  <nz-filter-trigger [(nzVisible)]="showSearchContractNumber" [nzActive]="searchContractNumberValue.length > 0"
+                    [nzDropdownMenu]="searchContractNoDropdownMenu">
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </th>
+
+                <th *ngIf="column.title === 'COC.PoNumber'" nzCustomFilter> {{ column.title | translate }}
+                  <nz-filter-trigger [(nzVisible)]="showSearchPoNumber" [nzActive]="searchPoNumberValue.length > 0"
+                    [nzDropdownMenu]="searchPONoDropdownMenu">
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </th>
+
+              </ng-container>
+
+              <ng-template #tableTitleWithoutFilter>
+                <th> {{ column.title | translate }} </th>
+              </ng-template>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of nzTable.data; let i = index">
+            <td>{{ data.SiNo }}</td>
+            <td>{{ data.CocNo }}</td>
+            <td>{{ data.ProjectName }}</td>
+            <td>{{ data.VendorName }}</td>
+            <td>{{ data.ContractNumber }}</td>
+            <td>{{ data.PoNo }}</td>
+            <td>{{ data.InvoiceNumber }}</td>
+            <td>{{ data.CreatedBy }}</td>
+            <td>{{ data.CreationDate }}</td>
+            <td>{{ cs.userLanguage === 'en'? data.CocStatusEn : data.CocStatusAr }}</td>
+            <td>{{ cs.userLanguage === 'en'? data.PendingWithEn : data.PendingWithAr }}</td>
+            <td [ngStyle]="{ color: data.SlaFlag === 'P' ? '#005c99' : 'red' }" >{{ cs.userLanguage === 'en'? data.SlaEn : data.SlaAr }}</td>
+            <td>
+              <button nz-button nzType="default" (click)="navigate(data.CocNo)" nzSize="default" nzShape="circle">
+                <span nz-icon nzType="eye"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<app-no-data-found *ngIf="!listOfDisplayData || !listOfDisplayData.length"></app-no-data-found>
+
+<!-- * Contract Number filter model -->
+<nz-dropdown-menu #searchContractNoDropdownMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchContractNumberValue" nz-input [placeholder]="translate.instant('COC.Enter Contract Number')" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search(searchKey.ContractNumber)"
+        [ngClass]="cs.userLanguage === 'en'? 'search-button-en': 'search-button-ar'">{{'RFP.search' |
+        translate}}</button>
+      <button nz-button nzSize="small" (click)="reset()">{{'contract.common.Reset' | translate}}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<!-- * PO Number filter model -->
+<nz-dropdown-menu #searchPONoDropdownMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchPoNumberValue" nz-input [placeholder]="translate.instant('COC.Enter PO Number')" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search(searchKey.PoNumber)"
+        [ngClass]="cs.userLanguage === 'en'? 'search-button-en': 'search-button-ar'">{{'RFP.search' |
+        translate}}</button>
+      <button nz-button nzSize="small" (click)="reset()">{{'contract.common.Reset' | translate}}</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

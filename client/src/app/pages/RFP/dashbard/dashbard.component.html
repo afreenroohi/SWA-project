@@ -1,0 +1,54 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-2">
+            <form [formGroup]="repForm">
+                <div class="create__form__section">
+                    <div class="row w-100 my-3 justify-content-center">
+
+                        <!-- * Requestor Department -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="dep">{{ 'RFP.Requester Department' | translate }}</nz-form-label>
+                            <nz-select id="dep" formControlName="dep" nzShowSearch style="width: 100%;" nzAllowClear>
+                                <nz-option *ngFor="let department of departmentList" [nzValue]="department.DeptId"
+                                    [nzLabel]="department.DeptText"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <!-- * Pending with Department -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="pendingDept">{{ 'RFP.Pending with Department' | translate }}</nz-form-label>
+                            <nz-select id="pendingDept" formControlName="pendingDept" nzShowSearch style="width: 100%;" nzAllowClear>
+                                <nz-option *ngFor="let department of pendingDepartmentList" [nzValue]="department.RfpWfDept"
+                                    [nzLabel]="cs.userLanguage === 'en' ? department.RfpWfDeptEn : department.RfpWfDeptAr"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <!-- * RFP Number -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="rfpNo">{{ 'RFP.RFP Number' | translate }}</nz-form-label>
+                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
+                            [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of rfpList" [nzValue]="o.RfpNo"
+                                    [nzLabel]="o.RfpNo"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <div class="col-12 col-md-2 text-center" style="margin-top: 1.5rem;">
+                            <button nz-button nzType="primary" style="margin-top: 1.4rem;"
+                             nzSize="default" (click)="filterSearch()"> {{ 'RFP.search' | translate }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
+                Action="MG"></app-rfptable>
+
+            <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+
+        </div>
+    </div>
+
+
+</div>

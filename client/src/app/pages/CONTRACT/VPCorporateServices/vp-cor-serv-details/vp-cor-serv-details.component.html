@@ -1,0 +1,147 @@
+<div class="row mt-2">
+    <div class="col-4">
+        <button nz-button nzType="primary" (click)="backToDashboard()">
+            <span *ngIf="cs.userLanguage === 'en' " nz-icon nzType="left"></span>
+            <span class="mx-2" *ngIf="cs.userLanguage === 'ar' " nz-icon nzType="right"></span>
+            {{ 'contract.common.BackToDashboard' | translate }}
+        </button>
+    </div>
+    <div class="col-4" style="text-align: center;">
+        <h2>{{ 'contract.common.ContractApprovalDetails' | translate }}</h2>
+    </div>
+</div>
+
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container-fluid" style="margin-top: 2rem;">
+    <nz-form [formGroup]="ContractForm">
+        <div class="create__form__section">
+            <div class="row w-100 my-3">
+
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{ 'contract.Details.ProjectName' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="ProjectName" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{ 'contract.Details.ProjectType' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input disabled value="{{ContractForm.get('ProjectType')?.value | translate}}" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{ 'contract.Details.AwardNumber' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="AwardNumber" />
+                    </nz-form-control>
+                </div>
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{ 'contract.Details.AwardDate' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="AwardDate" />
+                    </nz-form-control>
+                </div>
+
+                <div class="col-md-6 mt-2 col-3">
+                    <nz-form-label>{{ 'contract.Details.VendorName' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback>
+                        <input nz-input formControlName="VendorName" />
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <div class="row w-100 my-3">
+                <div class="mt-2">
+                    <nz-form-label nzRequired>{{ 'contract.Comment.Comment' | translate }} : </nz-form-label>
+                    <nz-form-control nzHasFeedback [nzErrorTip]="Comment">
+                        <div class="d-flex">
+                            <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                                nz-input formControlName="Comment" cols="30" rows="2"
+                                placeholder="{{ 'contract.Comment.Comment_ph' | translate }}"></textarea>
+                            <button class="editBtn">
+                                <span class="text-success text-24 mx-2 pointer-click" nz-icon nzType="comment"
+                                    nzTheme="outline" nz-tooltip
+                                    nzTooltipTitle="{{ 'contract.Comment.Comment_tt' | translate }}"
+                                    (click)="showHideComments()"></span>
+                            </button>
+                        </div>
+
+                        <ng-template #Comment let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{ 'contract.Comment.Comment_req' |
+                                translate }}
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </div>
+            </div>
+
+            <!-- <div class="row w-100" *ngIf="contractDetails">
+                <div class="mt-2">
+                    <nz-form-label>{{ 'contract.Details.Attachments' | translate }} : </nz-form-label>
+                    <div [formGroup]="getAttachFormGroupView(createFGParams)">
+                        <file-uploader class="gridInLineFormAttachmentPadding" [paramsPToC]="paramsForDocHandle"
+                            (onUploadFile)="onFileUpload($event, '')"></file-uploader>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="row w-100 my-3" *ngIf="contractDetails">
+                <div class="mt-2">
+                    <h4>{{ 'contract.Details.Attachments' | translate }} :</h4><br>
+                    <div [formGroup]="getAttachFormGroup(createFGParams)">
+                        <file-uploader class="gridInLineFormAttachmentPadding" [paramsPToC]="paramsForDocHandle"
+                            [username]="user_name" (onUploadFile)="onFileUpload($event, '')"></file-uploader>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-lg mt-4" (click)="downloadPDF('view')" nz-button nzType="primary">
+                <span class="mx-1" nz-icon nzType="search" nzTheme="outline"></span>{{'View PDF' | translate}}
+            </button>
+            <button class="btn-lg mx-4 mt-4" (click)="downloadPDF('download')" nz-button nzType="primary">
+                <span class="mx-1" nz-icon nzType="download" nzTheme="outline"></span> {{'Download PDF' | translate}}
+            </button>
+
+            <div class="footer mb-4">
+                <!-- <button class="btn-lg mx-4" nz-button nzType="primary" (click)="downloadPDF('view')">
+                    {{'contract.buttons.ViewContract' | translate}}
+                </button>
+                <button class="btn-lg mx-4" nz-button nzType="primary" (click)="downloadPDF('download')">
+                    {{'contract.buttons.Download' | translate}}
+                </button> -->
+                <button class="btn-lg mx-4" nz-button nzType="primary" [disabled]="!ContractForm?.valid"
+                    (click)="getOTP('APP')">
+                    {{'contract.buttons.Approve' | translate}}
+                </button>
+                <button class="btn-lg mx-4" nz-button nzType="primary" [disabled]="!ContractForm?.valid"
+                    (click)="reject()">
+                    {{'contract.buttons.Reject' | translate}}
+                </button>
+            </div>
+
+        </div>
+    </nz-form>
+</div>
+
+<!-- * Comments model Starts -->
+<nz-modal [(nzVisible)]="showComments" [nzTitle]="modalTitle" [nzWidth]="800" [nzContent]="modalContent"
+    [nzFooter]="modalFooter" (nzOnCancel)="showHideComments()">
+    <ng-template #modalTitle>{{"COM.Comments" | translate}}</ng-template>
+
+    <ng-template #modalContent>
+        <app-comments [award_number]="award_number"></app-comments>
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button nz-button nzType="default" (click)="showHideComments()">{{'COMMON.Close' | translate }}</button>
+    </ng-template>
+</nz-modal>
+<!-- * Comments model Ends -->
+
+<!-- <button (click)="getOTP()">opt</button> -->
+<app-approval-otp (otpValue)="SubmitOTP($event)" [isOTPVisible]="getOTPModel" (updateOTPVisible)="updateOTP($event)">
+</app-approval-otp>
+<app-approval-otp (otpValue)="SubmitOTPReject($event)" [isOTPVisible]="getOTPModelReject"
+    (updateOTPVisible)="updateOTP($event)">
+</app-approval-otp>

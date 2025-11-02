@@ -1,0 +1,45 @@
+<div class="table-container">
+  <div class="table-container-header">
+    <h2>{{ title | translate }}</h2>
+    <div class="table-search-container">
+      <button class="download-btn" nz-button nzType="primary" [nzSize]="'large'" (click)="downloadExcel()">
+        <i nz-icon nzType="download"></i>
+      </button>
+      <nz-input-group [nzPrefix]="iconSearch">
+        <input type="text" nz-input [placeholder]="placeholder | translate" [(ngModel)]="searchValue" 
+        (ngModelChange)="onSearch($event)" />
+      </nz-input-group>
+      <ng-template #iconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+  
+    </div>
+  </div>
+  <nz-table #sortTable nzShowSizeChanger [nzScroll]="{ x: '1117px', y: null }" [nzData]="listOfData" 
+     [nzFrontPagination]="false" [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)">
+      <thead>
+        <tr>
+          <th *ngFor="let column of listOfColumn" 
+          [nzColumnKey]="column.key" [nzShowSort]="column.sort" [nzSortFn]="column.sort" 
+          [nzSortPriority]="column.priority" [nzWidth]="column.width" [nzLeft]="column.fixed ?? false"
+          [nzShowFilter]="column.filter ? true : false" [nzFilterFn]="column.filter ? true : false" 
+          [nzFilters]="column.filter ?? []" [nzFilterMultiple]="false"
+          >
+            {{ column.title | translate }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of sortTable.data">
+          <td *ngFor="let column of listOfColumn" [ngSwitch]="column.type" [nzLeft]="column.fixed ?? false">
+            <ng-container *ngSwitchCase="'text'">{{ getData(data, column.key) || '-' }}</ng-container>
+            <ng-container *ngSwitchCase="'number'">{{ (getData(data, column.key) | number) || '-' }}</ng-container>
+            <ng-container *ngSwitchCase="'date'">{{ (getData(data, column.key) | customDate) || '-' }}</ng-container>
+            <ng-container *ngSwitchCase="'currency'">{{ (getData(data, column.key) | currency) || '-' }}</ng-container>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+  <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" 
+    [nzTotal]="total" (nzPageIndexChange)="pageChange($event)"></nz-pagination>
+</div>
