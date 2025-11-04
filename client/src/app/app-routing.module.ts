@@ -10,11 +10,11 @@ const routes: Routes = [
     redirectTo: 'rfp/home',
     pathMatch: 'full'
   },
-  {
-    path: 'noaccess' ,
-    component: NoroleComponent,
-    canActivate:[AuthGuardGuard]
-  },
+  // {     // afreen commented
+  //   path: 'noaccess' ,
+  //   component: NoroleComponent,
+  //   canActivate:[AuthGuardGuard]
+  // },
 
   
   

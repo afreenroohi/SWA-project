@@ -422,7 +422,7 @@ export class CreateRFPComponent implements OnInit {
       this.userName =  atob(usernameBtoa)
       console.log(this.userName)
     }
-    this.loadLookUpData();
+    // this.loadLookUpData();  // afreen commented
     this.toggleDescrValidatorTechEval()
 
     combineLatest([

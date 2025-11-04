@@ -36,7 +36,7 @@ const routes: Routes = [
   {
     path: 'create',
     component: CreateRFPComponent,
-    canActivate: [AuthGuardGuard],
+    // canActivate: [AuthGuardGuard],   // afreen commented
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Requestor',
@@ -109,7 +109,7 @@ const routes: Routes = [
   {
     path: 'myinbox',
     component: MyinboxComponent,
-    canActivate: [AuthGuardGuard],
+    // canActivate: [AuthGuardGuard],   // afreen commented
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Approver',

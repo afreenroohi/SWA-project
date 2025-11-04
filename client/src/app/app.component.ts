@@ -139,7 +139,7 @@ export class AppComponent {
     this.translate.use('en');
     this.i18n.setLocale(en_US);
 
-    this.configure();
+    // this.configure();  // afreen commented
 
     this.spinner.show();
 
@@ -158,7 +158,7 @@ export class AppComponent {
       this.spinner.hide()
     }
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/']);  
 
   }
 
@@ -169,20 +169,21 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.cs.activeMenu = 'home';
-    if (!environment.testlogin) {
-      const token = this.oauthService.getAccessToken() as any;
-      const decode: any = jwt_decode(token);
-      if (decode) {
-        this.ProxyUserId = decode.upn.split("@")[0].toUpperCase()
-        this.dispname = decode.unique_name
-        this.email = decode.email
-        this.isUserLoggedIn = true;
+     this.isUserLoggedIn = true;
+    // if (!environment.testlogin) {  // afreen commented
+    //   const token = this.oauthService.getAccessToken() as any;
+    //   const decode: any = jwt_decode(token);
+    //   if (decode) {
+    //     this.ProxyUserId = decode.upn.split("@")[0].toUpperCase()
+    //     this.dispname = decode.unique_name
+    //     this.email = decode.email
+    //     this.isUserLoggedIn = true;
   
-        // * Gets the menu items - Login logic
-        this.getNavItem(this.ProxyUserId);
+    //     // * Gets the menu items - Login logic
+    //     this.getNavItem(this.ProxyUserId);
   
-      }
-    }
+    //   }
+    // }
     //* Subscription to get count */
     this.cs.getBidsCount().pipe(takeUntil(this._destroy)).subscribe(resFromComp => {
       if (resFromComp.committeeAction == 'BOPN') {
@@ -295,8 +296,57 @@ export class AppComponent {
    * @todo Make the changes according to the Process deployment. 
    * 
    */
+  
   async getNavItem(userName: string) {
+    // console.log(userName,'userName==')
+    this.navItems = [];
+    this.navItems.push(
+        {
+          Module: 'Dashboard',
+          ModuleAr: 'إدارة طلب المنافسات',
+          ModuleIcon: 'line-chart',
+          link: '/dashboard'
+        },
+      )
+      if(userName === 'OALMAGHRABI'){
+          this.roleTest('Requestor')
+          this.router.navigate(['rfp/create']);
+      }
+      if(userName === 'SALSUBKI'){
+          this.roleTest('Approver')
+          this.router.navigate(['rfp/myinbox']);
+      }
+      if(userName === 'AALSALEM'){
 
+        this.constructCOCmenu({RoleId:'FI'})
+
+         this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Bid Opening Committee',
+            ModuleId: '01',
+            ModuleAr: 'لجنة فتح العروض ',
+            navItem: [
+              {
+                name: 'bidopeningform',
+                iconName: IconList.listcheck,
+                text: 'Bid opening Form',
+                textAr: 'نموذج فتح العروض',
+                link: 'committee/Bid_Create',
+              },
+              {
+                name: 'bidlist',
+                iconName: IconList.listnote,
+                text: 'Bids List (' + this.bidsListCount + ')',
+                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+                link: 'committee/BidList',
+              },
+            ],
+          });
+        // Budallocator Manager Approver&Manager
+        this.router.navigate(['rfp/myinbox']);
+      }
+
+    return
     // * Setting the Initial State for Login
     localStorage.clear()
     this.noRFC = false;
@@ -415,6 +465,181 @@ export class AppComponent {
         this.cs.createMessage("error", error.statusText);
       });
   }
+
+
+   async roleTest(RoleIdf:string){
+     if (RoleIdf === 'Requestor') {
+          localStorage.setItem('ROLERFP', btoa(RoleIdf));
+          this.rqter = true;
+          // this.router.navigate(['rfp/myrfp'])
+        }
+        else if (RoleIdf === 'Approver') {
+          this.appr = true;
+        }
+        else if (RoleIdf === 'Budallocator') { 
+          localStorage.setItem('ROLEBUD', btoa(RoleIdf));
+          this.budalltr = true;
+        }
+        else if (RoleIdf == 'Manager') {
+          this.manager = true;
+        }
+        else if (RoleIdf == 'Approver&Manager') {
+          this.apprmanager = true;
+        }
+      
+
+      if (this.rqter) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Requester',
+            ModuleAr: 'إدارة طلب المنافسات',
+            ModuleIcon: 'mail',
+            isOpen: true,
+            navItem: [
+              {
+                name: 'create',
+                iconName: IconList.create,
+                text: 'Create',
+                textAr: 'انشاء منافسة',
+                link: 'rfp/create',
+              },
+              {
+                name: 'myrfp',
+                iconName: IconList.myRequest,
+                text: 'My Request',
+                textAr: 'منافساتي',
+                link: 'rfp/myrfp',
+              }
+            ],
+          },
+        )
+      }
+
+      if (this.appr) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Approver',
+            ModuleAr: 'الموافقة على المنافسات',
+            ModuleIcon: 'mail',
+            isOpen: false,
+            navItem: [
+
+              {
+                name: 'list',
+                iconName: IconList.search,
+                text: 'Search RFP',
+                textAr: 'منافساتي',
+                link: 'rfp/list',
+              },
+
+              // {
+              //   name: 'dashboard',
+              //   iconName: IconList.dashboard,
+              //   text: 'Dashboard',
+              //   textAr: 'لوحة القيادة',
+              //   link: 'rfp/dashboard',
+              // },
+              {
+                name: 'myinbox',
+                iconName: IconList.inbox,
+                text: 'My Inbox',
+                textAr: 'الطلبات الواردة',
+                link: 'rfp/myinbox',
+              },
+            ],
+          },
+        )
+      }
+
+      if (this.budalltr) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Budget Allocation',
+            ModuleAr: 'الميزانية',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'budgetrequest',
+                iconName: IconList.hand,
+                text: 'Budget Requests',
+                textAr: 'طلبات الميزانية',
+                link: 'rfp/budgetrequest',
+              },
+
+              // {
+              //   name: 'list',
+              //   iconName: 'mail',
+              //   text: 'Search RFP',
+              //   textAr: 'منافساتي',
+              //   link: 'rfp/list',
+              // },
+
+              // {
+              //   name: 'myinbox',
+              //   iconName: 'mail',
+              //   text: 'My Inbox',
+              //   textAr: 'الطلبات الواردة',
+              //   link: 'rfp/myinbox',
+              // },
+
+            ],
+          },
+        )
+      }
+
+      if (this.manager) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Dashboard',
+            ModuleAr: 'حالة المنافسات',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'dashboard',
+                iconName: IconList.dashboard,
+                text: 'Dashboard',
+                textAr: 'لوحة القيادة',
+                link: 'rfp/dashboard',
+              },
+            ],
+          },
+        )
+      }
+
+      if (this.apprmanager) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Approver',
+            ModuleAr: 'الموافقة على المنافسات',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'dashboard',
+                iconName: IconList.dashboard,
+                text: 'Dashboard',
+                textAr: 'لوحة القيادة',
+                link: 'rfp/dashboard',
+              },
+
+              {
+                name: 'myinbox',
+                iconName: IconList.inbox,
+                text: 'My Inbox',
+                textAr: 'الطلبات الواردة',
+                link: 'rfp/myinbox',
+              },
+            ],
+          },
+        )
+      }
+
+      if (this.isAdmin) {
+        this.addRFPAdminNavItem(this.isAdminFullAccess);
+      }
+   }
 
   /**
    * Sets the RFP menu based on the Login API.
@@ -2543,12 +2768,13 @@ export class AppComponent {
   }
 
   get enableTestLogon(): boolean {
-    if (environment.testlogin) {
-      return true;
-    } else if (this.ProxyUserId === "ADUAYJI") {
-      return true;
-    }
-    return false;
+    return true
+    // if (environment.testlogin) {   // afreen
+    //   return true;
+    // } else if (this.ProxyUserId === "ADUAYJI") {
+    //   return true;
+    // }
+    // return false;
   }
 
 }
