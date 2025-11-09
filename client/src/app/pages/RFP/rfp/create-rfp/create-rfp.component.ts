@@ -329,17 +329,28 @@ export class CreateRFPComponent implements OnInit {
       estimatedCost: ['', [Validators.required, Validators.min(1)]],
 
       includeFrameworkItems: ['', [Validators.required]], // Yes / No
-      prequalificationRequired: ['', [Validators.required]], // Yes / No
+      prequalificationRequired: [false, [Validators.required]], // Yes / No
       qualificationReference: [''], // Optional if 'Yes'
       qualificationLink: [''], // Optional if 'Yes'
 
       competitionName: ['', [Validators.required, Validators.maxLength(200)]],
 
-      dividedIntoLots: ['', [Validators.required]], // Yes / No
+      dividedIntoLots: [false, [Validators.required]], // Yes / No
       contractDuration: ['', [Validators.required]], // Dropdown based on platform options
+      MatGrpId: ['', [Validators.required]],
+      DeliveryDate: ['', [Validators.required]],
+      ProjJust: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+      DurationType: new FormControl('', [Validators.required]),
+
+
+
       workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform
 
-      reAnnounced: ['', [Validators.required]], // Yes / No
+      reAnnounced: [false, [Validators.required]], // Yes / No
       cancellationReport: [''], // File upload if yes
 
       siteVisitRequired: ['', [Validators.required]], // Yes / No

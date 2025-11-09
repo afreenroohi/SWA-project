@@ -311,7 +311,8 @@ export class AppComponent {
       // if(userName === 'OALMAGHRABI'){
       if(userName === 'testrfp'){
           this.roleTest('Requestor')
-          this.router.navigate(['rfp/create']);
+          // this.router.navigate(['rfp/create']);
+          this.router.navigate(['dashboard']);
       }
       if(userName === 'SALSUBKI'){
           this.roleTest('Approver')
