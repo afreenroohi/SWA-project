@@ -270,9 +270,6 @@ export class CreateRFPComponent implements OnInit {
   onReannounceChange(value: string) {
 
   }
-  onPrequalificationChange(value: any) {
-    // if checked then prequalificationRequired true
-  }
   onCompetitionChange(value: string) {
     console.log(value, 'afreen =========');
 
@@ -287,12 +284,16 @@ export class CreateRFPComponent implements OnInit {
     // Handle Limited Competition
     if (value === 'L') {
       this.showLimitedField = true;
+      this.isPrivateSelected = false;
       this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
+      this.rfpForm.get('invite')?.setValue('');
+      this.rfpForm.get('estimatedCost')?.reset()
     }
 
     // Handle Direct Purchase
     if (value === 'D') {
       this.showDirectPurchaseField = true;
+      this.rfpForm.get('crNumber')?.reset();
       this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
     }
 
@@ -310,6 +311,62 @@ export class CreateRFPComponent implements OnInit {
     }
   }
 
+  onDirectPurchaseChange(value: string) {
+    const estimatedCostControl = this.rfpForm.get('estimatedCost');
+
+    if (value === 'below100k') {
+      estimatedCostControl?.setValidators([
+        Validators.required,
+        Validators.max(100)   // ⛔ max value 100
+      ]);
+    } else {
+      estimatedCostControl?.clearValidators();
+    }
+
+    estimatedCostControl?.updateValueAndValidity();
+  }
+
+  onLimitedChange(value: string) {
+    const estimatedCostControl = this.rfpForm.get('estimatedCost');
+
+    if (value === 'below500k') {
+      estimatedCostControl?.setValidators([
+        Validators.required,
+        Validators.max(500)   // ⛔ max value 500
+      ]);
+    } else {
+      estimatedCostControl?.clearValidators();
+    }
+
+    estimatedCostControl?.updateValueAndValidity();
+  }
+
+  // easy getter for the FormArray
+  get crNumberArray() {
+    return this.rfpForm.get('crNumber') as FormArray;
+  }
+
+  // methods to add/remove
+  addCrNumber() {
+    this.crNumberArray.push(this.fb.control('', Validators.required));
+  }
+
+  removeCrNumber(index: number) {
+    this.crNumberArray.removeAt(index);
+  }
+  onPrequalificationChange(value: boolean) {
+    console.log(value,'valueeeeeeeeeeee')
+  const detailsControl = this.rfpForm.get('prequalificationDetails');
+  if (value) {
+    detailsControl?.setValidators([Validators.required]);
+  } else {
+    detailsControl?.clearValidators();
+    detailsControl?.setValue('');
+  }
+  detailsControl?.updateValueAndValidity();
+}
+
+
   /**
    * Builds the main for group for create RFP
    */
@@ -318,10 +375,14 @@ export class CreateRFPComponent implements OnInit {
       // Basic Competition Info
       invite: new FormControl('', [Validators.required]),
       crNumber: new FormControl('', [Validators.required]),
+      // crNumber: this.fb.array([this.fb.control('', Validators.required)]),
       directPurchaseType: new FormControl('', [Validators.required]),
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
       limitedType: new FormControl('', [Validators.required]),
+      prequalificationDetails: new FormControl('',[Validators.required]),
+      coordinatorName: new FormControl('',[Validators.required]),
+      coordinatorNumber: new FormControl('',[Validators.required]),
 
 
       // New Fields
@@ -345,7 +406,7 @@ export class CreateRFPComponent implements OnInit {
       ]),
       ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
       DurationType: new FormControl('', [Validators.required]),
-
+      workLocation: new FormControl([], [Validators.required]),
 
 
       workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform

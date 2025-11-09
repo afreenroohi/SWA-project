@@ -305,14 +305,14 @@ export class AppComponent {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
           ModuleIcon: 'line-chart',
-          link: '/dashboard'
+          link: 'rfp/dashboard'
         },
       )
       // if(userName === 'OALMAGHRABI'){
       if(userName === 'testrfp'){
           this.roleTest('Requestor')
           // this.router.navigate(['rfp/create']);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['rfp/dashboard']);
       }
       if(userName === 'SALSUBKI'){
           this.roleTest('Approver')

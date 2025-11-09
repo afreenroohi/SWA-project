@@ -69,6 +69,7 @@ export class RfptableComponent implements OnInit, OnChanges {
 
       });
       this.listOfDisplayData = [...this.listOfData];
+      console.log(this.listOfDisplayData,'listOfDisplayData==================')
       
     }
     
