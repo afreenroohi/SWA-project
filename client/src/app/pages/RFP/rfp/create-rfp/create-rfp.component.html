@@ -6,13 +6,193 @@
 
       <!-- * Create RFP -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel
-          nzActive="true"
-          nzHeader="{{ 'RFP.Create RFP' | translate }}"
-        >
+        <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Basic Information' | translate }}">
+          <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
           <div class="row w-100 my-2">
-            <!-- * Project Name Arabic -->
+
+            <!-- * Type of Contract -->
             <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">Type of Contract</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="contractType" style="width: 100%" nzAllowClear>
+                  <nz-option *ngFor="let o of contractTypes" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+                <small *ngIf="
+                    rfpForm.controls.contractType.touched &&
+                    rfpForm.controls.contractType.hasError('required')
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+            <!-- * Type of Competition -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">Type of Competition</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="competitionType" style="width: 100%" nzAllowClear
+                  (ngModelChange)="onCompetitionChange($event)">
+                  <nz-option *ngFor="let o of competitionTypes" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+                <small *ngIf="
+                    rfpForm.controls.competitionType.touched &&
+                    rfpForm.controls.competitionType.hasError('required')
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+            <!-- * Limited Competition -->
+            <div class="col-4 my-1" *ngIf="showLimitedField">
+              <nz-form-label nzRequired for="limitedType">Limited Competition</nz-form-label>
+              <nz-select formControlName="directPurchaseType" style="width: 100%">
+                <nz-option nzValue="below500k" nzLabel="Less than 500k"></nz-option>
+                <nz-option nzValue="consultancyProject" nzLabel="Consultancy type of project"></nz-option>
+              </nz-select>
+            </div>
+            <!-- * Direct Purchase -->
+            <div class="col-4 my-1" *ngIf="showDirectPurchaseField">
+              <nz-form-label nzRequired for="directType">Direct Purchase</nz-form-label>
+              <nz-select formControlName="directPurchaseType" style="width: 100%">
+                <nz-option nzValue="Emergency" nzLabel="Emergency"></nz-option>
+                <nz-option nzValue="GovernmentToG" nzLabel="Government to Government"></nz-option>
+                <nz-option nzValue="oneSupplier" nzLabel="One Supplier"></nz-option>
+                <nz-option nzValue="below100k" nzLabel="Less than 100k"></nz-option>
+              </nz-select>
+            </div>
+            <div class="col-4 my-1" *ngIf="showDirectPurchaseField || showLimitedField">
+              <nz-form-label nzRequired for="uom">Invite</nz-form-label>
+
+              <nz-form-control>
+                <nz-select formControlName="invite" style="width: 100%" nzAllowClear
+                  (ngModelChange)="onInviteTypeChange($event)">
+                  <nz-option nzValue="public" nzLabel="Public"></nz-option>
+                  <nz-option nzValue="private" nzLabel="Private"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- * CR Number (visible only if private is selected) -->
+            <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+              <nz-form-label nzRequired for="crNumber">CR Number</nz-form-label>
+              <input nz-input id="crNumber" placeholder="Enter CR Number" formControlName="crNumber" />
+            </div>
+
+
+            <!-- ============================ -->
+            <!-- ADDITIONAL FIELDS -->
+            <!-- ============================ -->
+
+            <!-- * Request Status -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="requestStatus">Request Status</nz-form-label>
+              <nz-select formControlName="requestStatus" style="width: 100%">
+                <nz-option nzValue="emergency" nzLabel="Emergency"></nz-option>
+                <nz-option nzValue="businessPlans" nzLabel="From Business Plans"></nz-option>
+                <nz-option nzValue="urgent" nzLabel="Urgent"></nz-option>
+              </nz-select>
+            </div>
+
+            <!-- * Estimated Cost -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="estimatedCost">Estimated Cost (SAR)</nz-form-label>
+              <input nz-input type="number" placeholder="Enter Estimated Cost" formControlName="estimatedCost" />
+            </div>
+
+            <!-- * Competition Name -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="competitionName">Competition Name</nz-form-label>
+              <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
+            </div>
+
+            <!-- * Contract Duration -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="contractDuration">Contract Duration</nz-form-label>
+              <nz-select formControlName="contractDuration" style="width: 100%">
+                <nz-option nzValue="3months" nzLabel="3 Months"></nz-option>
+                <nz-option nzValue="6months" nzLabel="6 Months"></nz-option>
+                <nz-option nzValue="1year" nzLabel="1 Year"></nz-option>
+              </nz-select>
+            </div>
+
+            <!-- * Work Execution Location -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="workLocation">Work Execution Location</nz-form-label>
+              <nz-select formControlName="workLocation" style="width: 100%">
+                <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
+                <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
+                <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
+              </nz-select>
+            </div>
+
+            <!-- * Site Visit Contact Details -->
+            <div class="col-8 my-1">
+              <nz-form-label>Contact Details for Site Visit</nz-form-label>
+              <input nz-input placeholder="Enter Contact Name, Number, or Email" formControlName="siteVisitContact" />
+            </div>
+
+            <!-- * Framework Agreement -->
+            <div class="col-8 my-1">
+              <label nz-checkbox formControlName="frameworkIncluded">
+                Does the competition include items available under framework agreements concluded by the Expenditure and
+                Projects Efficiency Authority?
+              </label>
+            </div>
+
+            <!-- * Prequalification Required -->
+            <div class="col-8 my-1">
+              <label nz-checkbox (ngModelChange)="onPrequalificationChange($event)"
+                formControlName="prequalificationRequired">
+                Does the competition require a prequalification process?
+              </label>
+            </div>
+
+            <!-- * Prequalification Details (if yes) -->
+            <!-- <div class="col-8 my-1" *ngIf="prequalificationRequired">
+              <nz-form-label>Reference Number & Link</nz-form-label>
+              <input nz-input placeholder="Enter Reference Number or Qualification Link"
+                formControlName="prequalificationDetails" />
+            </div> -->
+
+
+            <!-- * Lots Division -->
+            <div class="col-8 my-1">
+              <label nz-checkbox formControlName="dividedIntoLots">
+                Is the competition divided into lots?
+              </label>
+            </div>
+
+            <!-- * Re-announcement -->
+            <div class="col-8 my-1">
+              <label nz-checkbox (ngModelChange)="onReannounceChange($event)" formControlName="reAnnounced">
+                Has it been re-announced?
+              </label>
+            </div>
+
+            <!-- * Cancellation Report Upload -->
+            <!-- <div class="col-8 my-1" *ngIf="reAnnounced">
+              <nz-form-label>Attach Cancellation Report</nz-form-label>
+              <input type="file" formControlName="cancellationReport" />
+            </div> -->
+
+            <!-- * Site Visit -->
+            <div class="col-8 my-1">
+              <label nz-checkbox (ngModelChange)="onSiteVisitChange($event)" formControlName="requiresSiteVisit">
+                Does it require a site visit?
+              </label>
+            </div>
+
+            <!-- * Project Justification -->
+            <div class="col-12 my-1">
+              <nz-form-label>Project Justification / Necessity / Impact of Not Proceeding</nz-form-label>
+              <textarea nz-input rows="3" placeholder="Describe the justification and impact..."
+                formControlName="projectJustification"></textarea>
+            </div>
+
+
+
+
+            <!-- OLD CODE -->
+
+            <!-- * Project Name Arabic -->
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired>
                 {{ "RFP.ProjNameAr" | translate }}</nz-form-label
               >
@@ -28,10 +208,10 @@
                   {{ cs.getErrorOnlyArabic(rfpForm.controls.RfpName) }}
                 </small>
               </nz-form-control>
-            </div>
+            </div> -->
 
             <!-- * Department -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired>
                 {{ "RFP.Department" | translate }}</nz-form-label
               >
@@ -46,10 +226,10 @@
                   >{{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </nz-form-control>
-            </div>
+            </div> -->
 
             <!-- * Cost Center -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired>{{
                 "RFP.CC" | translate
               }}</nz-form-label>
@@ -80,10 +260,10 @@
                   >{{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </nz-form-control>
-            </div>
+            </div> -->
 
             <!-- * Purchase Group -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="purgrp">{{
                 "RFP.PurGrp" | translate
               }}</nz-form-label>
@@ -113,10 +293,10 @@
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </nz-select>
-            </div>
+            </div> -->
 
             <!-- * Material Group -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="matgrp">{{
                 "RFP.MatGrp" | translate
               }}</nz-form-label>
@@ -170,9 +350,9 @@
                   {{ "RFP.zero is not acceptable" | translate }}
                 </small>
               </nz-form-control>
-            </div>
+            </div> -->
 
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{
                 "RFP.Duration Type" | translate
               }}</nz-form-label>
@@ -199,10 +379,10 @@
                   >{{ "RFP.FieldIsRequired" | translate }}</small
                 >
               </nz-form-control>
-            </div>
+            </div> -->
 
             <!-- * Delivery Date -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="deldate">
                 {{ "RFP.BOQDelDate" | translate }}</nz-form-label>
               <nz-date-picker
@@ -223,58 +403,44 @@
               >
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
-            </div>
+            </div> -->
 
           </div>
         </nz-collapse-panel>
       </nz-collapse>
 
       <!-- * Bill of Quantity -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel
-          nzActive="true"
-          nzHeader="{{ 'RFP.Bill of Quantity' | translate }}"
-        >
+      <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Bill of Quantity' | translate }}">
           <div class="row w-100 my-2">
             <!-- * BOQ Form -->
-            <div
-              formArrayName="billOFQty"
-              *ngFor="let bo of boqFormGroup.controls; let i = index"
-            >
+            <div formArrayName="billOFQty" *ngFor="let bo of boqFormGroup.controls; let i = index">
               <div [formGroupName]="i" class="row">
                 <!-- * SI No -->
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="ItemNo" nzRequired>{{
                     "RFP.slNo" | translate
-                  }}</nz-form-label>
+                    }}</nz-form-label>
 
                   <input nz-input type="text" formControlName="ItemNo" />
 
-                  <small
-                  style="margin-top: 8px; color: red"
-                  *ngIf="bo.get('ItemNo')?.invalid">
+                  <small style="margin-top: 8px; color: red" *ngIf="bo.get('ItemNo')?.invalid">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
                 </div>
 
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="matDes">
-                    {{ "RFP.MatDes" | translate }}</nz-form-label
-                  >
+                    {{ "RFP.MatDes" | translate }}</nz-form-label>
                   <input nz-input formControlName="MaterialText" />
 
-                  <small
-                  style="margin-top: 8px; color: red"
-                    *ngIf="
+                  <small style="margin-top: 8px; color: red" *ngIf="
                       bo.get('MaterialText')?.touched &&
                       bo.get('MaterialText')?.errors?.required
-                    "
-                  >
+                    ">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
-                  <small 
-                  style="margin-top: 8px; color: red"
-                  *ngIf="bo.get('MaterialText')?.errors?.maxlength">
+                  <small style="margin-top: 8px; color: red" *ngIf="bo.get('MaterialText')?.errors?.maxlength">
                     {{ "RFP.MatDesMaxLen" | translate }}
                   </small>
                 </div>
@@ -282,17 +448,11 @@
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="qty">{{
                     "RFP.QTY" | translate
-                  }}</nz-form-label>
+                    }}</nz-form-label>
                   <br />
-                  <nz-input-number
-                    nz-input
-                    formControlName="Quantity"
-                    style="width: 100%"
-                    (keydown)="restrictZero($event)"
-                  >
-                    <small
-                    style="margin-top: 8px; color: red"
-                    *ngIf="bo.get('Quantity')?.hasError('min')">
+                  <nz-input-number nz-input formControlName="Quantity" style="width: 100%"
+                    (keydown)="restrictZero($event)">
+                    <small style="margin-top: 8px; color: red" *ngIf="bo.get('Quantity')?.hasError('min')">
                       {{ "RFP.zero is not acceptable" | translate }}
                     </small>
                   </nz-input-number>
@@ -301,27 +461,15 @@
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="uom">{{
                     "RFP.Uom" | translate
-                  }}</nz-form-label>
-                  <nz-select
-                    formControlName="Uom"
-                    style="width: 100%"
-                    nzShowSearch
-                    nzAllowClear
-                  >
-                    <nz-option
-                      *ngFor="let o of uOM"
-                      [nzValue]="o.Uom"
-                      [nzLabel]="
+                    }}</nz-form-label>
+                  <nz-select formControlName="Uom" style="width: 100%" nzShowSearch nzAllowClear>
+                    <nz-option *ngFor="let o of uOM" [nzValue]="o.Uom" [nzLabel]="
                         cs.userLanguage === 'en'
                           ? o.Uom + '-' + o.UomTxt
                           : o.Uom + '-' + o.Data1
-                      "
-                    ></nz-option>
+                      "></nz-option>
 
-                    <small
-                    style="margin-top: 8px; color: red"
-                      *ngIf="bo.get('Uom')?.touched && bo.get('Uom')?.invalid"
-                    >
+                    <small style="margin-top: 8px; color: red" *ngIf="bo.get('Uom')?.touched && bo.get('Uom')?.invalid">
                       {{ "RFP.FieldIsRequired" | translate }}
                     </small>
                   </nz-select>
@@ -329,156 +477,107 @@
 
                 <div class="col-md-12 col-12 my-1">
                   <nz-form-label for="ItemDescription">
-                    {{ "RFP.itemDesc" | translate }}</nz-form-label
-                  >
+                    {{ "RFP.itemDesc" | translate }}</nz-form-label>
                   <nz-form-control nzHasFeedback>
-                    <textarea
-                      rows="4"
-                      nz-input
-                      formControlName="ItemDescription"
-                    ></textarea>
+                    <textarea rows="4" nz-input formControlName="ItemDescription"></textarea>
                   </nz-form-control>
                 </div>
 
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="price">{{
                     "RFP.Price" | translate
-                  }}</nz-form-label>
+                    }}</nz-form-label>
                   <br />
-                  <nz-input-number
-                  formControlName="Price"
-                  [nzMin]="0.1"
-                  [nzFormatter]="priceFormatter"
-                  [nzParser]="priceParser"
-                  style="width: 100%"
-                >
-                </nz-input-number>
+                  <nz-input-number formControlName="Price" [nzMin]="0.1" [nzFormatter]="priceFormatter"
+                    [nzParser]="priceParser" style="width: 100%">
+                  </nz-input-number>
 
-                  <small
-                  style="margin-top: 8px; color: red"
-                    *ngIf="bo.get('Price')?.touched && bo.get('Price')?.invalid"
-                  >
+                  <small style="margin-top: 8px; color: red"
+                    *ngIf="bo.get('Price')?.touched && bo.get('Price')?.invalid">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
 
-                  <small 
-                  style="margin-top: 8px; color: red"
-                  *ngIf="bo.get('Price')?.hasError('min')">
+                  <small style="margin-top: 8px; color: red" *ngIf="bo.get('Price')?.hasError('min')">
                     {{ "RFP.zero is not acceptable" | translate }}
                   </small>
                 </div>
                 <div class="col-4 my-1">
                   <nz-form-label nzRequired for="budgetYear">{{
                     "RFP.RFP Budget Year" | translate
-                  }}</nz-form-label>
-                  <nz-select
-                    formControlName="budgetYear"
-                    style="width: 100%"
-                    nzShowSearch
-                    nzAllowClear
-                  >
-                    <nz-option
-                      *ngFor="let year of listOfBudgetingYears"
-                      [nzValue]="year"
-                      [nzLabel]="year"
-                    ></nz-option>
+                    }}</nz-form-label>
+                  <nz-select formControlName="budgetYear" style="width: 100%" nzShowSearch nzAllowClear>
+                    <nz-option *ngFor="let year of listOfBudgetingYears" [nzValue]="year" [nzLabel]="year"></nz-option>
 
-                    <small
-                    style="margin-top: 8px; color: red"
-                      *ngIf="bo.get('budgetYear')?.touched && bo.get('budgetYear')?.invalid"
-                    >
+                    <small style="margin-top: 8px; color: red"
+                      *ngIf="bo.get('budgetYear')?.touched && bo.get('budgetYear')?.invalid">
                       {{ "RFP.FieldIsRequired" | translate }}
                     </small>
                   </nz-select>
                 </div>
                 <div class="col-4 my-1 d-flex align-items-end">
-  
-                 <label nz-checkbox formControlName="applyForAllBudgetYears">{{'RFP.Apply For All years' | translate}}</label>
+
+                  <label nz-checkbox formControlName="applyForAllBudgetYears">{{'RFP.Apply For All years' |
+                    translate}}</label>
                 </div>
 
                 <div class="col-12" *ngIf="departmentType == 'IT'">
-                  <nz-collapse
-                    [nzExpandIconPosition]="expandIconPosition"
-                    class="mt-4"
-                  >
-                    <nz-collapse-panel
-                      nzActive="false"
-                      nzHeader="{{ 'RFP.checklist' | translate }}"
-                    >
+                  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+                    <nz-collapse-panel nzActive="false" nzHeader="{{ 'RFP.checklist' | translate }}">
                       <div class="col-12 mt-1 mb-5">
                         <nz-form-label>{{
                           "RFP.Proj Type" | translate
-                        }}</nz-form-label>
+                          }}</nz-form-label>
 
                         <div class="row" nz-row>
-                          <div
-                            class="col-md-2 col-12"
-                            *ngFor="let list of ITCheckList?.parentCheckList"
-                          >
-                            <label
-                              nz-checkbox
-                              nzValue="{{ list?.checklist_id }}"
-                              [formControlName]="list?.checklist_name_en"
-                              (nzCheckedChange)="
+                          <div class="col-md-2 col-12" *ngFor="let list of ITCheckList?.parentCheckList">
+                            <label nz-checkbox nzValue="{{ list?.checklist_id }}"
+                              [formControlName]="list?.checklist_name_en" (nzCheckedChange)="
                                 checkSelected(
                                   $event,
                                   list?.checklist_name_en,
                                   i + 1
                                 )
-                              "
-                              >{{
-                                cs.userLanguage === "en"
-                                  ? list?.checklist_name_en
-                                  : list?.checklist_name_ar
-                              }}</label
-                            >
+                              ">{{
+                              cs.userLanguage === "en"
+                              ? list?.checklist_name_en
+                              : list?.checklist_name_ar
+                              }}</label>
                           </div>
                         </div>
                       </div>
 
                       <ng-container *ngFor="let checklist of childCheckList">
-                        <ng-container
-                          *ngIf="bo?.value[checklist.groupName] == true"
-                        >
-                          <div
-                            class="mt-4 row"
-                            [formGroupName]="checklist?.groupName + 'Group'"
-                          >
+                        <ng-container *ngIf="bo?.value[checklist.groupName] == true">
+                          <div class="mt-4 row" [formGroupName]="checklist?.groupName + 'Group'">
                             <hr />
                             <h3>
                               {{
-                                cs.userLanguage === "en"
-                                  ? checklist?.groupName_en
-                                  : checklist?.groupName_ar
+                              cs.userLanguage === "en"
+                              ? checklist?.groupName_en
+                              : checklist?.groupName_ar
                               }}
                             </h3>
-                            <ng-container
-                              *ngFor="
+                            <ng-container *ngFor="
                                 let childList of checklist[
                                   checklist.groupName + 'Group'
                                 ]
-                              "
-                            >
+                              ">
                               <div class="col-6 mt-5">
                                 <h4>
                                   {{
-                                    cs.userLanguage === "en"
-                                      ? childList.checklist_name_en
-                                      : childList.checklist_name_ar
+                                  cs.userLanguage === "en"
+                                  ? childList.checklist_name_en
+                                  : childList.checklist_name_ar
                                   }}
                                 </h4>
-                                <nz-radio-group
-                                  style="width: 100%"
-                                  [nzName]="
+                                <nz-radio-group style="width: 100%" [nzName]="
                                     childList?.parent_checklist_name_en +
                                     childList.checklist_id +
                                     'Group'
-                                  "
-                                  formControlName="{{
+                                  " formControlName="{{
                                     childList?.parent_checklist_name_en +
                                       childList.checklist_id
-                                  }}"
-                                  (ngModelChange)="
+                                  }}" (ngModelChange)="
                                     changeRadioValue(
                                       $event,
                                       checklist.groupName + 'Group',
@@ -486,86 +585,59 @@
                                         childList.checklist_id +
                                         'OtherComment'
                                     )
-                                  "
-                                >
+                                  ">
                                   <div class="row" nz-row>
-                                    <div
-                                      class="col-md-3 col-12"
-                                      *ngFor="
+                                    <div class="col-md-3 col-12" *ngFor="
                                         let radioGroup of childList.to_ChkLstDts
                                           .results
-                                      "
-                                    >
-                                      <label
-                                        nz-radio
-                                        nzValue="{{
+                                      ">
+                                      <label nz-radio nzValue="{{
                                           radioGroup.checklist_val_id +
                                             radioGroup.checklist_val_en
-                                        }}"
-                                        >{{
-                                          cs.userLanguage === "en"
-                                            ? radioGroup.checklist_val_en
-                                            : radioGroup.checklist_val_ar
-                                        }}</label
-                                      >
+                                        }}">{{
+                                        cs.userLanguage === "en"
+                                        ? radioGroup.checklist_val_en
+                                        : radioGroup.checklist_val_ar
+                                        }}</label>
                                     </div>
 
-                                    <div
-                                      class="col-12 mt-3"
-                                      [style.direction]="
+                                    <div class="col-12 mt-3" [style.direction]="
                                         cs.userLanguage === 'en'
                                           ? 'ltr !important'
                                           : 'rtl !important'
-                                      "
-                                      *ngIf="
+                                      " *ngIf="
                                         bo?.value[
                                           checklist.groupName + 'Group'
                                         ][
                                           childList?.parent_checklist_name_en +
                                             childList.checklist_id
                                         ].indexOf('Other') > -1
-                                      "
-                                    >
-                                      <nz-form-label
-                                        nzRequired
-                                        for="typeComment"
-                                        >{{
-                                          "RFP.Other Comment" | translate
-                                        }}</nz-form-label
-                                      >
+                                      ">
+                                      <nz-form-label nzRequired for="typeComment">{{
+                                        "RFP.Other Comment" | translate
+                                        }}</nz-form-label>
                                       <br />
-                                      <textarea
-                                        nz-input
-                                        style="height: 100px"
-                                        [formControlName]="
+                                      <textarea nz-input style="height: 100px" [formControlName]="
                                           childList?.parent_checklist_name_en +
                                           childList.checklist_id +
                                           'OtherComment'
-                                        "
-                                      ></textarea>
+                                        "></textarea>
                                     </div>
 
-                                    <div
-                                      class="col-12 mt-3"
-                                      [style.direction]="
+                                    <div class="col-12 mt-3" [style.direction]="
                                         cs.userLanguage === 'en'
                                           ? 'ltr !important'
                                           : 'rtl !important'
-                                      "
-                                    >
+                                      ">
                                       <nz-form-label for="typeComment">{{
                                         "COM.Comment" | translate
-                                      }}</nz-form-label>
+                                        }}</nz-form-label>
                                       <br />
-                                      <textarea
-                                        nz-input
-                                        style="height: 100px"
-                                        [formControlName]="
+                                      <textarea nz-input style="height: 100px" [formControlName]="
                                           childList?.parent_checklist_name_en +
                                           childList.checklist_id +
                                           'Comment'
-                                        "
-                                      ></textarea>
+                                        "></textarea>
                                     </div>
                                   </div>
                                 </nz-radio-group>
@@ -580,27 +652,13 @@
 
                 <!-- * Action Buttons -->
                 <div class="col-1 mt-3 mb-3">
-                  <button
-                    *ngIf="selectedBOQIndex == null"
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    class="addBtn"
-                    [disabled]="boqFormGroup.invalid"
-                    (click)="estimateAndAddBoq()"
-                    nzShape="circle"
-                  >
+                  <button *ngIf="selectedBOQIndex == null" nz-button nzType="primary" nzSize="default" class="addBtn"
+                    [disabled]="boqFormGroup.invalid" (click)="estimateAndAddBoq()" nzShape="circle">
                     <span nz-icon nzType="plus"></span>
                   </button>
 
-                  <button
-                    *ngIf="selectedBOQIndex != null"
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    (click)="estimateAndAddBoq()"
-                    [disabled]="boqFormGroup.invalid"
-                  >
+                  <button *ngIf="selectedBOQIndex != null" nz-button nzType="primary" nzSize="default"
+                    (click)="estimateAndAddBoq()" [disabled]="boqFormGroup.invalid">
                     <span>{{ "RFP.save changes" | translate }}</span>
                   </button>
                 </div>
@@ -609,84 +667,63 @@
 
             <!-- * BOQ table start -->
             <nz-collapse [nzBordered]="true" *ngIf="groupBOQItemsBasedonBudgetingYears">
-              <nz-collapse-panel
-                *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
-                [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key"
-              >
-              <nz-table
-              #nzTable
-              [nzFrontPagination]="false"
-              [nzScroll]="{ x: 'auto' }"
-              [nzData]="group.value"
-              nzBordered="true"
-              
-              nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-            >
-              <thead>
-                <tr>
-                  <ng-container *ngFor="let column of listOfColumnBOQ">
-                    <th [nzRight]="column === 'RFP.Action'">
-                      {{ column | translate }}
-                    </th>
-                  </ng-container>
-                </tr>
-              </thead>
-              <tbody style="background: white">
-                <tr *ngFor="let data of nzTable.data; index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ data.MaterialText }}</td>
-                  <td>{{ data.Quantity }}</td>
-                  <td>{{ getUnitOfMeasureDesc(data.Uom) }}</td>
-                  <td>{{ data.Price }}</td>
-                  <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
+              <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
+                [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key">
+                <nz-table #nzTable [nzFrontPagination]="false" [nzScroll]="{ x: 'auto' }" [nzData]="group.value"
+                  nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+                  <thead>
+                    <tr>
+                      <ng-container *ngFor="let column of listOfColumnBOQ">
+                        <th [nzRight]="column === 'RFP.Action'">
+                          {{ column | translate }}
+                        </th>
+                      </ng-container>
+                    </tr>
+                  </thead>
+                  <tbody style="background: white">
+                    <tr *ngFor="let data of nzTable.data; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ data.MaterialText }}</td>
+                      <td>{{ data.Quantity }}</td>
+                      <td>{{ getUnitOfMeasureDesc(data.Uom) }}</td>
+                      <td>{{ data.Price }}</td>
+                      <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
                       <td>{{ getVatAmountRow(data) | number: '1.2-2' }}</td>
                       <td>{{ getTotalWithVatRow(data) | number: '1.2-2' }}</td>
-                  <td nzRight>
-                    <div class="d-flex" style="padding-inline: 1%">
-                      <button
-                        nz-button
-                        nzType="default"
-                        style="border-color: #fff !important; padding: 0%"
-                        [disabled]="selectedBOQIndex != null"
-                        (click)="deleteBOQItem(data.budgetYear, i)"
-                        class="boqbuttonDelete mx-1"
-                        nzSize="default"
-                      >
-                        <app-icon [icon]="IconList.deleteIcon"></app-icon>
-                      </button>
-                      <button
-                        nz-button
-                        nzType="default"
-                        style="border-color: #fff !important; padding: 0%"
-                        (click)="editBOQItem(data.budgetYear, i)"
-                        class="boqbuttonEdit mx-1"
-                        nzSize="default"
-                      >
-                        <app-icon [icon]="IconList.edit"></app-icon>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr >
-                  <td colspan="5" style="text-align: right; ">
-                    {{ "COM.Total" | translate }}:
-                  </td>
-                  <td>
-                    {{ getGrandTotalPrice(nzTable.data) | number: '1.2-2' }}
-                  </td>
-                  <td>
-                    {{ getGrandVatAmount(nzTable.data) | number: '1.2-2' }}
-                  </td>
-                  <td>
-                    {{ getGrandTotalWithVat(nzTable.data) | number: '1.2-2' }}
-                  </td>
-                </tr>
-              </tbody>
-            </nz-table>
+                      <td nzRight>
+                        <div class="d-flex" style="padding-inline: 1%">
+                          <button nz-button nzType="default" style="border-color: #fff !important; padding: 0%"
+                            [disabled]="selectedBOQIndex != null" (click)="deleteBOQItem(data.budgetYear, i)"
+                            class="boqbuttonDelete mx-1" nzSize="default">
+                            <app-icon [icon]="IconList.deleteIcon"></app-icon>
+                          </button>
+                          <button nz-button nzType="default" style="border-color: #fff !important; padding: 0%"
+                            (click)="editBOQItem(data.budgetYear, i)" class="boqbuttonEdit mx-1" nzSize="default">
+                            <app-icon [icon]="IconList.edit"></app-icon>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="5" style="text-align: right; ">
+                        {{ "COM.Total" | translate }}:
+                      </td>
+                      <td>
+                        {{ getGrandTotalPrice(nzTable.data) | number: '1.2-2' }}
+                      </td>
+                      <td>
+                        {{ getGrandVatAmount(nzTable.data) | number: '1.2-2' }}
+                      </td>
+                      <td>
+                        {{ getGrandTotalWithVat(nzTable.data) | number: '1.2-2' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
 
               </nz-collapse-panel>
-              </nz-collapse>
-            
+            </nz-collapse>
+
             <!-- <div class="col-12">
               <div class="d-flex mt-3">
                 <button nz-button nzType="primary" style="margin-top: 1.4rem" nzSize="default"
@@ -699,19 +736,14 @@
             <div class="col-4 mt-3" *ngIf="step2">
               <nz-form-label nzRequired for="estPrice">{{
                 "RFP.RfpEstmPrice" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control nzHasFeedback [nzErrorTip]="EstErrorTpl">
-                <nz-input-number
-                  nz-input
-                  formControlName="estPrice"
-                  style="width: 100%"
-                  [nzPrecision]="precision"
-                >
+                <nz-input-number nz-input formControlName="estPrice" style="width: 100%" [nzPrecision]="precision">
                 </nz-input-number>
                 <ng-template #EstErrorTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">{{
                     "RFP.FieldIsRequired" | translate
-                  }}</ng-container>
+                    }}</ng-container>
                 </ng-template>
               </nz-form-control>
             </div>
@@ -719,14 +751,9 @@
             <div class="col-4 mt-3" *ngIf="step2">
               <nz-form-label nzRequired for="vatAmount">{{
                 "RFP.VAT Amount" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control nzHasFeedback>
-                <nz-input-number
-                  nz-input
-                  formControlName="vatAmount"
-                  style="width: 100%"
-                  [nzPrecision]="precision"
-                >
+                <nz-input-number nz-input formControlName="vatAmount" style="width: 100%" [nzPrecision]="precision">
                 </nz-input-number>
               </nz-form-control>
             </div>
@@ -734,19 +761,14 @@
             <div class="col-4 mt-3" *ngIf="step2">
               <nz-form-label nzRequired for="estPriceVAT">{{
                 "RFP.RfpEstmPrice VAT" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control nzHasFeedback [nzErrorTip]="EstErrorTpl">
-                <nz-input-number
-                  nz-input
-                  formControlName="estPriceVAT"
-                  style="width: 100%"
-                  [nzPrecision]="precision"
-                >
+                <nz-input-number nz-input formControlName="estPriceVAT" style="width: 100%" [nzPrecision]="precision">
                 </nz-input-number>
                 <ng-template #EstErrorTpl let-control>
                   <ng-container *ngIf="control.hasError('required')">{{
                     "RFP.FieldIsRequired" | translate
-                  }}</ng-container>
+                    }}</ng-container>
                 </ng-template>
               </nz-form-control>
             </div>
@@ -754,20 +776,13 @@
             <div class="col-4 mt-3">
               <nz-form-label nzRequired for="TechRFP">{{
                 "RFP.TechRFP" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-switch
-                  [ngModel]="isTechRFP"
-                  (ngModelChange)="handleTechrfp($event)"
-                  nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
-                  formControlName="TechRFP"
-                  nz-tooltip
-                  nzTooltipTitle="{{ 'RFP.Tech Tooltip' | translate }}"
-                  nzTooltipColor="#65ba6c"
-                  [nzTooltipTrigger]="isTechRFP ? 'hover' : null"
-                  [nzTooltipVisible]="isTechRFP"
-                  nzUnCheckedChildren="{{ 'RFP.No' | translate }}"
-                ></nz-switch>
+                <nz-switch [ngModel]="isTechRFP" (ngModelChange)="handleTechrfp($event)"
+                  nzCheckedChildren="{{ 'RFP.Yes' | translate }}" formControlName="TechRFP" nz-tooltip
+                  nzTooltipTitle="{{ 'RFP.Tech Tooltip' | translate }}" nzTooltipColor="#65ba6c"
+                  [nzTooltipTrigger]="isTechRFP ? 'hover' : null" [nzTooltipVisible]="isTechRFP"
+                  nzUnCheckedChildren="{{ 'RFP.No' | translate }}"></nz-switch>
               </nz-form-control>
             </div>
 
@@ -776,14 +791,11 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step2"
-      >
+      <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <!-- *ngIf="step2" -->
         <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
-            
+
 
             <!-- <div class="col-3 mt-3">
               <nz-form-label nzRequired for="ProjDur">{{
@@ -798,110 +810,66 @@
               </nz-form-control>
             </div> -->
 
-            
+
             <div class="col-12 my-1">
               <nz-form-label nzRequired for="MemName">{{
                 "RFP.Technical Member Name" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-select
-                  formControlName="MemName"
-                  nzShowSearch
-                  style="width: 100%"
-                  nzAllowClear
-                  nzMode="multiple"
-                  (ngModelChange)="setManagerList()"
-                >
-                  <nz-option
-                    *ngFor="let o of userList"
-                    [nzValue]="o.EmpUsrid"
-                    [nzLabel]="cs.userLanguage === 'en' ? o.Name : o.Data1"
-                  ></nz-option>
+                <nz-select formControlName="MemName" nzShowSearch style="width: 100%" nzAllowClear nzMode="multiple"
+                  (ngModelChange)="setManagerList()">
+                  <nz-option *ngFor="let o of userList" [nzValue]="o.EmpUsrid"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.Name : o.Data1"></nz-option>
                 </nz-select>
 
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.MemName.touched &&
                     rfpForm.controls.MemName.errors?.required
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
-                <small
-                  *ngIf="
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+                <small *ngIf="
                     rfpForm.controls.MemName.touched &&
                     rfpForm.controls.MemName.errors?.maxlength
-                  "
-                  >{{ "RFP.Maximum Technical Member" | translate }}</small
-                >
-                <small
-                  *ngIf="
+                  ">{{ "RFP.Maximum Technical Member" | translate }}</small>
+                <small *ngIf="
                     rfpForm.controls.MemName.touched &&
                     rfpForm.controls.MemName.errors?.minlength
-                  "
-                  >{{ "RFP.Minimum Technical Member" | translate }}</small
-                >
+                  ">{{ "RFP.Minimum Technical Member" | translate }}</small>
               </nz-form-control>
             </div>
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="MemManagerName">{{
                 "RFP.Technical Member Manager Name" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-select
-                  formControlName="MemManagerName"
-                  nzShowSearch
-                  style="width: 100%"
-                  nzAllowClear
-                  (ngModelChange)="handleManagerChange()"
-                >
-                  <nz-option
-                    *ngFor="let o of managerList"
-                    [nzValue]="o.TmUserid"
-                    [nzLabel]="cs.userLanguage === 'en' ? o.TmEname : o.TmAname"
-                  ></nz-option>
+                <nz-select formControlName="MemManagerName" nzShowSearch style="width: 100%" nzAllowClear
+                  (ngModelChange)="handleManagerChange()">
+                  <nz-option *ngFor="let o of managerList" [nzValue]="o.TmUserid"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.TmEname : o.TmAname"></nz-option>
                 </nz-select>
 
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.MemManagerName.touched &&
                     rfpForm.controls.MemManagerName.invalid
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="ProjJust">
-                {{ "RFP.Project Justification" | translate }}</nz-form-label
-              >
+                {{ "RFP.Project Justification" | translate }}</nz-form-label>
               <nz-form-control nzHasFeedback>
-                <textarea
-                  rows="4"
-                  nz-input
-                  formControlName="ProjJust"
-                ></textarea>
+                <textarea rows="4" nz-input formControlName="ProjJust"></textarea>
 
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.ProjJust.touched &&
                     rfpForm.controls.ProjJust.hasError('required')
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
 
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.ProjJust.touched &&
                     rfpForm.controls.ProjJust.hasError('maxlength')
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.300MaxCharactersError" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.300MaxCharactersError" | translate }}</small>
                 <!-- <ng-template #ProjJusErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">{{
                 "RFP.FieldIsRequired" | translate
@@ -915,48 +883,32 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">
-                {{ "RFP.SCOPE OF WORK" | translate }}</nz-form-label
-              >
+                {{ "RFP.SCOPE OF WORK" | translate }}</nz-form-label>
               <nz-form-control>
-                <textarea
-                  rows="8"
-                  nz-input
-                  formControlName="SOP"
-                ></textarea>
+                <textarea rows="8" nz-input formControlName="SOP"></textarea>
 
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.SOP.touched && rfpForm.controls.SOP.invalid
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>
           </div>
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step2"
-      >
-        <nz-collapse-panel
-          nzHeader="{{ 'RFP.Procurement Checklist' | translate }}"
-        >
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="false">
+        <!-- *ngIf="step2" -->
+        <nz-collapse-panel nzHeader="{{ 'RFP.Procurement Checklist' | translate }}">
           <div class="row" formGroupName="procurementChecklist">
             <ng-container *ngFor="let proList of procurementCheckListData">
               <div class="col-6 mt-5">
-                <h4
-                  [class.required-field-form]="
+                <h4 [class.required-field-form]="
                     proList.to_ChkLstDts.results.length > 1
-                  "
-                >
+                  ">
                   {{
-                    cs.userLanguage === "en"
-                      ? proList.checklist_name_en
-                      : proList.checklist_name_ar
+                  cs.userLanguage === "en"
+                  ? proList.checklist_name_en
+                  : proList.checklist_name_ar
                   }}
                 </h4>
 
@@ -965,54 +917,37 @@
                     <div class="col-12">
                       <nz-form-label>{{
                         "COM.Comment" | translate
-                      }}</nz-form-label>
-                      <textarea
-                        nz-input
-                        style="height: 100px"
-                        formControlName="{{ 'procu' + proList.checklist_id }}"
-                      ></textarea>
+                        }}</nz-form-label>
+                      <textarea nz-input style="height: 100px"
+                        formControlName="{{ 'procu' + proList.checklist_id }}"></textarea>
                     </div>
                   </div>
                 </ng-container>
 
                 <ng-container *ngIf="proList.to_ChkLstDts.results.length > 1">
-                  <nz-radio-group
-                    style="width: 100%"
-                    [nzName]="'procu' + proList.checklist_id"
+                  <nz-radio-group style="width: 100%" [nzName]="'procu' + proList.checklist_id"
                     formControlName="{{ 'procu' + proList.checklist_id }}"
-                    (ngModelChange)="checkProcRadio($event, proList)"
-                  >
+                    (ngModelChange)="checkProcRadio($event, proList)">
                     <div class="row" nz-row>
-                      <div
-                        class="col-md-5 col-12"
-                        *ngFor="let radioGroup of proList.to_ChkLstDts.results"
-                      >
-                        <label
-                          nz-radio
-                          nzValue="{{
+                      <div class="col-md-5 col-12" *ngFor="let radioGroup of proList.to_ChkLstDts.results">
+                        <label nz-radio nzValue="{{
                             radioGroup.checklist_val_id +
                               radioGroup.checklist_val_en
-                          }}"
-                          >{{
-                            cs.userLanguage === "en"
-                              ? radioGroup.checklist_val_en
-                              : radioGroup.checklist_val_ar
-                          }}</label
-                        >
+                          }}">{{
+                          cs.userLanguage === "en"
+                          ? radioGroup.checklist_val_en
+                          : radioGroup.checklist_val_ar
+                          }}</label>
                       </div>
 
                       <div class="col-12 mt-3">
                         <nz-form-label for="typeComment">{{
                           "COM.Comment" | translate
-                        }}</nz-form-label>
+                          }}</nz-form-label>
                         <br />
-                        <textarea
-                          nz-input
-                          style="height: 100px"
-                          formControlName="{{
+                        <textarea nz-input style="height: 100px" formControlName="{{
                             'procu' + proList.checklist_id + 'Comment'
-                          }}"
-                        ></textarea>
+                          }}"></textarea>
                       </div>
                     </div>
                   </nz-radio-group>
@@ -1024,53 +959,40 @@
       </nz-collapse>
 
 
-      
 
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step3"
-      >
-        <nz-collapse-panel
-          nzHeader="{{ 'RFP.Technical Requirements' | translate }}"
-        >
+
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="false">
+        <!-- *ngIf="step3" -->
+        <nz-collapse-panel nzHeader="{{ 'RFP.Technical Requirements' | translate }}">
           <div class="row w-100">
             <div formGroupName="TechReq" class="row">
               <div class="col-2">
                 <nz-form-label nzRequired for="qslNo">{{
                   "RFP.slNo" | translate
-                }}</nz-form-label>
+                  }}</nz-form-label>
                 <input nz-input formControlName="ItemNo" />
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.TechReq.get('ItemNo')?.touched &&
                     rfpForm.controls.TechReq.get('ItemNo')?.invalid
-                  "
-                >
+                  ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </div>
 
               <div class="col-10">
-                <nz-form-label nzRequired for="qDes"
-                  >{{ "RFP.Des" | translate }} ({{
-                    TechReqListData.length + 1
-                  }})</nz-form-label
-                >
+                <nz-form-label nzRequired for="qDes">{{ "RFP.Des" | translate }} ({{
+                  TechReqListData.length + 1
+                  }})</nz-form-label>
                 <input nzAutosize rows="2" nz-input formControlName="Descr" />
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.TechReq.get('Descr')?.touched &&
                     rfpForm.controls.TechReq.get('Descr')?.errors?.required
-                  "
-                >
+                  ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.TechReq.get('Descr')?.errors?.maxlength
-                  "
-                >
+                  ">
                   {{ "RFP.DescrMaxLen" | translate }}
                 </small>
               </div>
@@ -1080,15 +1002,8 @@
                   (click)="addTechReq('save')">
                   <span>{{ 'contract.buttons.Save' | translate}}</span>
                 </button> -->
-                <button
-                  [disabled]="rfpForm.controls.TechReq.invalid"
-                  class="addBtn"
-                  nz-button
-                  nzType="primary"
-                  nzSize="default"
-                  (click)="addTechReq('add')"
-                  nzShape="circle"
-                >
+                <button [disabled]="rfpForm.controls.TechReq.invalid" class="addBtn" nz-button nzType="primary"
+                  nzSize="default" (click)="addTechReq('add')" nzShape="circle">
                   <span nz-icon nzType="plus"></span>
                 </button>
               </div>
@@ -1097,24 +1012,13 @@
 
           <hr class="seperationLine" />
 
-          <nz-table
-            #nzTable
-            [nzFrontPagination]="false"
-            *ngIf="TechReqListData"
-            [nzData]="TechReqListData"
-            nzBordered="true"
-            style="margin-top: 5%"
-            nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-          >
+          <nz-table #nzTable [nzFrontPagination]="false" *ngIf="TechReqListData" [nzData]="TechReqListData"
+            nzBordered="true" style="margin-top: 5%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
             <thead>
               <tr>
-                <th
-                  *ngFor="let column of listOfColumnTechReq; index as i"
-                  [ngStyle]="{
+                <th *ngFor="let column of listOfColumnTechReq; index as i" [ngStyle]="{
                     width: i === listOfColumnTechReq.length - 1 ? '10%' : ''
-                  }"
-                  nzCustomFilter
-                >
+                  }" nzCustomFilter>
                   <span>{{ column | translate }}</span>
                 </th>
               </tr>
@@ -1125,52 +1029,32 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ data.Descr }}</td>
                   <td class="d-flex">
-                    <button
-                      [disabled]="showEditTechReq"
-                      style="border-color: #fff !important; padding: 0%"
-                      nz-button
-                      nzType="default"
-                      class="boqbuttonDelete mx-2"
-                      nzSize="default"
-                      (click)="removeTechReq(i + 1)"
-                    >
+                    <button [disabled]="showEditTechReq" style="border-color: #fff !important; padding: 0%" nz-button
+                      nzType="default" class="boqbuttonDelete mx-2" nzSize="default" (click)="removeTechReq(i + 1)">
                       <app-icon [icon]="IconList.deleteIcon"></app-icon>
                     </button>
-                    <button
-                      nz-button
-                      nzType="default"
-                      style="border-color: #fff !important; padding: 0%"
-                      class="boqbuttonEdit mx-2"
-                      nzSize="default"
-                      (click)="editTechReq(i)"
-                    >
+                    <button nz-button nzType="default" style="border-color: #fff !important; padding: 0%"
+                      class="boqbuttonEdit mx-2" nzSize="default" (click)="editTechReq(i)">
                       <app-icon [icon]="IconList.edit"></app-icon>
                     </button>
                   </td>
                 </tr>
                 <!-- Edit Part code starts -->
-                <td
-                  colspan="3"
-                  formGroupName="TechReqEdit"
-                  *ngIf="
+                <td colspan="3" formGroupName="TechReqEdit" *ngIf="
                     TechReqListData.length != 0 &&
                     i == techReqEditIndex &&
                     showEditTechReq
-                  "
-                  style="background: #f1f1f1; padding: 3%"
-                >
+                  " style="background: #f1f1f1; padding: 3%">
                   <div class="row">
                     <div class="col-2">
                       <nz-form-label nzRequired for="qslNo">{{
                         "RFP.slNo" | translate
-                      }}</nz-form-label>
+                        }}</nz-form-label>
                       <input nz-input formControlName="ItemNo" />
-                      <small
-                        *ngIf="
+                      <small *ngIf="
                           rfpForm.controls.TechReqEdit.get('ItemNo')?.touched &&
                           rfpForm.controls.TechReqEdit.get('ItemNo')?.invalid
-                        "
-                      >
+                        ">
                         {{ "RFP.FieldIsRequired" | translate }}
                       </small>
                     </div>
@@ -1178,40 +1062,26 @@
                     <div class="col-10">
                       <nz-form-label nzRequired for="qDes">{{
                         "RFP.Des" | translate
-                      }}</nz-form-label>
-                      <input
-                        nzAutosize
-                        rows="2"
-                        nz-input
-                        formControlName="Descr"
-                      />
-                      <small
-                        *ngIf="
+                        }}</nz-form-label>
+                      <input nzAutosize rows="2" nz-input formControlName="Descr" />
+                      <small *ngIf="
                           rfpForm.controls.TechReqEdit.get('Descr')?.touched &&
                           rfpForm.controls.TechReqEdit.get('Descr')?.invalid
-                        "
-                      >
+                        ">
                         {{ "RFP.FieldIsRequired" | translate }}
                       </small>
-                      <small
-                        *ngIf="
+                      <small *ngIf="
                           rfpForm.controls.TechReqEdit.get('Descr')?.errors
                             ?.maxlength
-                        "
-                      >
+                        ">
                         {{ "RFP.DescrMaxLen" | translate }}
                       </small>
                     </div>
                   </div>
 
                   <div class="mt-3">
-                    <button
-                      [disabled]="rfpForm.controls.TechReqEdit.invalid"
-                      nz-button
-                      nzType="primary"
-                      nzSize="default"
-                      (click)="saveEditTechReq()"
-                    >
+                    <button [disabled]="rfpForm.controls.TechReqEdit.invalid" nz-button nzType="primary"
+                      nzSize="default" (click)="saveEditTechReq()">
                       <span>{{ "contract.buttons.Save" | translate }}</span>
                     </button>
                   </div>
@@ -1223,59 +1093,33 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step3"
-      >
-        <nz-collapse-panel
-          nzHeader="{{ 'RFP.Evaluation Criteria' | translate }}"
-        >
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="false">
+        <!-- *ngIf="step3" -->
+        <nz-collapse-panel nzHeader="{{ 'RFP.Evaluation Criteria' | translate }}">
           <div class="row w-100">
             <div class="row mt-1">
               <!-- * Technical Evaluation passing percentage starts -->
               <div class="col-md-4">
                 <nz-form-label nzRequired>
-                  {{ "RFP.TechEvalCritTot" | translate }}</nz-form-label
-                >
+                  {{ "RFP.TechEvalCritTot" | translate }}</nz-form-label>
                 <nz-form-control>
-                  <nz-input-number
-                    nz-input
-                    nzPlaceHolder="%"
-                    formControlName="TotTechEval"
-                    style="width: 100%"
-                    [nzMin]="1"
-                    [nzMax]="100"
-                  >
+                  <nz-input-number nz-input nzPlaceHolder="%" formControlName="TotTechEval" style="width: 100%"
+                    [nzMin]="1" [nzMax]="100">
                   </nz-input-number>
                   <!-- <input nz-input formControlName="TotTechEval" /> -->
-                  <small
-                    *ngIf="
+                  <small *ngIf="
                       rfpForm.controls.TotTechEval.touched &&
                       rfpForm.controls.TotTechEval.invalid
-                    "
-                    style="margin-top: 8px; color: red"
-                    >{{ "RFP.FieldIsRequired" | translate }}</small
-                  >
+                    " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
                 </nz-form-control>
               </div>
               <div class="col d-flex justify-content-fx-start posr-t-2 gap-2">
-                <button
-                  [disabled]="!editTotTechEval"
-                  nz-button
-                  nzType="primary"
-                  nzSize="default"
-                  (click)="handleTotTechEvalEdit(false)"
-                >
+                <button [disabled]="!editTotTechEval" nz-button nzType="primary" nzSize="default"
+                  (click)="handleTotTechEvalEdit(false)">
                   <span>{{ "contract.buttons.Save" | translate }}</span>
                 </button>
-                <button
-                  [disabled]="editTotTechEval"
-                  nz-button
-                  nzType="primary"
-                  nzSize="default"
-                  (click)="handleTotTechEvalEdit(true)"
-                >
+                <button [disabled]="editTotTechEval" nz-button nzType="primary" nzSize="default"
+                  (click)="handleTotTechEvalEdit(true)">
                   <span>{{ "RFP.Edit" | translate }}</span>
                 </button>
               </div>
@@ -1289,30 +1133,26 @@
               <div class="col-2">
                 <nz-form-label nzRequired for="qslNo">{{
                   "RFP.slNo" | translate
-                }}</nz-form-label>
+                  }}</nz-form-label>
                 <input nz-input formControlName="ItemNo" />
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.EvalCriteria.get('ItemNo')?.touched &&
                     rfpForm.controls.EvalCriteria.get('ItemNo')?.invalid
-                  "
-                >
+                  ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </div>
               <div class="col-4">
                 <nz-form-label nzRequired for="headline">{{
                   "RFP.Headline" | translate
-                }}</nz-form-label>
+                  }}</nz-form-label>
                 <br />
 
                 <input nz-input formControlName="Headline" />
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.EvalCriteria.get('Headline')?.touched &&
                     rfpForm.controls.EvalCriteria.get('Headline')?.invalid
-                  "
-                >
+                  ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </div>
@@ -1320,33 +1160,26 @@
               <div class="col-4">
                 <nz-form-label nzRequired for="qPerct">{{
                   "RFP.Weightage" | translate
-                }}</nz-form-label>
+                  }}</nz-form-label>
                 <br />
-                <nz-input-number
-                  style="width: 100%"
-                  formControlName="Percentage"
-                  [nzMin]="1"
-                  [nzMax]="100"
-                  [nzStep]="1"
-                ></nz-input-number>
-                <small
-                  *ngIf="
+                <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100"
+                  [nzStep]="1"></nz-input-number>
+                <small *ngIf="
                     rfpForm.controls.EvalCriteria.get('Percentage')?.touched &&
                     rfpForm.controls.EvalCriteria.get('Percentage')?.invalid
-                  "
-                >
+                  ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </div>
-             
+
               <div class="col-2">
                 <nz-form-label nzRequired for="headline">{{
                   "RFP.AreThereSubCriteria" | translate
-                }}</nz-form-label>
+                  }}</nz-form-label>
                 <br />
                 <nz-select style="width: 100%" formControlName="SubCriFlg">
-                  <nz-option nzValue="X"  [nzLabel]="'COM.Yes' | translate">></nz-option>
-                  <nz-option nzValue="y"   [nzLabel]="'COM.No' | translate">
+                  <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate">></nz-option>
+                  <nz-option nzValue="y" [nzLabel]="'COM.No' | translate">
                     ></nz-option>
                 </nz-select>
               </div>
@@ -1365,89 +1198,55 @@
 
               <div *ngIf="rfpForm?.get('EvalCriteria.SubCriFlg')?.value === 'y'">
                 <div class="mt-3">
-                  <nz-form-label nzRequired for="qDes"
-                    >{{ "RFP.TechEvalDecr" | translate }}({{
-                      EvalListData.length + 1
-                    }})</nz-form-label
-                  >
-                  <textarea
-                    nzAutosize
-                    rows="2"
-                    nz-input
-                    formControlName="Descr"
-                  ></textarea>
-                  <small
-                    *ngIf="
+                  <nz-form-label nzRequired for="qDes">{{ "RFP.TechEvalDecr" | translate }}({{
+                    EvalListData.length + 1
+                    }})</nz-form-label>
+                  <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
+                  <small *ngIf="
                       rfpForm.controls.EvalCriteria.get('Descr')?.touched &&
                       rfpForm.controls.EvalCriteria.get('Descr')?.invalid
-                    "
-                  >
+                    ">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
-                  <small
-                    *ngIf="
+                  <small *ngIf="
                       rfpForm.controls.EvalCriteria.get('Descr')?.errors
                         ?.maxlength
-                    "
-                  >
+                    ">
                     {{ "RFP.DescrMaxLen" | translate }}
                   </small>
                 </div>
 
                 <div class="mt-3">
-                  <button
-                    [disabled]="rfpForm.controls.EvalCriteria.invalid"
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    (click)="addEval('add')"
-                  >
+                  <button [disabled]="rfpForm.controls.EvalCriteria.invalid" nz-button nzType="primary" nzSize="default"
+                    (click)="addEval('add')">
                     <span>{{ "RFP.Add Criteria" | translate }}</span>
                   </button>
                 </div>
               </div>
-              <ng-container
-              *ngIf="rfpForm?.get('EvalCriteria.SubCriFlg')?.value === 'X'"
-            >
-              <div class="mt-4">
-                <button
-                  [disabled]="rfpForm.controls.EvalCriteria.invalid"
-                  nz-button
-                  nzType="primary"
-                  nzSize="default"
-                  (click)="isSubCriteria = true"
-                >
-                  <span>{{ "RFP.Add Sub Criteria" | translate }}</span>
-                </button>
-              </div>
-            </ng-container>
+              <ng-container *ngIf="rfpForm?.get('EvalCriteria.SubCriFlg')?.value === 'X'">
+                <div class="mt-4">
+                  <button [disabled]="rfpForm.controls.EvalCriteria.invalid" nz-button nzType="primary" nzSize="default"
+                    (click)="isSubCriteria = true">
+                    <span>{{ "RFP.Add Sub Criteria" | translate }}</span>
+                  </button>
+                </div>
+              </ng-container>
             </div>
           </div>
 
-        
+
 
           <hr class="seperationLine" />
 
-          <nz-table
-            #nestedTable
-            [nzFrontPagination]="false"
-            *ngIf="EvalListData"
-            [nzData]="EvalListData"
-            nzBordered="true"
-            style="margin-top: 5%"
-            nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-          >
+          <nz-table #nestedTable [nzFrontPagination]="false" *ngIf="EvalListData" [nzData]="EvalListData"
+            nzBordered="true" style="margin-top: 5%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
             <thead>
               <tr>
                 <th></th>
-                <th
-                  *ngFor="let column of listOfColumnEvalCriteria; index as i"
-                  [ngStyle]="{
+                <th *ngFor="let column of listOfColumnEvalCriteria; index as i" [ngStyle]="{
                     width:
                       i === listOfColumnEvalCriteria.length - 1 ? '10%' : ''
-                  }"
-                  nzCustomFilter
-                >
+                  }" nzCustomFilter>
                   <span>{{ column | translate }}</span>
                 </th>
               </tr>
@@ -1455,302 +1254,204 @@
             <tbody style="background: white">
               <ng-container *ngFor="let data of nestedTable.data; index as i">
                 <tr>
-                  <td
-                    *ngIf="data.TechToTechSub.length; else emptyData"
-                    [(nzExpand)]="data.expand"
-                  ></td>
-                  <ng-template #emptyData><td></td></ng-template>
+                  <td *ngIf="data.TechToTechSub.length; else emptyData" [(nzExpand)]="data.expand"></td>
+                  <ng-template #emptyData>
+                    <td></td>
+                  </ng-template>
                   <td>{{ data.ItemNo }}</td>
-                  <td> <h3>{{ data.Headline }}</h3>  <span>{{ data.Descr }}</span> </td>
+                  <td>
+                    <h3>{{ data.Headline }}</h3> <span>{{ data.Descr }}</span>
+                  </td>
                   <td>{{ data.Percentage }}</td>
                   <td class="d-flex">
-                    <button
-                      [disabled]="showEditEval"
-                      nz-button
-                      nzType="default"
-                      class="boqbuttonDelete mx-2"
-                      nzSize="default"
-                      style="border-color: #fff !important; padding: 0%"
-                      (click)="removeEval(i + 1)"
-                    >
+                    <button [disabled]="showEditEval" nz-button nzType="default" class="boqbuttonDelete mx-2"
+                      nzSize="default" style="border-color: #fff !important; padding: 0%" (click)="removeEval(i + 1)">
                       <!-- <span nz-icon nzType="delete"></span> -->
                       <app-icon [icon]="IconList.deleteIcon"></app-icon>
                     </button>
-                    <button
-                      nz-button
-                      nzType="default"
-                      class="boqbuttonEdit mx-2"
-                      nzSize="default"
-                      style="border-color: #fff !important; padding: 0%"
-                      (click)="editEval(i)"
-                    >
+                    <button nz-button nzType="default" class="boqbuttonEdit mx-2" nzSize="default"
+                      style="border-color: #fff !important; padding: 0%" (click)="editEval(i)">
                       <!-- <span nz-icon nzType="edit"></span> -->
                       <app-icon [icon]="IconList.edit"></app-icon>
                     </button>
                   </td>
                 </tr>
                 <tr *ngIf="data.TechToTechSub.length" [nzExpand]="data.expand">
-                  <nz-table
-                    #innerTable
-                    [nzData]="data.TechToTechSub"
-                    nzSize="middle"
-                    [ngClass]="{
+                  <nz-table #innerTable [nzData]="data.TechToTechSub" nzSize="middle" [ngClass]="{
                       'inner-table-align-margin-left-class':
                         cs.userLanguage === 'en',
                       'inner-table-align-margin-right-class ':
                         cs.userLanguage === 'ar'
-                    }"
-                    [nzShowPagination]="false"
-                  >
+                    }" [nzShowPagination]="false">
                     <thead>
-                      <ng-container
-                        *ngFor="
+                      <ng-container *ngFor="
                           let column of listOfSubCatColumnEvalCriteria;
                           index as i
-                        "
-                      >
-                        <th
-                          *ngIf="column != 'RFP.Action'"
-                          [ngStyle]="{
+                        ">
+                        <th *ngIf="column != 'RFP.Action'" [ngStyle]="{
                             width:
                               i === listOfSubCatColumnEvalCriteria.length - 1
                                 ? '10%'
                                 : ''
-                          }"
-                          nzCustomFilter
-                        >
+                          }" nzCustomFilter>
                           <span>{{ column | translate }}</span>
                         </th>
                       </ng-container>
                     </thead>
-                    <tbody>
-                      <tr *ngFor="let innerData of innerTable.data">
-                        <td>{{ innerData.SubItemNo }}</td>
-                        <td>{{ innerData.Descr }}</td>
-                        <td>{{ innerData.Percentage }}</td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </tr>
-                <!-- Edit Part code starts -->
-                <td
-                colspan="5"
-                formGroupName="EvalCriteriaEdit"
-                *ngIf="
+            <tbody>
+              <tr *ngFor="let innerData of innerTable.data">
+                <td>{{ innerData.SubItemNo }}</td>
+                <td>{{ innerData.Descr }}</td>
+                <td>{{ innerData.Percentage }}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          </tr>
+          <!-- Edit Part code starts -->
+          <td colspan="5" formGroupName="EvalCriteriaEdit" *ngIf="
                   EvalListData.length != 0 &&
                   i == evalEditIndex &&
                   showEditEval
-                "
-                style="background: #f1f1f1; padding: 3%"
-              >
-                <div class="row">
-                  <div class="col-2">
-                    <nz-form-label nzRequired for="qslNo">{{
-                      "RFP.slNo" | translate
-                    }}</nz-form-label>
-                    <input nz-input formControlName="ItemNo" />
-                    <small
-                      *ngIf="
+                " style="background: #f1f1f1; padding: 3%">
+            <div class="row">
+              <div class="col-2">
+                <nz-form-label nzRequired for="qslNo">{{
+                  "RFP.slNo" | translate
+                  }}</nz-form-label>
+                <input nz-input formControlName="ItemNo" />
+                <small *ngIf="
                         rfpForm.controls.EvalCriteriaEdit.get('ItemNo')
                           ?.touched &&
                         rfpForm.controls.EvalCriteriaEdit.get('ItemNo')
                           ?.invalid
-                      "
-                    >
-                      {{ "RFP.FieldIsRequired" | translate }}
-                    </small>
-                  </div>
-                  <div class="col-4">
-                    <nz-form-label nzRequired for="headline">{{
-                      "RFP.Headline" | translate
-                    }}</nz-form-label>
-                    <br />
+                      ">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </div>
+              <div class="col-4">
+                <nz-form-label nzRequired for="headline">{{
+                  "RFP.Headline" | translate
+                  }}</nz-form-label>
+                <br />
 
-                    <input nz-input formControlName="Headline" />
-                    <small
-                      *ngIf="
+                <input nz-input formControlName="Headline" />
+                <small *ngIf="
                         rfpForm.controls.EvalCriteriaEdit.get('Headline')
                           ?.touched &&
                         rfpForm.controls.EvalCriteriaEdit.get('Headline')?.invalid
-                      "
-                    >
-                      {{ "RFP.FieldIsRequired" | translate }}
-                    </small>
-                  </div>
+                      ">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </div>
 
-                  <div class="col-4">
-                    <nz-form-label nzRequired for="qPerct">{{
-                      "RFP.Weightage" | translate
-                    }}</nz-form-label>
-                    <br />
-                    <nz-input-number
-                      style="width: 100%"
-                      formControlName="Percentage"
-                      [nzMin]="1"
-                      [nzMax]="100"
-                      [nzStep]="1"
-                    ></nz-input-number>
-                    <small
-                      *ngIf="
+              <div class="col-4">
+                <nz-form-label nzRequired for="qPerct">{{
+                  "RFP.Weightage" | translate
+                  }}</nz-form-label>
+                <br />
+                <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100"
+                  [nzStep]="1"></nz-input-number>
+                <small *ngIf="
                         rfpForm.controls.EvalCriteriaEdit.get('Percentage')
                           ?.touched &&
                         rfpForm.controls.EvalCriteriaEdit.get('Percentage')
                           ?.invalid
-                      "
-                    >
-                      {{ "RFP.FieldIsRequired" | translate }}
-                    </small>
-                  </div>
-                  <div class="col-2">
-                    <nz-form-label nzRequired for="headline">{{
-                      "RFP.AreThereSubCriteria" | translate
-                    }}</nz-form-label>
-                    <br />
-                    <nz-select style="width: 100%" formControlName="SubCriFlg">
-                      <nz-option nzValue="X"  [nzLabel]="'COM.Yes' | translate">></nz-option>
-                      <nz-option nzValue="y"   [nzLabel]="'COM.No' | translate">
-                        ></nz-option>
-                    </nz-select>
-                  </div>
-
-
-                  <div
-              *ngIf="rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y'"
-            >
-              <div class="mt-3">
-                <nz-form-label nzRequired for="qDes"
-                  >{{ "RFP.Des" | translate }}</nz-form-label
-                >
-                <textarea
-                  nzAutosize
-                  rows="2"
-                  nz-input
-                  formControlName="Descr"
-                ></textarea>
-                <small
-                  *ngIf="
-                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.touched &&
-                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.invalid
-                  "
-                >
+                      ">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
-                <small
-                  *ngIf="
-                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.errors
-                      ?.maxlength
-                  "
-                >
-                  {{ "RFP.DescrMaxLen" | translate }}
-                </small>
+              </div>
+              <div class="col-2">
+                <nz-form-label nzRequired for="headline">{{
+                  "RFP.AreThereSubCriteria" | translate
+                  }}</nz-form-label>
+                <br />
+                <nz-select style="width: 100%" formControlName="SubCriFlg">
+                  <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate">></nz-option>
+                  <nz-option nzValue="y" [nzLabel]="'COM.No' | translate">
+                    ></nz-option>
+                </nz-select>
               </div>
 
-             
-            </div>
-          
+
+              <div *ngIf="rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y'">
+                <div class="mt-3">
+                  <nz-form-label nzRequired for="qDes">{{ "RFP.Des" | translate }}</nz-form-label>
+                  <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
+                  <small *ngIf="
+                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.touched &&
+                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.invalid
+                  ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                  <small *ngIf="
+                    rfpForm.controls.EvalCriteriaEdit.get('Descr')?.errors
+                      ?.maxlength
+                  ">
+                    {{ "RFP.DescrMaxLen" | translate }}
+                  </small>
                 </div>
 
-                <div class="mt-3 d-flex gap-2">
-                  <button
-                    [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid"
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    (click)="saveEditEval('')"
-                  >
-                    <span>{{ "contract.buttons.Save" | translate }}</span>
-                  </button>
-                  <button
-                    [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid"
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    (click)="isSubCriteriaEdit = true"
-                  >
-                  <span>
-                    {{ (rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y' ? 
-                      'RFP.Add Sub Criteria' : 'RFP.Edit Sub Criteria') | translate }}
-                  </span>
-                  </button>
-                  <button
-                    nz-button
-                    nzType="primary"
-                    nzSize="default"
-                    nzGhost
-                    (click)="cancelEditEval()"
-                  >
-                    <span>{{ "RFP.Cancel" | translate }}</span>
-                  </button>
-                </div>
-                <!-- edit part code ends -->
-              </td>
-              </ng-container>
-            </tbody>
+
+              </div>
+
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <button [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid" nz-button nzType="primary" nzSize="default"
+                (click)="saveEditEval('')">
+                <span>{{ "contract.buttons.Save" | translate }}</span>
+              </button>
+              <button [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid" nz-button nzType="primary" nzSize="default"
+                (click)="isSubCriteriaEdit = true">
+                <span>
+                  {{ (rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y' ?
+                  'RFP.Add Sub Criteria' : 'RFP.Edit Sub Criteria') | translate }}
+                </span>
+              </button>
+              <button nz-button nzType="primary" nzSize="default" nzGhost (click)="cancelEditEval()">
+                <span>{{ "RFP.Cancel" | translate }}</span>
+              </button>
+            </div>
+            <!-- edit part code ends -->
+          </td>
+          </ng-container>
+          </tbody>
           </nz-table>
         </nz-collapse-panel>
       </nz-collapse>
       <!-- * Vendor Evaluation Weightage -->
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step2"
-      >
-        <nz-collapse-panel
-          nzHeader="{{ 'RFP.Vendor Evaluation Weightage' | translate }}"
-        >
-          <div
-            class="row w-100"
-            nzAlign="middle"
-            formGroupName="vendorEvaluationWeightage"
-          >
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="false">
+        <!-- *ngIf="step2" -->
+        <nz-collapse-panel nzHeader="{{ 'RFP.Vendor Evaluation Weightage' | translate }}">
+          <div class="row w-100" nzAlign="middle" formGroupName="vendorEvaluationWeightage">
             <div class="col-md-4">
               <nz-form-label nzRequired>
                 {{
-                  "RFP.Technical Evaluation Weightage" | translate
-                }}</nz-form-label
-              >
+                "RFP.Technical Evaluation Weightage" | translate
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-input-number
-                  nz-input
-                  nzPlaceHolder="%"
-                  formControlName="technicalEvaluationWeightage"
-                  style="width: 100%"
-                  [nzMin]="1"
-                  [nzMax]="99"
-                  (change)="ontechnicalEvaluationWeightageChange()"
-                >
+                <nz-input-number nz-input nzPlaceHolder="%" formControlName="technicalEvaluationWeightage"
+                  style="width: 100%" [nzMin]="1" [nzMax]="99" (change)="ontechnicalEvaluationWeightageChange()">
                 </nz-input-number>
                 <!-- <input nz-input formControlName="TotTechEval" /> -->
-                <small
-                  *ngIf="
+                <small *ngIf="
                     rfpForm.controls.vendorEvaluationWeightage.get(
                       'technicalEvaluationWeightage'
                     )?.touched &&
                     rfpForm.controls.vendorEvaluationWeightage.get(
                       'technicalEvaluationWeightage'
                     )?.invalid
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>
             <div class="col-md-4">
               <nz-form-label nzRequired>
                 {{
-                  "RFP.Financial Evaluation Weightage" | translate
-                }}</nz-form-label
-              >
+                "RFP.Financial Evaluation Weightage" | translate
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-input-number
-                  nz-input
-                  nzPlaceHolder="%"
-                  formControlName="financialEvaluationWeightage"
-                  style="width: 100%"
-                  [nzMin]="1"
-                  [nzMax]="100"
-                  [nzDisabled]="true"
-                >
+                <nz-input-number nz-input nzPlaceHolder="%" formControlName="financialEvaluationWeightage"
+                  style="width: 100%" [nzMin]="1" [nzMax]="100" [nzDisabled]="true">
                 </nz-input-number>
                 <!-- <input nz-input formControlName="TotTechEval" /> -->
                 <!-- <small
@@ -1767,409 +1468,304 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse
-        [nzExpandIconPosition]="expandIconPosition"
-        class="mt-4"
-        *ngIf="step3 "
-      >
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="false">
+        <!-- *ngIf="step3" -->
         <nz-collapse-panel nzHeader="{{ 'RFP.ManPowerTab' | translate }}">
           <div class="col-md-2 ">
             <nz-form-label for="Manpower" nzRequired>{{
               "RFP.Manpower" | translate
-            }}</nz-form-label>
+              }}</nz-form-label>
             <nz-form-control>
-              <nz-switch
-                [ngModel]="isManPow"
-                nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
-                formControlName="ProjManpower"
-                (ngModelChange)="handleManSwt($event)"
-                nzUnCheckedChildren="{{ 'RFP.No' | translate }}"
-              ></nz-switch>
+              <nz-switch [ngModel]="isManPow" nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
+                formControlName="ProjManpower" (ngModelChange)="handleManSwt($event)"
+                nzUnCheckedChildren="{{ 'RFP.No' | translate }}"></nz-switch>
             </nz-form-control>
           </div>
           <ng-container *ngIf="ManPower.controls && isManPow">
 
-          
-          <div  class="row w-100" >
-            <div formGroupName="ManPowerForm" class="row">
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="ItemNo">{{
-                  "RFP.slNo" | translate
-                }}</nz-form-label>
-                <input nz-input formControlName="ItemNo" />
-                <small
-                  *ngIf="
+
+            <div class="row w-100">
+              <div formGroupName="ManPowerForm" class="row">
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="ItemNo">{{
+                    "RFP.slNo" | translate
+                    }}</nz-form-label>
+                  <input nz-input formControlName="ItemNo" />
+                  <small *ngIf="
                     rfpForm.controls.ManPowerForm.get('ItemNo')?.touched &&
                     rfpForm.controls.ManPowerForm.get('ItemNo')?.invalid
-                  "
-                >
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
+                  ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                </div>
 
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="JobTitle">{{
-                  "RFP.JobTitle" | translate
-                }}</nz-form-label>
-                <input nz-input formControlName="JobTitle" />
-                <small
-                  *ngIf="
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="JobTitle">{{
+                    "RFP.JobTitle" | translate
+                    }}</nz-form-label>
+                  <input nz-input formControlName="JobTitle" />
+                  <small *ngIf="
                     rfpForm.controls.ManPowerForm.get('JobTitle')?.touched &&
                     rfpForm.controls.ManPowerForm.get('JobTitle')?.invalid
-                  "
-                >
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
+                  ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                </div>
 
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="Amount">{{
-                  "RFP.QTY" | translate
-                }}</nz-form-label>
-                <br />
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="Amount">{{
+                    "RFP.QTY" | translate
+                    }}</nz-form-label>
+                  <br />
 
-                <nz-input-number
-                  nz-input
-                  formControlName="Amount"
-                  style="width: 100%"
-                  [nzMin]="1"
-                >
-                </nz-input-number>
+                  <nz-input-number nz-input formControlName="Amount" style="width: 100%" [nzMin]="1">
+                  </nz-input-number>
 
-                <small
-                  *ngIf="
+                  <small *ngIf="
                     rfpForm.controls.ManPowerForm.get('Amount')?.touched &&
                     rfpForm.controls.ManPowerForm.get('Amount')?.invalid
-                  "
-                >
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
+                  ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                </div>
 
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="headline">{{
-                  "RFP.Qualification" | translate
-                }}</nz-form-label>
-                <nz-select
-                nzShowSearch
-                formControlName="SpeQualf"
-                style="width: 100%"
-                nzAllowClear
-              >
-                <nz-option
-                  *ngFor="let SpeQualf of qualificationList.d.results"
-                  [nzValue]="SpeQualf.QualtypeID"
-                  [nzLabel]="cs.userLanguage === 'en' ? SpeQualf.QualtypeDesc : SpeQualf.QualtypeDescAR"
-                >
-                </nz-option>
-              </nz-select>
-              <small
-                  *ngIf="
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="headline">{{
+                    "RFP.Qualification" | translate
+                    }}</nz-form-label>
+                  <nz-select nzShowSearch formControlName="SpeQualf" style="width: 100%" nzAllowClear>
+                    <nz-option *ngFor="let SpeQualf of qualificationList.d.results" [nzValue]="SpeQualf.QualtypeID"
+                      [nzLabel]="cs.userLanguage === 'en' ? SpeQualf.QualtypeDesc : SpeQualf.QualtypeDescAR">
+                    </nz-option>
+                  </nz-select>
+                  <small *ngIf="
                     rfpForm.controls.ManPowerForm.get('SpeQualf')?.touched &&
                     rfpForm.controls.ManPowerForm.get('SpeQualf')?.invalid
-                  "
-                >
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
+                  ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                </div>
 
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="SpeExp">{{
-                  "RFP.SpecializationWithDec" | translate
-                }}</nz-form-label>
-                <input nz-input  formControlName="Specilization" />
-                <small
-                *ngIf="
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="SpeExp">{{
+                    "RFP.SpecializationWithDec" | translate
+                    }}</nz-form-label>
+                  <input nz-input formControlName="Specilization" />
+                  <small *ngIf="
                   rfpForm.controls.ManPowerForm.get('Specilization')?.touched &&
                   rfpForm.controls.ManPowerForm.get('Specilization')?.invalid
-                "
-              >
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
+                ">
+                    {{ "RFP.FieldIsRequired" | translate }}
+                  </small>
+                </div>
+
+                <div class="col-4 my-1">
+                  <nz-form-label nzRequired for="SpeExp">{{
+                    "RFP.Exp" | translate
+                    }}</nz-form-label>
+                  <br />
+                  <nz-form-control nzHasFeedback [nzErrorTip]="ProjJusErrorTp4">
+                    <input nz-input formControlName="SpeExp" />
+                    <ng-template #ProjJusErrorTp4 let-control>
+                      <ng-container *ngIf="control.hasError('maxlength')">{{
+                        "RFP.300MaxCharactersError" | translate
+                        }}</ng-container>
+
+                      <ng-container *ngIf="control.hasError('required')">
+                        {{ "RFP.FieldIsRequired" | translate }}</ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </div>
               </div>
 
-              <div class="col-4 my-1">
-                <nz-form-label nzRequired for="SpeExp">{{
-                  "RFP.Exp" | translate
-                }}</nz-form-label>
-                <br />
-                <nz-form-control nzHasFeedback [nzErrorTip]="ProjJusErrorTp4">
-                  <input nz-input formControlName="SpeExp" />
-                  <ng-template #ProjJusErrorTp4 let-control>
-                    <ng-container *ngIf="control.hasError('maxlength')">{{
-                      "RFP.300MaxCharactersError" | translate
-                    }}</ng-container>
-
-                    <ng-container *ngIf="control.hasError('required')">
-                      {{ "RFP.FieldIsRequired" | translate }}</ng-container
-                    >
-                  </ng-template>
-                </nz-form-control>
-              </div>
-            </div>
-
-            <div class="mt-3">
-              <!-- <button [disabled]="rfpForm.controls.ManPowerForm.invalid" nz-button nzType="primary" nzSize="default"
+              <div class="mt-3">
+                <!-- <button [disabled]="rfpForm.controls.ManPowerForm.invalid" nz-button nzType="primary" nzSize="default"
                 (click)="addMan('save')">
                 <span>{{ 'contract.buttons.Save' | translate}}</span>
               </button> -->
-              <button
-                [disabled]="rfpForm.controls.ManPowerForm.invalid"
-                class="addBtn"
-                nz-button
-                nzType="primary"
-                nzSize="default"
-                (click)="addMan('add')"
-                nzShape="circle"
-              >
-                <span nz-icon nzType="plus"></span>
-              </button>
+                <button [disabled]="rfpForm.controls.ManPowerForm.invalid" class="addBtn" nz-button nzType="primary"
+                  nzSize="default" (click)="addMan('add')" nzShape="circle">
+                  <span nz-icon nzType="plus"></span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <hr class="seperationLine" />
+            <hr class="seperationLine" />
 
-          <nz-table
-            #nzTable
-            [nzFrontPagination]="false"
-            *ngIf="ManPowerListData"
-            [nzData]="ManPowerListData"
-            nzBordered="true"
-            style="margin-top: 5%"
-            nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-          >
-            <thead>
-              <tr>
-                <th
-                  *ngFor="let column of listOfColumnMan; index as i"
-                  [ngStyle]="{
-                    width: i === listOfColumnMan.length - 1 ? '10%' : ''
-                  }"
-                  nzCustomFilter
-                >
-                  <span>{{ column | translate }}</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody style="background: white">
-              <ng-container *ngFor="let data of nzTable.data; index as i">
+            <nz-table #nzTable [nzFrontPagination]="false" *ngIf="ManPowerListData" [nzData]="ManPowerListData"
+              nzBordered="true" style="margin-top: 5%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+              <thead>
                 <tr>
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ data.JobTitle }}</td>
-                  <td>{{ data.Amount }}</td>
-                  <td>{{ getQualification(data.SpeQualf) }}</td>
-                  <td>{{ data.Specilization }}</td>
-                  <td>{{ data.SpeExp }}</td>
-
-                  <td class="d-flex">
-                    <button
-                      [disabled]="showEditMan"
-                      style="border-color: #fff !important; padding: 0%"
-                      nz-button
-                      nzType="default"
-                      class="boqbuttonDelete mx-2"
-                      nzSize="default"
-                      (click)="removeMan(i + 1)"
-                    >
-                      <app-icon [icon]="IconList.deleteIcon"></app-icon>
-                    </button>
-                    <button
-                      nz-button
-                      nzType="default"
-                      style="border-color: #fff !important; padding: 0%"
-                      class="boqbuttonEdit mx-2"
-                      nzSize="default"
-                      (click)="editMan(i)"
-                    >
-                      <app-icon [icon]="IconList.edit"></app-icon>
-                    </button>
-                  </td>
+                  <th *ngFor="let column of listOfColumnMan; index as i" [ngStyle]="{
+                    width: i === listOfColumnMan.length - 1 ? '10%' : ''
+                  }" nzCustomFilter>
+                    <span>{{ column | translate }}</span>
+                  </th>
                 </tr>
-                <!-- Edit Part code starts -->
-                <td
-                  colspan="9"
-                  formGroupName="ManPowerFormEdit"
-                  *ngIf="
+              </thead>
+              <tbody style="background: white">
+                <ng-container *ngFor="let data of nzTable.data; index as i">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ data.JobTitle }}</td>
+                    <td>{{ data.Amount }}</td>
+                    <td>{{ getQualification(data.SpeQualf) }}</td>
+                    <td>{{ data.Specilization }}</td>
+                    <td>{{ data.SpeExp }}</td>
+
+                    <td class="d-flex">
+                      <button [disabled]="showEditMan" style="border-color: #fff !important; padding: 0%" nz-button
+                        nzType="default" class="boqbuttonDelete mx-2" nzSize="default" (click)="removeMan(i + 1)">
+                        <app-icon [icon]="IconList.deleteIcon"></app-icon>
+                      </button>
+                      <button nz-button nzType="default" style="border-color: #fff !important; padding: 0%"
+                        class="boqbuttonEdit mx-2" nzSize="default" (click)="editMan(i)">
+                        <app-icon [icon]="IconList.edit"></app-icon>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Edit Part code starts -->
+                  <td colspan="9" formGroupName="ManPowerFormEdit" *ngIf="
                     ManPowerListData.length != 0 &&
                     i == manEditIndex &&
                     showEditMan
-                  "
-                  style="background: #f1f1f1; padding: 3%"
-                >
-                  <div class="row">
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="ItemNo">{{
-                        "RFP.slNo" | translate
-                      }}</nz-form-label>
-                      <input nz-input formControlName="ItemNo" />
-                      <small
-                        *ngIf="
+                  " style="background: #f1f1f1; padding: 3%">
+                    <div class="row">
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="ItemNo">{{
+                          "RFP.slNo" | translate
+                          }}</nz-form-label>
+                        <input nz-input formControlName="ItemNo" />
+                        <small *ngIf="
                           rfpForm.controls.ManPowerFormEdit.get('ItemNo')
                             ?.touched &&
                           rfpForm.controls.ManPowerFormEdit.get('ItemNo')
                             ?.invalid
-                        "
-                      >
-                        {{ "RFP.FieldIsRequired" | translate }}
-                      </small>
-                    </div>
+                        ">
+                          {{ "RFP.FieldIsRequired" | translate }}
+                        </small>
+                      </div>
 
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="JobTitle">{{
-                        "RFP.JobTitle" | translate
-                      }}</nz-form-label>
-                      <input nz-input formControlName="JobTitle" />
-                      <small
-                        *ngIf="
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="JobTitle">{{
+                          "RFP.JobTitle" | translate
+                          }}</nz-form-label>
+                        <input nz-input formControlName="JobTitle" />
+                        <small *ngIf="
                           rfpForm.controls.ManPowerFormEdit.get('JobTitle')
                             ?.touched &&
                           rfpForm.controls.ManPowerFormEdit.get('JobTitle')
                             ?.invalid
-                        "
-                      >
-                        {{ "RFP.FieldIsRequired" | translate }}
-                      </small>
-                    </div>
+                        ">
+                          {{ "RFP.FieldIsRequired" | translate }}
+                        </small>
+                      </div>
 
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="Amount">{{
-                        "RFP.QTY" | translate
-                      }}</nz-form-label>
-                      <br />
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="Amount">{{
+                          "RFP.QTY" | translate
+                          }}</nz-form-label>
+                        <br />
 
-                      <nz-input-number
-                        nz-input
-                        formControlName="Amount"
-                        style="width: 100%"
-                        [nzMin]="1"
-                      >
-                      </nz-input-number>
+                        <nz-input-number nz-input formControlName="Amount" style="width: 100%" [nzMin]="1">
+                        </nz-input-number>
 
-                      <small
-                        *ngIf="
+                        <small *ngIf="
                           rfpForm.controls.ManPowerFormEdit.get('Amount')
                             ?.touched &&
                           rfpForm.controls.ManPowerFormEdit.get('Amount')
                             ?.invalid
-                        "
-                      >
-                        {{ "RFP.FieldIsRequired" | translate }}
-                      </small>
-                    </div>
+                        ">
+                          {{ "RFP.FieldIsRequired" | translate }}
+                        </small>
+                      </div>
 
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="headline">{{
-                        "RFP.Qualification" | translate
-                      }}</nz-form-label>
-                      <nz-select
-                      nzShowSearch
-                      formControlName="SpeQualf"
-                      style="width: 100%"
-                      nzAllowClear
-                    >
-                      <nz-option
-                        *ngFor="let SpeQualf of qualificationList.d.results"
-                        [nzValue]="SpeQualf.QualtypeID"
-                        [nzLabel]="cs.userLanguage === 'en' ? SpeQualf.QualtypeDesc : SpeQualf.QualtypeDescAR"
-                      >
-                      </nz-option>
-                    </nz-select>
-                    <small
-                        *ngIf="
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="headline">{{
+                          "RFP.Qualification" | translate
+                          }}</nz-form-label>
+                        <nz-select nzShowSearch formControlName="SpeQualf" style="width: 100%" nzAllowClear>
+                          <nz-option *ngFor="let SpeQualf of qualificationList.d.results"
+                            [nzValue]="SpeQualf.QualtypeID"
+                            [nzLabel]="cs.userLanguage === 'en' ? SpeQualf.QualtypeDesc : SpeQualf.QualtypeDescAR">
+                          </nz-option>
+                        </nz-select>
+                        <small *ngIf="
                           rfpForm.controls.ManPowerFormEdit.get('SpeQualf')?.touched &&
                           rfpForm.controls.ManPowerFormEdit.get('SpeQualf')?.invalid
-                        "
-                      >
-                        {{ "RFP.FieldIsRequired" | translate }}
-                      </small>
-                    </div>
-      
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="SpeExp">{{
-                        "RFP.SpecializationWithDec" | translate
-                      }}</nz-form-label>
-                      <input nz-input  formControlName="Specilization" />
-                      <small
-                      *ngIf="
+                        ">
+                          {{ "RFP.FieldIsRequired" | translate }}
+                        </small>
+                      </div>
+
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="SpeExp">{{
+                          "RFP.SpecializationWithDec" | translate
+                          }}</nz-form-label>
+                        <input nz-input formControlName="Specilization" />
+                        <small *ngIf="
                         rfpForm.controls.ManPowerFormEdit.get('Specilization')?.touched &&
                         rfpForm.controls.ManPowerFormEdit.get('Specilization')?.invalid
-                      "
-                    >
-                      {{ "RFP.FieldIsRequired" | translate }}
-                    </small>
-                    </div>
-                   
-                    <div class="col-4 my-1">
-                      <nz-form-label nzRequired for="SpeExp">{{
-                        "RFP.Exp" | translate
-                      }}</nz-form-label>
-                      <br />
-                      <nz-form-control
-                        nzHasFeedback
-                        [nzErrorTip]="ProjJusErrorTp4"
-                      >
-                        <input nz-input formControlName="SpeExp" />
-                        <ng-template #ProjJusErrorTp4 let-control>
-                          <ng-container *ngIf="control.hasError('maxlength')">{{
-                            "RFP.300MaxCharactersError" | translate
-                          }}</ng-container>
+                      ">
+                          {{ "RFP.FieldIsRequired" | translate }}
+                        </small>
+                      </div>
 
-                          <ng-container *ngIf="control.hasError('required')">
-                            {{
+                      <div class="col-4 my-1">
+                        <nz-form-label nzRequired for="SpeExp">{{
+                          "RFP.Exp" | translate
+                          }}</nz-form-label>
+                        <br />
+                        <nz-form-control nzHasFeedback [nzErrorTip]="ProjJusErrorTp4">
+                          <input nz-input formControlName="SpeExp" />
+                          <ng-template #ProjJusErrorTp4 let-control>
+                            <ng-container *ngIf="control.hasError('maxlength')">{{
+                              "RFP.300MaxCharactersError" | translate
+                              }}</ng-container>
+
+                            <ng-container *ngIf="control.hasError('required')">
+                              {{
                               "RFP.FieldIsRequired" | translate
-                            }}</ng-container
-                          >
-                        </ng-template>
-                      </nz-form-control>
+                              }}</ng-container>
+                          </ng-template>
+                        </nz-form-control>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="mt-3">
-                    <button
-                      [disabled]="rfpForm.controls.ManPowerFormEdit.invalid"
-                      nz-button
-                      nzType="primary"
-                      nzSize="default"
-                      (click)="saveEditMan()"
-                    >
-                      <span>{{ "contract.buttons.Save" | translate }}</span>
-                    </button>
-                  </div>
-                  <!-- edit part code ends -->
-                </td>
-              </ng-container>
-            </tbody>
-          </nz-table>
-        </ng-container>
+                    <div class="mt-3">
+                      <button [disabled]="rfpForm.controls.ManPowerFormEdit.invalid" nz-button nzType="primary"
+                        nzSize="default" (click)="saveEditMan()">
+                        <span>{{ "contract.buttons.Save" | translate }}</span>
+                      </button>
+                    </div>
+                    <!-- edit part code ends -->
+                  </td>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </ng-container>
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzHeader="{{ 'RFP.Attachments' | translate }}">
           <div class="row">
             <div class="col-12">
               <ul style="margin-top: 4px">
                 <li>
-                  <span style="position: relative; font-size: 0.9rem"
-                    ><b>{{ "RFP.Note" | translate }}</b></span
-                  >
+                  <span style="position: relative; font-size: 0.9rem"><b>{{ "RFP.Note" | translate }}</b></span>
                 </li>
                 <li>
                   <span style="position: relative; font-size: 0.9rem">{{
                     "RFP.Maxium" | translate
-                  }}</span>
+                    }}</span>
                 </li>
               </ul>
 
               <br />
 
-              <app-filenet
-                class="mt-3"
-                (uploadSuccess)="fileSapUpload($event)"
-                [maxLimit]="15460"
-                (deleteFile)="fileSapDelete($event)"
-                [fileList]="fileNetList"
-              ></app-filenet>
+              <app-filenet class="mt-3" (uploadSuccess)="fileSapUpload($event)" [maxLimit]="15460"
+                (deleteFile)="fileSapDelete($event)" [fileList]="fileNetList"></app-filenet>
             </div>
           </div>
         </nz-collapse-panel>
@@ -2177,22 +1773,12 @@
 
       <div class="row mt-3" *ngIf="step2 || step3">
         <div class="col-2">
-          <button
-            nz-button
-            nzType="primary"
-            nzSize="default"
-            (click)="submitDraft()"
-          >
+          <button *ngIf="false" nz-button nzType="primary" nzSize="default" (click)="submitDraft()">
             {{ "RFP.SaveAs" | translate }}
           </button>
         </div>
         <div class="col-1">
-          <button
-            nz-button
-            nzType="primary"
-            nzSize="default"
-            (click)="isSubmitClick = true"
-          >
+          <button nz-button nzType="primary" nzSize="default" (click)="isSubmitClick = true">
             {{ "RFP.Save" | translate }}
           </button>
         </div>
@@ -2200,13 +1786,8 @@
     </div>
   </nz-form>
 </div>
-<nz-modal
-  [(nzVisible)]="submitConfirmation"
-  [nzFooter]="modalSubmitFooter"
-  [nzTitle]="modalSubmitTitle"
-  [nzWidth]="660"
-  (nzOnCancel)="showHideSubmit()"
->
+<nz-modal [(nzVisible)]="submitConfirmation" [nzFooter]="modalSubmitFooter" [nzTitle]="modalSubmitTitle" [nzWidth]="660"
+  (nzOnCancel)="showHideSubmit()">
   <ng-container *nzModalContent>
     <div class="check">
       <app-icon [icon]="IconList.approve"></app-icon>
@@ -2225,12 +1806,7 @@
         <p class="create_budget_head"></p>
       </div>
 
-      <button
-        nz-button
-        nzType="primary"
-        nzShape="circle"
-        (click)="showHideSubmit()"
-      >
+      <button nz-button nzType="primary" nzShape="circle" (click)="showHideSubmit()">
         <span nz-icon nzType="close"></span>
       </button>
     </div>
@@ -2239,13 +1815,8 @@
   <ng-template #modalSubmitFooter> </ng-template>
 </nz-modal>
 
-<nz-modal
-  [(nzVisible)]="submitConfirmationFailure"
-  [nzFooter]="modalSubmitFailFooter"
-  [nzTitle]="modalSubmitFailTitle"
-  [nzWidth]="660"
-  (nzOnCancel)="showHideSubmit()"
->
+<nz-modal [(nzVisible)]="submitConfirmationFailure" [nzFooter]="modalSubmitFailFooter" [nzTitle]="modalSubmitFailTitle"
+  [nzWidth]="660" (nzOnCancel)="showHideSubmit()">
   <ng-container *nzModalContent>
     <div class="check">
       <app-icon [icon]="IconList.failure"></app-icon>
@@ -2264,12 +1835,7 @@
         <p class="create_budget_head"></p>
       </div>
 
-      <button
-        nz-button
-        nzType="primary"
-        nzShape="circle"
-        (click)="showHideSubmit()"
-      >
+      <button nz-button nzType="primary" nzShape="circle" (click)="showHideSubmit()">
         <span nz-icon nzType="close"></span>
       </button>
     </div>
@@ -2278,75 +1844,40 @@
   <ng-template #modalSubmitFailFooter> </ng-template>
 </nz-modal>
 
-<nz-modal
-  [(nzVisible)]="isSubmitClick"
-  [nzTitle]="modalTitleSubmit"
-  nzClassName="hide-body"
-  [nzFooter]="modalFooterSubmit"
-  (nzOnCancel)="isSubmitClick = false"
->
+<nz-modal [(nzVisible)]="isSubmitClick" [nzTitle]="modalTitleSubmit" nzClassName="hide-body"
+  [nzFooter]="modalFooterSubmit" (nzOnCancel)="isSubmitClick = false">
   <ng-template #modalTitleSubmit>
     <div style="display: flex; justify-content: space-between">
       <div>{{ "COMMON.Do you want to proceed" | translate }}</div>
-      <button
-        nz-button
-        nzType="primary"
-        nzShape="circle"
-        (click)="isSubmitClick = false"
-      >
+      <button nz-button nzType="primary" nzShape="circle" (click)="isSubmitClick = false">
         <span nz-icon nzType="close"></span>
       </button>
     </div>
   </ng-template>
 
   <ng-template #modalFooterSubmit>
-    <button
-      nz-button
-      nzType="primary"
-      nzSize="default"
-      class=""
-      (click)="submitCase()"
-    >
+    <button nz-button nzType="primary" nzSize="default" class="" (click)="submitCase()">
       {{ "RFP.Yes" | translate }}
     </button>
     &nbsp;&nbsp;
-    <button
-      style="margin: 0"
-      nz-button
-      nzType="primary"
-      nzSize="default"
-      class=""
-      (click)="isSubmitClick = false"
-    >
+    <button style="margin: 0" nz-button nzType="primary" nzSize="default" class="" (click)="isSubmitClick = false">
       {{ "RFP.No" | translate }}
     </button>
   </ng-template>
 </nz-modal>
 
-<nz-drawer
-  [nzClosable]="false"
-  [nzVisible]="isSubCriteria || isSubCriteriaEdit"
-  nzPlacement="right"
-  (nzOnClose)="closeSubCriteria()"
-  [nzTitle]="subCriteriaTitle"
-  [nzFooter]="subCriteriaFooter"
-  [nzWidth]="570"
->
+<nz-drawer [nzClosable]="false" [nzVisible]="isSubCriteria || isSubCriteriaEdit" nzPlacement="right"
+  (nzOnClose)="closeSubCriteria()" [nzTitle]="subCriteriaTitle" [nzFooter]="subCriteriaFooter" [nzWidth]="570">
   <ng-template #subCriteriaTitle>
     <div class="drawer-title">
       <div>
         {{
-          isSubCriteria
-            ? ("RFP.Add Sub Criteria" | translate)
-            : ("RFP.Edit Sub Criteria" | translate)
+        isSubCriteria
+        ? ("RFP.Add Sub Criteria" | translate)
+        : ("RFP.Edit Sub Criteria" | translate)
         }}
       </div>
-      <button
-        nz-button
-        nzType="primary"
-        nzShape="circle"
-        (click)="closeSubCriteria()"
-      >
+      <button nz-button nzType="primary" nzShape="circle" (click)="closeSubCriteria()">
         <span nz-icon nzType="close"></span>
       </button>
     </div>
@@ -2354,69 +1885,51 @@
   <ng-container *nzDrawerContent>
     <nz-form [formGroup]="subCriteriaForm">
       <ng-container formArrayName="subCriterias">
-        <ng-container
-          *ngFor="
+        <ng-container *ngFor="
             let subCriteria of subCriterias.controls;
             let index = index;
             let last = last
-          "
-        >
+          ">
           <div [formGroupName]="index" class="row">
             <div class="col-2">
               <nz-form-label nzRequired for="SubItemNo">{{
                 "RFP.slNo" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <input nz-input formControlName="SubItemNo" />
-              <small
-                *ngIf="
+              <small *ngIf="
                   subCriteria.get('SubItemNo')?.touched &&
                   subCriteria.get('SubItemNo')?.invalid
-                "
-              >
+                ">
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
             </div>
             <div class="col-5">
               <nz-form-label nzRequired for="Percentage">{{
                 "RFP.Weightage" | translate
-              }}</nz-form-label>
-              <nz-input-number
-                style="width: 100%"
-                formControlName="Percentage"
-                [nzMin]="1"
-                [nzMax]="
+                }}</nz-form-label>
+              <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="
                   isSubCriteria
                     ? rfpForm?.controls?.EvalCriteria?.get('Percentage')
                         ?.value ?? 100
                     : rfpForm?.controls?.EvalCriteriaEdit?.get('Percentage')
                         ?.value ?? 100
-                "
-              ></nz-input-number>
-              <small
-                *ngIf="
+                "></nz-input-number>
+              <small *ngIf="
                   subCriteria.get('Percentage')?.touched &&
                   subCriteria.get('Percentage')?.invalid
-                "
-              >
+                ">
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
             </div>
             <div class="mt-3">
               <nz-form-label nzRequired for="Descr">{{
                 "RFP.Des" | translate
-              }}</nz-form-label>
-              <textarea
-                nzAutosize
-                rows="2"
-                nz-input
-                formControlName="Descr"
-              ></textarea>
-              <small
-                *ngIf="
+                }}</nz-form-label>
+              <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
+              <small *ngIf="
                   subCriteria.get('Descr')?.touched &&
                   subCriteria.get('Descr')?.invalid
-                "
-              >
+                ">
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
               <small *ngIf="subCriteria.get('Descr')?.errors?.maxlength">
@@ -2425,28 +1938,12 @@
             </div>
           </div>
 
-          <button
-            *ngIf="!last"
-            nz-button
-            nzType="default"
-            nzDanger
-            nzSize="default"
-            class="mt-3"
-            (click)="deleteSubCriteria(index)"
-            nzShape="circle"
-          >
+          <button *ngIf="!last" nz-button nzType="default" nzDanger nzSize="default" class="mt-3"
+            (click)="deleteSubCriteria(index)" nzShape="circle">
             <span nz-icon nzType="delete"></span>
           </button>
-          <button
-            *ngIf="last"
-            nz-button
-            nzType="primary"
-            nzSize="default"
-            class="addBtn mt-3"
-            [disabled]="subCriteria.invalid"
-            (click)="addSubCriteria()"
-            nzShape="circle"
-          >
+          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="addBtn mt-3"
+            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" nzShape="circle">
             <span nz-icon nzType="plus"></span>
           </button>
         </ng-container>
@@ -2455,23 +1952,11 @@
   </ng-container>
   <ng-template #subCriteriaFooter>
     <div class="d-flex justify-content-end gap-1">
-      <button
-        *ngIf="isSubCriteria"
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        nzGhost
-        (click)="cancelSubCriteria()"
-      >
+      <button *ngIf="isSubCriteria" nz-button nzType="primary" nzSize="default" nzGhost (click)="cancelSubCriteria()">
         <span>{{ "RFP.Cancel" | translate }}</span>
       </button>
-      <button
-        [disabled]="subCriterias.invalid"
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        (click)="isSubCriteria ? addEval('sub') : saveEditEval('sub')"
-      >
+      <button [disabled]="subCriterias.invalid" nz-button nzType="primary" nzSize="default"
+        (click)="isSubCriteria ? addEval('sub') : saveEditEval('sub')">
         <span>{{ "contract.buttons.Save" | translate }}</span>
       </button>
     </div>

@@ -308,7 +308,8 @@ export class AppComponent {
           link: '/dashboard'
         },
       )
-      if(userName === 'OALMAGHRABI'){
+      // if(userName === 'OALMAGHRABI'){
+      if(userName === 'testrfp'){
           this.roleTest('Requestor')
           this.router.navigate(['rfp/create']);
       }

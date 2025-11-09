@@ -414,7 +414,7 @@ export interface DocumentType {
 }
 
 export const dtypes: DocumentType[] = [
-  
+
   {
     id: DocumentTypeId.Service,
     value: 'Service',
@@ -449,6 +449,58 @@ export const durationTypes: any = [
     valueAr: 'سنة',
   }
 ];
+
+export const contractTypes: any = [
+  {
+    id: 'd',
+    value: 'Over 25 Million SAR Projects',
+    valueAr: 'المشاريع التي تتجاوز 25 مليون ريال سعودي',
+  },
+  {
+    id: 'W',
+    value: 'Less than 25 Million SAR Projects',
+    valueAr: 'المشاريع التي تقل عن 25 مليون ريال سعودي',
+  },
+  {
+    id: 'M',
+    value: 'Agreements Projects',
+    valueAr: 'مشاريع الاتفاقيات',
+  },
+];
+
+export const competitionTypes: any = [
+  {
+    id: 'G',
+    value: 'General Competition',
+    valueAr: 'المنافسة العامة',
+  },
+  {
+    id: 'D',
+    value: 'Direct Purchase',
+    valueAr: 'الشراء المباشر',
+  },
+  {
+    id: 'L',
+    value: 'Limited Competition',
+    valueAr: 'المنافسة المحدودة',
+  },
+  {
+    id: 'F',
+    value: 'Framework Agreement Competition',
+    valueAr: 'منافسة اتفاقية إطارية',
+  },
+  {
+    id: 'N',
+    value: 'National Transformation Projects',
+    valueAr: 'مشاريع التحول الوطني',
+  },
+  {
+    id: 'T',
+    value: 'Two-Stage Competition (First Stage)',
+    valueAr: 'منافسة على مرحلتين (المرحلة الأولى)',
+  },
+];
+
 
 export const ptypes: any = [
   {
@@ -549,7 +601,7 @@ export const listOfColumnRFP = [
     titleAr: 'اتفاقية مستوي التشغيل',
     sortFn: (prev: DataItem, next: DataItem) => {
       const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
+        nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
       if (preEndDate > nextEndDate) {
         return -1;
       } else if (preEndDate < nextEndDate) {
@@ -623,7 +675,7 @@ export const listOfColumnRFPAppRej = [
     titleAr: 'اتفاقية مستوي التشغيل',
     sortFn: (prev: DataItem, next: DataItem) => {
       const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
+        nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
       if (preEndDate > nextEndDate) {
         return -1;
       } else if (preEndDate < nextEndDate) {
@@ -713,7 +765,7 @@ export const listOfColumnRFPMG = [
     titleAr: 'اتفاقية مستوي التشغيل',
     sortFn: (prev: DataItem, next: DataItem) => {
       const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
+        nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
       if (preEndDate > nextEndDate) {
         return -1;
       } else if (preEndDate < nextEndDate) {
@@ -959,11 +1011,11 @@ export const listOfColumnProjOwnDash = [
     title: 'RFP.Status',
   },
   {
-    id:12,
+    id: 12,
     title: 'Pending with',
   },
   {
-    id:13,
+    id: 13,
     title: 'SLA',
   },
   {
@@ -1164,15 +1216,16 @@ export const listOfColumnBtEvl = [
     id: 10,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) =>{const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
-    if (preEndDate > nextEndDate) {
-      return 1;
-    } else if (preEndDate < nextEndDate) {
-      return -1;
-    } else {
-      return 0;
-    }
-   },
+    sortFn: (prev: DataItem, next: DataItem) => {
+      const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
+      if (preEndDate > nextEndDate) {
+        return 1;
+      } else if (preEndDate < nextEndDate) {
+        return -1;
+      } else {
+        return 0;
+      }
+    },
   },
 ];
 
@@ -1251,15 +1304,16 @@ export const listOfColumnDPEval = [
     id: 10,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) =>{const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
-    if (preEndDate > nextEndDate) {
-      return 1;
-    } else if (preEndDate < nextEndDate) {
-      return -1;
-    } else {
-      return 0;
-    }
-   },
+    sortFn: (prev: DataItem, next: DataItem) => {
+      const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
+      if (preEndDate > nextEndDate) {
+        return 1;
+      } else if (preEndDate < nextEndDate) {
+        return -1;
+      } else {
+        return 0;
+      }
+    },
   },
 ];
 
@@ -1295,7 +1349,7 @@ export const listofColumnCEO = [
     id: 3,
     title: 'Method of Submission',
     titleAr: 'طريقة تقديم العروض',
-  }, 
+  },
   {
     id: 7,
     title: 'Status',
@@ -1318,15 +1372,16 @@ export const listofColumnCEO = [
     id: 10,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) =>{const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
-    if (preEndDate > nextEndDate) {
-      return 1;
-    } else if (preEndDate < nextEndDate) {
-      return -1;
-    } else {
-      return 0;
-    }
-   },
+    sortFn: (prev: DataItem, next: DataItem) => {
+      const preEndDate = prev.SLAEndDate?.valueOf() || 0, nextEndDate = next.SLAEndDate?.valueOf() || 0;
+      if (preEndDate > nextEndDate) {
+        return 1;
+      } else if (preEndDate < nextEndDate) {
+        return -1;
+      } else {
+        return 0;
+      }
+    },
   },
 ];
 
@@ -1432,16 +1487,16 @@ export const listOfColumnBdList = [
     filterMultiple: true,
     listOfFilter: STATUS_FILTER.map(filter => {
       if (filter.text === `Cancelled`) {
-        return {...filter, text: `Completed` };
+        return { ...filter, text: `Completed` };
       } else {
-        return {...filter};
+        return { ...filter };
       }
     }),
     listOfFilterAr: STATUS_FILTER_AR.map(filter => {
       if (filter.text === 'ألغيت') {
-        return {...filter, text: `مكتمل`};
+        return { ...filter, text: `مكتمل` };
       } else {
-        return {...filter};
+        return { ...filter };
       }
     }),
     filterFn: (list: string[], item: DataItem) => list.some(name => item.TndrStatus.indexOf(name) !== -1)
@@ -1496,7 +1551,7 @@ export const listOfColumnBdList = [
     id: 11,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) => convertDaysHoursToMinutes(prev,next),
+    sortFn: (prev: DataItem, next: DataItem) => convertDaysHoursToMinutes(prev, next),
     sortDirections: ['ascend', 'descend', null],
   },
 ];
@@ -1583,7 +1638,7 @@ export const listOfColumnCEO = [
     titleAr: 'اتفاقية مستوي التشغيل',
     sortFn: (prev: DataItem, next: DataItem) => {
       const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
+        nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
       if (preEndDate > nextEndDate) {
         return -1;
       } else if (preEndDate < nextEndDate) {
@@ -1673,7 +1728,7 @@ export const listOfColumnBtQlt = [
     id: 10,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) => convertDaysHoursToMinutes(prev,next),
+    sortFn: (prev: DataItem, next: DataItem) => convertDaysHoursToMinutes(prev, next),
     sortDirections: ['ascend', 'descend', null],
   },
 ];
@@ -2089,37 +2144,37 @@ export const SLA_OPTIONS = [{
 }];
 
 
-export enum SMETHRESHOLD{
+export enum SMETHRESHOLD {
   VALUE = 25000000
 }
 
 
 
 
-function convertDaysHoursToMinutes(prev:any, next:any) {
-   let before = prev.SLAen, after = next.SLAen;
+function convertDaysHoursToMinutes(prev: any, next: any) {
+  let before = prev.SLAen, after = next.SLAen;
 
-  if( prev.SLAen.indexOf("Days") != -1 || prev.SLAen.indexOf("Day") != -1 ){
+  if (prev.SLAen.indexOf("Days") != -1 || prev.SLAen.indexOf("Day") != -1) {
 
     const [days, hours] = prev?.SLAen.match(/\d+/g).map(Number);
 
-    const totalHours = days * 24 ;
+    const totalHours = days * 24;
 
-    const minutes = hours != undefined? hours * 60 : 0;
-  
+    const minutes = hours != undefined ? hours * 60 : 0;
+
     before = `${totalHours} Hours ${minutes} Minutes`;
-   
+
   }
-  if( next.SLAen.indexOf("Days") != -1 || next.SLAen.indexOf("Day") != -1){
+  if (next.SLAen.indexOf("Days") != -1 || next.SLAen.indexOf("Day") != -1) {
     const [days, hours] = next?.SLAen.match(/\d+/g).map(Number);
 
-    const totalHours = days * 24 ;
+    const totalHours = days * 24;
 
-    const minutes = hours != undefined? hours * 60 : 0;
-  
+    const minutes = hours != undefined ? hours * 60 : 0;
+
     after = `${totalHours} Hours ${minutes} Minutes`;
 
   }
-return  before.localeCompare(after, 'en', { numeric: true });
+  return before.localeCompare(after, 'en', { numeric: true });
 
- }
+}
