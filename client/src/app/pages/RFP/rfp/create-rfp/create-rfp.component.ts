@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -38,18 +38,18 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
-  userName: string =''
+  userName: string = ''
   uploading = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
   value = '';
   title = 'Input a number';
-  listOfColumnBOQ = ["RFP.slNo", "RFP.MatDes", "RFP.QTY", "RFP.Uom", "RFP.Price","RFP.TotalPrice","RFP.VATAmount","RFP.TotalWithVAT", "RFP.Action"]
+  listOfColumnBOQ = ["RFP.slNo", "RFP.MatDes", "RFP.QTY", "RFP.Uom", "RFP.Price", "RFP.TotalPrice", "RFP.VATAmount", "RFP.TotalWithVAT", "RFP.Action"]
   listOfColumnEvalCriteria = ['RFP.slNo', 'RFP.Headline', "RFP.Weightage", "RFP.Action"]
   listOfSubCatColumnEvalCriteria = ['RFP.slNo', 'RFP.Des', "RFP.Weightage", "RFP.Action"]
   listOfColumnTechReq = ['RFP.slNo', 'RFP.Des', 'RFP.Action']
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
-  listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText',  'RFP.Action']
+  listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
 
   readonly IconList = IconList;
@@ -89,6 +89,9 @@ export class CreateRFPComponent implements OnInit {
   showEditPay: boolean = false;
   showEditMan: boolean = false;
   showEditConsult: boolean = false;
+  showDirectPurchaseField: boolean = false;
+  showLimitedField: boolean = false;
+  isPrivateSelected: boolean = false;
 
   boqListData: any;
   boqList?: FormArray;
@@ -97,7 +100,7 @@ export class CreateRFPComponent implements OnInit {
   QualList?: FormArray;
   EvalListData: any[] = [];
   TechReqListData: any[] = [];
-  
+
   ManPowerListData: any[] = [];
   ConsultListData: any[] = [];
 
@@ -107,7 +110,7 @@ export class CreateRFPComponent implements OnInit {
   Costctr: any;
   projTy: any;
   Depts: any;
-  
+
   isEnglish = false;
 
   isConsult = true;
@@ -117,6 +120,8 @@ export class CreateRFPComponent implements OnInit {
 
   dtypes = dtypes;
   durationTypes = durationTypes;
+  contractTypes = contractTypes;
+  competitionTypes = competitionTypes;
 
   responseMessage: any;
   submitConfirmation: boolean = false;
@@ -158,16 +163,16 @@ export class CreateRFPComponent implements OnInit {
   managerSubId: string = '';
 
   editTotTechEval: boolean = true;
-  
+
   isSubCriteria: boolean = false;
-  isSubCriteriaToggle: boolean= false
+  isSubCriteriaToggle: boolean = false
 
   isSubCriteriaEdit: boolean = false;
   listOfBudgetingYears: number[] = []
   groupBOQItemsBasedonBudgetingYears: any[] = []
   selectedBOQItemForLookUp: any
 
-  
+
   subCriteriaForm: FormGroup = this.fb.group({
     subCriterias: this.fb.array([
       this.initialSubCriteria
@@ -200,18 +205,18 @@ export class CreateRFPComponent implements OnInit {
     this.buildMainFormGroup();
   }
 
-  
+
   get initialSubCriteria() {
     return this.fb.group({
-      SubItemNo: new FormControl({value: 1, disabled: true}, Validators.required),
+      SubItemNo: new FormControl({ value: 1, disabled: true }, Validators.required),
       Percentage: new FormControl('', Validators.required),
       Descr: new FormControl('', [Validators.required, Validators.maxLength(600)])
     })
   }
-  
+
   createSubCriteria(data: any) {
     return this.fb.group({
-      SubItemNo: new FormControl({value: data.SubItemNo, disabled: true}, Validators.required),
+      SubItemNo: new FormControl({ value: data.SubItemNo, disabled: true }, Validators.required),
       Percentage: new FormControl(data.Percentage, Validators.required),
       Descr: new FormControl(data.Descr, [Validators.required, Validators.maxLength(600)])
     })
@@ -223,17 +228,17 @@ export class CreateRFPComponent implements OnInit {
 
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
-    if(totalPercentage < 
-      (this.isSubCriteria ? 
-        this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value : 
+    if (totalPercentage <
+      (this.isSubCriteria ?
+        this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value :
         this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value)) {
       const subCriteria = this.fb.group({
-        SubItemNo: new FormControl({value: this.subCriterias.length + 1, disabled: true}, Validators.required),
+        SubItemNo: new FormControl({ value: this.subCriterias.length + 1, disabled: true }, Validators.required),
         Percentage: new FormControl('', Validators.required),
         Descr: new FormControl('', [Validators.required, Validators.maxLength(600)])
       });
       this.subCriterias.push(subCriteria);
-    }else {
+    } else {
       this.cs.createMessage(
         'error',
         this.translate.instant('RFP.SubCritriaEval2')
@@ -259,127 +264,231 @@ export class CreateRFPComponent implements OnInit {
     this.isSubCriteria = false;
     this.isSubCriteriaEdit = false;
   }
+  onSiteVisitChange(value: string) {
 
+  }
+  onReannounceChange(value: string) {
+
+  }
+  onPrequalificationChange(value: any) {
+    // if checked then prequalificationRequired true
+  }
+  onCompetitionChange(value: string) {
+    console.log(value, 'afreen =========');
+
+    // Reset both flags initially
+    this.showDirectPurchaseField = false;
+    this.showLimitedField = false;
+
+    // Clear previous validators
+    this.rfpForm.get('directPurchaseType')?.clearValidators();
+    this.rfpForm.get('limitedType')?.clearValidators();
+
+    // Handle Limited Competition
+    if (value === 'L') {
+      this.showLimitedField = true;
+      this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
+    }
+
+    // Handle Direct Purchase
+    if (value === 'D') {
+      this.showDirectPurchaseField = true;
+      this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
+    }
+
+    // Update validation state
+    this.rfpForm.get('directPurchaseType')?.updateValueAndValidity();
+    this.rfpForm.get('limitedType')?.updateValueAndValidity();
+  }
+
+
+  onInviteTypeChange(value: string) {
+    // console.log(value,'afreen=========')
+    this.isPrivateSelected = value === 'private';
+    if (!this.isPrivateSelected) {
+      this.rfpForm.get('crNumber')?.reset();
+    }
+  }
 
   /**
    * Builds the main for group for create RFP
    */
   buildMainFormGroup(): void {
     this.rfpForm = this.fb.group({
-      RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
-      CostCenter1: new FormControl(
-        { value: localStorage.getItem('CC'), disabled: true }
-        ,
-        Validators.required
-      ),
-      
-      Dept: new FormControl({ value: '', disabled: true }, [
-        Validators.required,
-      ]),
+      // Basic Competition Info
+      invite: new FormControl('', [Validators.required]),
+      crNumber: new FormControl('', [Validators.required]),
+      directPurchaseType: new FormControl('', [Validators.required]),
+      contractType: new FormControl('', [Validators.required]),
+      competitionType: new FormControl('', [Validators.required]),
+      limitedType: new FormControl('', [Validators.required]),
+
+
+      // New Fields
+      requestStatus: ['', [Validators.required]], // Emergency / Business Plan / Urgent
+      estimatedCost: ['', [Validators.required, Validators.min(1)]],
+
+      includeFrameworkItems: ['', [Validators.required]], // Yes / No
+      prequalificationRequired: [false, [Validators.required]], // Yes / No
+      qualificationReference: [''], // Optional if 'Yes'
+      qualificationLink: [''], // Optional if 'Yes'
+
+      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+
+      dividedIntoLots: [false, [Validators.required]], // Yes / No
+      contractDuration: ['', [Validators.required]], // Dropdown based on platform options
       MatGrpId: ['', [Validators.required]],
       DeliveryDate: ['', [Validators.required]],
       ProjJust: new FormControl('', [
         Validators.required,
         Validators.maxLength(300),
       ]),
-      MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
-      MemManagerName: new FormControl('', [Validators.required]),
-      
-      SOP: new FormControl('', [Validators.required]),
-      PurGrpId: new FormControl('', [Validators.required]),
-      billOFQty: this.fb.array([this.createBoQ()], [Validators.required]),
-      estPrice: new FormControl({ value: '', disabled: true }, [
-        Validators.required,
-      ]),
-      vatAmount: new FormControl({ value: '', disabled: true }),
-      estPriceVAT: new FormControl({ value: '', disabled: true }, [
-        Validators.required
-      ]),
-      DurationType: new FormControl('', [Validators.required]),
       ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-      
-      Payment: this.fb.array([]),
-     
-      PayTermsEdit: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: [''],
-        Percentage: ['0'],
-      }),
-      CC: new FormControl(''),
-      
-      
-      
-      TechRFP: new FormControl('N'),
-      
-      TotTechEval: new FormControl(''),
-      
-      // TechEval: new FormControl(''),
-      vendorEvaluationWeightage: this.fb.group({
-        technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99), ]],
-        financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
-      }),
-      
-      ProjManpower: new FormControl(this.isManPow),
-      CancelRFP: new FormControl(''),
-      Evalcrt: this.fb.array([]),
-      EvalCriteria: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: (this.slel).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline:['', Validators.required],
-        SubCriFlg:['',Validators.required ]
+      DurationType: new FormControl('', [Validators.required]),
 
-      }),
-      EvalCriteriaEdit: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline:[''],
-        SubCriFlg:['']
-      }),
-      RfpTreq: this.fb.array([]),
-      TechReq: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-      TechReqEdit: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-      
-      
-      Attachments: this.fb.array([]),
-      ManPower: this.fb.array([]),
-      ManPowerForm: this.fb.group({
-        ItemNo: [{ value: this.slman.toString(), disabled: true }],
-        JobTitle: [''],
-        Amount: [''],
-        SpeQualf:[''],
-        Specilization:[''],
-        SpeExp: ['', Validators.maxLength(300)],
-        
-      }),
-      ManPowerFormEdit: this.fb.group({
-        ItemNo: [{ value: '', disabled: true }],
-        JobTitle: [''],
-        Amount: [''],
-        SpeQualf:[''],
-        Specilization:[''],
-        SpeExp: ['', Validators.maxLength(300)],
-        
-      }),
-      ConsultWork: this.fb.array([]),
-      procurementChecklist: this.fb.group({})
+
+
+      workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform
+
+      reAnnounced: [false, [Validators.required]], // Yes / No
+      cancellationReport: [''], // File upload if yes
+
+      siteVisitRequired: ['', [Validators.required]], // Yes / No
+      siteContactDetails: [''], // Conditional if yes
+
+      projectJustification: ['', [
+        Validators.required,
+        Validators.maxLength(500)
+      ]], // Project necessity and impact
     });
+
+    // this.rfpForm = this.fb.group({
+    //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
+    //   CostCenter1: new FormControl(
+    //     { value: localStorage.getItem('CC'), disabled: true }
+    //     ,
+    //     Validators.required
+    //   ),
+
+    //   Dept: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required,
+    //   ]),
+    //   MatGrpId: ['', [Validators.required]],
+    //   DeliveryDate: ['', [Validators.required]],
+    //   ProjJust: new FormControl('', [
+    //     Validators.required,
+    //     Validators.maxLength(300),
+    //   ]),
+    //   MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+    //   MemManagerName: new FormControl('', [Validators.required]),
+
+    //   SOP: new FormControl('', [Validators.required]),
+    //   PurGrpId: new FormControl('', [Validators.required]),
+    //   billOFQty: this.fb.array([this.createBoQ()], [Validators.required]),
+    //   estPrice: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required,
+    //   ]),
+    //   vatAmount: new FormControl({ value: '', disabled: true }),
+    //   estPriceVAT: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required
+    //   ]),
+    //   DurationType: new FormControl('', [Validators.required]),
+    //   // new flow afreen
+    //   invite: new FormControl('', [Validators.required]),
+    //   crNumber: new FormControl('', [Validators.required]),
+    //   directPurchaseType: new FormControl('', [Validators.required]),
+    //   contractType: new FormControl('', [Validators.required]),
+    //   competitionType: new FormControl('', [Validators.required]),
+    //   limitedType: new FormControl('', [Validators.required]),
+    //   //
+
+
+    //   ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+
+    //   Payment: this.fb.array([]),
+
+    //   PayTermsEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: [''],
+    //     Percentage: ['0'],
+    //   }),
+    //   CC: new FormControl(''),
+
+
+
+    //   TechRFP: new FormControl('N'),
+
+    //   TotTechEval: new FormControl(''),
+
+    //   // TechEval: new FormControl(''),
+    //   vendorEvaluationWeightage: this.fb.group({
+    //     technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99), ]],
+    //     financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
+    //   }),
+
+    //   ProjManpower: new FormControl(this.isManPow),
+    //   CancelRFP: new FormControl(''),
+    //   Evalcrt: this.fb.array([]),
+    //   EvalCriteria: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: (this.slel).toString(), disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]],
+    //     Percentage: ['0'],
+    //     Headline:['', Validators.required],
+    //     SubCriFlg:['',Validators.required ]
+
+    //   }),
+    //   EvalCriteriaEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]],
+    //     Percentage: ['0'],
+    //     Headline:[''],
+    //     SubCriFlg:['']
+    //   }),
+    //   RfpTreq: this.fb.array([]),
+    //   TechReq: this.fb.group({
+    //     RfpNo: [''],
+    //     RfpVersion: [''],
+    //     ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]]
+    //   }),
+    //   TechReqEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     RfpVersion: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]]
+    //   }),
+
+
+    //   Attachments: this.fb.array([]),
+    //   ManPower: this.fb.array([]),
+    //   ManPowerForm: this.fb.group({
+    //     ItemNo: [{ value: this.slman.toString(), disabled: true }],
+    //     JobTitle: [''],
+    //     Amount: [''],
+    //     SpeQualf:[''],
+    //     Specilization:[''],
+    //     SpeExp: ['', Validators.maxLength(300)],
+
+    //   }),
+    //   ManPowerFormEdit: this.fb.group({
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     JobTitle: [''],
+    //     Amount: [''],
+    //     SpeQualf:[''],
+    //     Specilization:[''],
+    //     SpeExp: ['', Validators.maxLength(300)],
+
+    //   }),
+    //   ConsultWork: this.fb.array([]),
+    //   procurementChecklist: this.fb.group({})
+    // });
   }
-  
+
+
+
 
 
   beforeUpload = (file: NzUploadFile): boolean => {
@@ -388,22 +497,22 @@ export class CreateRFPComponent implements OnInit {
   };
 
   setManagerList() {
-    if(
+    if (
       this.rfpForm.controls['MemName'].value.length > 0 &&
-      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value) 
-    )) {
+      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
+      )) {
       this.cs.createMessage(
         'error',
         this.translate.instant('RFP.TechMemError')
       )
     }
-    this.managerList = this.userList.filter((user: any) => 
+    this.managerList = this.userList.filter((user: any) =>
       this.rfpForm.controls['MemName']?.value.includes(user.EmpUsrid))
     this.managerList = this.managerList.filter((user, index, self) => {
       return user.TmUserid !== ""
-      && index === self.findIndex((u) => u.TmUserid === user.TmUserid)
+        && index === self.findIndex((u) => u.TmUserid === user.TmUserid)
     })
-    if(this.managerList.length === 0 || this.managerList.findIndex((manager) => manager.TmUserid === this.rfpForm.controls['MemManagerName'].value) < 0) {
+    if (this.managerList.length === 0 || this.managerList.findIndex((manager) => manager.TmUserid === this.rfpForm.controls['MemManagerName'].value) < 0) {
       this.rfpForm.controls['MemManagerName'].setValue('');
       this.rfpForm.controls['MemManagerName'].updateValueAndValidity();
     }
@@ -413,13 +522,13 @@ export class CreateRFPComponent implements OnInit {
     this.step1 = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
-    
 
-    
+
+
     let usernameBtoa = localStorage.getItem('ID')
-    console.log('userName',usernameBtoa)
-    if(usernameBtoa){
-      this.userName =  atob(usernameBtoa)
+    console.log('userName', usernameBtoa)
+    if (usernameBtoa) {
+      this.userName = atob(usernameBtoa)
       console.log(this.userName)
     }
     // this.loadLookUpData();  // afreen commented
@@ -429,16 +538,16 @@ export class CreateRFPComponent implements OnInit {
       this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
       this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
     ])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(() => {
-      this.resetDeliveryDate();
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.resetDeliveryDate();
+      });
     this.listenDeliveryDateChange()
   }
 
-  listenDeliveryDateChange(){
+  listenDeliveryDateChange() {
     this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.listOfBudgetingYears = this.getInvolvedYears(this.rfpForm.controls['DeliveryDate'].value, this.rfpForm.controls['ProjDur'].value,this.rfpForm.controls['DurationType'].value);
+      this.listOfBudgetingYears = this.getInvolvedYears(this.rfpForm.controls['DeliveryDate'].value, this.rfpForm.controls['ProjDur'].value, this.rfpForm.controls['DurationType'].value);
     });
   }
 
@@ -449,7 +558,7 @@ export class CreateRFPComponent implements OnInit {
 
     const costCenter = this.api.post('F4CostCntrSet', this.cs.getUserData());
     const usersList = this.api.post('F4UsrListSet', this.cs.getUserData());
-    const purchaseGroup = this.api.post('F4PurGrpSet', {userName: this.cs.getUserData().userid});
+    const purchaseGroup = this.api.post('F4PurGrpSet', { userName: this.cs.getUserData().userid });
     const unitOfMeasure = this.api.post('F4UomSet', { Uom: '' });
     const itCheckList = this.api.post('getChecklist', { checklist_type: '01' });
     const procurementCheckList = this.api.post('getChecklist', { checklist_type: '02' });
@@ -461,73 +570,73 @@ export class CreateRFPComponent implements OnInit {
     this.spinner.show();
 
     forkJoin([costCenter, usersList, purchaseGroup, unitOfMeasure, itCheckList, procurementCheckList, qualificationList])
-    .pipe(takeUntil(this.destroy$)).subscribe((
-      [costCenterRes, usersListRes, purchaseGroupRes, unitOfMeasureRes, itCheckListRes, 
-        procurementCheckListRes, qualificationListRes ]) => {
-      this.spinner.hide();
+      .pipe(takeUntil(this.destroy$)).subscribe((
+        [costCenterRes, usersListRes, purchaseGroupRes, unitOfMeasureRes, itCheckListRes,
+          procurementCheckListRes, qualificationListRes]) => {
+        this.spinner.hide();
 
-      // * Cost Center List
-      if (costCenterRes.d.results) {
-        this.Costctr = costCenterRes.d.results;
-      }
-
-      // * Users List
-      if (usersListRes.d.results) {
-        this.userList = usersListRes.d.results;
-        this.setManagerList()
-      }
-
-      // * Get the purchase group
-      if (purchaseGroupRes.d.results) {
-        this.allPurGrp = purchaseGroupRes.d.results
-        this.purGp = purchaseGroupRes.d.results.filter((purchanseGroupItem: any) => purchanseGroupItem.PurGrpId.indexOf(localStorage.getItem('DepTxt')) > -1);
-      }
-
-      // * Get the Unit of Measure List
-      if (unitOfMeasureRes.d.results) {
-        this.uOM = unitOfMeasureRes.d.results;
-      }
-
-      // * Get IT Check List
-      if (itCheckListRes.d.results) {
-        this.ITCheckList = {
-          parentCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id === '000'),
-          childCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id !== '000')
+        // * Cost Center List
+        if (costCenterRes.d.results) {
+          this.Costctr = costCenterRes.d.results;
         }
-        // this.setITCheklist();
-      }
 
-      // * Get Procurement Check List
-      if (procurementCheckListRes.d.results) {
-        this.procurementCheckListData = procurementCheckListRes.d.results.filter((data: any) => {
-          if ((data.checklist_applicapable == this.cs.getUserData().DeptId || data.checklist_applicapable == '') && data.checklist_access == 'R') {
-            return true;
+        // * Users List
+        if (usersListRes.d.results) {
+          this.userList = usersListRes.d.results;
+          this.setManagerList()
+        }
+
+        // * Get the purchase group
+        if (purchaseGroupRes.d.results) {
+          this.allPurGrp = purchaseGroupRes.d.results
+          this.purGp = purchaseGroupRes.d.results.filter((purchanseGroupItem: any) => purchanseGroupItem.PurGrpId.indexOf(localStorage.getItem('DepTxt')) > -1);
+        }
+
+        // * Get the Unit of Measure List
+        if (unitOfMeasureRes.d.results) {
+          this.uOM = unitOfMeasureRes.d.results;
+        }
+
+        // * Get IT Check List
+        if (itCheckListRes.d.results) {
+          this.ITCheckList = {
+            parentCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id === '000'),
+            childCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id !== '000')
           }
-          return false;
-        });
-        let parentGroup = this.rfpForm.get('procurementChecklist') as FormGroup;
+          // this.setITCheklist();
+        }
 
-        this.procurementCheckListData.forEach((list: any) => {
-          if (list.to_ChkLstDts.results.length > 1) {
-            parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
-            parentGroup.addControl('procu' + list.checklist_id + 'Comment', this.fb.control(''));
-          } else {
-            parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
-          }
-        });
-      }
-      
-      this.qualificationList = qualificationListRes
-      
-      
+        // * Get Procurement Check List
+        if (procurementCheckListRes.d.results) {
+          this.procurementCheckListData = procurementCheckListRes.d.results.filter((data: any) => {
+            if ((data.checklist_applicapable == this.cs.getUserData().DeptId || data.checklist_applicapable == '') && data.checklist_access == 'R') {
+              return true;
+            }
+            return false;
+          });
+          let parentGroup = this.rfpForm.get('procurementChecklist') as FormGroup;
 
-      console.log(this.qualificationList, 'this.qualificationList')
+          this.procurementCheckListData.forEach((list: any) => {
+            if (list.to_ChkLstDts.results.length > 1) {
+              parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
+              parentGroup.addControl('procu' + list.checklist_id + 'Comment', this.fb.control(''));
+            } else {
+              parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
+            }
+          });
+        }
+
+        this.qualificationList = qualificationListRes
 
 
-    }, (error) => {
-      this.spinner.hide();
-      this.cs.createMessage('error', error.statusText);
-    });
+
+        console.log(this.qualificationList, 'this.qualificationList')
+
+
+      }, (error) => {
+        this.spinner.hide();
+        this.cs.createMessage('error', error.statusText);
+      });
 
   }
 
@@ -726,7 +835,7 @@ export class CreateRFPComponent implements OnInit {
   priceFormatter = (value: number) => {
     return value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
   };
-  
+
   // Parser: Remove commas when storing the value internally
   priceParser = (value: string) => {
     return value ? value.replace(/,*/g, '') : '';
@@ -741,9 +850,11 @@ export class CreateRFPComponent implements OnInit {
     });
   }
 
-  getBudgetAPI(priceDetails: { estimatedPrice: number, 
-    totalEstimatedPrice: number, 
-    totalEstimatedPriceVAT: number }): void {
+  getBudgetAPI(priceDetails: {
+    estimatedPrice: number,
+    totalEstimatedPrice: number,
+    totalEstimatedPriceVAT: number
+  }): void {
     this.updateBOQTableList();
   }
 
@@ -784,7 +895,7 @@ export class CreateRFPComponent implements OnInit {
     this.rfpForm.controls['estPriceVAT'].updateValueAndValidity();
 
     this.rfpForm.controls['vatAmount'].setValue(this.currenyPipe.
-      transform((totalEstimatedPriceVAT-totalEstimatedPrice).toFixed(2).toString()));
+      transform((totalEstimatedPriceVAT - totalEstimatedPrice).toFixed(2).toString()));
     this.rfpForm.controls['vatAmount'].updateValueAndValidity();
 
     // if (totalEstimatedPriceVAT === 0) {
@@ -793,97 +904,97 @@ export class CreateRFPComponent implements OnInit {
     //   return;
     // }
 
-      const msg =
-        this.translate.instant('RFP.Estimated price is') + '  ' + totalEstimatedPriceVAT;
-      this.cs.createMessage('success', msg);
-  
+    const msg =
+      this.translate.instant('RFP.Estimated price is') + '  ' + totalEstimatedPriceVAT;
+    this.cs.createMessage('success', msg);
 
-     
 
-      this.rfpForm.controls['TechRFP'].setValidators([
+
+
+    this.rfpForm.controls['TechRFP'].setValidators([
+      Validators.required,
+    ]);
+    this.rfpForm.controls['TechRFP'].updateValueAndValidity();
+
+
+
+
+
+
+
+
+
+    this.rfpForm.controls['TotTechEval'].setValidators([
+      Validators.required,
+    ]);
+    this.rfpForm.controls['TotTechEval'].updateValueAndValidity();
+
+
+
+
+
+    if (!this.TechReqListData.length) {
+      this.rfpForm.controls['TechReq'].get('Descr')?.setValidators([
         Validators.required,
       ]);
-      this.rfpForm.controls['TechRFP'].updateValueAndValidity();
-
-      
-
-      
-
-      
-
-  
-
-      this.rfpForm.controls['TotTechEval'].setValidators([
+      this.rfpForm.controls['TechReq'].get('Descr')?.updateValueAndValidity();
+    }
+    if (!this.ManPowerListData?.length) {
+      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.setValidators([
         Validators.required,
       ]);
-      this.rfpForm.controls['TotTechEval'].updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.updateValueAndValidity();
 
-      
+      this.rfpForm.controls['ManPowerForm'].get('Amount')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['ManPowerForm'].get('Amount')?.updateValueAndValidity();
 
 
-      
-      if (!this.TechReqListData.length) {
-        this.rfpForm.controls['TechReq'].get('Descr')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['TechReq'].get('Descr')?.updateValueAndValidity();
-      }
-      if (!this.ManPowerListData?.length) {
-        this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.updateValueAndValidity();
 
-        this.rfpForm.controls['ManPowerForm'].get('Amount')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('Amount')?.updateValueAndValidity();
 
-        
 
-        
+      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.updateValueAndValidity();
 
-        this.rfpForm.controls['ManPowerForm'].get('Specilization')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('Specilization')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
 
-        this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.updateValueAndValidity();
 
-        this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.updateValueAndValidity();
 
-       
 
-        this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
-      }
-     
-      if (!this.EvalListData.length) {
-        this.rfpForm.controls['EvalCriteria'].get('Percentage')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['EvalCriteria'].get('Percentage')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
+    }
 
-        this.rfpForm.controls['EvalCriteria'].get('Descr')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['EvalCriteria'].get('Descr')?.updateValueAndValidity();
-        this.rfpForm.controls['EvalCriteria'].get('Headline')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['EvalCriteria'].get('Headline')?.updateValueAndValidity();
-        this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.setValidators([
-          Validators.required,
-        ]);
-        this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.updateValueAndValidity();
+    if (!this.EvalListData.length) {
+      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.updateValueAndValidity();
+
+      this.rfpForm.controls['EvalCriteria'].get('Descr')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteria'].get('Descr')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria'].get('Headline')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteria'].get('Headline')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.updateValueAndValidity();
 
       if (!this.QualList?.length) {
         this.addQual();
@@ -900,7 +1011,7 @@ export class CreateRFPComponent implements OnInit {
   updateBOQTableList() {
     const boqFormValue = this.boqList?.getRawValue()[0];
     const boqFormArray = this.rfpForm.get('billOFQty') as FormArray;
-  
+
     if (this.selectedBOQItemForLookUp) {
       if (boqFormValue.applyForAllBudgetYears) {
         // Delete original item
@@ -911,7 +1022,7 @@ export class CreateRFPComponent implements OnInit {
               item.ItemNo === this.selectedBOQItemForLookUp.ItemNo
             )
         );
-  
+
         // Add updated copies for all years
         this.listOfBudgetingYears.forEach((year: number) => {
           const clonedItem = { ...boqFormValue, budgetYear: year };
@@ -924,12 +1035,12 @@ export class CreateRFPComponent implements OnInit {
           item.budgetYear === this.selectedBOQItemForLookUp.budgetYear &&
           item.ItemNo === this.selectedBOQItemForLookUp.ItemNo
         );
-  
+
         if (flatIndex !== -1) {
           this.boqTabelList[flatIndex] = boqFormValue;
         }
       }
-  
+
       this.selectedBOQItemForLookUp = null;
     } else {
       // Add mode
@@ -943,26 +1054,26 @@ export class CreateRFPComponent implements OnInit {
         this.boqTabelList.push(boqFormValue);
       }
     }
-  
+
     // Refresh list and reset form
     this.boqTabelList = [...this.boqTabelList];
     const totalEstimatedPrice = this.boqTabelList.reduce(
       (sum: any, item: any) => sum + (parseFloat(item.Quantity) * parseFloat(item.Price)),
       0
     );
-    
+
     const totalEstimatedPriceVAT = totalEstimatedPrice + (0.15 * totalEstimatedPrice);
-    
+
     this.updateFormGroup(totalEstimatedPrice, totalEstimatedPriceVAT);
     this.groupBoqItemsByYear();
-  
+
     boqFormArray.clear();
     boqFormArray.push(this.createBoQ());
   }
-  
-  
+
+
   groupBoqItemsByYear() {
-    this.groupBOQItemsBasedonBudgetingYears = this.boqTabelList.reduce((acc:any, item:any) => {
+    this.groupBOQItemsBasedonBudgetingYears = this.boqTabelList.reduce((acc: any, item: any) => {
       const year = item.budgetYear;
       if (!acc[year]) acc[year] = [];
       acc[year].push(item);
@@ -971,21 +1082,21 @@ export class CreateRFPComponent implements OnInit {
   }
 
 
-  deleteBOQItem(budgetYear: number,  index: number){
+  deleteBOQItem(budgetYear: number, index: number) {
     const itemToDelete = this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
 
     // Find index in flat list
-    const flatIndex = this.boqTabelList.findIndex((item:any) =>
+    const flatIndex = this.boqTabelList.findIndex((item: any) =>
       item.budgetYear === itemToDelete.budgetYear &&
       item.ItemNo === itemToDelete.ItemNo
     );
-  
+
     if (flatIndex !== -1) {
       this.boqTabelList.splice(flatIndex, 1);
       this.boqTabelList = [...this.boqTabelList]; // trigger change detection
       this.groupBoqItemsByYear(); // regroup after deletion
     }
-        let totalEstimatedPrice = 0;
+    let totalEstimatedPrice = 0;
     let totalEstimatedPriceVAT = 0;
     if (this.boqTabelList.length) {
       this.boqTabelList.forEach((boqItem: any) => {
@@ -997,18 +1108,18 @@ export class CreateRFPComponent implements OnInit {
     }
     this.updateFormGroup(totalEstimatedPrice, totalEstimatedPriceVAT);
     const BOQFormGroup = (this.rfpForm.get('billOFQty') as FormArray).at(0) as FormGroup;
-    BOQFormGroup.patchValue({ItemNo:this.boqTabelList.length })
+    BOQFormGroup.patchValue({ ItemNo: this.boqTabelList.length })
   }
 
 
   editBOQItem(budgetYear: number, index: number) {
     const selectedBOQItem = this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
     console.log('Selected for edit:', selectedBOQItem);
-  
+
     this.selectedBOQItemForLookUp = selectedBOQItem; // Save full item for lookup during update
-  
+
     const parentGroup = (this.rfpForm.get('billOFQty') as FormArray).at(0) as FormGroup;
-  
+
     parentGroup.patchValue({
       Quantity: selectedBOQItem.Quantity.toString(),
       Price: selectedBOQItem.Price.toString(),
@@ -1018,10 +1129,10 @@ export class CreateRFPComponent implements OnInit {
       budgetYear: selectedBOQItem.budgetYear,
       ItemNo: selectedBOQItem.ItemNo.toString(),
     });
-  
+
     parentGroup.updateValueAndValidity();
   }
-  
+
 
   // updateBOQTableList(): void {
   //   this.boqList = this.rfpForm.controls.billOFQty as FormArray;
@@ -1240,31 +1351,31 @@ export class CreateRFPComponent implements OnInit {
     this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
 
-  
+
   // add teachnical evaluation criteria from group
   addEval(cond: any) {
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
-    if(cond === 'sub') {
+    if (cond === 'sub') {
       const totalEval = this.checkEvalPer(true);
-      if(totalEval != data.Percentage) {
+      if (totalEval != data.Percentage) {
         this.cs.createMessage(
           'error',
           totalEval + this.translate.instant('RFP.SubCritriaEval')
         );
         return;
-      }else {
+      } else {
         data.expand = true;
         data.TechToTechSub = this.subCriterias.value.map((subCriteria: any, index: number) => {
           return {
-            ...subCriteria, 
+            ...subCriteria,
             Percentage: subCriteria.Percentage.toString(),
-            ItemNo: data.ItemNo, 
-            SubItemNo: (index+1).toString()
+            ItemNo: data.ItemNo,
+            SubItemNo: (index + 1).toString()
           };
         })
       }
-    } 
+    }
     if (cond === 'add') {
       data.expand = false;
       data.TechToTechSub = []
@@ -1286,11 +1397,11 @@ export class CreateRFPComponent implements OnInit {
         ItemNo: this.slel.toString(),
         Descr: '',
         Percentage: '0',
-        Headline:'',
-        SubCriFlg:'X'
+        Headline: '',
+        SubCriFlg: 'X'
       });
       this.isSubCriteria = false;
-    }else {
+    } else {
       this.EvalListData.pop()
     }
   }
@@ -1314,8 +1425,8 @@ export class CreateRFPComponent implements OnInit {
         ItemNo: this.slel.toString(),
         Descr: '',
         Percentage: '0',
-        Headline:'',
-        SubCriFlg:'X'
+        Headline: '',
+        SubCriFlg: 'X'
       });
     }
   }
@@ -1331,15 +1442,15 @@ export class CreateRFPComponent implements OnInit {
       ItemNo: (index + 1).toString(),
       Descr: data.Descr,
       Percentage: data.Percentage.toString(),
-      Headline:data.Headline,
-      SubCriFlg:data.SubCriFlg
+      Headline: data.Headline,
+      SubCriFlg: data.SubCriFlg
     });
-    if(data.TechToTechSub.length > 0) {
+    if (data.TechToTechSub.length > 0) {
       this.subCriterias.removeAt(0);
-      
-      data.TechToTechSub.forEach(({ItemNo, ...rest}: any) =>
+
+      data.TechToTechSub.forEach(({ ItemNo, ...rest }: any) =>
         this.subCriterias.push(this.createSubCriteria(rest)))
-    }else {
+    } else {
       this.subCriterias.setValue([this.initialSubCriteria])
     }
     this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.setValidators([
@@ -1361,7 +1472,7 @@ export class CreateRFPComponent implements OnInit {
     this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
   }
 
-    
+
   // * Cancel Edit Technical Criteria
   cancelEditEval() {
     this.showEditEval = false;
@@ -1383,35 +1494,35 @@ export class CreateRFPComponent implements OnInit {
       Validators.required,
     ]);
     this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
-  }  
+  }
 
   // save edit part evaluation criteria from group
   saveEditEval(cond: string) {
     const data = this.rfpForm.getRawValue().EvalCriteriaEdit;
     data.Percentage = data.Percentage.toString();
-    if(cond === 'sub') {
+    if (cond === 'sub') {
       const totalEval = this.checkEvalPer(true);
-      if(totalEval != data.Percentage) {
+      if (totalEval != data.Percentage) {
         this.cs.createMessage(
           'error',
           totalEval + this.translate.instant('RFP.SubCritriaEval')
         );
         return;
-      }else {
+      } else {
         data.expand = true;
         data.TechToTechSub = this.subCriterias.value.map((subCriteria: any, index: number) => {
           return {
-            ...subCriteria, 
+            ...subCriteria,
             Percentage: subCriteria.Percentage.toString(),
-            ItemNo: data.ItemNo, 
-            SubItemNo: (index+1).toString()
+            ItemNo: data.ItemNo,
+            SubItemNo: (index + 1).toString()
           };
         });
       }
     }
     this.EvalListData[this.evalEditIndex] = data;
     if (this.slel == this.evalEditIndex + 1) {
-        
+
       this.rfpForm.controls.EvalCriteria.patchValue({
         Descr: data.Descr,
         Percentage: data.Percentage.toString(),
@@ -1426,22 +1537,22 @@ export class CreateRFPComponent implements OnInit {
     });
     const totalEval = this.checkEvalPer(false);
 
-    if(totalEval <= 100 ) {
+    if (totalEval <= 100) {
       this.showEditEval = false;
-    this.rfpForm.controls.EvalCriteriaEdit.reset();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.updateValueAndValidity();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.updateValueAndValidity();
+      this.rfpForm.controls.EvalCriteriaEdit.reset();
+      this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.setValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.removeValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.updateValueAndValidity();
 
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.removeValidators([
+        Validators.required,
+      ]);
+      this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.updateValueAndValidity();
     }
     this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.setValidators([
       Validators.required,
@@ -1454,8 +1565,8 @@ export class CreateRFPComponent implements OnInit {
   addMan(cond: any) {
     const data = this.rfpForm.getRawValue().ManPowerForm;
     data.Amount = data.Amount.toString();
-    
-    
+
+
     if (this.ManPowerListData.length == this.slman) {
       this.ManPowerListData[this.ManPowerListData.length - 1] = data;
     } else {
@@ -1471,10 +1582,10 @@ export class CreateRFPComponent implements OnInit {
         ItemNo: this.slman.toString(),
         JobTitle: '',
         Amount: '',
-        SpeQualf:'',
-        Specilization:'',
+        SpeQualf: '',
+        Specilization: '',
         SpeExp: '',
-        
+
       });
     }
   }
@@ -1495,10 +1606,10 @@ export class CreateRFPComponent implements OnInit {
         ItemNo: this.slman.toString(),
         JobTitle: '',
         Amount: '',
-        SpeQualf:'',
-        Specilization:'',
+        SpeQualf: '',
+        Specilization: '',
         SpeExp: '',
-        
+
       });
     }
   }
@@ -1512,10 +1623,10 @@ export class CreateRFPComponent implements OnInit {
       ItemNo: (index + 1).toString(),
       JobTitle: data.JobTitle,
       Amount: data.Amount,
-      SpeQualf:data.SpeQualf,
-      Specilization:data.Specilization,
+      SpeQualf: data.SpeQualf,
+      Specilization: data.Specilization,
       SpeExp: data.SpeExp,
-      
+
     });
     this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.setValidators([
       Validators.required,
@@ -1527,9 +1638,9 @@ export class CreateRFPComponent implements OnInit {
     ]);
     this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
 
-    
 
-    
+
+
 
     this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.setValidators([
       Validators.required,
@@ -1544,26 +1655,26 @@ export class CreateRFPComponent implements OnInit {
     ]);
     this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.updateValueAndValidity();
 
-    
 
-    
+
+
   }
 
   saveEditMan() {
     const data = this.rfpForm.getRawValue().ManPowerFormEdit;
     data.Amount = data.Amount.toString();
-    
-    
+
+
     this.ManPowerListData[this.manEditIndex] = data;
     if (this.slman == this.manEditIndex + 1) {
 
       this.rfpForm.controls.ManPowerForm.patchValue({
         JobTitle: data.JobTitle,
         Amount: data.Amount,
-        
-        
+
+
         SpeExp: data.SpeExp,
-        
+
       })
     }
     this.ManPowerListData = [...this.ManPowerListData];
@@ -1580,9 +1691,9 @@ export class CreateRFPComponent implements OnInit {
     ]);
     this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
 
-    
 
-    
+
+
 
     this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.removeValidators([
       Validators.required,
@@ -1597,17 +1708,17 @@ export class CreateRFPComponent implements OnInit {
     ]);
     this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.updateValueAndValidity();
 
-    
 
-    
+
+
   }
 
- 
-
-  
 
 
- 
+
+
+
+
   // remove pay from group
   removeQual(index: number) {
     if (index != 0) {
@@ -1646,10 +1757,10 @@ export class CreateRFPComponent implements OnInit {
 
   handleManagerChange() {
     this.managerSubId = this.managerList.find((manager) => manager.TmUserid === this.rfpForm.controls['MemManagerName'].value)?.EmpUsrid
-    if(
+    if (
       this.rfpForm.controls['MemManagerName'].value &&
-      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value) 
-    ) ){
+      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
+      )) {
       this.cs.createMessage(
         'error',
         this.translate.instant('RFP.TechMemError')
@@ -1796,9 +1907,9 @@ export class CreateRFPComponent implements OnInit {
       JobTitle: ['', [Validators.required]],
       Amount: ['', [Validators.required]],
       SpeQualf: ['', [Validators.required]],
-        Specilization: ['', [Validators.required]],
+      Specilization: ['', [Validators.required]],
       SpeExp: ['', Validators.maxLength(300)],
-      
+
     });
   }
 
@@ -1839,9 +1950,9 @@ export class CreateRFPComponent implements OnInit {
     for (let i = 0; i < data?.length; i++) {
       totEvalPer += parseFloat(data[i].Percentage);
     }
-    if (totEvalPer > (subCriteria ? this.isSubCriteria ? 
+    if (totEvalPer > (subCriteria ? this.isSubCriteria ?
       this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value :
-      this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value : 
+      this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value :
       100)) {
       this.cs.createMessage(
         'error',
@@ -1853,7 +1964,7 @@ export class CreateRFPComponent implements OnInit {
     return totEvalPer;
   }
 
- 
+
 
 
   handleProjTyChange(value: any) {
@@ -1918,16 +2029,16 @@ export class CreateRFPComponent implements OnInit {
           }
           switch (controlKey) {
             case 'SpeExp':
-                group.controls[controlKey].setValidators([
+              group.controls[controlKey].setValidators([
                 Validators.maxLength(300),
               ]);
               break;
 
             case 'Specilization':
-                group.controls[controlKey].setValidators([
-                  Validators.maxLength(80),
-                ]);
-                
+              group.controls[controlKey].setValidators([
+                Validators.maxLength(80),
+              ]);
+
               break;
             default:
           }
@@ -1983,7 +2094,7 @@ export class CreateRFPComponent implements OnInit {
 
     }
 
-    
+
 
     if (this.TechReqListData.length) {
       this.rfpForm.controls['TechReq'].get('Descr')?.removeValidators([
@@ -2019,18 +2130,18 @@ export class CreateRFPComponent implements OnInit {
       ]);
       this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.updateValueAndValidity();
       this.rfpForm.controls['EvalCriteriaEdit']
-      .get('SubCriFlg')
-      ?.removeValidators([Validators.required]);
+        .get('SubCriFlg')
+        ?.removeValidators([Validators.required]);
       this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')
         ?.updateValueAndValidity();
-        console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
+      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Descr')
         ?.removeValidators([Validators.required]);
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Descr')
         ?.updateValueAndValidity();
-        console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
+      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Percentage')
         ?.removeValidators([Validators.required]);
@@ -2053,18 +2164,18 @@ export class CreateRFPComponent implements OnInit {
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerForm'].get('Amount')?.updateValueAndValidity();
-      
-      
+
+
       this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.updateValueAndValidity();
-      
+
       this.rfpForm.controls['ManPowerForm'].get('Specilization')?.removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerForm'].get('Specilization')?.updateValueAndValidity();
-      
+
       this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.removeValidators([
         Validators.required,
       ]);
@@ -2077,18 +2188,18 @@ export class CreateRFPComponent implements OnInit {
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
-      
-      
+
+
       this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.updateValueAndValidity();
-      
+
       this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.updateValueAndValidity();
-      
+
       this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.removeValidators([
         Validators.required,
       ]);
@@ -2099,7 +2210,7 @@ export class CreateRFPComponent implements OnInit {
       this.rfpForm.controls['ManPower']?.updateValueAndValidity();
     }
 
-  
+
 
   }
 
@@ -2113,8 +2224,8 @@ export class CreateRFPComponent implements OnInit {
       this.cs.createMessage("error", this.translate.instant('RFP.CCEmpty'))
       this.isSubmitClick = false;
       return;
-    } 
-    
+    }
+
     if (this.rfpForm.getRawValue().Dept === '' || this.rfpForm.getRawValue().Dept === null) {
       this.cs.createMessage("error", this.translate.instant('RFP.DeptEmpty'))
       this.isSubmitClick = false;
@@ -2130,7 +2241,7 @@ export class CreateRFPComponent implements OnInit {
       el.ItemNo = (++icon).toString()
     })
 
-   
+
 
     this.TechReqListData.forEach((el: any) => {
       el.ItemNo = (++itreq).toString()
@@ -2150,26 +2261,26 @@ export class CreateRFPComponent implements OnInit {
 
 
     if (this.rfpForm.invalid) {
-        inval = true;
+      inval = true;
     }
 
     if (inval) {
       const errors = [...this.findInvalidControls()];
       const modalRef = this.modal.create({
-          nzContent: ErrorPopupComponent,
-          nzComponentParams: { errorList: errors, sectionHeight: '325px' },
-          nzWidth: 600,
-          nzBodyStyle: { height: 'auto',borderTop: `4px solid #005c99` },
-          nzFooter: null
+        nzContent: ErrorPopupComponent,
+        nzComponentParams: { errorList: errors, sectionHeight: '325px' },
+        nzWidth: 600,
+        nzBodyStyle: { height: 'auto', borderTop: `4px solid #005c99` },
+        nzFooter: null
       });
       modalRef.afterClose
-      .subscribe(() => {
-        this.isSubmitClick = false;
-      });
+        .subscribe(() => {
+          this.isSubmitClick = false;
+        });
     } else {
       let data: any = {};
       if (this.step2 && this.step3) {
-        
+
         if (this.expcriteria) {
           this.cs.createMessage("error", this.translate.instant('RFP.ExpCrtRangError'))
         }
@@ -2186,7 +2297,7 @@ export class CreateRFPComponent implements OnInit {
             this.translate.instant('RFP.TechPassReq')
           );
         }
-        
+
         else if (this.checkEvalPer(false) > 100 || this.checkEvalPer(false) < 100) {
           this.cs.createMessage(
             'error',
@@ -2194,10 +2305,10 @@ export class CreateRFPComponent implements OnInit {
           );
         }
 
-        else if(
+        else if (
           this.rfpForm.controls['MemManagerName'].value &&
-          (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value) 
-        ) ){
+          (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
+          )) {
           this.cs.createMessage(
             'error',
             this.translate.instant('RFP.TechMemError')
@@ -2213,7 +2324,7 @@ export class CreateRFPComponent implements OnInit {
           this.cs.createMessage('error', this.translate.instant('RFP.EvalListAdd'))
         }
         else if (this.isManPow && !this.ManPowerListData.length) {
-          this.cs.createMessage('error', this.translate.instant('RFP.ManpowerListAdd'))      
+          this.cs.createMessage('error', this.translate.instant('RFP.ManpowerListAdd'))
         }
         else {
           for (let i = 0; i < this.boqTabelList.length; i++) {
@@ -2274,7 +2385,7 @@ export class CreateRFPComponent implements OnInit {
               );
           }
 
-          
+
           data = {
             ExproAgrmnt: '',
             DeptId: this.cs.getUserData().DeptId,
@@ -2292,11 +2403,11 @@ export class CreateRFPComponent implements OnInit {
               ? this.rfpForm.controls['SOP'].value
               : '',
             PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
-            ReqToBoqNavg:this.rfpService.transformToMasterBOQ(this.boqTabelList),
+            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
             ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-              ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
             DocTypeId: '',
-            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ? 
+            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
               this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
@@ -2307,27 +2418,27 @@ export class CreateRFPComponent implements OnInit {
             DurationMeasure: this.rfpForm.controls['DurationType'].value
               ? this.rfpForm.controls['DurationType'].value.toString()
               : '',
-            
+
             CertReq: this.certificatedet === true ? 'X' : 'N',
             TecMemId: '',
-            
-            
+
+
             TechRfp: this.isTechRFP === true ? 'X' : 'N',
             UrgntRfp: '',
-            
-          
-            
+
+
+
             TotTechEval: this.rfpForm.controls['TotTechEval'].value
               ? this.rfpForm.controls['TotTechEval'].value.toString()
               : '',
-            
+
             RfpStatus: 'S',
             CreatedBy: this.cs.getUserData().userid,
             NwfApprvRole: 'REQSTR',
             Ind: '',
             RfpVersion: '',
             RfpNo: '',
-           
+
             ProjManpower: this.rfpForm.controls['ProjManpower'].value
               ? 'X'
               : 'N',
@@ -2337,18 +2448,18 @@ export class CreateRFPComponent implements OnInit {
             ReqToWorkNavg: this.isConsult
               ? this.ConsultListData
               : [],
-              ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
+            ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
               ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-                  ...rest,
-                  SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
-                }))
+                ...rest,
+                SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
+              }))
               : [],
             ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
               ? this.TechReqListData
               : [],
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-            ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
+              ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
             TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
             FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
           };
@@ -2440,11 +2551,11 @@ export class CreateRFPComponent implements OnInit {
               ? this.rfpForm.controls['SOP'].value
               : '',
             PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
-            ReqToBoqNavg:this.rfpService.transformToMasterBOQ(this.boqTabelList),
+            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
             ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-              ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
             DocTypeId: '',
-            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ? 
+            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
               this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
@@ -2455,22 +2566,22 @@ export class CreateRFPComponent implements OnInit {
             DurationMeasure: this.rfpForm.controls['DurationType'].value
               ? this.rfpForm.controls['DurationType'].value.toString()
               : '',
-            
+
             CertReq: 'N',
             TecMemId: '',
-            
+
             QualfCommMem: '',
 
             TechRfp: this.isTechRFP === true ? 'X' : 'N',
             UrgntRfp: '',
-            
+
             ReqToQualfNavg: [],
             ReqCert: '',
-            
+
             TotTechEval: this.rfpForm.controls['TotTechEval'].value
               ? this.rfpForm.controls['TotTechEval'].value.toString()
               : '',
-           
+
             RfpStatus: 'S',
             CreatedBy: this.cs.getUserData().userid,
             NwfApprvRole: 'REQSTR',
@@ -2484,7 +2595,7 @@ export class CreateRFPComponent implements OnInit {
             ReqToTechNavg: [],
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-            ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
+              ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
             TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
             FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
           };
@@ -2537,7 +2648,7 @@ export class CreateRFPComponent implements OnInit {
     for (const name in controls) {
 
       if (controls[name].invalid) {
-        console.log('invaild rfp controls',this.translate.instant(name))
+        console.log('invaild rfp controls', this.translate.instant(name))
         invalid.push(this.translate.instant(name));
       }
     }
@@ -2549,8 +2660,8 @@ export class CreateRFPComponent implements OnInit {
     if (this.rfpForm.getRawValue().CostCenter1 === '' || this.rfpForm.getRawValue().CostCenter1 === null) {
       this.cs.createMessage("error", this.translate.instant('RFP.CCEmpty'))
       return;
-    } 
-    
+    }
+
     if (this.rfpForm.getRawValue().Dept === '' || this.rfpForm.getRawValue().Dept === null) {
       this.cs.createMessage("error", this.translate.instant('RFP.DeptEmpty'))
       return;
@@ -2565,7 +2676,7 @@ export class CreateRFPComponent implements OnInit {
       el.ItemNo = (++icon).toString()
     })
 
-   
+
     this.TechReqListData.forEach((el: any) => {
       el.ItemNo = (++itreq).toString()
     })
@@ -2628,7 +2739,7 @@ export class CreateRFPComponent implements OnInit {
           ?.patchValue(this.rfpForm.value.Evalcrt.at(i).Percentage.toString());
       }
 
-      
+
       data = {
         ExproAgrmnt: '',
         DeptId: this.cs.getUserData().DeptId,
@@ -2648,9 +2759,9 @@ export class CreateRFPComponent implements OnInit {
         PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
         ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
         ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-              ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
-        DocTypeId:  '',
-        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ? 
+        ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+        DocTypeId: '',
+        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
           this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
@@ -2661,23 +2772,23 @@ export class CreateRFPComponent implements OnInit {
         DurationMeasure: this.rfpForm.controls['DurationType'].value
           ? this.rfpForm.controls['DurationType'].value.toString()
           : '',
-        
+
         CertReq: this.certificatedet === true ? 'X' : 'N',
         TecMemId: '',
-        
-       
-   
+
+
+
         TechRfp: this.isTechRFP === true ? 'X' : 'N',
         UrgntRfp: '',
-        
-       
-        
-       
+
+
+
+
 
         TotTechEval: this.rfpForm.controls['TotTechEval'].value
           ? this.rfpForm.controls['TotTechEval'].value.toString()
           : '',
-       
+
         RfpStatus: 'D',
         CreatedBy: this.cs.getUserData().userid,
         NwfApprvRole: 'REQSTR',
@@ -2689,18 +2800,18 @@ export class CreateRFPComponent implements OnInit {
         ReqToWorkNavg: this.isConsult
           ? this.ConsultListData
           : [],
-          ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
+        ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
           ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-              ...rest,
-              SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
-            }))
+            ...rest,
+            SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
+          }))
           : [],
         ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
           ? this.TechReqListData
           : [],
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-        ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
+          ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
         TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
         FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
       };
@@ -2776,7 +2887,7 @@ export class CreateRFPComponent implements OnInit {
         ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
         ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
         DocTypeId: '',
-        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ? 
+        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
           this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
@@ -2787,21 +2898,21 @@ export class CreateRFPComponent implements OnInit {
         DurationMeasure: this.rfpForm.controls['DurationType'].value
           ? this.rfpForm.controls['DurationType'].value.toString()
           : '',
-        
+
         CertReq: 'N',
         TecMemId: '',
-        
-      
-        
+
+
+
         TechRfp: this.isTechRFP === true ? 'X' : 'N',
         UrgntRfp: '',
         ReqToQualfNavg: [],
         ReqCert: '',
-        
+
         TotTechEval: this.rfpForm.controls['TotTechEval'].value
           ? this.rfpForm.controls['TotTechEval'].value.toString()
           : '',
-       
+
         RfpStatus: 'D',
         CreatedBy: this.cs.getUserData().userid,
         NwfApprvRole: 'REQSTR',
@@ -2815,7 +2926,7 @@ export class CreateRFPComponent implements OnInit {
         ReqToTechNavg: [],
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-        ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
+          ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
         TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
         FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
       };
@@ -2873,8 +2984,8 @@ export class CreateRFPComponent implements OnInit {
    * Handles the Document Type change and reset the related form fields.
    */
   onDocumentTypeChangeResetFormControl(): void {
-      this.rfpForm?.get('MatGrpId')
-        ?.reset();
+    this.rfpForm?.get('MatGrpId')
+      ?.reset();
   }
 
   handleDocTypeBoq(value: any) {
@@ -2931,7 +3042,7 @@ export class CreateRFPComponent implements OnInit {
   get disableDate() {
     let duration = this.rfpForm.controls['ProjDur'].value;
     let unit = this.rfpForm.controls['DurationType'].value;
-  
+
     let startDate = moment().add(Number(duration), unit); // Allowed start date
 
     return (date: Date): boolean => {
@@ -2940,23 +3051,23 @@ export class CreateRFPComponent implements OnInit {
   }
 
 
-  resetDeliveryDate(){
+  resetDeliveryDate() {
     this.rfpForm.controls['DeliveryDate'].setValue('')
   }
-  
+
   getInvolvedYears(deliveryDate: Date, duration: number, unit: moment.unitOfTime.DurationConstructor): number[] {
     const endDate = moment(deliveryDate);
     const startDate = moment(deliveryDate).subtract(duration, unit);
-  
+
     const startYear = startDate.year();
     const endYear = endDate.year();
-  
+
     const years: number[] = [];
-  
+
     for (let y = startYear; y <= endYear; y++) {
       years.push(y);
     }
-  
+
     return years;
   }
 
@@ -3005,7 +3116,7 @@ export class CreateRFPComponent implements OnInit {
       // CommitteeUser: this.CommitteeName,
     })
   }
-  
+
   fileSapUpload(evt: any) {
     console.log(evt, 'rfp attachment ')
     let itnatt = this.slatt++;
@@ -3021,7 +3132,7 @@ export class CreateRFPComponent implements OnInit {
     this.fileNetList = this.fileNetList.filter((file: any) => evt.FilenetID !== file.FilenetID);
   }
 
-  
+
   fileSapDelete(evt: any) {
     this.fileNetList = this.fileNetList.filter((file: any) => evt.FilenetID != file.FilenetID);
   }
@@ -3096,15 +3207,15 @@ export class CreateRFPComponent implements OnInit {
   }
 
   enableTotTechEval() {
-    if(this.editTotTechEval) {
+    if (this.editTotTechEval) {
       this.rfpForm.controls.TotTechEval.enable()
-    }else{
+    } else {
       this.rfpForm.controls.TotTechEval.disable()
     }
   }
 
 
-  ontechnicalEvaluationWeightageChange(){
+  ontechnicalEvaluationWeightageChange() {
     console.log('change working')
 
     let technicalEvaluationWeightageValue = this.rfpForm.get('vendorEvaluationWeightage')?.get('technicalEvaluationWeightage')?.value
@@ -3114,33 +3225,33 @@ export class CreateRFPComponent implements OnInit {
     financialControl!.setValue(financialWeightage, { emitEvent: false });
   }
 
-  
-getTotalPriceRow(item: any): number {
-  const qty = parseFloat(item.Quantity) || 0;
-  const price = parseFloat(item.Price) || 0;
-  return qty * price;
-}
 
-getVatAmountRow(item: any): number {
-  const total = this.getTotalPriceRow(item);
-  const vatRate = 0.15; // 15% VAT (adjust if needed)
-  return total * vatRate;
-}
+  getTotalPriceRow(item: any): number {
+    const qty = parseFloat(item.Quantity) || 0;
+    const price = parseFloat(item.Price) || 0;
+    return qty * price;
+  }
 
-getTotalWithVatRow(item: any): number {
-  return this.getTotalPriceRow(item) + this.getVatAmountRow(item);
-}
+  getVatAmountRow(item: any): number {
+    const total = this.getTotalPriceRow(item);
+    const vatRate = 0.15; // 15% VAT (adjust if needed)
+    return total * vatRate;
+  }
 
-getGrandTotalWithVat(data: readonly any[]): number {
-  return data.reduce((sum, item) => sum + this.getTotalWithVatRow(item), 0);
-}
-getGrandTotalPrice(data: readonly any[]): number {
-  return data.reduce((sum, item) => sum + this.getTotalPriceRow(item), 0);
-}
+  getTotalWithVatRow(item: any): number {
+    return this.getTotalPriceRow(item) + this.getVatAmountRow(item);
+  }
 
-getGrandVatAmount(data: readonly any[]): number {
-  return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
-}
+  getGrandTotalWithVat(data: readonly any[]): number {
+    return data.reduce((sum, item) => sum + this.getTotalWithVatRow(item), 0);
+  }
+  getGrandTotalPrice(data: readonly any[]): number {
+    return data.reduce((sum, item) => sum + this.getTotalPriceRow(item), 0);
+  }
+
+  getGrandVatAmount(data: readonly any[]): number {
+    return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
+  }
 
 
   ngOnDestroy(): void {
@@ -3177,7 +3288,7 @@ getGrandVatAmount(data: readonly any[]): number {
 
   // * Getter methods
   get isRfpRequiredFieldsInValid(): boolean {
-    if(this.boqFormGroup.invalid) return true;
+    if (this.boqFormGroup.invalid) return true;
 
     const RfpRequiredFields = ['ProjectId', 'RfpName', 'Dept', 'CostCenter1'];
     let isInvalid = false;
@@ -3187,39 +3298,39 @@ getGrandVatAmount(data: readonly any[]): number {
     return isInvalid;
   }
 
-    //*tech eval
-    toggleDescrValidatorTechEval() {
-      // Subscribe to valueChanges for EvalCriteria.SubCriFlg
-      this.rfpForm?.get('EvalCriteria.SubCriFlg')?.valueChanges.subscribe((value) => {
-        console.log(value);
-        const descrControl = this.rfpForm.get('EvalCriteria.Descr');
-    
-        if (value === 'X') {
-          descrControl?.clearValidators();
-        } else {
-          descrControl?.setValidators([Validators.required]);
-        }
-    
-        descrControl?.updateValueAndValidity();
-      });
-    
-      // Subscribe to valueChanges for EvalCriteriaEdit.SubCriFlg
-      this.rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.valueChanges.subscribe((value) => {
-        console.log(value);
-        const descrControlEdit = this.rfpForm.get('EvalCriteriaEdit.Descr');
-    
-        if (value === 'X') {
-          descrControlEdit?.clearValidators();
-        } else {
-          descrControlEdit?.setValidators([Validators.required]);
-        }
-    
-        descrControlEdit?.updateValueAndValidity();
-      });
-    }
+  //*tech eval
+  toggleDescrValidatorTechEval() {
+    // Subscribe to valueChanges for EvalCriteria.SubCriFlg
+    this.rfpForm?.get('EvalCriteria.SubCriFlg')?.valueChanges.subscribe((value) => {
+      console.log(value);
+      const descrControl = this.rfpForm.get('EvalCriteria.Descr');
 
-  
-  
+      if (value === 'X') {
+        descrControl?.clearValidators();
+      } else {
+        descrControl?.setValidators([Validators.required]);
+      }
+
+      descrControl?.updateValueAndValidity();
+    });
+
+    // Subscribe to valueChanges for EvalCriteriaEdit.SubCriFlg
+    this.rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.valueChanges.subscribe((value) => {
+      console.log(value);
+      const descrControlEdit = this.rfpForm.get('EvalCriteriaEdit.Descr');
+
+      if (value === 'X') {
+        descrControlEdit?.clearValidators();
+      } else {
+        descrControlEdit?.setValidators([Validators.required]);
+      }
+
+      descrControlEdit?.updateValueAndValidity();
+    });
+  }
+
+
+
 }
 
 
@@ -3240,6 +3351,6 @@ export function dateValidator(): ValidatorFn {
       : null;
   };
 
-  
+
 
 }
