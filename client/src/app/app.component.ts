@@ -25,7 +25,19 @@ import { RFPService } from './service/RFP/rfp.service';
 })
 export class AppComponent {
   title = 'committee';
+  collapsedWidth = 80;                     // final width of collapsed sidebar (px)
+expandedSiderWidth = 250;               // normal sidebar width (px)
+expandedLogo = 'assets/logo/swa-logo-dark.svg';
+// collapsedLogo = 'assets/logo/swa-header-logo.svg';
   isCollapsed = false;
+  isMobile = false;
+  expandedWidth = 250;
+   layoutContentMarginLeft: number = 250;
+layoutContentMarginRight: number = 0;
+
+// headerLeftWidth is used for inline width and stays a string with "px"
+headerLeftWidth: string = this.expandedWidth + 'px';
+  
   public navItems: any[] = [];
 
   readonly IconList = IconList;
@@ -94,8 +106,107 @@ export class AppComponent {
   applicationVersion = '1.6.3';
 
   // logoSrc = "assets/logo/mwan_logo.png";
-  logoSrc = "assets/logo/swa-logo-dark.svg";
+logoSrc = this.expandedLogo;
 
+/**
+ * Accepts boolean or MediaQueryListEvent and normalizes to boolean.
+ * (Used by <nz-sider nzBreakpoint="md" (nzBreakpoint)="onBreakpoint($event)">)
+ */
+/**
+ * nzBreakpoint may emit:
+ *  - boolean (some older ng-zorro versions)
+ *  - MediaQueryListEvent (has .matches)
+ *  - or a generic Event in some environments
+ *
+ * We accept `any` and normalize to a boolean `isBroken`.
+ * 
+ */
+private setWidthsFromCollapse(): void {
+  // numeric width in px
+  const w = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
+
+  // header width uses string with "px"
+  this.headerLeftWidth = `${w}px`;
+
+  // layout margins use numeric values only
+  if (this.cs?.userLanguage === 'ar') {
+    // RTL: right margin shifts content
+    this.layoutContentMarginRight = w;
+    this.layoutContentMarginLeft = 0;
+  } else {
+    // LTR: left margin shifts content
+    this.layoutContentMarginLeft = w;
+    this.layoutContentMarginRight = 0;
+  }
+
+  // update logo dynamically
+  this.logoSrc = this.isCollapsed ? '': this.expandedLogo;
+}
+
+  onBreakpoint(evt: any): void {
+    // Normalize to boolean:
+    let isBroken = false;
+
+    if (typeof evt === 'boolean') {
+      isBroken = evt;
+    } else if (evt && typeof evt === 'object') {
+      if ('matches' in evt && typeof evt.matches === 'boolean') {
+        isBroken = !!evt.matches;
+      } else if ('target' in evt && evt.target && 'matches' in evt.target) {
+        isBroken = !!evt.target.matches;
+      } else {
+        isBroken = false;
+      }
+    }
+
+    if (isBroken) {
+      // small screen: collapse and mark mobile
+      this.isCollapsed = true;
+      this.isMobile = true;
+    } else {
+      // desktop breakpoint: keep current user collapse state but not mobile
+      this.isMobile = false;
+    }
+
+    // keep header and layout widths synced with collapse state
+    this.setWidthsFromCollapse();
+  }
+
+
+
+// get headerLeftWidth(): string {
+//   return this.isCollapsed ? `${this.collapsedWidth}px` : `250px`;
+// }
+
+ toggleSidebar(): void {
+  this.isCollapsed = !this.isCollapsed;
+  // keep header left width in sync with sider
+  // headerLeftWidth will be updated inside updateLayoutMargins()
+  this.updateLayoutMargins();
+}
+private updateLayoutMargins(): void {
+  // compute numeric sider width (px)
+  const siderWidth: number = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
+
+  // set numeric margins (numbers only)
+  if (this.cs?.userLanguage === 'ar') {
+    this.layoutContentMarginLeft = 0;
+    this.layoutContentMarginRight = siderWidth;
+  } else {
+    this.layoutContentMarginLeft = siderWidth;
+    this.layoutContentMarginRight = 0;
+  }
+
+  // headerLeftWidth is used in inline style and expects a "px" string
+  this.headerLeftWidth = `${siderWidth}px`;
+
+  // update logo src if you toggle that visually
+  this.updateLogoForCollapse?.();
+}
+
+private updateLogoForCollapse(): void {
+  this.logoSrc = this.isCollapsed ? '' : this.expandedLogo;
+}
   login() {
     this.oauthService.initLoginFlow();
 
@@ -271,21 +382,27 @@ export class AppComponent {
    * @returns void
    * 
    */
-  navigate(item: any): void {
-    if (item.name === 'logout') {
-      this.logout();
-    } else {
-      if (item.Module) {
-        this.navItems.forEach((nav: any) => { 
-          if (nav.isOpen) {
-            nav.isOpen = false;
-          }
-        })
-      }
-      this.cs.activeMenu = item.name ?? item.Module;
-      this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+ navigate(item: any): void {
+  if (item.name === 'logout') {
+    this.logout();
+  } else {
+    if (item.Module) {
+      this.navItems.forEach((nav: any) => { 
+        if (nav.isOpen) {
+          nav.isOpen = false;
+        }
+      })
+    }
+    this.cs.activeMenu = item.name ?? item.Module;
+    this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+
+    // Auto-close the sidebar on mobile so the content is visible
+    if (this.isMobile) {
+      this.isCollapsed = true;
     }
   }
+}
+
 
   /**
    * Login API and Menu construction method.
