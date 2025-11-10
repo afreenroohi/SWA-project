@@ -1,4 +1,5 @@
 import { NzTableSortOrder, NzTableSortFn } from 'ng-zorro-antd/table';
+import { title } from 'process';
 
 export interface DataItem {
   RfpNo: string;
@@ -781,6 +782,12 @@ export const listOfColumnRFPMG = [
     title: 'Action',
     titleAr: 'الإجراء',
   },
+  {
+    id:10,
+    title:'Has it been re-announced?',
+    titleAr: 'هل تم الإعلان عنه مرة أخرى؟',
+
+  }
 
 ];
 

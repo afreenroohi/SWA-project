@@ -79,6 +79,10 @@ export class RfptableComponent implements OnInit, OnChanges {
 
   }
 
+ onReAnnouncedChange(data: any) {
+  console.log('Re-announced toggled for:', data.RfpNo, '->', data.isReAnnounced);
+  // you can call API or update form here
+}
 
 
   navigate(rfpno: any, RfpVersion: any, stat?: string) {
