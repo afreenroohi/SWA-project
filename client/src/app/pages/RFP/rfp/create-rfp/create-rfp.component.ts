@@ -371,8 +371,8 @@ export class CreateRFPComponent implements OnInit {
   }
   detailsControl?.updateValueAndValidity();
 }
-
- onSiteVisitChange(value: boolean) {
+ 
+ test(value: boolean) {
     console.log(value,'valueeeeeeeeeeee')
 }
 

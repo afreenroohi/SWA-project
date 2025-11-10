@@ -279,8 +279,10 @@
               <label class="toggle-label">
                 {{ "RFP.requiresSiteVisit" | translate }}
               </label>
-              <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
-              </nz-switch>
+              <!-- <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
+              </nz-switch> -->
+               <nz-switch (ngModelChange)="test($event)"
+                  formControlName="requiresSiteVisit"></nz-switch>
             </div>
 
              <!-- * Site Visit Contact Details -->
