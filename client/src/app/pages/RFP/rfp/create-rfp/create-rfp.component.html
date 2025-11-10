@@ -74,10 +74,37 @@
             </div>
 
             <!-- * CR Number (visible only if private is selected) -->
-            <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+            <!-- <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
               <nz-form-label nzRequired for="crNumber">{{ "RFP.CR Number" | translate }}</nz-form-label>
               <input nz-input id="crNumber" placeholder="Enter CR Number" formControlName="crNumber" />
               <small *ngIf="rfpForm.controls.crNumber.touched && rfpForm.controls.crNumber.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+            </div> -->
+
+            <div class="col-12 my-2" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+              <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+
+              <div formArrayName="crNumber" class="cr-number-container">
+                <div *ngFor="let ctrl of crNumberArray.controls; let i = index" [formGroupName]="i"
+                  class="cr-number-item">
+                  <input nz-input [formControlName]="null" placeholder="Enter CR Number"
+                    style="width: 150px; margin-bottom: 8px;" />
+
+                  <button nz-button nzType="default" nzShape="circle" nzSize="small" (click)="removeCrNumber(i)"
+                    *ngIf="crNumberArray.length > 1" style="margin-left: 5px;">
+                    <i nz-icon nzType="minus"></i>
+                  </button>
+                </div>
+
+                <button nz-button nzType="dashed" nzShape="circle" nzSize="small" (click)="addCrNumber()"
+                  style="margin-top: 5px;">
+                  <i nz-icon nzType="plus"></i>
+                </button>
+              </div>
+
+              <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
@@ -121,7 +148,7 @@
               </nz-select>
             </div> -->
 
-             <!-- * Competition Name -->
+            <!-- * Competition Name -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
@@ -273,7 +300,7 @@
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
-            
+
             <!-- Does it require a site visit? -->
             <div class="col-12 my-1">
               <label class="toggle-label">
@@ -281,17 +308,16 @@
               </label>
               <!-- <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
               </nz-switch> -->
-               <nz-switch (ngModelChange)="test($event)"
-                  formControlName="requiresSiteVisit"></nz-switch>
+              <nz-switch (ngModelChange)="test($event)" formControlName="requiresSiteVisit"></nz-switch>
             </div>
 
-             <!-- * Site Visit Contact Details -->
+            <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Email" formControlName="email" />
             </div>
 
-             <!-- * Site Visit Contact Details -->
+            <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
@@ -299,12 +325,12 @@
 
             <!-- prequalification  -->
             <div class="col-12 my-1 ">
-                <label class="toggle-label">
-                  {{ "RFP.prequalificationRequired" | translate }}
-                </label>
-                <nz-switch (ngModelChange)="onPrequalificationChange($event)"
-                  formControlName="prequalificationRequired"></nz-switch>
-              </div>
+              <label class="toggle-label">
+                {{ "RFP.prequalificationRequired" | translate }}
+              </label>
+              <nz-switch (ngModelChange)="onPrequalificationChange($event)"
+                formControlName="prequalificationRequired"></nz-switch>
+            </div>
 
             <!-- * Project Justification -->
             <div class="col-12 my-1">

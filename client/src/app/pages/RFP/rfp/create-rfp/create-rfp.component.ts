@@ -414,8 +414,8 @@ export class CreateRFPComponent implements OnInit {
     this.rfpForm = this.fb.group({
       // Basic Competition Info
       invite: new FormControl('', [Validators.required]),
-      crNumber: new FormControl('', [Validators.required]),
-      // crNumber: this.fb.array([this.fb.control('', Validators.required)]),
+      // crNumber: new FormControl('', [Validators.required]),
+      crNumber: this.fb.array([this.fb.control('', Validators.required)]),
       directPurchaseType: new FormControl('', [Validators.required]),
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),

@@ -69,6 +69,18 @@
 
 //
 
+.cr-number-container {
+  display: flex;
+  flex-direction: column; /* stack inputs vertically */
+  gap: 8px;
+}
+ 
+.cr-number-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 
 
 
