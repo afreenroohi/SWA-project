@@ -99,7 +99,6 @@
     "Procurement Checklist": "قائمة التدقيق - المشتريات",
     "Bill of Quantity": "جدول الكميات",
     "Estimated Price'": "السعر المعتمد",
-    "Project Duration": "مدة المشروع",
     "Start of Project": "تاريخ بداية المشروع",
     "Required Certificates": "الشهادات المطلوبة",
     "Technical Docs": "الوثائق الفنية",
@@ -462,7 +461,12 @@
     "coordinator name": "اسم المنسق",
     "coordinator number": "رقم المنسق",
     "Activity":"Activity",
-    "Subactivity":"Subactivity"
+    "Subactivity":"Subactivity",
+    "Project Duration":"مدة المشروع",
+    "Email for Site Visit": "البريد الإلكتروني للزيارة الميدانية",
+    "ContactNumber for Site Visit": "رقم الاتصال للزيارة الميدانية"
+
+
   },
   "COC": {
     "Create COC": "إنشاء شهادة المطابقة",

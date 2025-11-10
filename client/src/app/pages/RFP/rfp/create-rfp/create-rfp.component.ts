@@ -270,9 +270,7 @@ export class CreateRFPComponent implements OnInit {
     this.isSubCriteria = false;
     this.isSubCriteriaEdit = false;
   }
-  onSiteVisitChange(value: string) {
 
-  }
   onReannounceChange(value: string) {
 
   }
@@ -374,6 +372,10 @@ export class CreateRFPComponent implements OnInit {
   detailsControl?.updateValueAndValidity();
 }
 
+ onSiteVisitChange(value: boolean) {
+    console.log(value,'valueeeeeeeeeeee')
+}
+
  onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act:any) => act.id === selectedActivityId || act.value === selectedActivityId
@@ -423,6 +425,9 @@ export class CreateRFPComponent implements OnInit {
       coordinatorNumber: new FormControl('',[Validators.required]),
       activity: [''],
       subactivity: [''],
+      contactNumber: new FormControl('',[Validators.required]),
+      email: new FormControl('',[Validators.required]),
+      
 
 
       // New Fields

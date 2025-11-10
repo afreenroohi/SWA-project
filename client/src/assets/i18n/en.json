@@ -104,7 +104,6 @@
     "Procurement Checklist": "Procurement Checklist",
     "Bill of Quantity": "Bill of Quantity",
     "Estimated Price'": "Estimated Price'",
-    "Project Duration": "Contract Duration",
     "Start of Project": "Contract Start Date",
     "Required Certificates": "Required Certificates",
     "Technical Docs": "Technical Docs",
@@ -477,7 +476,10 @@
     "coordinator name":"Coordinator name",
     "coordinator number":"Coordinator number",
     "Activity":"Activity",
-    "Subactivity":"Subactivity"
+    "Subactivity":"Subactivity",
+    "Project Duration":"Project Duration",
+    "Email for Site Visit":"Email",
+    "ContactNumber for Site Visit":"ContactNumber"
 
   },
   "COC": {

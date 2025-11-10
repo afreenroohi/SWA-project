@@ -121,6 +121,12 @@
               </nz-select>
             </div> -->
 
+             <!-- * Competition Name -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
+            </div>
+
             <!-- * Estimated Cost -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
@@ -135,12 +141,6 @@
                 style="margin-top: 8px; color: red">
                 Value cannot be greater than {{this.costvalue}}
               </small>
-            </div>
-
-            <!-- * Competition Name -->
-            <div class="col-4 my-1">
-              <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
             </div>
 
             <!--Duration Type-->
@@ -228,13 +228,6 @@
               </nz-select>
             </div>
 
-
-            <!-- * Site Visit Contact Details -->
-            <div class="col-4 my-1">
-              <nz-form-label>{{ "RFP.Contact Details for Site Visit" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Contact Name, Number, or Email" formControlName="siteVisitContact" />
-            </div>
-
             <!-- *coordinator name -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
@@ -257,8 +250,8 @@
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Subactivity" | translate }}</nz-form-label>
               <nz-form-control>
-                <nz-select formControlName="subactivity" nzPlaceHolder="Select Subactivity" style="width: 100%" nzAllowClear
-                  [disabled]="!filteredSubactivities.length">
+                <nz-select formControlName="subactivity" nzPlaceHolder="Select Subactivity" style="width: 100%"
+                  nzAllowClear [disabled]="!filteredSubactivities.length">
                   <nz-option *ngFor="let o of filteredSubactivities" [nzValue]="o.id"
                     [nzLabel]="cs.userLanguage === 'en' ? o.name : o.nameAr"></nz-option>
                 </nz-select>
@@ -280,6 +273,36 @@
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
+            
+            <!-- Does it require a site visit? -->
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+                {{ "RFP.requiresSiteVisit" | translate }}
+              </label>
+              <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
+              </nz-switch>
+            </div>
+
+             <!-- * Site Visit Contact Details -->
+            <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
+              <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Email" formControlName="email" />
+            </div>
+
+             <!-- * Site Visit Contact Details -->
+            <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
+              <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
+            </div>
+
+            <!-- prequalification  -->
+            <div class="col-12 my-1 ">
+                <label class="toggle-label">
+                  {{ "RFP.prequalificationRequired" | translate }}
+                </label>
+                <nz-switch (ngModelChange)="onPrequalificationChange($event)"
+                  formControlName="prequalificationRequired"></nz-switch>
+              </div>
 
             <!-- * Project Justification -->
             <div class="col-12 my-1">
@@ -296,14 +319,6 @@
                 </label>
                 <nz-switch formControlName="frameworkIncluded"></nz-switch>
               </div>
-
-              <div class="col-4 my-1 toggle-field">
-                <label class="toggle-label">
-                  {{ "RFP.prequalificationRequired" | translate }}
-                </label>
-                <nz-switch (ngModelChange)="onPrequalificationChange($event)"
-                  formControlName="prequalificationRequired"></nz-switch>
-              </div>
               <div class="col-4 my-1 toggle-field">
                 <label class="toggle-label">
                   {{ "RFP.dividedIntoLots" | translate }}
@@ -318,13 +333,13 @@
                 <nz-switch formControlName="reAnnounced"></nz-switch>
               </div> -->
 
-              <div class="col-4 my-1 toggle-field">
+              <!-- <div class="col-4 my-1 toggle-field">
                 <label class="toggle-label">
                   {{ "RFP.requiresSiteVisit" | translate }}
                 </label>
                 <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
                 </nz-switch>
-              </div>
+              </div> -->
             </div>
 
 
