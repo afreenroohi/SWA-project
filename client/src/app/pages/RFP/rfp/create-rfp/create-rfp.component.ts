@@ -18,6 +18,7 @@ import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
 import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -122,6 +123,8 @@ export class CreateRFPComponent implements OnInit {
   durationTypes = durationTypes;
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
+  activityList = activities; 
+  filteredSubactivities: any[] = []; 
 
   responseMessage: any;
   submitConfirmation: boolean = false;
@@ -161,6 +164,8 @@ export class CreateRFPComponent implements OnInit {
   boqTabelList: any = [];
 
   managerSubId: string = '';
+
+  costvalue:any;
 
   editTotTechEval: boolean = true;
 
@@ -203,6 +208,7 @@ export class CreateRFPComponent implements OnInit {
     private modal: NzModalService,
   ) {
     this.buildMainFormGroup();
+    console.log(activities,'activities====')
   }
 
 
@@ -270,9 +276,6 @@ export class CreateRFPComponent implements OnInit {
   onReannounceChange(value: string) {
 
   }
-  onPrequalificationChange(value: any) {
-    // if checked then prequalificationRequired true
-  }
   onCompetitionChange(value: string) {
     console.log(value, 'afreen =========');
 
@@ -287,12 +290,16 @@ export class CreateRFPComponent implements OnInit {
     // Handle Limited Competition
     if (value === 'L') {
       this.showLimitedField = true;
+      this.isPrivateSelected = false;
       this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
+      this.rfpForm.get('invite')?.setValue('');
+      this.rfpForm.get('estimatedCost')?.reset()
     }
 
     // Handle Direct Purchase
     if (value === 'D') {
       this.showDirectPurchaseField = true;
+      this.rfpForm.get('crNumber')?.reset();
       this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
     }
 
@@ -310,6 +317,94 @@ export class CreateRFPComponent implements OnInit {
     }
   }
 
+  onDirectPurchaseChange(value: string) {
+    const estimatedCostControl = this.rfpForm.get('estimatedCost');
+
+    if (value === 'below100k') {
+      this.costvalue = 100
+      estimatedCostControl?.setValidators([
+        Validators.required,
+        Validators.max(100)   // ⛔ max value 100
+      ]);
+    } else {
+      estimatedCostControl?.clearValidators();
+    }
+
+    estimatedCostControl?.updateValueAndValidity();
+  }
+
+  onLimitedChange(value: string) {
+    const estimatedCostControl = this.rfpForm.get('estimatedCost');
+
+    if (value === 'below500k') {
+       this.costvalue = 500
+      estimatedCostControl?.setValidators([
+        Validators.required,
+        Validators.max(500)   // ⛔ max value 500
+      ]);
+    } else {
+      estimatedCostControl?.clearValidators();
+    }
+
+    estimatedCostControl?.updateValueAndValidity();
+  }
+
+  // easy getter for the FormArray
+  get crNumberArray() {
+    return this.rfpForm.get('crNumber') as FormArray;
+  }
+
+  // methods to add/remove
+  addCrNumber() {
+    this.crNumberArray.push(this.fb.control('', Validators.required));
+  }
+
+  removeCrNumber(index: number) {
+    this.crNumberArray.removeAt(index);
+  }
+  onPrequalificationChange(value: boolean) {
+    console.log(value,'valueeeeeeeeeeee')
+  const detailsControl = this.rfpForm.get('prequalificationDetails');
+  if (value) {
+    detailsControl?.setValidators([Validators.required]);
+  } else {
+    detailsControl?.clearValidators();
+    detailsControl?.setValue('');
+  }
+  detailsControl?.updateValueAndValidity();
+}
+
+ onActivityChange(selectedActivityId: string): void {
+    const selectedActivity = this.activityList.find(
+      (act:any) => act.id === selectedActivityId || act.value === selectedActivityId
+    );
+
+    if(selectedActivityId === 'ACT_FAC'){
+      console.log('yes===')
+       this.rfpForm.get('prequalificationRequired')?.enable();
+       this.rfpForm.get('prequalificationRequired')?.setValue(true);
+    }else{
+      this.rfpForm.get('prequalificationRequired')?.setValue(false);
+    }
+
+    if (selectedActivity) {
+      this.filteredSubactivities = selectedActivity.subactivities.map(
+        (sub:any) => ({
+          id: sub.id,
+          name: sub.value,
+          nameAr: sub.valueAr,
+        })
+      );
+      // console.log(this.filteredSubactivities,'===========filteredSubactivities')
+    } else {
+      this.filteredSubactivities = [];
+    }
+
+    // Reset subactivity when activity changes
+    this.rfpForm.patchValue({ subactivity: '' });
+  }
+
+
   /**
    * Builds the main for group for create RFP
    */
@@ -318,10 +413,16 @@ export class CreateRFPComponent implements OnInit {
       // Basic Competition Info
       invite: new FormControl('', [Validators.required]),
       crNumber: new FormControl('', [Validators.required]),
+      // crNumber: this.fb.array([this.fb.control('', Validators.required)]),
       directPurchaseType: new FormControl('', [Validators.required]),
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
       limitedType: new FormControl('', [Validators.required]),
+      prequalificationDetails: new FormControl('',[Validators.required]),
+      coordinatorName: new FormControl('',[Validators.required]),
+      coordinatorNumber: new FormControl('',[Validators.required]),
+      activity: [''],
+      subactivity: [''],
 
 
       // New Fields
@@ -345,7 +446,7 @@ export class CreateRFPComponent implements OnInit {
       ]),
       ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
       DurationType: new FormControl('', [Validators.required]),
-
+      workLocation: new FormControl([], [Validators.required]),
 
 
       workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform

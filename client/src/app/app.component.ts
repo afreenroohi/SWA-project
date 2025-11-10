@@ -103,7 +103,7 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   dispname = ''
   email = ''
 
-  applicationVersion = '1.6.3';
+  applicationVersion = '1.0.0';
 
   // logoSrc = "assets/logo/mwan_logo.png";
 logoSrc = this.expandedLogo;
@@ -422,14 +422,14 @@ private updateLogoForCollapse(): void {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
           ModuleIcon: 'line-chart',
-          link: '/dashboard'
+          link: 'rfp/dashboard'
         },
       )
       // if(userName === 'OALMAGHRABI'){
       if(userName === 'testrfp'){
           this.roleTest('Requestor')
           // this.router.navigate(['rfp/create']);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['rfp/dashboard']);
       }
       if(userName === 'SALSUBKI'){
           this.roleTest('Approver')

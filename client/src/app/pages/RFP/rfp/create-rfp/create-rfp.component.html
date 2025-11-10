@@ -10,9 +10,9 @@
           <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
           <div class="row w-100 my-2">
 
-            <!-- * Type of Contract -->
+            <!-- * Type of project -->
             <div class="col-4 my-1">
-              <nz-form-label nzRequired for="uom">Type of Contract</nz-form-label>
+              <nz-form-label nzRequired for="uom">{{ "RFP.Type of Project" | translate }}</nz-form-label>
               <nz-form-control>
                 <nz-select formControlName="contractType" style="width: 100%" nzAllowClear>
                   <nz-option *ngFor="let o of contractTypes" [nzValue]="o.id"
@@ -26,7 +26,7 @@
             </div>
             <!-- * Type of Competition -->
             <div class="col-4 my-1">
-              <nz-form-label nzRequired for="uom">Type of Competition</nz-form-label>
+              <nz-form-label nzRequired for="uom">{{ "RFP.Type of Competition" | translate }}</nz-form-label>
               <nz-form-control>
                 <nz-select formControlName="competitionType" style="width: 100%" nzAllowClear
                   (ngModelChange)="onCompetitionChange($event)">
@@ -41,24 +41,28 @@
             </div>
             <!-- * Limited Competition -->
             <div class="col-4 my-1" *ngIf="showLimitedField">
-              <nz-form-label nzRequired for="limitedType">Limited Competition</nz-form-label>
-              <nz-select formControlName="directPurchaseType" style="width: 100%">
+              <nz-form-label nzRequired for="limitedType">{{ "RFP.Limited Competition" | translate }}</nz-form-label>
+              <nz-select (ngModelChange)="onLimitedChange($event)" formControlName="directPurchaseType"
+                style="width: 100%">
                 <nz-option nzValue="below500k" nzLabel="Less than 500k"></nz-option>
                 <nz-option nzValue="consultancyProject" nzLabel="Consultancy type of project"></nz-option>
               </nz-select>
             </div>
             <!-- * Direct Purchase -->
             <div class="col-4 my-1" *ngIf="showDirectPurchaseField">
-              <nz-form-label nzRequired for="directType">Direct Purchase</nz-form-label>
-              <nz-select formControlName="directPurchaseType" style="width: 100%">
+              <nz-form-label nzRequired for="directType">{{ "RFP.Direct Purchase" | translate }}</nz-form-label>
+              <nz-select (ngModelChange)="onDirectPurchaseChange($event)" formControlName="directPurchaseType"
+                style="width: 100%">
+                <nz-option nzValue="below100k" nzLabel="Less than 100k"></nz-option>
                 <nz-option nzValue="Emergency" nzLabel="Emergency"></nz-option>
                 <nz-option nzValue="GovernmentToG" nzLabel="Government to Government"></nz-option>
                 <nz-option nzValue="oneSupplier" nzLabel="One Supplier"></nz-option>
-                <nz-option nzValue="below100k" nzLabel="Less than 100k"></nz-option>
+                <nz-option nzValue="sensitiveSecurity" nzLabel="Sensitive security project"></nz-option>
+
               </nz-select>
             </div>
             <div class="col-4 my-1" *ngIf="showDirectPurchaseField || showLimitedField">
-              <nz-form-label nzRequired for="uom">Invite</nz-form-label>
+              <nz-form-label nzRequired for="uom">{{ "RFP.Invite" | translate }}</nz-form-label>
 
               <nz-form-control>
                 <nz-select formControlName="invite" style="width: 100%" nzAllowClear
@@ -71,9 +75,36 @@
 
             <!-- * CR Number (visible only if private is selected) -->
             <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
-              <nz-form-label nzRequired for="crNumber">CR Number</nz-form-label>
+              <nz-form-label nzRequired for="crNumber">{{ "RFP.CR Number" | translate }}</nz-form-label>
               <input nz-input id="crNumber" placeholder="Enter CR Number" formControlName="crNumber" />
+              <small *ngIf="rfpForm.controls.crNumber.touched && rfpForm.controls.crNumber.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
             </div>
+
+            <!-- * CR Numbers (visible only if private is selected) -->
+            <!-- <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+              <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+
+              <div formArrayName="crNumber" class="cr-number-container">
+                <div *ngFor="let ctrl of crNumberArray.controls; let i = index" class="cr-number-item">
+                  <input nz-input [formControlName]="i" placeholder="Enter CR Number" style="width: 100px;" />
+                  <button nz-button nzType="default" nzShape="circle" (click)="removeCrNumber(i)" class="ml-1"
+                    *ngIf="crNumberArray.length > 1">
+                    <i nz-icon nzType="minus"></i>
+                  </button>
+                </div>
+                <button nz-button nzType="dashed" (click)="addCrNumber()" class="ml-1">
+                  <i nz-icon nzType="plus"></i>
+                </button>
+              </div>
+              <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')" style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+            </div> -->
+
+
 
 
             <!-- ============================ -->
@@ -81,25 +112,53 @@
             <!-- ============================ -->
 
             <!-- * Request Status -->
-            <div class="col-4 my-1">
-              <nz-form-label nzRequired for="requestStatus">Request Status</nz-form-label>
+            <!-- <div class="col-4 my-1">
+              <nz-form-label nzRequired for="requestStatus">{{ "RFP.Request Status" | translate }}</nz-form-label>
               <nz-select formControlName="requestStatus" style="width: 100%">
                 <nz-option nzValue="emergency" nzLabel="Emergency"></nz-option>
                 <nz-option nzValue="businessPlans" nzLabel="From Business Plans"></nz-option>
                 <nz-option nzValue="urgent" nzLabel="Urgent"></nz-option>
               </nz-select>
-            </div>
+            </div> -->
 
             <!-- * Estimated Cost -->
             <div class="col-4 my-1">
-              <nz-form-label nzRequired for="estimatedCost">Estimated Cost (SAR)</nz-form-label>
+              <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
               <input nz-input type="number" placeholder="Enter Estimated Cost" formControlName="estimatedCost" />
+              <small
+                *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+              <!-- Max Value Validation -->
+              <small *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('max') "
+                style="margin-top: 8px; color: red">
+                Value cannot be greater than {{this.costvalue}}
+              </small>
             </div>
 
             <!-- * Competition Name -->
             <div class="col-4 my-1">
-              <nz-form-label nzRequired for="competitionName">Competition Name</nz-form-label>
+              <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
+            </div>
+
+            <!--Duration Type-->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">{{
+                "RFP.Duration Type" | translate
+                }}</nz-form-label>
+
+              <nz-form-control>
+                <nz-select formControlName="DurationType" style="width: 100%" nzAllowClear>
+                  <nz-option *ngFor="let o of durationTypes" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+                <small *ngIf="
+                    rfpForm.controls.DurationType.touched &&
+                    rfpForm.controls.DurationType.hasError('required')
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
             </div>
 
             <!-- * Contract Duration -->
@@ -112,63 +171,26 @@
                 <nz-option nzValue="1year" nzLabel="1 Year"></nz-option>
               </nz-select>
             </div> -->
-            
+
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="ProjDur">{{
                 "RFP.Project Duration" | translate
-              }}</nz-form-label>
+                }}</nz-form-label>
               <nz-form-control>
-                <nz-input-number
-                  nz-input
-                  formControlName="ProjDur"
-                  style="width: 100%"
-                  (keydown)="restrictZero($event)"
-                ></nz-input-number>
-                <small
-                  *ngIf="
+                <nz-input-number nz-input formControlName="ProjDur" style="width: 100%"
+                  (keydown)="restrictZero($event)"></nz-input-number>
+                <small *ngIf="
                     rfpForm.controls.ProjDur.touched &&
                     rfpForm.controls.ProjDur.invalid
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
                 <small *ngIf="rfpForm.controls.ProjDur.hasError('min')">
                   {{ "RFP.zero is not acceptable" | translate }}
                 </small>
               </nz-form-control>
             </div>
 
-            <!-- <div class="col-4 my-1">
-              <nz-form-label nzRequired for="uom">{{
-                "RFP.Duration Type" | translate
-              }}</nz-form-label>
-
-              <nz-form-control>
-                <nz-select
-                  formControlName="DurationType"
-                  style="width: 100%"
-
-                  nzAllowClear
-                >
-                  <nz-option
-                    *ngFor="let o of durationTypes"
-                    [nzValue]="o.id"
-                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"
-                  ></nz-option>
-                </nz-select>
-                <small
-                  *ngIf="
-                    rfpForm.controls.DurationType.touched &&
-                    rfpForm.controls.DurationType.hasError('required')
-                  "
-                  style="margin-top: 8px; color: red"
-                  >{{ "RFP.FieldIsRequired" | translate }}</small
-                >
-              </nz-form-control>
-            </div> -->
-
             <!-- * Delivery Date  [nzDisabledDate]="disableDate" -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="deldate">
                 {{ "RFP.BOQDelDate" | translate }}</nz-form-label>
               <nz-date-picker
@@ -186,7 +208,7 @@
               >
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
-            </div>
+            </div> -->
 
 
 
@@ -195,42 +217,132 @@
 
             <!-- * Work Execution Location -->
             <div class="col-4 my-1">
-              <nz-form-label nzRequired for="workLocation">Work Execution Location</nz-form-label>
-              <nz-select formControlName="workLocation" style="width: 100%">
+              <nz-form-label nzRequired for="workLocation">
+                {{ "RFP.Work Execution Location" | translate }}
+              </nz-form-label>
+              <nz-select formControlName="workLocation" nzMode="multiple" style="width: 100%"
+                nzPlaceHolder="Select work locations">
                 <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
                 <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
                 <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
               </nz-select>
             </div>
 
+
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1">
-              <nz-form-label>Contact Details for Site Visit</nz-form-label>
+              <nz-form-label>{{ "RFP.Contact Details for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Contact Name, Number, or Email" formControlName="siteVisitContact" />
             </div>
 
-             <!-- * Project Justification -->
+            <!-- *coordinator name -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
+            </div>
+
+            <!-- Activity Dropdown -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">{{ "RFP.Activity" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="activity" nzPlaceHolder="Select Activity" style="width: 100%" nzAllowClear
+                  (ngModelChange)="onActivityChange($event)">
+                  <nz-option *ngFor="let o of activityList" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- Subactivity Dropdown -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">{{ "RFP.Subactivity" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="subactivity" nzPlaceHolder="Select Subactivity" style="width: 100%" nzAllowClear
+                  [disabled]="!filteredSubactivities.length">
+                  <nz-option *ngFor="let o of filteredSubactivities" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.name : o.nameAr"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+
+            <!-- * coordinator number -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
+            </div>
+
+            <!-- * Prequalification Details (show only if toggle is ON) -->
+            <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
+              <nz-form-label>Prequalification Number</nz-form-label>
+              <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
+              <small
+                *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
+                style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+            </div>
+
+            <!-- * Project Justification -->
             <div class="col-12 my-1">
-              <nz-form-label>Project Justification / Necessity / Impact of Not Proceeding</nz-form-label>
+              <nz-form-label>{{ "RFP.Project Justification / Necessity / Impact of Not Proceeding" | translate
+                }}</nz-form-label>
               <textarea nz-input rows="3" placeholder="Describe the justification and impact..."
                 formControlName="projectJustification"></textarea>
             </div>
 
-            <!-- * Framework Agreement -->
-            <div class="col-4 my-1">
-              <label nz-checkbox formControlName="frameworkIncluded">
-                Does the competition include items available under framework agreements concluded by the Expenditure and
-                Projects Efficiency Authority?
-              </label>
+            <div class="row">
+              <div class="col-4 my-1 toggle-field">
+                <label class="toggle-label">
+                  {{ "RFP.frameworkIncluded" | translate }}
+                </label>
+                <nz-switch formControlName="frameworkIncluded"></nz-switch>
+              </div>
+
+              <div class="col-4 my-1 toggle-field">
+                <label class="toggle-label">
+                  {{ "RFP.prequalificationRequired" | translate }}
+                </label>
+                <nz-switch (ngModelChange)="onPrequalificationChange($event)"
+                  formControlName="prequalificationRequired"></nz-switch>
+              </div>
+              <div class="col-4 my-1 toggle-field">
+                <label class="toggle-label">
+                  {{ "RFP.dividedIntoLots" | translate }}
+                </label>
+                <nz-switch formControlName="dividedIntoLots"></nz-switch>
+              </div>
+
+              <div class="col-4 my-1 toggle-field">
+                <label class="toggle-label">
+                  {{ "RFP.reAnnounced" | translate }}
+                </label>
+                <nz-switch formControlName="reAnnounced"></nz-switch>
+              </div>
+
+              <div class="col-4 my-1 toggle-field">
+                <label class="toggle-label">
+                  {{ "RFP.requiresSiteVisit" | translate }}
+                </label>
+                <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
+                </nz-switch>
+              </div>
             </div>
 
+
+            <!-- * Framework Agreement -->
+            <!-- <div class="col-4 my-1">
+              <label>{{ "RFP.frameworkIncluded" | translate }}</label>
+              <nz-switch formControlName="frameworkIncluded"></nz-switch>
+            </div> -->
+
+
+
             <!-- * Prequalification Required -->
-            <div class="col-4 my-1">
-              <label nz-checkbox (ngModelChange)="onPrequalificationChange($event)"
-                formControlName="prequalificationRequired">
-                Does the competition require a prequalification process?
-              </label>
-            </div>
+            <!-- <div class="col-4 my-1">
+              <label>{{ "RFP.prequalificationRequired" | translate }}</label>
+              <nz-switch formControlName="prequalificationRequired" (ngModelChange)="onPrequalificationChange($event)">
+              </nz-switch>
+            </div> -->
+
 
             <!-- * Prequalification Details (if yes) -->
             <!-- <div class="col-8 my-1" *ngIf="prequalificationRequired">
@@ -241,18 +353,18 @@
 
 
             <!-- * Lots Division -->
-            <div class="col-4 my-1">
-              <label nz-checkbox formControlName="dividedIntoLots">
-                Is the competition divided into lots?
-              </label>
-            </div>
+            <!-- <div class="col-4 my-1 d-flex align-items-center gap-2">
+              <label>{{ "RFP.dividedIntoLots" | translate }}</label>
+              <nz-switch formControlName="dividedIntoLots"></nz-switch>
+            </div> -->
 
             <!-- * Re-announcement -->
-            <div class="col-4 my-1">
-              <label nz-checkbox (ngModelChange)="onReannounceChange($event)" formControlName="reAnnounced">
-                Has it been re-announced?
-              </label>
-            </div>
+            <!-- <div class="col-4 my-1 d-flex align-items-center gap-2">
+              <label>{{ "RFP.reAnnounced" | translate }}</label>
+              <nz-switch formControlName="reAnnounced" (ngModelChange)="onReannounceChange($event)">
+              </nz-switch>
+            </div> -->
+
 
             <!-- * Cancellation Report Upload -->
             <!-- <div class="col-8 my-1" *ngIf="reAnnounced">
@@ -261,11 +373,12 @@
             </div> -->
 
             <!-- * Site Visit -->
-            <div class="col-4 my-1">
-              <label nz-checkbox (ngModelChange)="onSiteVisitChange($event)" formControlName="requiresSiteVisit">
-                Does it require a site visit?
-              </label>
-            </div>
+            <!-- <div class="col-4 my-1 d-flex align-items-center gap-2">
+              <label>{{ "RFP.requiresSiteVisit" | translate }}</label>
+              <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
+              </nz-switch>
+            </div> -->
+
 
 
 
@@ -1853,7 +1966,7 @@
       </nz-collapse>
 
       <div class="row mt-3" *ngIf="step2 || step3">
-         <div class="col-2">
+        <div class="col-2">
           <button nz-button nzType="primary" nzSize="default" (click)="isSubmitClick = true">
             {{ "RFP.Save" | translate }}
           </button>
