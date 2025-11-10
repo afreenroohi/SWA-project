@@ -460,7 +460,9 @@
     "reAnnounced": "هل تم إعادة الإعلان؟",
     "requiresSiteVisit": "هل تتطلب زيارة ميدانية؟",
     "coordinator name": "اسم المنسق",
-    "coordinator number": "رقم المنسق"
+    "coordinator number": "رقم المنسق",
+    "Activity":"Activity",
+    "Subactivity":"Subactivity"
   },
   "COC": {
     "Create COC": "إنشاء شهادة المطابقة",

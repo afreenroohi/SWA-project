@@ -91,7 +91,7 @@ export class AppComponent {
   dispname = ''
   email = ''
 
-  applicationVersion = '1.6.3';
+  applicationVersion = '1.0.0';
 
   // logoSrc = "assets/logo/mwan_logo.png";
   logoSrc = "assets/logo/swa-logo-dark.svg";

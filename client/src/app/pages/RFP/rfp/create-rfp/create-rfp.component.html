@@ -133,7 +133,7 @@
               <!-- Max Value Validation -->
               <small *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('max') "
                 style="margin-top: 8px; color: red">
-                Value cannot be greater than 100
+                Value cannot be greater than {{this.costvalue}}
               </small>
             </div>
 
@@ -241,6 +241,31 @@
               <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
             </div>
 
+            <!-- Activity Dropdown -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">{{ "RFP.Activity" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="activity" nzPlaceHolder="Select Activity" style="width: 100%" nzAllowClear
+                  (ngModelChange)="onActivityChange($event)">
+                  <nz-option *ngFor="let o of activityList" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <!-- Subactivity Dropdown -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="uom">{{ "RFP.Subactivity" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="subactivity" nzPlaceHolder="Select Subactivity" style="width: 100%" nzAllowClear
+                  [disabled]="!filteredSubactivities.length">
+                  <nz-option *ngFor="let o of filteredSubactivities" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.name : o.nameAr"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+
             <!-- * coordinator number -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
@@ -250,9 +275,9 @@
             <!-- * Prequalification Details (show only if toggle is ON) -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
               <nz-form-label>Prequalification Number</nz-form-label>
-              <input nz-input placeholder="Enter Reference Number"
-                formControlName="prequalificationDetails" />
-              <small *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
+              <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
+              <small
+                *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
 

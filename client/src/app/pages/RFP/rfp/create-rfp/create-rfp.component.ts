@@ -18,6 +18,7 @@ import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
 import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -122,6 +123,8 @@ export class CreateRFPComponent implements OnInit {
   durationTypes = durationTypes;
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
+  activityList = activities; 
+  filteredSubactivities: any[] = []; 
 
   responseMessage: any;
   submitConfirmation: boolean = false;
@@ -161,6 +164,8 @@ export class CreateRFPComponent implements OnInit {
   boqTabelList: any = [];
 
   managerSubId: string = '';
+
+  costvalue:any;
 
   editTotTechEval: boolean = true;
 
@@ -203,6 +208,7 @@ export class CreateRFPComponent implements OnInit {
     private modal: NzModalService,
   ) {
     this.buildMainFormGroup();
+    console.log(activities,'activities====')
   }
 
 
@@ -315,6 +321,7 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below100k') {
+      this.costvalue = 100
       estimatedCostControl?.setValidators([
         Validators.required,
         Validators.max(100)   // ⛔ max value 100
@@ -330,6 +337,7 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below500k') {
+       this.costvalue = 500
       estimatedCostControl?.setValidators([
         Validators.required,
         Validators.max(500)   // ⛔ max value 500
@@ -366,6 +374,36 @@ export class CreateRFPComponent implements OnInit {
   detailsControl?.updateValueAndValidity();
 }
 
+ onActivityChange(selectedActivityId: string): void {
+    const selectedActivity = this.activityList.find(
+      (act:any) => act.id === selectedActivityId || act.value === selectedActivityId
+    );
+
+    if(selectedActivityId === 'ACT_FAC'){
+      console.log('yes===')
+       this.rfpForm.get('prequalificationRequired')?.enable();
+       this.rfpForm.get('prequalificationRequired')?.setValue(true);
+    }else{
+      this.rfpForm.get('prequalificationRequired')?.setValue(false);
+    }
+
+    if (selectedActivity) {
+      this.filteredSubactivities = selectedActivity.subactivities.map(
+        (sub:any) => ({
+          id: sub.id,
+          name: sub.value,
+          nameAr: sub.valueAr,
+        })
+      );
+      // console.log(this.filteredSubactivities,'===========filteredSubactivities')
+    } else {
+      this.filteredSubactivities = [];
+    }
+
+    // Reset subactivity when activity changes
+    this.rfpForm.patchValue({ subactivity: '' });
+  }
+
 
   /**
    * Builds the main for group for create RFP
@@ -383,6 +421,8 @@ export class CreateRFPComponent implements OnInit {
       prequalificationDetails: new FormControl('',[Validators.required]),
       coordinatorName: new FormControl('',[Validators.required]),
       coordinatorNumber: new FormControl('',[Validators.required]),
+      activity: [''],
+      subactivity: [''],
 
 
       // New Fields

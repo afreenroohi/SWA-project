@@ -475,7 +475,9 @@
     "reAnnounced":"Has it been re-announced?",
     "requiresSiteVisit":"Does it require a site visit?",
     "coordinator name":"Coordinator name",
-    "coordinator number":"Coordinator number"
+    "coordinator number":"Coordinator number",
+    "Activity":"Activity",
+    "Subactivity":"Subactivity"
 
   },
   "COC": {
