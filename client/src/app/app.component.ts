@@ -171,6 +171,20 @@ private setWidthsFromCollapse(): void {
     // keep header and layout widths synced with collapse state
     this.setWidthsFromCollapse();
   }
+  private setActiveMenuFromUrl(): void {
+  const url = this.router.url || '';
+  // define mapping from route to menu key(s)
+  if (url.includes('/rfp/dashboard')) {
+    this.cs.activeMenu = 'Dashboard';           // matches Module: 'Dashboard'
+  } else if (url.includes('/rfp/create')) {
+    this.cs.activeMenu = 'create';              // matches subItem.name
+  } else if (url.includes('/rfp/myrfp')) {
+    this.cs.activeMenu = 'myrfp';
+  } else {
+    // fallback (you can expand mapping as needed)
+    this.cs.activeMenu = 'home';
+  }
+}
 
 
 
@@ -218,6 +232,27 @@ private updateLogoForCollapse(): void {
     sessionStorage.clear();
 
   }
+//   public openParentsForActive(): void {
+//   try {
+//     if (!this.navItems || !Array.isArray(this.navItems)) return;
+//     for (const nav of this.navItems) {
+//       if (nav?.navItem && Array.isArray(nav.navItem)) {
+//         const childActive = nav.navItem.some((si: any) => si.name === this.cs.activeMenu);
+//         // Keep already-open menus open; open the parent if childActive
+//         if (childActive) {
+//           nav.isOpen = true;
+//         }
+//       }
+//       // Also mark top-level menu as selected if there is no child and name matches
+//       if (!nav.navItem && nav.Module === this.cs.activeMenu) {
+//         nav.isOpen = true;
+//       }
+//     }
+//   } catch (e) {
+//     // fail silently
+//     // console.warn('openParentsForActive error', e);
+//   }
+// }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
@@ -280,6 +315,7 @@ private updateLogoForCollapse(): void {
 
   ngOnInit(): void {
     this.cs.activeMenu = 'home';
+    this.setActiveMenuFromUrl();
      this.isUserLoggedIn = true;
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
@@ -426,11 +462,18 @@ private updateLogoForCollapse(): void {
         },
       )
       // if(userName === 'OALMAGHRABI'){
-      if(userName === 'testrfp'){
-          this.roleTest('Requestor')
-          // this.router.navigate(['rfp/create']);
-          this.router.navigate(['rfp/dashboard']);
-      }
+     if (userName === 'testrfp') {
+  this.roleTest('Requestor');
+
+  // ensure Dashboard is the active/selected menu key
+  this.cs.activeMenu = 'Dashboard';
+
+  // close any open submenus so the Dashboard top-level looks highlighted
+  this.navItems.forEach(nav => nav.isOpen = false);
+
+  // navigate to dashboard
+  this.router.navigate(['rfp/dashboard']);
+}
       if(userName === 'SALSUBKI'){
           this.roleTest('Approver')
           this.router.navigate(['rfp/myinbox']);
@@ -464,6 +507,11 @@ private updateLogoForCollapse(): void {
         // Budallocator Manager Approver&Manager
         this.router.navigate(['rfp/myinbox']);
       }
+  //     this.cs.activeMenu = 'Dashboard';
+  // this.navItems.forEach(n => n.isOpen = false);
+  // // call helper if exists (keeps same behavior as the forkJoin branch)
+  // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+  // this.router.navigate(['rfp/dashboard']);
 
     return
     // * Setting the Initial State for Login
@@ -528,7 +576,7 @@ private updateLogoForCollapse(): void {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
           ModuleIcon: 'line-chart',
-          link: '/dashboard'
+          link:  'rfp/dashboard'
         },
       )
       if (RFPLoginRes) {
@@ -578,6 +626,10 @@ private updateLogoForCollapse(): void {
         this.norole = true;
         this.router.navigate(['noaccess']);
       }
+    //   this.cs.activeMenu = 'Dashboard';
+    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+    // this.navItems.forEach(n => n.isOpen = false);
+    // this.router.navigate(['/dashboard']);
     },
       (error) => {
         this.spinner.hide()
@@ -613,7 +665,7 @@ private updateLogoForCollapse(): void {
             Module: 'RFP - Requester',
             ModuleAr: 'إدارة طلب المنافسات',
             ModuleIcon: 'mail',
-            isOpen: true,
+            isOpen: false,
             navItem: [
               {
                 name: 'create',

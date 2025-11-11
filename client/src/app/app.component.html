@@ -113,7 +113,7 @@
               class="menu-items"
               [nzTitle]="cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr"
               [(nzOpen)]="item.isOpen"
-              (nzOpenChange)="openHandler(item)"
+              (nzOpenChange)="openHandler(item)" 
             >
               <ul>
                 <li
@@ -167,7 +167,7 @@
           </ng-container>
 
           <ng-template #noSubMenu>
-            <li nz-menu-item class="menu-items" (click)="navigate(item)">
+            <li nz-menu-item class="menu-items" (click)="navigate(item)" [nzSelected]="item.Module === cs.activeMenu">
               <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalIcon">
                 <app-icon [icon]="item.ModuleIcon"></app-icon>
               </ng-container>

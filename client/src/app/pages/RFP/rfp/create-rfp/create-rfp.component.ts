@@ -25,13 +25,24 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { Router } from '@angular/router';
 import { IconList } from 'src/app/components/icon/icon.component';
-
 import * as moment from 'moment';
 import { CommaSeparatePipe } from 'src/app/pipes/comma-separate.pipe';
 import { RFPService } from 'src/app/service/RFP/rfp.service';
 import { QualificationListFullResponse } from '../rfp.model';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.component';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { saveAs } from 'file-saver';
+
+
+
+type FormOption = {
+  key: string;     // value used by the select
+  label: string;   // shown to user
+  path: string;    // path under assets/ or a full URL
+  filename?: string; // optional download filename override
+};
 
 @Component({
   selector: 'app-create-rfp',
@@ -39,6 +50,7 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  
   userName: string = ''
   uploading = false;
   fileList: NzUploadFile[] = [];
@@ -52,6 +64,22 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
+  formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
+  {
+    key: 'RFP_PDF_1',
+    label: 'RFP 1 (PDF)',
+    path: 'assets/forms/KaarTech_SWA_Technical Proposal.pdf',   // or rename and remove spaces
+    filename: 'KaarTech_SWA_Technical Proposal.pdf'
+  },
+  {
+    key: 'RFP_PDF_2',
+    label: 'RFP 2 (PDF)',
+    path: 'assets/forms/Personal Information Form.pdf',         // or rename and remove spaces
+    filename: 'Personal Information Form.pdf'
+  }
+];
+
+  selectedFormKey: string | null = null;
 
   readonly IconList = IconList;
 
@@ -206,6 +234,7 @@ export class CreateRFPComponent implements OnInit {
     private currenyPipe: CommaSeparatePipe,
     private rfpService: RFPService,
     private modal: NzModalService,
+    private http: HttpClient
   ) {
     this.buildMainFormGroup();
     console.log(activities,'activities====')
@@ -592,12 +621,41 @@ export class CreateRFPComponent implements OnInit {
 
 
 
-  beforeUpload = (file: NzUploadFile): boolean => {
-    this.fileList = this.fileList.concat(file);
-    return false;
-  };
+  // beforeUpload = (file: NzUploadFile): boolean => {
+  //   this.fileList = this.fileList.concat(file);
+  //   return false;
+  // };
+beforeUpload = (file: NzUploadFile): boolean => {
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
+  const isAllowed = allowed.includes(ext);
+  const isLt10M = (file.size || 0) / 1024 / 1024 <= 10;
 
-  setManagerList() {
+  if (!isAllowed) {
+    this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+    return false;
+  }
+  if (!isLt10M) {
+    this.cs.createMessage('error', 'File must be 10MB or smaller.');
+    return false;
+  }
+
+  this.fileList = [...this.fileList, file]; // add to manual list
+  return false; // stop auto upload
+};
+
+/** remove file when ✖ is clicked */
+handleRemove = (file: NzUploadFile): boolean => {
+  this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+  return true; // allow remove
+};
+removeFile(file: NzUploadFile): void {
+  this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+}
+
+
+
+  setManagerList() {  
     if (
       this.rfpForm.controls['MemName'].value.length > 0 &&
       (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
@@ -645,6 +703,36 @@ export class CreateRFPComponent implements OnInit {
       });
     this.listenDeliveryDateChange()
   }
+async downloadSelectedForm(): Promise<void> {
+  if (!this.selectedFormKey) {
+    this.cs.createMessage('warning', 'Please select a form first.');
+    return;
+  }
+
+  const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+  if (!form) {
+    this.cs.createMessage('error', 'Selected form not found.');
+    return;
+  }
+
+  const url = encodeURI(form.path); // handles spaces/special chars
+
+  this.http.get(url, { responseType: 'blob' }).subscribe({
+    next: (blob) => {
+      const filename =
+        form.filename ||
+        (form.path.split('/').pop() ?? 'download.pdf');
+
+      saveAs(blob, filename);
+      this.cs.createMessage('success', 'Downloaded successfully.');
+    },
+    error: (err) => {
+      console.error('Download failed:', err);
+      this.cs.createMessage('error', 'Unable to download the selected form.');
+    }
+  });
+}
+
 
   listenDeliveryDateChange() {
     this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -3455,3 +3543,7 @@ export function dateValidator(): ValidatorFn {
 
 
 }
+function downloadSelectedForm() {
+  throw new Error('Function not implemented.');
+}
+

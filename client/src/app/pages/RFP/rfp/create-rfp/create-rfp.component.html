@@ -603,6 +603,98 @@
         </nz-collapse-panel>
       </nz-collapse>
 
+
+<nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+  <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+
+    <div class="attachment-body">
+
+      <!-- ROW 1 — Select Form -->
+      <div class="attachment-row">
+        <div class="attachment-select">
+          <label class="field-label">Select an Attachment</label>
+
+          <nz-select
+            style="width: 100%"
+            nzPlaceHolder="Select attachment"
+            nzAllowClear
+            [(ngModel)]="selectedFormKey"
+            [ngModelOptions]="{ standalone: true }">
+
+            <nz-option
+              *ngFor="let f of formOptions"
+              [nzLabel]="f.label"
+              [nzValue]="f.key">
+            </nz-option>
+
+          </nz-select>
+        </div>
+      </div>
+
+      <!-- ROW 2 — Upload on left + Download on right -->
+      <!-- ROW 2 — Upload + Download Button -->
+<!-- ROW 2 — Upload + Download Button -->
+<div class="section">
+  <div class="upload-area">
+    <nz-upload
+      #uploadRef
+      [nzFileList]="fileList"
+      [nzBeforeUpload]="beforeUpload"
+      [nzRemove]="handleRemove"
+      [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: true }"
+      nzMultiple
+      nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg">
+      <button nz-button nzType="dashed" class="upload-btn">
+        <span nz-icon nzType="upload"></span>
+        <span class="ml-1"> Click or drag files to upload </span>
+      </button>
+    </nz-upload>
+
+    <small class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</small>
+  </div>
+
+  <div class="attachment-actions">
+    <button nz-button nzType="default" class="download_button" (click)="downloadSelectedForm()">
+      <i nz-icon nzType="download"></i>
+      {{ 'RFP.Download' | translate }}
+    </button>
+  </div>
+</div>
+
+
+
+
+    </div>
+
+  </nz-collapse-panel>
+</nz-collapse>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+      <!-- Attachment panel -->
+
+
+      
+
+
+      
       <!-- * Bill of Quantity -->
       <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Bill of Quantity' | translate }}">
