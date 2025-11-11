@@ -11,7 +11,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   // {     // afreen commented 
-  //   path: 'noaccess' ,  // afreen commented
+  //   path: 'noaccess' ,  // afreen commented //
   //   component: NoroleComponent,
   //   canActivate:[AuthGuardGuard]
   // },
