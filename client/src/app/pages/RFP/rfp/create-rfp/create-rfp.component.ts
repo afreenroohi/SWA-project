@@ -319,10 +319,10 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below100k') {
-      this.costvalue = 100
+      this.costvalue = '100k'
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(100)   // ⛔ max value 100
+        Validators.max(99999)   // ⛔ max value 100
       ]);
     } else {
       estimatedCostControl?.clearValidators();
@@ -335,10 +335,10 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below500k') {
-       this.costvalue = 500
+       this.costvalue = '500k'
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(500)   // ⛔ max value 500
+        Validators.max(499999)   // ⛔ max value 500
       ]);
     } else {
       estimatedCostControl?.clearValidators();
