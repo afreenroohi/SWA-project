@@ -298,6 +298,12 @@ export class AppComponent {
    */
   
   async getNavItem(userName: string) {
+
+      this.isUserLoggedIn = true;
+    this.dispname = userName.toUpperCase();
+    this.ProxyUserId = userName.toUpperCase();
+
+    
     // console.log(userName,'userName==')
     this.navItems = [];
     this.navItems.push(

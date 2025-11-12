@@ -82,7 +82,9 @@
   </nz-header> -->
 
 
-  <nz-header>
+
+  
+ <nz-header>
     <div nz-row nzJustify="space-between" nzAlign="middle">
       <div nz-col nzSpan="12">
         <div nz-row nzAlign="middle">
@@ -95,13 +97,13 @@
           <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')">
             <span> English</span>
           </button>
-
+ 
           <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'en'" (click)="onChangeLang('ar')">
             <span> العربیة </span> &nbsp; &nbsp;
           </button>
-
+ 
           &nbsp; &nbsp;
-
+ 
           <ng-container *ngIf="enableTestLogon">
             <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto" />
             &nbsp; &nbsp;
@@ -112,7 +114,7 @@
             </button>
             &nbsp; &nbsp;
           </ng-container>
-
+ 
           <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
               'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
             }" (click)="openUsrMdl()">
@@ -120,7 +122,7 @@
           </button>
         </div>
       </div>
-
+ 
       <!-- ✅ Fixed Header User Section -->
       <div nz-col nzSpan="12" class="right-header-section">
         <div nz-row nzJustify="end" nzAlign="middle">
@@ -147,11 +149,14 @@
           </div>
         </div>
       </div>
-
-
+ 
+ 
       <!-- ✅ End Header User Section -->
     </div>
   </nz-header>
+
+
+
 
   <nz-layout class="ant-top-layout">
     <nz-sider class="menu-sidebar" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
