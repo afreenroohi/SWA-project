@@ -108,6 +108,7 @@
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
+
             </div>
 
             <!-- * CR Numbers (visible only if private is selected) -->
@@ -643,61 +644,117 @@
             </div> -->
 
           </div>
+          <div class="row mt-2">
+  <div class="col-12 d-flex justify-content-end gap-2">
+    <!-- Save as draft -->
+    <button
+      nz-button
+      nzType="default"
+      nzSize="default"
+      class="mr-2"
+      (click)="saveAsDraft()"
+      [disabled]="!basicInfoValid"
+      title="Save as draft"
+    >
+      {{ 'RFP.SaveAs' | translate }}
+    </button>
+
+    <!-- Save & Continue (reveal attachments) -->
+    <button
+      nz-button
+      nzType="primary"
+      nzSize="default"
+      (click)="saveAndContinue()"
+      [disabled]="!basicInfoValid"
+      title="Save & Continue"
+    >
+      <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
+      Save & Continue
+    </button>
+  </div>
+</div>
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+  
+<nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+  <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+    <div class="attachment-body">
 
-          <div class="attachment-body">
+      <!-- ROW 1 — Select Form + Download button (same row) -->
+      <div class="attachment-row">
+        <div class="attachment-select">
+          <label class="field-label">Download a Template</label>
+          <nz-select
+            style="width: 100%"
+            nzPlaceHolder="Select Templates"
+            nzAllowClear
+            [(ngModel)]="selectedFormKey"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key"></nz-option>
+          </nz-select>
+        </div>
 
-            <!-- ROW 1 — Select Form -->
-            <div class="attachment-row">
-              <div class="attachment-select">
-                <label class="field-label">Select an Attachment</label>
+        <!-- Download button sits on same horizontal row -->
+        <div class="attachment-actions">
+          <button
+            nz-button
+            nzType="default"
+            class="download_button"
+            (click)="downloadSelectedForm()"
+            [disabled]="!selectedFormKey"
+            title="Download selected form"
+          >
+            <i nz-icon nzType="download"></i>
+            <span class="ml-1">{{ 'RFP.Download' | translate }}</span>
+          </button>
+        </div>
+      </div>
 
-                <nz-select style="width: 100%" nzPlaceHolder="Select attachment" nzAllowClear
-                  [(ngModel)]="selectedFormKey" [ngModelOptions]="{ standalone: true }">
+      <!-- ROW 2 — Upload area (below the select row) -->
+       <label class="field-label">Upload</label>
+<div class="section" style="margin-top:12px">
+  <nz-upload
+    nzType="drag"
+    [nzBeforeUpload]="beforeUpload"
 
-                  <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key">
-                  </nz-option>
+    nzMultiple
+    nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+    class="upload-area"
+  >
+    <p class="ant-upload-drag-icon"><i nz-icon nzType="upload"></i></p>
+    <p class="upload-message">Click or drag files to upload</p>
+    <p class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</p>
+  </nz-upload>
 
-                </nz-select>
-              </div>
-            </div>
+  <!-- custom styled uploaded list -->
+  <ul class="custom-uploaded-list" *ngIf="fileList?.length">
+    <li *ngFor="let file of fileList" class="uploaded-file-item">
+      <div class="file-info">
+        <i nz-icon nzType="paper-clip"></i>
+        <span class="file-name" [title]="file.name">{{ file.name }}</span>
+      </div>
 
-            <!-- ROW 2 — Upload on left + Download on right -->
-            <!-- ROW 2 — Upload + Download Button -->
-            <!-- ROW 2 — Upload + Download Button -->
-            <div class="section">
-              <div class="upload-area">
-                <nz-upload #uploadRef [nzFileList]="fileList" [nzBeforeUpload]="beforeUpload" [nzRemove]="handleRemove"
-                  [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: true }" nzMultiple
-                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg">
-                  <button nz-button nzType="dashed" class="upload-btn">
-                    <span nz-icon nzType="upload"></span>
-                    <span class="ml-1"> Click or drag files to upload </span>
-                  </button>
-                </nz-upload>
-
-                <small class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</small>
-              </div>
-
-              <div class="attachment-actions">
-                <button nz-button nzType="default" class="download_button" (click)="downloadSelectedForm()">
-                  <i nz-icon nzType="download"></i>
-                  {{ 'RFP.Download' | translate }}
-                </button>
-              </div>
-            </div>
+      <a
+        nz-tooltip
+        nzTooltipTitle="Remove"
+        (click)="removeFile(file)"
+        class="delete-icon"
+      >
+        <i nz-icon nzType="delete"></i>
+      </a>
+    </li>
+  </ul>
+</div>
 
 
+      
 
+    </div>
+  </nz-collapse-panel>
+</nz-collapse>
 
-          </div>
-
-        </nz-collapse-panel>
-      </nz-collapse>
 
       <!-- * Bill of Quantity -->
       <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">

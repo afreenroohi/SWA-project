@@ -44,6 +44,8 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
 export class CreateRFPComponent implements OnInit {
   userName: string = ''
   uploading = false;
+  showAttachments = false;
+  attachmentsActive = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
   value = '';
@@ -55,6 +57,18 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
+  private basicRequiredControls = [
+  'contractType',
+  'competitionType',
+  'competitionName',
+  'estimatedCost',
+  'DurationType',
+  'ProjDur',
+  'workLocation',
+  'activity',
+  'subactivity'
+];
+
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
     {
@@ -231,7 +245,90 @@ export class CreateRFPComponent implements OnInit {
     this.buildMainFormGroup();
     console.log(activities, 'activities====')
   }
+get basicInfoValid(): boolean {
+  if (!this.rfpForm) {
+    return false;
+  }
 
+  for (const name of this.basicRequiredControls) {
+    const ctrl = this.rfpForm.get(name);
+    if (!ctrl) {
+      return false; // missing control -> invalid
+    }
+    if (ctrl.invalid) {
+      return false; // invalid
+    }
+    const val = ctrl.value;
+    if (
+      val === null ||
+      val === undefined ||
+      (typeof val === 'string' && val.trim() === '') ||
+      (Array.isArray(val) && val.length === 0)
+    ) {
+      return false; // empty
+    }
+  }
+  return true;
+}
+
+/** mark basic controls touched so validation messages show */
+private markBasicControlsTouched(): void {
+  for (const name of this.basicRequiredControls) {
+    const ctrl = this.rfpForm.get(name);
+    if (ctrl) {
+      ctrl.markAsTouched();
+      ctrl.updateValueAndValidity();
+    }
+  }
+}
+
+/** Save & Continue: validate basic info and reveal attachments */
+saveAndContinue(): void {
+  this.markBasicControlsTouched();
+
+  if (!this.basicInfoValid) {
+    // your existing message service used elsewhere in the app
+    if (this.cs && typeof this.cs.createMessage === 'function') {
+      this.cs.createMessage('error', 'Please fill required basic information');
+    }
+    return;
+  }
+
+  // optionally persist basic data before progressing (call API here if needed)
+  // this.saveBasicInfo();
+
+  // reveal attachments
+  this.showAttachments = true;
+  // or if using Option B:
+  // this.attachmentsActive = true;
+
+  // scroll to attachments smoothly
+  setTimeout(() => {
+    const el = document.querySelector('.attachment-body');
+    if (el) {
+      (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 10);
+}
+
+/** Save as Draft: validate and call your draft logic */
+saveAsDraft(): void {
+  this.markBasicControlsTouched();
+
+  if (!this.basicInfoValid) {
+    if (this.cs && typeof this.cs.createMessage === 'function') {
+      this.cs.createMessage('error', 'Please fill required basic information to save as draft');
+    }
+    return;
+  }
+
+  // call your draft saving routine here (API request, local store etc.)
+  // this.saveDraftApi();
+
+  if (this.cs && typeof this.cs.createMessage === 'function') {
+    this.cs.createMessage('success', 'Saved as draft');
+  }
+}
 
   get initialSubCriteria() {
     return this.fb.group({
