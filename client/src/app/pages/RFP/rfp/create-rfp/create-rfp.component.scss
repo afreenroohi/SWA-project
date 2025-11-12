@@ -220,6 +220,70 @@
   color: #b52b27;
   background: rgba(217, 83, 79, 0.08);
 }
+/* Compact multiple-select styling so it matches other inputs */
+.compact-multi-select {
+  width: 100%;
+
+  /* override ng-zorro / ant styles to keep the control height compact */
+  ::ng-deep .ant-select-selector {
+    min-height: 36px !important;   /* match your input height */
+    height: 36px !important;
+    display: flex;
+    align-items: center;
+    padding: 0 11px !important;
+  }
+
+  /* ensure placeholder vertically centered */
+  ::ng-deep .ant-select-selection-placeholder {
+    line-height: 38px !important;
+  }
+
+  /* contain tags in a single line and truncate overflowing text */
+  ::ng-deep .ant-select-selection-overflow,
+  ::ng-deep .ant-select-selection-overflow-item {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  ::ng-deep .ant-select-selection-item,
+  ::ng-deep .ant-select-selection-item-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* when nzMaxTagCount renders +N tag, make it small and centered */
+  ::ng-deep .ant-select-selection-overflow-item-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+  }
+
+  /* tweak tokens appearance slightly so they don't push height */
+  ::ng-deep .ant-select-selection-overflow-item .ant-select-selection-item-remove {
+    margin-left: 6px;
+    margin-right: 2px;
+  }
+  ::ng-deep .ant-switch-checked {
+  background-color: #0b6aa0 !important; /* your blue brand color */
+  border-color: #0b6aa0 !important;
+}
+
+/* Optional: style the switch thumb for a smoother look */
+::ng-deep .ant-switch {
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .ant-switch:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(11, 106, 160, 0.2);
+}
+}
+
 
 
 /* ========== Responsive ========== */

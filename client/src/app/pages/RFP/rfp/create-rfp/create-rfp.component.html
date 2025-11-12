@@ -248,18 +248,28 @@
               <nz-form-label nzRequired for="workLocation">
                 {{ "RFP.Work Execution Location" | translate }}
               </nz-form-label>
-              <nz-select formControlName="workLocation" nzMode="multiple" style="width: 100%"
-                nzPlaceHolder="Select work locations">
-                <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
-                <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
-                <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
-              </nz-select>
+              <nz-select formControlName="workLocation"
+             nzMode="multiple"
+             class="compact-multi-select"
+             style="width: 100%"
+             nzPlaceHolder="Select work locations"
+             [nzMaxTagCount]="3">
+    <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
+    <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
+    <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
+  </nz-select>
             </div>
 
             <!-- *coordinator name -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
+            </div>
+
+              <!-- * coordinator number -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
             </div>
 
             <!-- Activity Dropdown -->
@@ -287,42 +297,40 @@
             </div>
 
 
-            <!-- * coordinator number -->
+            <!-- * coordinator number
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
-            </div>
+            </div> -->
 
-            <!-- * Prequalification Details (show only if toggle is ON) -->
+            <!-- * Prequalification Details (show only if toggle is ON)
             <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
               <nz-form-label>Prequalification Number</nz-form-label>
               <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
               <small
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
-            </div>
+            </div> -->
 
             <!-- Does it require a site visit? -->
-            <div class="col-12 my-1">
-              <label class="toggle-label">
-                {{ "RFP.requiresSiteVisit" | translate }}
-              </label>
-              <!-- <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
-              </nz-switch> -->
-              <nz-switch (ngModelChange)="test($event)" formControlName="requiresSiteVisit"></nz-switch>
-            </div>
+          <div class="col-12 my-1">
+<label class="toggle-label">
+    {{ "RFP.requiresSiteVisit" | translate }}
+</label>
+<nz-switch  (ngModelChange)="toggleSiteVisitValidators($event)" formControlName="requiresSiteVisit"></nz-switch>
+</div>
 
             <!-- * Site Visit Contact Details -->
-            <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-              <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Email" formControlName="email" />
-            </div>
+            <div class="col-4 my-1" *ngIf="showSiteVisit">
+<nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
+<input nz-input placeholder="Enter Email" formControlName="email" />
+</div>
 
             <!-- * Site Visit Contact Details -->
-            <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-              <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
-            </div>
+            <div class="col-4 my-1" *ngIf="showSiteVisit">
+<nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
+<input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
+</div>
 
             <!-- prequalification  -->
             <div class="col-12 my-1 ">
@@ -331,6 +339,15 @@
               </label>
               <nz-switch (ngModelChange)="onPrequalificationChange($event)"
                 formControlName="prequalificationRequired"></nz-switch>
+            </div>
+
+             <!-- * Prequalification Details (show only if toggle is ON) -->
+            <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
+              <nz-form-label>Prequalification Number</nz-form-label>
+              <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
+              <small
+                *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
+                style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
 
             <!-- * Project Justification -->

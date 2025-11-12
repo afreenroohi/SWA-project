@@ -43,6 +43,7 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
 })
 export class CreateRFPComponent implements OnInit {
   userName: string = ''
+  showSiteVisit = false;
   uploading = false;
   showAttachments = false;
   attachmentsActive = false;
@@ -571,10 +572,10 @@ saveAsDraft(): void {
       coordinatorNumber: new FormControl('', [Validators.required]),
       activity: [''],
       subactivity: [''],
-      contactNumber: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      // contactNumber: new FormControl('', [Validators.required]),
+      // email: new FormControl('', [Validators.required]),
 
-
+       requiresSiteVisit: new FormControl(false),
 
       // New Fields
       requestStatus: ['', [Validators.required]], // Emergency / Business Plan / Urgent
@@ -709,6 +710,7 @@ saveAsDraft(): void {
     //   }),
     //   TechReqEdit: this.fb.group({
     //     RfpNo: [''],
+    
     //     RfpVersion: [''],
     //     ItemNo: [{ value: '', disabled: true }],
     //     Descr: ['', [Validators.maxLength(600)]]
@@ -801,6 +803,21 @@ saveAsDraft(): void {
   }
 
   ngOnInit(): void {
+
+     this.showSiteVisit = !!this.rfpForm.get('requiresSiteVisit')?.value;
+  // sync validators initially
+  this.toggleSiteVisitValidators(this.showSiteVisit);
+  this.rfpForm.get('requiresSiteVisit')
+    ?.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((value: boolean) => {
+      this.showSiteVisit = !!value;
+      this.toggleSiteVisitValidators(this.showSiteVisit);
+    });
+
+  // Initial validation sync (in case it's prefilled)
+  this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+
     this.step1 = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
@@ -826,6 +843,26 @@ saveAsDraft(): void {
       });
     this.listenDeliveryDateChange()
   }
+
+ toggleSiteVisitValidators(requiresVisit: boolean): void {
+  const emailControl = this.rfpForm.get('email');
+  const contactControl = this.rfpForm.get('contactNumber');
+
+  if (requiresVisit) {
+    // When ON, make fields required
+    emailControl?.setValidators([Validators.required, Validators.email]);
+    contactControl?.setValidators([Validators.required]);
+  } else {
+    // When OFF, clear values and remove validators
+    emailControl?.setValue('');
+    contactControl?.setValue('');
+    emailControl?.clearValidators();
+    contactControl?.clearValidators();
+  }
+
+  emailControl?.updateValueAndValidity();
+  contactControl?.updateValueAndValidity();
+}
 
   listenDeliveryDateChange() {
     this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
