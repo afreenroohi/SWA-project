@@ -43,7 +43,6 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
 })
 export class CreateRFPComponent implements OnInit {
   userName: string = ''
-  showSiteVisit = false;
   uploading = false;
   showAttachments = false;
   attachmentsActive = false;
@@ -558,63 +557,50 @@ saveAsDraft(): void {
    * Builds the main for group for create RFP
    */
   buildMainFormGroup(): void {
-    this.rfpForm = this.fb.group({
-      // Basic Competition Info
-      invite: new FormControl('', [Validators.required]),
-      // crNumber: new FormControl('', [Validators.required]),
-      crNumber: this.fb.array([this.fb.control('', Validators.required)]),
-      directPurchaseType: new FormControl('', [Validators.required]),
-      contractType: new FormControl('', [Validators.required]),
-      competitionType: new FormControl('', [Validators.required]),
-      limitedType: new FormControl('', [Validators.required]),
-      prequalificationDetails: new FormControl('', [Validators.required]),
-      coordinatorName: new FormControl('', [Validators.required]),
-      coordinatorNumber: new FormControl('', [Validators.required]),
-      activity: [''],
-      subactivity: [''],
-      // contactNumber: new FormControl('', [Validators.required]),
-      // email: new FormControl('', [Validators.required]),
+  this.rfpForm = this.fb.group({
+    invite: new FormControl('', [Validators.required]),
+    crNumber: this.fb.array([this.fb.control('', Validators.required)]),
+    directPurchaseType: new FormControl('', [Validators.required]),
+    contractType: new FormControl('', [Validators.required]),
+    competitionType: new FormControl('', [Validators.required]),
+    limitedType: new FormControl('', [Validators.required]),
+    prequalificationDetails: new FormControl('', [Validators.required]),
+    coordinatorName: new FormControl('', [Validators.required]),
+    coordinatorNumber: new FormControl('', [Validators.required]),
 
-       requiresSiteVisit: new FormControl(false),
+    activity: [''],
+    subactivity: [''],
 
-      // New Fields
-      requestStatus: ['', [Validators.required]], // Emergency / Business Plan / Urgent
-      estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    requiresSiteVisit: [false, [Validators.required]], // toggle
+    email: new FormControl('', [Validators.email]),
+    contactNumber: new FormControl(''),
 
-      includeFrameworkItems: ['', [Validators.required]], // Yes / No
-      prequalificationRequired: [false, [Validators.required]], // Yes / No
-      qualificationReference: [''], // Optional if 'Yes'
-      qualificationLink: [''], // Optional if 'Yes'
-
-      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
-
-      dividedIntoLots: [false, [Validators.required]], // Yes / No
-      contractDuration: ['', [Validators.required]], // Dropdown based on platform options
-      MatGrpId: ['', [Validators.required]],
-      DeliveryDate: ['', [Validators.required]],
-      ProjJust: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(300),
-      ]),
-      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-      DurationType: new FormControl('', [Validators.required]),
-      workLocation: new FormControl([], [Validators.required]),
-
-
-      workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform
-
-      reAnnounced: [false, [Validators.required]], // Yes / No
-      cancellationReport: [''], // File upload if yes
-
-      siteVisitRequired: ['', [Validators.required]], // Yes / No
-      siteContactDetails: [''], // Conditional if yes
-
-      projectJustification: ['', [
-        Validators.required,
-        Validators.maxLength(500)
-      ]], // Project necessity and impact
-
-    });
+    requestStatus: ['', [Validators.required]],
+    estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    includeFrameworkItems: ['', [Validators.required]],
+    prequalificationRequired: [false, [Validators.required]],
+    qualificationReference: [''],
+    qualificationLink: [''],
+    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    dividedIntoLots: [false, [Validators.required]],
+    contractDuration: ['', [Validators.required]],
+    MatGrpId: ['', [Validators.required]],
+    DeliveryDate: ['', [Validators.required]],
+    ProjJust: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(300),
+    ]),
+    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+    DurationType: new FormControl('', [Validators.required]),
+    workLocation: new FormControl([], [Validators.required]),
+    workExecutionLocation: ['', [Validators.required]],
+    reAnnounced: [false, [Validators.required]],
+    cancellationReport: [''],
+    projectJustification: [
+      '',
+      [Validators.required, Validators.maxLength(500)],
+    ],
+  });
 
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
@@ -710,7 +696,6 @@ saveAsDraft(): void {
     //   }),
     //   TechReqEdit: this.fb.group({
     //     RfpNo: [''],
-    
     //     RfpVersion: [''],
     //     ItemNo: [{ value: '', disabled: true }],
     //     Descr: ['', [Validators.maxLength(600)]]
@@ -802,52 +787,73 @@ saveAsDraft(): void {
     }
   }
 
-  ngOnInit(): void {
-
-     this.showSiteVisit = !!this.rfpForm.get('requiresSiteVisit')?.value;
-  // sync validators initially
-  this.toggleSiteVisitValidators(this.showSiteVisit);
-  this.rfpForm.get('requiresSiteVisit')
-    ?.valueChanges
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((value: boolean) => {
-      this.showSiteVisit = !!value;
-      this.toggleSiteVisitValidators(this.showSiteVisit);
+ngOnInit(): void {
+  this.step1 = true;
+  this.boqList = this.rfpForm.get('billOFQty') as FormArray;
+  this.attList = this.rfpForm.get('Attachments') as FormArray;
+ 
+  // Dynamically update validators based on switch
+  this.rfpForm
+    .get('requiresSiteVisit')
+    ?.valueChanges.pipe(takeUntil(this.destroy$))
+    .subscribe((value) => {
+      this.toggleSiteVisitValidators(value);
     });
-
-  // Initial validation sync (in case it's prefilled)
-  this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
-
-    this.step1 = true;
-    this.boqList = this.rfpForm.get('billOFQty') as FormArray;
-    this.attList = this.rfpForm.get('Attachments') as FormArray;
-
-
-
-    let usernameBtoa = localStorage.getItem('ID')
-    console.log('userName', usernameBtoa)
-    if (usernameBtoa) {
-      this.userName = atob(usernameBtoa)
-      console.log(this.userName)
-    }
-    // this.loadLookUpData();  // afreen commented
-    this.toggleDescrValidatorTechEval()
-
-    combineLatest([
-      this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
-      this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.resetDeliveryDate();
-      });
-    this.listenDeliveryDateChange()
+ 
+  // Initial validation sync
+ this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+ 
+  let usernameBtoa = localStorage.getItem('ID');
+  if (usernameBtoa) {
+    this.userName = atob(usernameBtoa);
   }
-
- toggleSiteVisitValidators(requiresVisit: boolean): void {
+ 
+  this.toggleDescrValidatorTechEval();
+ 
+  combineLatest([
+    this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
+    this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
+  ])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      this.resetDeliveryDate();
+    });
+ 
+  this.listenDeliveryDateChange();
+}
+// async downloadSelectedForm(): Promise<void> { sampath commentted
+ //   if (!this.selectedFormKey) {
+//     this.cs.createMessage('warning', 'Please select a form first.');
+//     return;
+//   }
+ 
+//   const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+//   if (!form) {
+//     this.cs.createMessage('error', 'Selected form not found.');
+//     return;
+//   }
+ 
+//   const url = encodeURI(form.path); // handles spaces/special chars
+ 
+//   this.http.get(url, { responseType: 'blob' }).subscribe({
+//     next: (blob) => {
+//       const filename =
+//         form.filename ||
+//         (form.path.split('/').pop() ?? 'download.pdf');
+ 
+//       saveAs(blob, filename);
+//       this.cs.createMessage('success', 'Downloaded successfully.');
+//     },
+//     error: (err) => {
+//       console.error('Download failed:', err);
+//       this.cs.createMessage('error', 'Unable to download the selected form.');
+//     }
+//   });
+// }
+toggleSiteVisitValidators(requiresVisit: boolean): void {
   const emailControl = this.rfpForm.get('email');
   const contactControl = this.rfpForm.get('contactNumber');
-
+ 
   if (requiresVisit) {
     // When ON, make fields required
     emailControl?.setValidators([Validators.required, Validators.email]);
@@ -859,7 +865,7 @@ saveAsDraft(): void {
     emailControl?.clearValidators();
     contactControl?.clearValidators();
   }
-
+ 
   emailControl?.updateValueAndValidity();
   contactControl?.updateValueAndValidity();
 }
@@ -1203,7 +1209,7 @@ saveAsDraft(): void {
 
   /**
    * Update the Form Group based on the total estimated value.
-   * @param totalEstimatedPrice 
+   * @param totalEstimatedPrice
    */
   updateFormGroup(totalEstimatedPrice: number, totalEstimatedPriceVAT: number): void {
     //console.log("Total Estimated Price", totalEstimatedPrice);
@@ -1323,7 +1329,7 @@ saveAsDraft(): void {
 
   /**
  * Update the BOQ Table List
- * 
+ *
  */
   selectedBOQIndex: any = null;
 

@@ -1,3 +1,174 @@
+// .create__form__section {
+//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+//   padding: 20px;
+//   margin-bottom: 20px;
+//   width: 100%;
+//   border-top: 3px solid #41ad4f;
+//   border-radius: 5px;
+//   background-color: transparent;
+// }
+// ::ng-deep .ant-select-multiple .ant-select-selector {
+//   min-height: 32px !important; /* same height as other inputs */
+//   height: 32px !important;
+//   padding: 0 8px !important;
+//   display: flex;
+//   align-items: center;
+// }
+
+// ::ng-deep .ant-select-multiple .ant-select-selection-overflow {
+//   flex-wrap: nowrap !important; /* prevents tall wrapping */
+// }
+
+// ::ng-deep .ant-select-multiple .ant-select-selection-item {
+//   margin: 0 4px 0 0 !important;
+//   line-height: 24px !important;
+// }
+
+// ::ng-deep .cr-number-container {
+//   display: flex;
+//   flex-wrap: wrap;
+//   align-items: center;
+//   gap: 6px; /* spacing between fields */
+// }
+
+// ::ng-deep .cr-number-item {
+//   display: flex;
+//   align-items: center;
+// }
+
+
+
+// // toggle UI 
+
+// .toggle-field {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }
+
+// .toggle-label {
+//   font-weight: 500;
+//   color: #333;
+//   flex: 1;
+//   margin-right: 10px;
+//   white-space: normal;
+// }
+
+// ::ng-deep nz-switch {
+//   transform: scale(0.9);
+// }
+
+// @media (max-width: 768px) {
+//   .toggle-field {
+//     flex-direction: row;
+//     justify-content: space-between;
+//   }
+// }
+
+
+
+// //
+
+// // .cr-number-container {
+// //   display: flex;
+// //   flex-direction: column; /* stack inputs vertically */
+// //   gap: 8px;
+// // }
+ 
+// // .cr-number-item {
+// //   display: flex;
+// //   align-items: center;
+// //   gap: 6px;
+// // }
+
+
+
+
+
+
+// .create__form__section {
+//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+//   padding: 20px;
+//   margin-bottom: 20px;
+//   width: 100%;
+//   border-top: 3px solid #41ad4f;
+//   border-radius: 5px;
+//   background-color: transparent;
+// }
+
+// h6 {
+//   font-size: 1rem !important;
+// }
+
+// input {
+//   width: 100%;
+//   border: 1px solid #d9d9d9;
+//   height: 32px;
+//   padding: 9px;
+// }
+
+// input::selection {
+//   border-color: 1px solid #41ad4f;
+//   border: #41ad4f;
+//   padding: 9px;
+// }
+
+// .create_rfp_head {
+//   font-size: 18px;
+//   font-family: 'Roboto';
+//   font-weight: 600;
+// }
+
+// ::ng-deep .ant-collapse-content {
+//   background: #FCFCFC !important;
+// }
+
+// ::ng-deep .ant-collapse-header {
+//   background: #F1F1F1 !important;
+//   font-weight: 700;
+//   font-family: 'Roboto';
+// }
+
+// .boqbuttonDelete {
+//   // height: 26px;
+//   // width: 42px;
+//   color: red;
+//   border-color: red;
+// }
+
+// .boqbuttonEdit {
+//   // height: 26px;
+//   // width: 42px;
+//   color: #005c99;
+//   border-color: #005c99;
+// }
+
+// .addBtn {
+//   background: none !important;
+//   color: #005c99 !important;
+// }
+
+// .seperationLine {
+//   margin-top: 3%;
+//   background: #e9e9e9 !important;
+//   border: none;
+//   height: 2px;
+// }
+// .check{
+//   display: flex;
+//   justify-content: center;
+//   font-size: 17px;
+// }
+
+// .w-98 {
+//   width: 98%;
+// }
+
+// .posr-t-2 {
+//   position: relative;
+//   top: 2rem
+// }
+
 /* ========== Card / Section ========== */
 .create__form__section {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -8,7 +179,7 @@
   border-radius: 5px;
   background-color: transparent;
 }
-
+ 
 /* ========== Attachments card ========== */
 .attachment-body {
   background: #ffffff;
@@ -18,7 +189,7 @@
   padding: 18px;
   margin: 12px 0 28px;
 }
-
+ 
 /* ========== ROW 1: Select Form + Download button ========== */
 .attachment-row {
   display: flex;
@@ -28,7 +199,7 @@
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
-
+ 
 .field-label {
   display: block;
   font-size: 0.9rem;
@@ -36,17 +207,17 @@
   margin-bottom: 8px;
   font-weight: 600;
 }
-
+ 
 .attachment-select {
   flex: 1 1 70%;
   min-width: 240px;
 }
-
+ 
 .attachment-select nz-select {
   width: 100%;
   display: block;
 }
-
+ 
 /* DOWNLOAD BUTTON aligned beside select */
 .attachment-actions {
   flex: 0 0 auto;
@@ -55,7 +226,7 @@
   justify-content: flex-start;
   margin-top: 26px;
 }
-
+ 
 .download_button {
   background-color: #005c99 !important;
   color: #fff !important;
@@ -70,23 +241,23 @@
   gap: 8px;
   min-height: 38px;
 }
-
+ 
 .download_button:hover {
   background-color: #004b80 !important;
   box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
   transform: translateY(-1px);
 }
-
+ 
 .download_button:active {
   background-color: #003f6a !important;
   box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
   transform: translateY(1px);
 }
-
+ 
 .download_button span[nz-icon] {
   font-size: 16px;
 }
-
+ 
 /* ========== ROW 2: Upload section ========== */
 .section {
   display: flex;
@@ -95,7 +266,7 @@
   gap: 14px;
   margin-top: 14px;
 }
-
+ 
 /* Upload area — light background and border hover effect */
 .upload-area {
   position: relative;
@@ -115,7 +286,7 @@
   justify-content: center;
   align-items: center;
 }
-
+ 
 /* On hover — match attachment header grey and show subtle border */
 .upload-area:hover,
 .upload-area.dragover {
@@ -123,34 +294,34 @@
   border-color:#e9eef2;; /* blue accent on hover */
   // box-shadow: 0 0 0 3px rgba(35, 35, 36, 0.05);
 }
-
+ 
 /* Hide the real input, make whole area clickable */
 .upload-input {
   display: none;
 }
-
+ 
 .upload-content {
   pointer-events: none; /* ensure clicks reach parent */
 }
-
+ 
 .upload-content [nz-icon] {
   font-size: 42px;
   color: #0b6aa0;
   margin-bottom: 10px;
   transition: color 0.2s ease;
 }
-
+ 
 /* On hover, icon gets slightly dimmer for contrast */
 .upload-area:hover [nz-icon] {
   color: #777;
 }
-
+ 
 .upload-message {
   font-size: 1rem;
   font-weight: 600;
   color: #333;
 }
-
+ 
 .helper {
   display: block;
   font-size: 0.82rem;
@@ -167,7 +338,7 @@
   margin: 12px 0 0;
   padding: 0;
 }
-
+ 
 .uploaded-file-item {
   display: flex;
   align-items: center;
@@ -179,23 +350,23 @@
   margin-bottom: 6px; /* small margin between uploaded files */
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
-
+ 
 .uploaded-file-item:hover {
   background-color: #f5f8fb;
   box-shadow: 0 2px 6px rgba(11, 106, 160, 0.05);
 }
-
+ 
 .file-info {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
+ 
 .file-info [nz-icon] {
   color: #0b6aa0;
   font-size: 16px;
 }
-
+ 
 .file-name {
   font-size: 0.92rem;
   color: #333;
@@ -205,7 +376,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
+ 
 /* Delete icon inside each file */
 .delete-icon {
   color: #d9534f;
@@ -215,7 +386,7 @@
   border-radius: 4px;
   transition: background 0.15s ease, color 0.15s ease;
 }
-
+ 
 .delete-icon:hover {
   color: #b52b27;
   background: rgba(217, 83, 79, 0.08);
@@ -223,7 +394,7 @@
 /* Compact multiple-select styling so it matches other inputs */
 .compact-multi-select {
   width: 100%;
-
+ 
   /* override ng-zorro / ant styles to keep the control height compact */
   ::ng-deep .ant-select-selector {
     min-height: 36px !important;   /* match your input height */
@@ -232,12 +403,12 @@
     align-items: center;
     padding: 0 11px !important;
   }
-
+ 
   /* ensure placeholder vertically centered */
   ::ng-deep .ant-select-selection-placeholder {
     line-height: 38px !important;
   }
-
+ 
   /* contain tags in a single line and truncate overflowing text */
   ::ng-deep .ant-select-selection-overflow,
   ::ng-deep .ant-select-selection-overflow-item {
@@ -246,7 +417,7 @@
     max-width: 100%;
     overflow: hidden;
   }
-
+ 
   ::ng-deep .ant-select-selection-item,
   ::ng-deep .ant-select-selection-item-content {
     white-space: nowrap;
@@ -254,38 +425,23 @@
     text-overflow: ellipsis;
     max-width: 100%;
   }
-
+ 
   /* when nzMaxTagCount renders +N tag, make it small and centered */
   ::ng-deep .ant-select-selection-overflow-item-ellipsis {
     display: inline-flex;
     align-items: center;
     margin-left: 6px;
   }
-
+ 
   /* tweak tokens appearance slightly so they don't push height */
   ::ng-deep .ant-select-selection-overflow-item .ant-select-selection-item-remove {
     margin-left: 6px;
     margin-right: 2px;
   }
-  ::ng-deep .ant-switch-checked {
-  background-color: #0b6aa0 !important; /* your blue brand color */
-  border-color: #0b6aa0 !important;
 }
-
-/* Optional: style the switch thumb for a smoother look */
-::ng-deep .ant-switch {
-  box-shadow: none;
-  transition: all 0.2s ease;
-}
-
-::ng-deep .ant-switch:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(11, 106, 160, 0.2);
-}
-}
-
-
-
+ 
+ 
+ 
 /* ========== Responsive ========== */
 @media (max-width: 880px) {
   .attachment-row,
@@ -294,51 +450,70 @@
     gap: 12px;
     width: 100%;
   }
-
+ 
   .attachment-select,
   .upload-area {
     width: 100% !important;
     max-width: 100%;
   }
-
+ 
   .attachment-actions {
     margin-top: 0;
     justify-content: flex-start;
   }
-
+ 
   .upload-area {
     min-height: 140px;
   }
 }
-
+ 
 /* ========== Misc (form styling) ========== */
 h6 {
   font-size: 1rem !important;
 }
-
+ 
 input {
   width: 100%;
   border: 1px solid #d9d9d9;
   height: 32px;
   padding: 9px;
 }
-
+ 
 input::selection {
   background: rgba(65, 173, 79, 0.12);
 }
-
+ 
 .create_rfp_head {
   font-size: 18px;
   font-family: 'Roboto';
   font-weight: 600;
 }
-
+ 
 ::ng-deep .ant-collapse-content {
   background: #fcfcfc !important;
 }
-
+ 
 ::ng-deep .ant-collapse-header {
   background: #f1f1f1 !important;
   font-weight: 700;
   font-family: 'Roboto';
 }
+.cr-number-container {
+  display: flex;
+  flex-direction: column; /* stack inputs vertically */
+  gap: 8px;
+}
+
+.cr-number-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (min-width: 768px) {
+  .cr-number-container {
+    flex-direction: row; /* horizontally on wider screens */
+    flex-wrap: wrap;
+  }
+}
+
