@@ -500,8 +500,9 @@ input::selection {
 }
 .cr-number-container {
   display: flex;
-  flex-direction: column; /* stack inputs vertically */
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .cr-number-item {
@@ -510,11 +511,11 @@ input::selection {
   gap: 6px;
 }
 
-@media (min-width: 768px) {
-  .cr-number-container {
-    flex-direction: row; /* horizontally on wider screens */
-    flex-wrap: wrap;
-  }
+.cr-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
 }
 
 // Technical Committee member

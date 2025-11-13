@@ -535,19 +535,35 @@ saveAsDraft(): void {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
-  onActivityChange(selectedActivityId: string): void {
+ onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
-
+ 
     if (selectedActivityId === 'ACT_FAC') {
-      console.log('yes===')
-      this.rfpForm.get('prequalificationRequired')?.enable();
-      this.rfpForm.get('prequalificationRequired')?.setValue(true);
+      console.log('yes===');
+ 
+      // Force toggle ON and make it read-only
+      const prequalRequired = this.rfpForm.get('prequalificationRequired');
+      prequalRequired?.setValue(true, { emitEvent: false });
+      prequalRequired?.disable({ emitEvent: false });
+ 
+      // Make prequalificationDetails required
+      const prequalDetails = this.rfpForm.get('prequalificationDetails');
+      prequalDetails?.setValidators([Validators.required]);
+      prequalDetails?.updateValueAndValidity();
     } else {
-      this.rfpForm.get('prequalificationRequired')?.setValue(false);
+      // Allow toggle again and clear required validator
+      const prequalRequired = this.rfpForm.get('prequalificationRequired');
+      prequalRequired?.enable({ emitEvent: false });
+      prequalRequired?.setValue(false, { emitEvent: false });
+ 
+      const prequalDetails = this.rfpForm.get('prequalificationDetails');
+      prequalDetails?.clearValidators();
+      prequalDetails?.updateValueAndValidity();
     }
-
+ 
+ 
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
         (sub: any) => ({
@@ -560,11 +576,10 @@ saveAsDraft(): void {
     } else {
       this.filteredSubactivities = [];
     }
-
+ 
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
   }
-
  // Getter for easy access
   get members(): FormArray {
     return this.rfpForm.get('members') as FormArray;
@@ -626,6 +641,8 @@ saveAsDraft(): void {
     requiresSiteVisit: [false, [Validators.required]], // toggle
     email: new FormControl('', [Validators.email]),
     contactNumber: new FormControl(''),
+    projectRelaunched: [false, [Validators.required]], // toggle
+    number: new FormControl('', [Validators.min(1)]),
 
     requestStatus: ['', [Validators.required]],
     estimatedCost: ['', [Validators.required, Validators.min(1)]],
@@ -653,7 +670,7 @@ saveAsDraft(): void {
       [Validators.required, Validators.maxLength(500)],
     ],
     projectContinuous: [false, [Validators.required]],
-      projectRelaunched: [false, [Validators.required]],
+      //projectRelaunched: [false, [Validators.required]],
       // members: this.fb.array([this.createMemberRow()])
       members: this.fb.array(
         this.committeeMembers.map((m) =>
