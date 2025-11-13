@@ -239,4 +239,17 @@ h6 {
   height: 4rem;
   align-items: baseline;
 }
+ ::ng-deep .custom-spinner .spinner {
+  border-radius: 50%;          /* Makes the container circular */
+  width: 120px !important;     /* Adjust size as needed */
+  height: 120px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4); /* Optional: inner circular background */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
  
+::ng-deep .custom-spinner {
+  border-radius: 50%;
+}

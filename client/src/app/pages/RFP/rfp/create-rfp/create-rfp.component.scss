@@ -517,9 +517,8 @@ input::selection {
   }
 }
 
-
-// Technical Committee member 
-
+// Technical Committee member
+ 
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -528,7 +527,7 @@ input::selection {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
+ 
 .table th,
 .table td {
   padding: 10px 12px;
@@ -536,39 +535,38 @@ input::selection {
   border: 1px solid #e8e8e8;
   font-size: 14px;
 }
-
+ 
 .table th {
   background-color: #f5f5f5;
   font-weight: 600;
   color: #333;
 }
-
+ 
 .table input[nz-input] {
   width: 100%;
   border-radius: 4px;
   height: 34px;
   font-size: 14px;
 }
-
+ 
 button[nz-button] {
   font-size: 13px;
   padding: 2px 10px;
 }
-
+ 
 button[nzType="primary"] {
   margin-top: 10px;
 }
-
+ 
 .table tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
-
+ 
 .table tbody tr:hover {
   background-color: #f0f7ff;
 }
-
+ 
 .mt-2 {
   margin-top: 10px;
 }
-
-
+ 

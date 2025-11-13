@@ -481,9 +481,8 @@
     "Email for Site Visit":"Email",
     "ContactNumber for Site Visit":"ContactNumber",
     "Technical Committee Members":"Technical Committee Members",
-    "Is the project a continuous nature​":"Is the project a continuous nature​",
+    "Is the project a continuous nature":"Is the project a continuous nature",
     "Is the project being relaunched?":"Is the project being relaunched?"
-    
   },
   "COC": {
     "Create COC": "Create COC",
