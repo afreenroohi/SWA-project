@@ -571,3 +571,128 @@ button[nzType="primary"] {
   margin-top: 10px;
 }
  
+.cancellation-upload {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cancel-upload-box {
+  flex: 1;
+}
+
+
+/* Align upload area + trash button */
+/* ========== global styles (styles.scss) ========== */
+
+/* wrapper */
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  position: relative;
+}
+
+/* outer, input-like box */
+.upload-inline-box {
+  flex: 1;
+  position: relative;              /* important - for absolute content inside */
+  height: 44px !important;         /* match other inputs; tweak if needed */
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px;
+  background: #fff !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 220px;
+}
+
+/* Force NG-Zorro internal elements to be invisible and occupy full area */
+.upload-inline-box,
+.upload-inline-box .ant-upload,
+.upload-inline-box .ant-upload-drag,
+.upload-inline-box .ant-upload-drag-container {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove dashed inner pseudo-elements or dotted borders */
+.upload-inline-box .ant-upload-drag-container::before,
+.upload-inline-box .ant-upload-drag-container::after {
+  display: none !important;
+}
+
+/* Hide default internal icon/text */
+.upload-inline-box .ant-upload-drag-icon,
+.upload-inline-box .ant-upload-text,
+.upload-inline-box p,
+.upload-inline-box .ant-upload-drag-container > * {
+  display: none !important;
+}
+
+/* Our custom content absolutely placed inside the box */
+.upload-inline-content {
+  position: absolute;
+  left: 12px;                     /* padding from left inside the box */
+  right: 56px;                    /* leave room for trash button at right */
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;            /* vertical center */
+  gap: 10px;
+  pointer-events: auto;           /* allow clicks */
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* Icon & text styling */
+.upload-inline-icon {
+  font-size: 18px;
+  color: #0b6aa0;
+  line-height: 1;
+}
+.upload-inline-text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Trash button (right aligned) */
+.trash-btn {
+  border: 1px solid #d9534f;
+  color: #d9534f;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.trash-btn:hover {
+  background: rgba(217, 83, 79, 0.06);
+  border-color: #b52b27;
+  color: #b52b27;
+}
+
+/* small responsive tweak if the container is narrow */
+@media (max-width: 560px) {
+  .upload-inline-content { right: 48px; left: 8px; }
+  .upload-inline-text { font-size: 13px; }
+  .upload-inline-box { height: 40px !important; }
+}
