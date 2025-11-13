@@ -193,7 +193,7 @@
               </small>
             </div> -->
   <!-- * CR Number  -->
-            <div class="col-12 my-2" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+            <div class="col-12 my-2" *ngIf="isPrivateSelected">
   <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
 
   <div formArrayName="crNumber" class="cr-number-container">
@@ -459,6 +459,31 @@
               <nz-form-label>{{ "RFP.Previous Project Number" | translate}}</nz-form-label>
               <input nz-input placeholder="Enter Previous Project Number" formControlName="number" />
             </div>
+
+         <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
+  <nz-form-label>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
+
+  <div class="upload-row">
+    <nz-upload 
+      nzType="drag"
+      [nzBeforeUpload]="beforeUpload"
+      nzMultiple
+      nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+      class="upload-inline-box"
+    >
+      <div class="upload-inline-content">
+        <i nz-icon nzType="upload" class="upload-inline-icon"></i>
+        <span class="upload-inline-text">Click or drag files to upload</span>
+      </div>
+    </nz-upload>
+
+    <button nz-button nzType="default" nzShape="circle" class="trash-btn">
+      <i nz-icon nzType="delete"></i>
+    </button>
+  </div>
+</div>
+
+
 
             <!-- * coordinator number
             <div class="col-4 my-1">
