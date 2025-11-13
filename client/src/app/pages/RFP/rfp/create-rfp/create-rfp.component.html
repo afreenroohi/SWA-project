@@ -1,5 +1,3 @@
-
-
 <nz-drawer [nzClosable]="false" [nzVisible]="isSubCriteria || isSubCriteriaEdit" nzPlacement="right"
   (nzOnClose)="closeSubCriteria()" [nzTitle]="subCriteriaTitle" [nzFooter]="subCriteriaFooter" [nzWidth]="570">
   <ng-template #subCriteriaTitle>
@@ -348,16 +346,12 @@
               <nz-form-label nzRequired for="workLocation">
                 {{ "RFP.Work Execution Location" | translate }}
               </nz-form-label>
-              <nz-select formControlName="workLocation"
-             nzMode="multiple"
-             class="compact-multi-select"
-             style="width: 100%"
-             nzPlaceHolder="Select work locations"
-             [nzMaxTagCount]="3">
-    <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
-    <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
-    <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
-  </nz-select>
+              <nz-select formControlName="workLocation" nzMode="multiple" class="compact-multi-select"
+                style="width: 100%" nzPlaceHolder="Select work locations" [nzMaxTagCount]="3">
+                <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
+                <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
+                <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
+              </nz-select>
             </div>
 
             <!-- *coordinator name -->
@@ -366,7 +360,7 @@
               <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
             </div>
 
-              <!-- * coordinator number -->
+            <!-- * coordinator number -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
@@ -396,6 +390,67 @@
               </nz-form-control>
             </div>
 
+            <!-- * Technical Committee Members -->
+            <div class="col-12 my-3">
+              <nz-form-label nzRequired>
+                {{ "RFP.Technical Committee Members" | translate }}
+              </nz-form-label>
+
+              <table class="table table-bordered technical-table">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Extension No.</th>
+                    <th>Job Title</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody formArrayName="members">
+                  <tr *ngFor="let member of members.controls; let i = index" [formGroupName]="i">
+                    <td>
+                      <input nz-input formControlName="role" [disabled]="i < 3" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="name" placeholder="Enter name" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="extension" placeholder="Enter extension" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="jobTitle" placeholder="Enter job title" />
+                    </td>
+                    <td class="text-center">
+                      <!-- + icon -->
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                        [class.disabled]="members.length >= 5"></i>
+
+                      <!-- delete icon (only for optional members) -->
+                      <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
+                        *ngIf="i >= 3"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Is the project a continuous nature​ -->
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+                {{ "RFP.Is the project a continuous nature​" | translate }}
+              </label>
+              <nz-switch formControlName="projectContinuous"></nz-switch>
+            </div>
+
+            <!-- "Is the project being relaunched?" -->
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+                {{ "RFP.Is the project being relaunched?" | translate }}
+              </label>
+              <nz-switch formControlName="projectRelaunched"></nz-switch>
+            </div>
+
 
             <!-- * coordinator number
             <div class="col-4 my-1">
@@ -413,24 +468,24 @@
             </div> -->
 
             <!-- Does it require a site visit? -->
-          <div class="col-12 my-1">
-<label class="toggle-label">
-    {{ "RFP.requiresSiteVisit" | translate }}
-</label>
-<nz-switch formControlName="requiresSiteVisit"></nz-switch>
-</div>
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+                {{ "RFP.requiresSiteVisit" | translate }}
+              </label>
+              <nz-switch formControlName="requiresSiteVisit"></nz-switch>
+            </div>
 
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-<nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
-<input nz-input placeholder="Enter Email" formControlName="email" />
-</div>
+              <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Email" formControlName="email" />
+            </div>
 
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-<nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
-<input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
-</div>
+              <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
+            </div>
 
             <!-- prequalification  -->
             <div class="col-12 my-1 ">
@@ -441,7 +496,7 @@
                 formControlName="prequalificationRequired"></nz-switch>
             </div>
 
-             <!-- * Prequalification Details (show only if toggle is ON) -->
+            <!-- * Prequalification Details (show only if toggle is ON) -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
               <nz-form-label>Prequalification Number</nz-form-label>
               <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
@@ -762,115 +817,80 @@
 
           </div>
           <div class="row mt-2">
-  <div class="col-12 d-flex justify-content-end gap-2">
-    <!-- Save as draft -->
-    <button
-      nz-button
-      nzType="default"
-      nzSize="default"
-      class="mr-2"
-      (click)="saveAsDraft()"
-      [disabled]="!basicInfoValid"
-      title="Save as draft"
-    >
-      {{ 'RFP.SaveAs' | translate }}
-    </button>
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <!-- Save as draft -->
+              <button nz-button nzType="default" nzSize="default" class="mr-2" (click)="saveAsDraft()"
+                [disabled]="!basicInfoValid" title="Save as draft">
+                {{ 'RFP.SaveAs' | translate }}
+              </button>
 
-    <!-- Save & Continue (reveal attachments) -->
-    <button
-      nz-button
-      nzType="primary"
-      nzSize="default"
-      (click)="saveAndContinue()"
-      [disabled]="!basicInfoValid"
-      title="Save & Continue"
-    >
-      <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
-      Save & Continue
-    </button>
-  </div>
-</div>
+              <!-- Save & Continue (reveal attachments) -->
+              <button nz-button nzType="primary" nzSize="default" (click)="saveAndContinue()"
+                [disabled]="!basicInfoValid" title="Save & Continue">
+                <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
+                Save & Continue
+              </button>
+            </div>
+          </div>
         </nz-collapse-panel>
       </nz-collapse>
 
- 
-<nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-  <nz-collapse-panel nzActive="true" nzHeader="Attachments">
-    <div class="attachment-body">
 
-      <!-- ROW 1 — Select Form + Download button (same row) -->
-      <div class="attachment-row">
-        <div class="attachment-select">
-          <label class="field-label">Download a Template</label>
-          <nz-select
-            style="width: 100%"
-            nzPlaceHolder="Select Templates"
-            nzAllowClear
-            [(ngModel)]="selectedFormKey"
-            [ngModelOptions]="{ standalone: true }"
-          >
-            <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key"></nz-option>
-          </nz-select>
-        </div>
+      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+          <div class="attachment-body">
 
-        <!-- Download button sits on same horizontal row -->
-        <div class="attachment-actions">
-          <button
-            nz-button
-            nzType="default"
-            class="download_button"
-            (click)="downloadSelectedForm()"
-            [disabled]="!selectedFormKey"
-            title="Download selected form"
-          >
-            <i nz-icon nzType="download"></i>
-            <span class="ml-1">{{ 'RFP.Download' | translate }}</span>
-          </button>
-        </div>
-      </div>
+            <!-- ROW 1 — Select Form + Download button (same row) -->
+            <div class="attachment-row">
+              <div class="attachment-select">
+                <label class="field-label">Download a Template</label>
+                <nz-select style="width: 100%" nzPlaceHolder="Select Templates" nzAllowClear
+                  [(ngModel)]="selectedFormKey" [ngModelOptions]="{ standalone: true }">
+                  <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key"></nz-option>
+                </nz-select>
+              </div>
 
-      <!-- ROW 2 — Upload area (below the select row) -->
-       <label class="field-label">Upload</label>
-<div class="section" style="margin-top:12px">
-  <nz-upload
-    nzType="drag"
-    [nzBeforeUpload]="beforeUpload"
+              <!-- Download button sits on same horizontal row -->
+              <div class="attachment-actions">
+                <button nz-button nzType="default" class="download_button" (click)="downloadSelectedForm()"
+                  [disabled]="!selectedFormKey" title="Download selected form">
+                  <i nz-icon nzType="download"></i>
+                  <span class="ml-1">{{ 'RFP.Download' | translate }}</span>
+                </button>
+              </div>
+            </div>
 
-    nzMultiple
-    nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
-    class="upload-area"
-  >
-    <p class="ant-upload-drag-icon"><i nz-icon nzType="upload"></i></p>
-    <p class="upload-message">Click or drag files to upload</p>
-    <p class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</p>
-  </nz-upload>
+            <!-- ROW 2 — Upload area (below the select row) -->
+            <label class="field-label">Upload</label>
+            <div class="section" style="margin-top:12px">
+              <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
+                nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-area">
+                <p class="ant-upload-drag-icon"><i nz-icon nzType="upload"></i></p>
+                <p class="upload-message">Click or drag files to upload</p>
+                <p class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</p>
+              </nz-upload>
 
-  <!-- custom styled uploaded list -->
-  <ul class="custom-uploaded-list" *ngIf="fileList?.length">
-    <li *ngFor="let file of fileList" class="uploaded-file-item">
-      <div class="file-info">
-        <i nz-icon nzType="paper-clip"></i>
-        <span class="file-name" [title]="file.name">{{ file.name }}</span>
-      </div>
+              <!-- custom styled uploaded list -->
+              <ul class="custom-uploaded-list" *ngIf="fileList?.length">
+                <li *ngFor="let file of fileList" class="uploaded-file-item">
+                  <div class="file-info">
+                    <i nz-icon nzType="paper-clip"></i>
+                    <span class="file-name" [title]="file.name">{{ file.name }}</span>
+                  </div>
 
-      <a
-        nz-tooltip
-        nzTooltipTitle="Remove"
-        (click)="removeFile(file)"
-        class="delete-icon"
-      >
-        <i nz-icon nzType="delete"></i>
-      </a>
-    </li>
-  </ul>
-</div>
+                  <a nz-tooltip nzTooltipTitle="Remove" (click)="removeFile(file)" class="delete-icon">
+                    <i nz-icon nzType="delete"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
 
-     
 
-    </div>
-  </nz-collapse-panel>
-</nz-collapse>
+
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
 
 
       <!-- * Bill of Quantity -->
