@@ -14,7 +14,7 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
@@ -42,6 +42,9 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  directCompetitionId: any = null;
+limitedCompetitionId: any = null;
+ showInvite:boolean=false;
   userName: string = ''
   uploading = false;
   showAttachments = false;
@@ -57,18 +60,26 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = [
-  'contractType',
-  'competitionType',
-  'competitionName',
-  'estimatedCost',
-  'DurationType',
-  'ProjDur',
-  'workLocation',
-  'activity',
-  'subactivity'
+  private basicRequiredControls = ['contractType','competitionType','competitionName','estimatedCost','DurationType','ProjDur','workLocation','activity', 'subactivity'];
+  directPurchaseOptions = [
+  { value: 'below100k', label: 'Less than 100k' },
+  { value: 'Emergency', label: 'Emergency' },
+  { value: 'GovernmentToG', label: 'Government to Government' },
+  { value: 'oneSupplier', label: 'One Supplier' },
+  { value: 'sensitiveSecurity', label: 'Sensitive security project' }
 ];
 
+limitedOptions = [
+  { value: 'below500k', label: 'Less than 500k' },
+  { value: 'consultancyProject', label: 'Consultancy type of project' }
+];
+
+directPurchaseFiltered: Array<{value: string, label: string}> = [];
+limitedFiltered = [...this.limitedOptions];
+
+// threshold constant
+DIRECT_COST_THRESHOLD = 1_000_000;
+DIRECT_COST_THRESHOLD2=5000000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
     {
@@ -398,25 +409,28 @@ saveAsDraft(): void {
     // Reset both flags initially
     this.showDirectPurchaseField = false;
     this.showLimitedField = false;
-
+     this.showInvite=false;
     // Clear previous validators
     this.rfpForm.get('directPurchaseType')?.clearValidators();
     this.rfpForm.get('limitedType')?.clearValidators();
 
     // Handle Limited Competition
     if (value === 'L') {
-      this.showLimitedField = true;
+      console.log(this.showLimitedField)
+      // this.showLimitedField = true;
+      this.showInvite=true;
       this.isPrivateSelected = false;
-      this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
+      // this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
       this.rfpForm.get('invite')?.setValue('');
       this.rfpForm.get('estimatedCost')?.reset()
     }
 
     // Handle Direct Purchase
     if (value === 'D') {
-      this.showDirectPurchaseField = true;
+      // this.showDirectPurchaseField = true;
+        this.showInvite=true;
       this.rfpForm.get('crNumber')?.reset();
-      this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
+      // this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
     }
 
     // Update validation state
@@ -552,18 +566,57 @@ saveAsDraft(): void {
     this.rfpForm.patchValue({ subactivity: '' });
   }
 
-
+ // Getter for easy access
+  get members(): FormArray {
+    return this.rfpForm.get('members') as FormArray;
+  }
+ 
+  committeeMembers = [
+    { role: 'Project Director', name: '', jobTitle: '', extension: '' },
+    { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
+    { role: 'Committee Member', name: '', jobTitle: '', extension: '' },
+  ];
+ 
+ 
+  // Add new row Technical Committee Members
+  addMember(index: number): void {
+    if (this.members.length < 5) {
+      this.members.insert(index + 1, this.createMemberRow(''));
+    }
+  }
+ 
+  // Delete row
+  deleteMember(index: number): void {
+    if (index >= 3) {
+      this.members.removeAt(index);
+    }
+  }
+ 
+  // Create one row (form group)
+  createMemberRow(role = ''): FormGroup {
+    return this.fb.group({
+      role: [role, Validators.required],
+      name: ['', Validators.required],
+      extension: ['', Validators.required],
+      jobTitle: ['', Validators.required],
+    });
+  }
+ 
   /**
    * Builds the main for group for create RFP
    */
+
+
   buildMainFormGroup(): void {
   this.rfpForm = this.fb.group({
+    limitedType: new FormControl(''),    // for limited competition options
+    directPurchaseType: new FormControl('') ,// for direct purchase options
     invite: new FormControl('', [Validators.required]),
     crNumber: this.fb.array([this.fb.control('', Validators.required)]),
-    directPurchaseType: new FormControl('', [Validators.required]),
+   
     contractType: new FormControl('', [Validators.required]),
     competitionType: new FormControl('', [Validators.required]),
-    limitedType: new FormControl('', [Validators.required]),
+  
     prequalificationDetails: new FormControl('', [Validators.required]),
     coordinatorName: new FormControl('', [Validators.required]),
     coordinatorNumber: new FormControl('', [Validators.required]),
@@ -600,7 +653,21 @@ saveAsDraft(): void {
       '',
       [Validators.required, Validators.maxLength(500)],
     ],
+    projectContinuous: [false, [Validators.required]],
+      projectRelaunched: [false, [Validators.required]],
+      // members: this.fb.array([this.createMemberRow()])
+      members: this.fb.array(
+        this.committeeMembers.map((m) =>
+          this.fb.group({
+            role: [m.role, Validators.required],
+            name: ['', Validators.required],
+            extension: ['', Validators.required],
+            jobTitle: ['', Validators.required],
+          })
+        )
+      ),
   });
+  
 
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
@@ -791,6 +858,49 @@ ngOnInit(): void {
   this.step1 = true;
   this.boqList = this.rfpForm.get('billOFQty') as FormArray;
   this.attList = this.rfpForm.get('Attachments') as FormArray;
+  const compCtrl = this.rfpForm.get('competitionType')!;
+  const costCtrl = this.rfpForm.get('estimatedCost')!;
+
+   compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+    .subscribe(v => console.log('DBG competitionType emitted:', v));
+
+    // If competitionTypes is an array like [{ id: 'direct', value: 'Direct Purchase', valueAr: '...' }, ...]
+if (Array.isArray(this.competitionTypes)) {
+  const direct = this.competitionTypes.find(o => 
+    (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+    (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
+    (String(o.id).toLowerCase().includes('direct'))
+  );
+  const limited = this.competitionTypes.find(o =>
+    (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+    (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
+    (String(o.id).toLowerCase().includes('limited'))
+  );
+
+  this.directCompetitionId = direct ? direct.id : null;
+  this.limitedCompetitionId = limited ? limited.id : null;
+
+  // OPTIONAL debug to confirm what ids we detected:
+  console.log('DBG: directCompetitionId=', this.directCompetitionId, 'limitedCompetitionId=', this.limitedCompetitionId);
+}
+
+
+
+// debug so you can see exactly what competitionType emits (remove later)
+compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+  .subscribe(v => console.log('DBG competitionType emitted:', v));
+
+combineLatest([
+  compCtrl.valueChanges.pipe(startWith(compCtrl.value)),
+  costCtrl.valueChanges.pipe(startWith(costCtrl.value))
+])
+.pipe(takeUntil(this.destroy$))
+.subscribe(() => {
+  this.updatePurchaseVisibility();
+});
+
+// initial sync
+this.updatePurchaseVisibility();
  
   // Dynamically update validators based on switch
   this.rfpForm
@@ -820,7 +930,47 @@ ngOnInit(): void {
     });
  
   this.listenDeliveryDateChange();
+
+  
 }
+private isDirectCompetitionSelected(): boolean {
+  const compVal = this.rfpForm.get('competitionType')?.value;
+  if (compVal == null) return false;
+  // `compVal` may be id or object — normalize:
+  const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+  return this.directCompetitionId != null && String(val) === String(this.directCompetitionId);
+}
+
+private isLimitedCompetitionSelected(): boolean {
+  const compVal = this.rfpForm.get('competitionType')?.value;
+  if (compVal == null) return false;
+  const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+  return this.limitedCompetitionId != null && String(val) === String(this.limitedCompetitionId);
+}
+
+
+
+private updatePurchaseVisibility(): void {
+  const costVal = Number(this.rfpForm.get('estimatedCost')?.value) || 0;
+  const directSelected = this.isDirectCompetitionSelected();
+  const limitedSelected = this.isLimitedCompetitionSelected();
+
+  this.showDirectPurchaseField = directSelected && costVal >= this.DIRECT_COST_THRESHOLD;
+  this.showLimitedField = limitedSelected && costVal >= this.DIRECT_COST_THRESHOLD;
+
+  // Clear values when panels are hidden
+  if (!this.showDirectPurchaseField) {
+    const ctrl = this.rfpForm.get('directPurchaseType');
+    if (ctrl?.value) { ctrl.setValue(null); }
+  }
+  if (!this.showLimitedField) {
+    const ctrl = this.rfpForm.get('limitedType');
+    if (ctrl?.value) { ctrl.setValue(null); }
+  }
+}
+
+
+
 // async downloadSelectedForm(): Promise<void> { sampath commentted
  //   if (!this.selectedFormKey) {
 //     this.cs.createMessage('warning', 'Please select a form first.');

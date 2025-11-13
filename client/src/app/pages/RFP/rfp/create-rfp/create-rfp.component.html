@@ -111,7 +111,7 @@
           <div class="row w-100 my-2">
 
             <!-- * Type of project -->
-            <div class="col-4 my-1">
+            <!-- <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Type of Project" | translate }}</nz-form-label>
               <nz-form-control>
                 <nz-select formControlName="contractType" style="width: 100%" nzAllowClear>
@@ -123,7 +123,7 @@
                     rfpForm.controls.contractType.hasError('required')
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
-            </div>
+            </div> -->
             <!-- * Type of Competition -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Type of Competition" | translate }}</nz-form-label>
@@ -139,29 +139,41 @@
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>
-            <!-- * Limited Competition -->
-            <div class="col-4 my-1" *ngIf="showLimitedField">
-              <nz-form-label nzRequired for="limitedType">{{ "RFP.Limited Competition" | translate }}</nz-form-label>
-              <nz-select (ngModelChange)="onLimitedChange($event)" formControlName="directPurchaseType"
-                style="width: 100%">
-                <nz-option nzValue="below500k" nzLabel="Less than 500k"></nz-option>
-                <nz-option nzValue="consultancyProject" nzLabel="Consultancy type of project"></nz-option>
-              </nz-select>
+             <!-- * Estimated Cost -->
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
+              <input nz-input type="number" placeholder="Enter Estimated Cost" formControlName="estimatedCost" />
+              <small
+                *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+              <!-- Max Value Validation -->
+              <small *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('max') "
+                style="margin-top: 8px; color: red">
+                Value cannot be greater than {{this.costvalue}}
+              </small>
             </div>
-            <!-- * Direct Purchase -->
-            <div class="col-4 my-1" *ngIf="showDirectPurchaseField">
-              <nz-form-label nzRequired for="directType">{{ "RFP.Direct Purchase" | translate }}</nz-form-label>
-              <nz-select (ngModelChange)="onDirectPurchaseChange($event)" formControlName="directPurchaseType"
-                style="width: 100%">
-                <nz-option nzValue="below100k" nzLabel="Less than 100k"></nz-option>
-                <nz-option nzValue="Emergency" nzLabel="Emergency"></nz-option>
-                <nz-option nzValue="GovernmentToG" nzLabel="Government to Government"></nz-option>
-                <nz-option nzValue="oneSupplier" nzLabel="One Supplier"></nz-option>
-                <nz-option nzValue="sensitiveSecurity" nzLabel="Sensitive security project"></nz-option>
+           <!-- * Limited Competition -->
+<div class="col-4 my-1" *ngIf="showLimitedField">
+  <nz-form-label nzRequired for="limitedType">{{ "RFP.Limited Competition" | translate }}</nz-form-label>
+  <nz-select (ngModelChange)="onLimitedChange($event)" formControlName="limitedType" style="width: 100%">
+    <nz-option nzValue="below500k" nzLabel="Less than 500k"></nz-option>
+    <nz-option nzValue="consultancyProject" nzLabel="Consultancy type of project"></nz-option>
+  </nz-select>
+</div>
 
-              </nz-select>
-            </div>
-            <div class="col-4 my-1" *ngIf="showDirectPurchaseField || showLimitedField">
+<!-- * Direct Purchase -->
+<div class="col-4 my-1" *ngIf="showDirectPurchaseField">
+  <nz-form-label nzRequired for="directType">{{ "RFP.Direct Purchase" | translate }}</nz-form-label>
+  <nz-select (ngModelChange)="onDirectPurchaseChange($event)" formControlName="directPurchaseType" style="width: 100%">
+    <nz-option *ngFor="let o of directPurchaseFiltered" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+  </nz-select>
+</div>
+
+
+           <!-- * Invite -->
+            <div class="col-4 my-1" *ngIf="showInvite">
               <nz-form-label nzRequired for="uom">{{ "RFP.Invite" | translate }}</nz-form-label>
 
               <nz-form-control>
@@ -255,21 +267,7 @@
               <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
             </div>
 
-            <!-- * Estimated Cost -->
-            <div class="col-4 my-1">
-              <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
-              <input nz-input type="number" placeholder="Enter Estimated Cost" formControlName="estimatedCost" />
-              <small
-                *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('required') "
-                style="margin-top: 8px; color: red">
-                {{ 'RFP.FieldIsRequired' | translate }}
-              </small>
-              <!-- Max Value Validation -->
-              <small *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('max') "
-                style="margin-top: 8px; color: red">
-                Value cannot be greater than {{this.costvalue}}
-              </small>
-            </div>
+           
 
             <!--Duration Type-->
             <div class="col-4 my-1">
@@ -395,7 +393,66 @@
                 </nz-select>
               </nz-form-control>
             </div>
-
+      <!-- * Technical Committee Members -->
+            <div class="col-12 my-3">
+              <nz-form-label nzRequired>
+                {{ "RFP.Technical Committee Members" | translate }}
+              </nz-form-label>
+ 
+              <table class="table table-bordered technical-table">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Extension No.</th>
+                    <th>Job Title</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+ 
+                <tbody formArrayName="members">
+                  <tr *ngFor="let member of members.controls; let i = index" [formGroupName]="i">
+                    <td>
+                      <input nz-input formControlName="role" [disabled]="i < 3" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="name" placeholder="Enter name" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="extension" placeholder="Enter extension" />
+                    </td>
+                    <td>
+                      <input nz-input formControlName="jobTitle" placeholder="Enter job title" />
+                    </td>
+                    <td class="text-center">
+                      <!-- + icon -->
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                        [class.disabled]="members.length >= 5"></i>
+ 
+                      <!-- delete icon (only for optional members) -->
+                      <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
+                        *ngIf="i >= 3"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+ 
+            <!-- Is the project a continuous nature -->
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+                {{ "RFP.Is the project a continuous nature" | translate }}
+              </label>
+              <nz-switch formControlName="projectContinuous"></nz-switch>
+            </div>
+ 
+            <!-- "Is the project being relaunched?" -->
+            <div class="col-12 my-1">
+              <label class="toggle-label">
+              {{ "RFP.Is the project being relaunched?" | translate }}
+              </label>
+              <nz-switch formControlName="projectRelaunched"></nz-switch>
+            </div>
 
             <!-- * coordinator number
             <div class="col-4 my-1">
