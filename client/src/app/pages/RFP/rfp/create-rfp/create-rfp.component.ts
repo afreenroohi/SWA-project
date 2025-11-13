@@ -535,19 +535,19 @@ export class CreateRFPComponent implements OnInit {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
-  onActivityChange(selectedActivityId: string): void {
+ onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
-
+ 
     if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===');
-
+ 
       // Force toggle ON and make it read-only
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.setValue(true, { emitEvent: false });
       prequalRequired?.disable({ emitEvent: false });
-
+ 
       // Make prequalificationDetails required
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.setValidators([Validators.required]);
@@ -557,13 +557,13 @@ export class CreateRFPComponent implements OnInit {
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
       prequalRequired?.setValue(false, { emitEvent: false });
-
+ 
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.clearValidators();
       prequalDetails?.updateValueAndValidity();
     }
-
-
+ 
+ 
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
         (sub: any) => ({
@@ -576,12 +576,11 @@ export class CreateRFPComponent implements OnInit {
     } else {
       this.filteredSubactivities = [];
     }
-
+ 
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
   }
-
-  // Getter for easy access
+ // Getter for easy access
   get members(): FormArray {
     return this.rfpForm.get('members') as FormArray;
   }
@@ -632,44 +631,39 @@ export class CreateRFPComponent implements OnInit {
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
 
-      prequalificationDetails: new FormControl('', [Validators.required]),
-      coordinatorName: new FormControl('', [Validators.required]),
-      coordinatorNumber: new FormControl('', [Validators.required]),
+    requiresSiteVisit: [false, [Validators.required]], // toggle
+    email: new FormControl('', [Validators.email]),
+    contactNumber: new FormControl(''),
+    projectRelaunched: [false, [Validators.required]], // toggle
+    number: new FormControl('', [Validators.min(1)]),
 
-      activity: [''],
-      subactivity: [''],
-
-      requiresSiteVisit: [false, [Validators.required]], // toggle
-      email: new FormControl('', [Validators.email]),
-      contactNumber: new FormControl(''),
-
-      requestStatus: ['', [Validators.required]],
-      estimatedCost: ['', [Validators.required, Validators.min(1)]],
-      includeFrameworkItems: ['', [Validators.required]],
-      prequalificationRequired: [false, [Validators.required]],
-      qualificationReference: [''],
-      qualificationLink: [''],
-      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
-      dividedIntoLots: [false, [Validators.required]],
-      contractDuration: ['', [Validators.required]],
-      MatGrpId: ['', [Validators.required]],
-      DeliveryDate: ['', [Validators.required]],
-      ProjJust: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(300),
-      ]),
-      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-      DurationType: new FormControl('', [Validators.required]),
-      workLocation: new FormControl([], [Validators.required]),
-      workExecutionLocation: ['', [Validators.required]],
-      reAnnounced: [false, [Validators.required]],
-      cancellationReport: [''],
-      projectJustification: [
-        '',
-        [Validators.required, Validators.maxLength(500)],
-      ],
-      projectContinuous: [false, [Validators.required]],
-      projectRelaunched: [false, [Validators.required]],
+    requestStatus: ['', [Validators.required]],
+    estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    includeFrameworkItems: ['', [Validators.required]],
+    prequalificationRequired: [false, [Validators.required]],
+    qualificationReference: [''],
+    qualificationLink: [''],
+    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    dividedIntoLots: [false, [Validators.required]],
+    contractDuration: ['', [Validators.required]],
+    MatGrpId: ['', [Validators.required]],
+    DeliveryDate: ['', [Validators.required]],
+    ProjJust: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(300),
+    ]),
+    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+    DurationType: new FormControl('', [Validators.required]),
+    workLocation: new FormControl([], [Validators.required]),
+    workExecutionLocation: ['', [Validators.required]],
+    reAnnounced: [false, [Validators.required]],
+    cancellationReport: [''],
+    projectJustification: [
+      '',
+      [Validators.required, Validators.maxLength(500)],
+    ],
+    projectContinuous: [false, [Validators.required]],
+      //projectRelaunched: [false, [Validators.required]],
       // members: this.fb.array([this.createMemberRow()])
       members: this.fb.array(
         this.committeeMembers.map((m) =>
