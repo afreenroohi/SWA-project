@@ -96,7 +96,12 @@
 </nz-drawer>
 
 
-<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="large"
+  color="#1fcecb"
+  type="line-scale"
+></ngx-spinner>
 <div class="container-fluid">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
@@ -193,39 +198,43 @@
               </small>
             </div> -->
   <!-- * CR Number  -->
-            <div class="col-12 my-2" *ngIf="isPrivateSelected">
+<div class="col-12 my-2" *ngIf="isPrivateSelected">
   <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
 
   <div formArrayName="crNumber" class="cr-number-container">
-
-    <div *ngFor="let ctrl of crNumberArray.controls; let i = index"
-         [formGroupName]="i"
-         class="cr-number-item">
-
-      <input nz-input [formControlName]="null" placeholder="Enter CR Number" style="width: 150px;" />
+    <!-- iterate over controls, bind each by its index -->
+    <div *ngFor="let ctrl of crNumberArray.controls; let i = index" class="cr-number-item">
+      <!-- use the index as formControlName -->
+      <input nz-input [formControlName]="i" placeholder="Enter CR Number" style="width: 150px;" />
 
       <!-- Minus button -->
-      <button nz-button nzType="default" nzShape="circle" nzSize="default"
-              (click)="removeCrNumber(i)" *ngIf="crNumberArray.length > 1">
+      <button
+        nz-button nzType="default" nzShape="circle" nzSize="default"
+        (click)="removeCrNumber(i)"
+        *ngIf="crNumberArray.length > 1"
+        type="button"
+      >
         <i nz-icon nzType="minus"></i>
       </button>
-
     </div>
 
     <!-- Plus button -->
-    <button nz-button nzType="dashed" nzShape="circle" nzSize="default"
-            (click)="addCrNumber()" class="cr-add-btn">
+    <button
+      nz-button nzType="dashed" nzShape="circle" nzSize="default"
+      (click)="addCrNumber()"
+      class="cr-add-btn"
+      type="button"  
+    >
       <i nz-icon nzType="plus"></i>
     </button>
-
   </div>
 
   <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
          style="margin-top: 8px; color: red">
     {{ 'RFP.FieldIsRequired' | translate }}
   </small>
-
 </div>
+
 
 
             <!-- * CR Numbers (visible only if private is selected) -->
@@ -850,26 +859,32 @@
 
           </div>
           <div class="row mt-2">
-            <div class="col-12 d-flex justify-content-end gap-2">
-              <!-- Save as draft -->
-              <button nz-button nzType="default" nzSize="default" class="mr-2" (click)="saveAsDraft()"
-                [disabled]="!basicInfoValid" title="Save as draft">
-                {{ 'RFP.SaveAs' | translate }}
-              </button>
+  <div class="col-12 d-flex justify-content-end align-items-center gap-2">
 
-              <!-- Save & Continue (reveal attachments) -->
-              <button nz-button nzType="primary" nzSize="default" (click)="saveAndContinue()"
-                [disabled]="!basicInfoValid" title="Save & Continue">
-                <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
-                Save & Continue
-              </button>
-            </div>
-          </div>
+    <!-- Save as draft -->
+    <button nz-button nzType="default" nzSize="default"
+            (click)="saveAsDraft()"
+            [disabled]="!basicInfoValid"
+            title="Save as draft">
+      {{ 'RFP.SaveAs' | translate }}
+    </button>
+
+    <!-- Save & Continue -->
+    <button nz-button nzType="primary" nzSize="default"
+            (click)="saveAndContinue()"
+            [disabled]="!basicInfoValid"
+            title="Save & Continue">
+      Save & Continue
+    </button>
+
+  </div>
+</div>
+
         </nz-collapse-panel>
       </nz-collapse>
 
-
-      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+   <!-- * Attachments -->
+      <nz-collapse *ngIf="true" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzActive="true" nzHeader="Attachments">
           <div class="attachment-body">
 

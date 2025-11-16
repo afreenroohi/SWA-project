@@ -42,7 +42,7 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
-  directCompetitionId: any = null;
+directCompetitionId: any = null;
 limitedCompetitionId: any = null;
  showInvite:boolean=false;
   userName: string = ''
@@ -77,22 +77,63 @@ limitedOptions = [
 ];
 
 // threshold constant
-DIRECT_COST_THRESHOLD = 1_000_000;
-DIRECT_COST_THRESHOLD2=5000000;
+DIRECT_COST_THRESHOLD = 1_000_00;
+DIRECT_COST_THRESHOLD2=500000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
+   
     {
-      key: 'RFP_PDF_1',
-      label: 'RFP 1 (PDF)',
-      path: 'assets/forms/KaarTech_SWA_Technical Proposal.pdf',   // or rename and remove spaces
-      filename: 'KaarTech_SWA_Technical Proposal.pdf'
+      key: 'الشروط الخاصة المواد والمعدات',
+      label: 'الشروط الخاصة المواد والمعدات.docx',
+      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة المواد والمعدات.docx'
     },
     {
-      key: 'RFP_PDF_2',
-      label: 'RFP 2 (PDF)',
-      path: 'assets/forms/Personal Information Form.pdf',         // or rename and remove spaces
-      filename: 'Personal Information Form.pdf'
-    }
+      key: 'نموذج اتفاقية إطارية',
+      label: 'نموذج اتفاقية إطارية.docx',
+      path: 'assets/forms/نموذج اتفاقية إطارية.docx',         // or rename and remove spaces
+      filename: 'نموذج اتفاقية إطارية.docx'
+    },
+    {
+      key: 'الشروط الخاصة بالعمالة',
+      label: 'الشروط الخاصة بالعمالة.docx',
+      path: 'assets/forms/الشروط الخاصة بالعمالة.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة بالعمالة.docx'
+    },
+    {
+      key: 'الملحق الاسترشادي',
+      label: 'الملحق الاسترشادي.docx',
+      path: 'assets/forms/الملحق الاسترشادي.docx',         // or rename and remove spaces
+      filename: 'الملحق الاسترشادي.docx'
+    },
+    {
+      key: 'آلية تقديم العطاء وخطاب تقديم العروض',
+      label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx',         // or rename and remove spaces
+      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx'
+    },
+    {
+      key: 'شـهادة زيـارة الموقع 2024',
+      label: 'شـهادة زيـارة الموقع 2024.docx',
+      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx',         // or rename and remove spaces
+      filename: 'شـهادة زيـارة الموقع 2024.docx'
+    },
+    {
+      key: 'كيفية تنفيذ الأعمال والخدمات',
+      label: 'كيفية تنفيذ الأعمال والخدمات.docx',
+      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx',         // or rename and remove spaces
+      filename: 'كيفية تنفيذ الأعمال والخدمات.docx'
+    },
+    {
+      key: 'معايير تقييم العروض الفنية _',
+      label: 'معايير تقييم العروض الفنية _.docx',
+      path: 'assets/forms/معايير تقييم العروض الفنية _.docx',         // or rename and remove spaces
+      filename: 'معايير تقييم العروض الفنية _.docx'
+    },
+
+
+
+
   ];
 
   selectedFormKey: string | null = null;
@@ -507,18 +548,19 @@ saveAsDraft(): void {
     });
   }
   // easy getter for the FormArray
-  get crNumberArray() {
-    return this.rfpForm.get('crNumber') as FormArray;
-  }
+ get crNumberArray(): FormArray {
+  return this.rfpForm.get('crNumber') as FormArray;
+}
 
   // methods to add/remove
   addCrNumber() {
-    this.crNumberArray.push(this.fb.control('', Validators.required));
-  }
+  this.crNumberArray.push(this.fb.control('', Validators.required));
+}
 
-  removeCrNumber(index: number) {
-    this.crNumberArray.removeAt(index);
-  }
+removeCrNumber(index: number) {
+  this.crNumberArray.removeAt(index);
+}
+
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');

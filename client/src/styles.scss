@@ -246,3 +246,36 @@ html[dir="rtl"] {
     content: " *";
     color: red;
 }
+// /* Allow ngx-spinner to control show/hide. Don't force display or position. */
+// ngx-spinner,
+// ngx-spinner .spinner-overlay,
+// .ngx-spinner-overlay,
+// ngx-spinner .spinner {
+//   z-index: 999999; /* high, but do not force display/position */
+// }
+
+// /* Recommended overlay styling — uses the library's overlay element */
+// ngx-spinner .spinner-overlay,
+// .ngx-spinner-overlay {
+//   position: fixed;
+//   inset: 0; /* top:0; right:0; bottom:0; left:0 */
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: rgba(255,255,255,0.6); /* gentle mask */
+//   pointer-events: auto; /* overlay blocks interaction while visible */
+// }
+
+// /* spinner box itself */
+// ngx-spinner .spinner {
+//   /* keep default animation, only tweak size if you want */
+// }
+
+// /* When the spinner component is hidden, it should not block pointer events.
+//    The library usually removes/hides the overlay — but if you need a safety rule: */
+// ngx-spinner.ngx-hide .spinner-overlay,
+// ngx-spinner.ngx-hide .ngx-spinner-overlay {
+//   pointer-events: none;
+//   visibility: hidden;
+//   opacity: 0;
+// }

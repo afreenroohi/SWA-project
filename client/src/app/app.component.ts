@@ -95,6 +95,7 @@ export class AppComponent {
 
   // logoSrc = "assets/logo/mwan_logo.png";
   logoSrc = "assets/logo/swa-logo-dark.svg";
+  
 
   login() {
     this.oauthService.initLoginFlow();

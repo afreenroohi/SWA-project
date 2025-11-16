@@ -1,4 +1,9 @@
-<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="large"
+  color="#1fcecb"
+  type="line-scale" 
+></ngx-spinner>
  <!-- <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.8)"
   size="medium"
@@ -95,6 +100,7 @@
 
   
  <nz-header>
+  
     <div nz-row nzJustify="space-between" nzAlign="middle">
       <div nz-col nzSpan="12">
         <div nz-row nzAlign="middle">
@@ -104,9 +110,10 @@
             </a>
           </div>
           &nbsp; &nbsp;
-          <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')">
+          <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')" >
             <span> English</span>
           </button>
+          
  
           <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'en'" (click)="onChangeLang('ar')">
             <span> العربیة </span> &nbsp; &nbsp;
@@ -124,7 +131,8 @@
             </button>
             &nbsp; &nbsp;
           </ng-container>
- 
+       
+
           <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
               'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
             }" (click)="openUsrMdl()">
