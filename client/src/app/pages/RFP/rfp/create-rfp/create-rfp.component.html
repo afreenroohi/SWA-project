@@ -97,12 +97,7 @@
 
 
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
- <ngx-spinner
-  bdColor="rgba(51, 51, 51, 0.8)"
-  size="large"
-  color="#1fcecb"
-  type="line-scale"
-></ngx-spinner>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#1fcecb" type="line-scale"></ngx-spinner>
 <div class="container-fluid">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
@@ -432,14 +427,33 @@
                       <input nz-input formControlName="jobTitle" placeholder="Enter job title" />
                     </td>
                     <td class="text-center">
+
+                      <!-- Show ADD & DELETE buttons ONLY for the last row -->
+                      <ng-container *ngIf="i === members.length - 1">
+
+                        <!-- Add icon (only if rows < 5) -->
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                          [class.disabled]="members.length >= 5">
+                        </i>
+
+                        <!-- Delete icon (only if more than 3 rows exist) -->
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" *ngIf="members.length > 3"
+                          (click)="deleteMember(i)">
+                        </i>
+
+                      </ng-container>
+
+                    </td>
+
+                    <!-- <td class="text-center"> -->
                       <!-- + icon -->
-                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
-                        [class.disabled]="members.length >= 5"></i>
+                      <!-- <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                        [class.disabled]="members.length >= 5"></i> -->
 
                       <!-- delete icon (only for optional members) -->
-                      <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
+                      <!-- <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
                         *ngIf="i >= 3"></i>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -462,12 +476,12 @@
             </div>
 
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
-              <nz-form-label>{{ "RFP.Previous Project Number" | translate}}</nz-form-label>
+              <nz-form-label nzRequired>{{ "RFP.Previous Project Number" | translate}}</nz-form-label>
               <input nz-input placeholder="Enter Previous Project Number" formControlName="number" />
             </div>
 
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
-              <nz-form-label>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
+              <nz-form-label nzRequired>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
 
               <div class="upload-row">
                 <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
@@ -511,13 +525,13 @@
 
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-              <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
+              <nz-form-label nzRequired>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Email" formControlName="email" />
             </div>
 
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
-              <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
+              <nz-form-label nzRequired>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
             </div>
 
@@ -541,7 +555,8 @@
 
             <!-- * Project Justification -->
             <div class="col-12 my-1">
-              <nz-form-label>{{ "RFP.Project Justification / Necessity / Impact of Not Proceeding" | translate
+              <nz-form-label nzRequired>{{ "RFP.Project Justification / Necessity / Impact of Not Proceeding" |
+                translate
                 }}</nz-form-label>
               <textarea nz-input rows="3" placeholder="Describe the justification and impact..."
                 formControlName="projectJustification"></textarea>
@@ -873,7 +888,7 @@
       </nz-collapse>
 
       <!-- Attachments   *ngIf="showAttachments" -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzActive="true" nzHeader="Attachments">
           <div class="attachment-body">
 
