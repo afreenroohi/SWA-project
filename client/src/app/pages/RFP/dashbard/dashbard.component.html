@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 mt-2">
-            <form *ngIf="false" [formGroup]="repForm">
+            <form [formGroup]="repForm">
                 <div class="create__form__section">
                     <div class="row w-100 my-3 justify-content-center">
 
@@ -27,6 +27,16 @@
                         <!-- * RFP Number -->
                         <div class="col-12 col-md-4 mt-3">
                             <nz-form-label for="rfpNo">{{ 'RFP.RFP Number' | translate }}</nz-form-label>
+                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
+                            [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of rfpList" [nzValue]="o.RfpNo"
+                                    [nzLabel]="o.RfpNo"></nz-option>
+                            </nz-select>
+                        </div>
+
+                         <!-- * Pending with User -->
+                        <div class="col-12 col-md-4 mt-3">
+                            <nz-form-label for="rfpNo">{{ 'RFP.Pending with User' | translate }}</nz-form-label>
                             <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
                             [nzDisabled]="rfpList.length === 0">
                                 <nz-option *ngFor="let o of rfpList" [nzValue]="o.RfpNo"
