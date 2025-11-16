@@ -77,22 +77,59 @@ export class CreateRFPComponent implements OnInit {
   ];
 
   // threshold constant
-  DIRECT_COST_THRESHOLD = 1_000_000;
-  DIRECT_COST_THRESHOLD2 = 5000000;
+  DIRECT_COST_THRESHOLD = 1_000_00;
+  DIRECT_COST_THRESHOLD2 = 500000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
+   
     {
-      key: 'RFP_PDF_1',
-      label: 'RFP 1 (PDF)',
-      path: 'assets/forms/KaarTech_SWA_Technical Proposal.pdf',   // or rename and remove spaces
-      filename: 'KaarTech_SWA_Technical Proposal.pdf'
+      key: 'الشروط الخاصة المواد والمعدات',
+      label: 'الشروط الخاصة المواد والمعدات.docx',
+      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة المواد والمعدات.docx'
     },
     {
-      key: 'RFP_PDF_2',
-      label: 'RFP 2 (PDF)',
-      path: 'assets/forms/Personal Information Form.pdf',         // or rename and remove spaces
-      filename: 'Personal Information Form.pdf'
-    }
+      key: 'نموذج اتفاقية إطارية',
+      label: 'نموذج اتفاقية إطارية.docx',
+      path: 'assets/forms/نموذج اتفاقية إطارية.docx',         // or rename and remove spaces
+      filename: 'نموذج اتفاقية إطارية.docx'
+    },
+    {
+      key: 'الشروط الخاصة بالعمالة',
+      label: 'الشروط الخاصة بالعمالة.docx',
+      path: 'assets/forms/الشروط الخاصة بالعمالة.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة بالعمالة.docx'
+    },
+    {
+      key: 'الملحق الاسترشادي',
+      label: 'الملحق الاسترشادي.docx',
+      path: 'assets/forms/الملحق الاسترشادي.docx',         // or rename and remove spaces
+      filename: 'الملحق الاسترشادي.docx'
+    },
+    {
+      key: 'آلية تقديم العطاء وخطاب تقديم العروض',
+      label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx',         // or rename and remove spaces
+      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx'
+    },
+    {
+      key: 'شـهادة زيـارة الموقع 2024',
+      label: 'شـهادة زيـارة الموقع 2024.docx',
+      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx',         // or rename and remove spaces
+      filename: 'شـهادة زيـارة الموقع 2024.docx'
+    },
+    {
+      key: 'كيفية تنفيذ الأعمال والخدمات',
+      label: 'كيفية تنفيذ الأعمال والخدمات.docx',
+      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx',         // or rename and remove spaces
+      filename: 'كيفية تنفيذ الأعمال والخدمات.docx'
+    },
+    {
+      key: 'معايير تقييم العروض الفنية _',
+      label: 'معايير تقييم العروض الفنية _.docx',
+      path: 'assets/forms/معايير تقييم العروض الفنية _.docx',         // or rename and remove spaces
+      filename: 'معايير تقييم العروض الفنية _.docx'
+    },
   ];
 
   selectedFormKey: string | null = null;
@@ -535,19 +572,19 @@ export class CreateRFPComponent implements OnInit {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
- onActivityChange(selectedActivityId: string): void {
+  onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
- 
+
     if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===');
- 
+
       // Force toggle ON and make it read-only
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.setValue(true, { emitEvent: false });
       prequalRequired?.disable({ emitEvent: false });
- 
+
       // Make prequalificationDetails required
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.setValidators([Validators.required]);
@@ -557,13 +594,13 @@ export class CreateRFPComponent implements OnInit {
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
       prequalRequired?.setValue(false, { emitEvent: false });
- 
+
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.clearValidators();
       prequalDetails?.updateValueAndValidity();
     }
- 
- 
+
+
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
         (sub: any) => ({
@@ -576,11 +613,11 @@ export class CreateRFPComponent implements OnInit {
     } else {
       this.filteredSubactivities = [];
     }
- 
+
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
   }
- // Getter for easy access
+  // Getter for easy access
   get members(): FormArray {
     return this.rfpForm.get('members') as FormArray;
   }
@@ -631,38 +668,45 @@ export class CreateRFPComponent implements OnInit {
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
 
-    requiresSiteVisit: [false, [Validators.required]], // toggle
-    email: new FormControl('', [Validators.email]),
-    contactNumber: new FormControl(''),
-    projectRelaunched: [false, [Validators.required]], // toggle
-    number: new FormControl('', [Validators.min(1)]),
+      prequalificationDetails: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl('', [Validators.required]),
+      coordinatorNumber: new FormControl('', [Validators.required]),
 
-    requestStatus: ['', [Validators.required]],
-    estimatedCost: ['', [Validators.required, Validators.min(1)]],
-    includeFrameworkItems: ['', [Validators.required]],
-    prequalificationRequired: [false, [Validators.required]],
-    qualificationReference: [''],
-    qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
-    dividedIntoLots: [false, [Validators.required]],
-    contractDuration: ['', [Validators.required]],
-    MatGrpId: ['', [Validators.required]],
-    DeliveryDate: ['', [Validators.required]],
-    ProjJust: new FormControl('', [
-      Validators.required,
-      Validators.maxLength(300),
-    ]),
-    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-    DurationType: new FormControl('', [Validators.required]),
-    workLocation: new FormControl([], [Validators.required]),
-    workExecutionLocation: ['', [Validators.required]],
-    reAnnounced: [false, [Validators.required]],
-    cancellationReport: [''],
-    projectJustification: [
-      '',
-      [Validators.required, Validators.maxLength(500)],
-    ],
-    projectContinuous: [false, [Validators.required]],
+      activity: [''],
+      subactivity: [''],
+
+      requiresSiteVisit: [false, [Validators.required]], // toggle
+      email: new FormControl('', [Validators.email]),
+      contactNumber: new FormControl(''),
+      projectRelaunched: [false, [Validators.required]], // toggle
+      number: new FormControl('', [Validators.min(1)]),
+
+      requestStatus: ['', [Validators.required]],
+      estimatedCost: ['', [Validators.required, Validators.min(1)]],
+      includeFrameworkItems: ['', [Validators.required]],
+      prequalificationRequired: [false, [Validators.required]],
+      qualificationReference: [''],
+      qualificationLink: [''],
+      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+      dividedIntoLots: [false, [Validators.required]],
+      contractDuration: ['', [Validators.required]],
+      MatGrpId: ['', [Validators.required]],
+      DeliveryDate: ['', [Validators.required]],
+      ProjJust: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+      DurationType: new FormControl('', [Validators.required]),
+      workLocation: new FormControl([], [Validators.required]),
+      workExecutionLocation: ['', [Validators.required]],
+      reAnnounced: [false, [Validators.required]],
+      cancellationReport: [''],
+      projectJustification: [
+        '',
+        [Validators.required, Validators.maxLength(500)],
+      ],
+      projectContinuous: [false, [Validators.required]],
       //projectRelaunched: [false, [Validators.required]],
       // members: this.fb.array([this.createMemberRow()])
       members: this.fb.array(
@@ -675,6 +719,11 @@ export class CreateRFPComponent implements OnInit {
           })
         )
       ),
+
+      // scope of work
+      MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+      MemManagerName: new FormControl('', [Validators.required]),
+      SOP: new FormControl('', [Validators.required]),
     });
 
 
@@ -964,8 +1013,8 @@ export class CreateRFPComponent implements OnInit {
     const directSelected = this.isDirectCompetitionSelected();
     const limitedSelected = this.isLimitedCompetitionSelected();
 
-    this.showDirectPurchaseField = directSelected && costVal >= this.DIRECT_COST_THRESHOLD;
-    this.showLimitedField = limitedSelected && costVal >= this.DIRECT_COST_THRESHOLD;
+    this.showDirectPurchaseField = directSelected && costVal > this.DIRECT_COST_THRESHOLD;
+    this.showLimitedField = limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
 
     // Clear values when panels are hidden
     if (!this.showDirectPurchaseField) {

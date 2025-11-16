@@ -359,18 +359,6 @@
               </nz-select>
             </div>
 
-            <!-- *coordinator name -->
-            <div class="col-4 my-1">
-              <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
-            </div>
-
-            <!-- * coordinator number -->
-            <div class="col-4 my-1">
-              <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
-            </div>
-
             <!-- Activity Dropdown -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Activity" | translate }}</nz-form-label>
@@ -394,6 +382,19 @@
                 </nz-select>
               </nz-form-control>
             </div>
+
+            <!-- *coordinator name -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator Name" formControlName="coordinatorName" />
+            </div>
+
+            <!-- * coordinator number -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
+            </div>
+            
             <!-- * Technical Committee Members -->
             <div class="col-12 my-3">
               <nz-form-label nzRequired>
@@ -531,7 +532,7 @@
 
             <!-- * Prequalification Details (show only if toggle is ON) -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
-              <nz-form-label>Prequalification Number</nz-form-label>
+              <nz-form-label nzRequired>Prequalification Number</nz-form-label>
               <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
               <small
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
@@ -868,8 +869,8 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-
-      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+       <!-- Attachments   *ngIf="showAttachments" -->
+      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzActive="true" nzHeader="Attachments">
           <div class="attachment-body">
 
@@ -1308,7 +1309,8 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <!-- Scope of Work -->
+      <nz-collapse *ngIf="step2" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <!-- *ngIf="step2" -->
         <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
