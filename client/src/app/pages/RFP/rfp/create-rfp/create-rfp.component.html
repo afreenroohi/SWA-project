@@ -74,10 +74,37 @@
             </div>
 
             <!-- * CR Number (visible only if private is selected) -->
-            <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+            <!-- <div class="col-4 my-1" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
               <nz-form-label nzRequired for="crNumber">{{ "RFP.CR Number" | translate }}</nz-form-label>
               <input nz-input id="crNumber" placeholder="Enter CR Number" formControlName="crNumber" />
               <small *ngIf="rfpForm.controls.crNumber.touched && rfpForm.controls.crNumber.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+            </div> -->
+
+            <div class="col-12 my-2" *ngIf="isPrivateSelected && (showDirectPurchaseField || showLimitedField)">
+              <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+
+              <div formArrayName="crNumber" class="cr-number-container">
+                <div *ngFor="let ctrl of crNumberArray.controls; let i = index" [formGroupName]="i"
+                  class="cr-number-item">
+                  <input nz-input [formControlName]="null" placeholder="Enter CR Number"
+                    style="width: 150px; margin-bottom: 8px;" />
+
+                  <button nz-button nzType="default" nzShape="circle" nzSize="small" (click)="removeCrNumber(i)"
+                    *ngIf="crNumberArray.length > 1" style="margin-left: 5px;">
+                    <i nz-icon nzType="minus"></i>
+                  </button>
+                </div>
+
+                <button nz-button nzType="dashed" nzShape="circle" nzSize="small" (click)="addCrNumber()"
+                  style="margin-top: 5px;">
+                  <i nz-icon nzType="plus"></i>
+                </button>
+              </div>
+
+              <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
@@ -121,7 +148,7 @@
               </nz-select>
             </div> -->
 
-             <!-- * Competition Name -->
+            <!-- * Competition Name -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Competition Name" formControlName="competitionName" />
@@ -273,23 +300,24 @@
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
-            
+
             <!-- Does it require a site visit? -->
             <div class="col-12 my-1">
               <label class="toggle-label">
                 {{ "RFP.requiresSiteVisit" | translate }}
               </label>
-              <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
-              </nz-switch>
+              <!-- <nz-switch formControlName="requiresSiteVisit" (ngModelChange)="onSiteVisitChange($event)">
+              </nz-switch> -->
+              <nz-switch (ngModelChange)="test($event)" formControlName="requiresSiteVisit"></nz-switch>
             </div>
 
-             <!-- * Site Visit Contact Details -->
+            <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label>{{ "RFP.Email for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Email" formControlName="email" />
             </div>
 
-             <!-- * Site Visit Contact Details -->
+            <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label>{{ "RFP.ContactNumber for Site Visit" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter Contact Number" formControlName="contactNumber" />
@@ -297,12 +325,12 @@
 
             <!-- prequalification  -->
             <div class="col-12 my-1 ">
-                <label class="toggle-label">
-                  {{ "RFP.prequalificationRequired" | translate }}
-                </label>
-                <nz-switch (ngModelChange)="onPrequalificationChange($event)"
-                  formControlName="prequalificationRequired"></nz-switch>
-              </div>
+              <label class="toggle-label">
+                {{ "RFP.prequalificationRequired" | translate }}
+              </label>
+              <nz-switch (ngModelChange)="onPrequalificationChange($event)"
+                formControlName="prequalificationRequired"></nz-switch>
+            </div>
 
             <!-- * Project Justification -->
             <div class="col-12 my-1">
@@ -615,6 +643,59 @@
             </div> -->
 
           </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+
+          <div class="attachment-body">
+
+            <!-- ROW 1 — Select Form -->
+            <div class="attachment-row">
+              <div class="attachment-select">
+                <label class="field-label">Select an Attachment</label>
+
+                <nz-select style="width: 100%" nzPlaceHolder="Select attachment" nzAllowClear
+                  [(ngModel)]="selectedFormKey" [ngModelOptions]="{ standalone: true }">
+
+                  <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key">
+                  </nz-option>
+
+                </nz-select>
+              </div>
+            </div>
+
+            <!-- ROW 2 — Upload on left + Download on right -->
+            <!-- ROW 2 — Upload + Download Button -->
+            <!-- ROW 2 — Upload + Download Button -->
+            <div class="section">
+              <div class="upload-area">
+                <nz-upload #uploadRef [nzFileList]="fileList" [nzBeforeUpload]="beforeUpload" [nzRemove]="handleRemove"
+                  [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: true }" nzMultiple
+                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg">
+                  <button nz-button nzType="dashed" class="upload-btn">
+                    <span nz-icon nzType="upload"></span>
+                    <span class="ml-1"> Click or drag files to upload </span>
+                  </button>
+                </nz-upload>
+
+                <small class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</small>
+              </div>
+
+              <div class="attachment-actions">
+                <button nz-button nzType="default" class="download_button" (click)="downloadSelectedForm()">
+                  <i nz-icon nzType="download"></i>
+                  {{ 'RFP.Download' | translate }}
+                </button>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
         </nz-collapse-panel>
       </nz-collapse>
 

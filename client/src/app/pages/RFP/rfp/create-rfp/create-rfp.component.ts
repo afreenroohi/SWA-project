@@ -13,6 +13,9 @@ import {
   ValidatorFn,
   AbstractControl
 } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
@@ -52,6 +55,23 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
+
+  formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
+    {
+      key: 'RFP_PDF_1',
+      label: 'RFP 1 (PDF)',
+      path: 'assets/forms/KaarTech_SWA_Technical Proposal.pdf',   // or rename and remove spaces
+      filename: 'KaarTech_SWA_Technical Proposal.pdf'
+    },
+    {
+      key: 'RFP_PDF_2',
+      label: 'RFP 2 (PDF)',
+      path: 'assets/forms/Personal Information Form.pdf',         // or rename and remove spaces
+      filename: 'Personal Information Form.pdf'
+    }
+  ];
+
+  selectedFormKey: string | null = null;
 
   readonly IconList = IconList;
 
@@ -123,8 +143,8 @@ export class CreateRFPComponent implements OnInit {
   durationTypes = durationTypes;
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
-  activityList = activities; 
-  filteredSubactivities: any[] = []; 
+  activityList = activities;
+  filteredSubactivities: any[] = [];
 
   responseMessage: any;
   submitConfirmation: boolean = false;
@@ -165,7 +185,7 @@ export class CreateRFPComponent implements OnInit {
 
   managerSubId: string = '';
 
-  costvalue:any;
+  costvalue: any;
 
   editTotTechEval: boolean = true;
 
@@ -206,9 +226,10 @@ export class CreateRFPComponent implements OnInit {
     private currenyPipe: CommaSeparatePipe,
     private rfpService: RFPService,
     private modal: NzModalService,
+    private http: HttpClient
   ) {
     this.buildMainFormGroup();
-    console.log(activities,'activities====')
+    console.log(activities, 'activities====')
   }
 
 
@@ -319,14 +340,15 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below100k') {
-      this.costvalue = '100k'
+      this.costvalue = 100
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(99999)   // ⛔ max value 100
+        Validators.max(100)   // ⛔ max value 100
       ]);
     } else {
       estimatedCostControl?.clearValidators();
     }
+    
 
     estimatedCostControl?.updateValueAndValidity();
   }
@@ -335,10 +357,10 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below500k') {
-       this.costvalue = '500k'
+      this.costvalue = 500
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(499999)   // ⛔ max value 500
+        Validators.max(500)   // ⛔ max value 500
       ]);
     } else {
       estimatedCostControl?.clearValidators();
@@ -346,7 +368,35 @@ export class CreateRFPComponent implements OnInit {
 
     estimatedCostControl?.updateValueAndValidity();
   }
+  async downloadSelectedForm(): Promise<void> {
+    if (!this.selectedFormKey) {
+      this.cs.createMessage('warning', 'Please select a form first.');
+      return;
+    }
 
+    const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+    if (!form) {
+      this.cs.createMessage('error', 'Selected form not found.');
+      return;
+    }
+
+    const url = encodeURI(form.path); // handles spaces/special chars
+
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const filename =
+          form.filename ||
+          (form.path.split('/').pop() ?? 'download.pdf');
+
+        saveAs(blob, filename);
+        this.cs.createMessage('success', 'Downloaded successfully.');
+      },
+      error: (err) => {
+        console.error('Download failed:', err);
+        this.cs.createMessage('error', 'Unable to download the selected form.');
+      }
+    });
+  }
   // easy getter for the FormArray
   get crNumberArray() {
     return this.rfpForm.get('crNumber') as FormArray;
@@ -361,37 +411,37 @@ export class CreateRFPComponent implements OnInit {
     this.crNumberArray.removeAt(index);
   }
   onPrequalificationChange(value: boolean) {
-    console.log(value,'valueeeeeeeeeeee')
-  const detailsControl = this.rfpForm.get('prequalificationDetails');
-  if (value) {
-    detailsControl?.setValidators([Validators.required]);
-  } else {
-    detailsControl?.clearValidators();
-    detailsControl?.setValue('');
+    console.log(value, 'valueeeeeeeeeeee')
+    const detailsControl = this.rfpForm.get('prequalificationDetails');
+    if (value) {
+      detailsControl?.setValidators([Validators.required]);
+    } else {
+      detailsControl?.clearValidators();
+      detailsControl?.setValue('');
+    }
+    detailsControl?.updateValueAndValidity();
   }
-  detailsControl?.updateValueAndValidity();
-}
 
- onSiteVisitChange(value: boolean) {
-    console.log(value,'valueeeeeeeeeeee')
-}
+  test(value: boolean) {
+    console.log(value, 'valueeeeeeeeeeee')
+  }
 
- onActivityChange(selectedActivityId: string): void {
+  onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
-      (act:any) => act.id === selectedActivityId || act.value === selectedActivityId
+      (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
 
-    if(selectedActivityId === 'ACT_FAC'){
+    if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===')
-       this.rfpForm.get('prequalificationRequired')?.enable();
-       this.rfpForm.get('prequalificationRequired')?.setValue(true);
-    }else{
+      this.rfpForm.get('prequalificationRequired')?.enable();
+      this.rfpForm.get('prequalificationRequired')?.setValue(true);
+    } else {
       this.rfpForm.get('prequalificationRequired')?.setValue(false);
     }
 
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
-        (sub:any) => ({
+        (sub: any) => ({
           id: sub.id,
           name: sub.value,
           nameAr: sub.valueAr,
@@ -414,20 +464,20 @@ export class CreateRFPComponent implements OnInit {
     this.rfpForm = this.fb.group({
       // Basic Competition Info
       invite: new FormControl('', [Validators.required]),
-      crNumber: new FormControl('', [Validators.required]),
-      // crNumber: this.fb.array([this.fb.control('', Validators.required)]),
+      // crNumber: new FormControl('', [Validators.required]),
+      crNumber: this.fb.array([this.fb.control('', Validators.required)]),
       directPurchaseType: new FormControl('', [Validators.required]),
       contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
       limitedType: new FormControl('', [Validators.required]),
-      prequalificationDetails: new FormControl('',[Validators.required]),
-      coordinatorName: new FormControl('',[Validators.required]),
-      coordinatorNumber: new FormControl('',[Validators.required]),
+      prequalificationDetails: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl('', [Validators.required]),
+      coordinatorNumber: new FormControl('', [Validators.required]),
       activity: [''],
       subactivity: [''],
-      contactNumber: new FormControl('',[Validators.required]),
-      email: new FormControl('',[Validators.required]),
-      
+      contactNumber: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+
 
 
       // New Fields
@@ -466,6 +516,7 @@ export class CreateRFPComponent implements OnInit {
         Validators.required,
         Validators.maxLength(500)
       ]], // Project necessity and impact
+
     });
 
     // this.rfpForm = this.fb.group({
@@ -593,14 +644,43 @@ export class CreateRFPComponent implements OnInit {
     // });
   }
 
-
-
-
-
   beforeUpload = (file: NzUploadFile): boolean => {
-    this.fileList = this.fileList.concat(file);
-    return false;
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
+    const isAllowed = allowed.includes(ext);
+    const isLt10M = (file.size || 0) / 1024 / 1024 <= 10;
+
+    if (!isAllowed) {
+      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      return false;
+    }
+    if (!isLt10M) {
+      this.cs.createMessage('error', 'File must be 10MB or smaller.');
+      return false;
+    }
+
+    this.fileList = [...this.fileList, file]; // add to manual list
+    return false; // stop auto upload
   };
+
+  /** remove file when ✖ is clicked */
+  handleRemove = (file: NzUploadFile): boolean => {
+    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+    return true; // allow remove
+  };
+  removeFile(file: NzUploadFile): void {
+    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+  }
+
+
+
+
+
+
+  // beforeUpload = (file: NzUploadFile): boolean => {
+  //   this.fileList = this.fileList.concat(file);
+  //   return false;
+  // };
 
   setManagerList() {
     if (
