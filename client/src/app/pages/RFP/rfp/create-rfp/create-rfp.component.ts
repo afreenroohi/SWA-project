@@ -42,9 +42,9 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
-directCompetitionId: any = null;
-limitedCompetitionId: any = null;
- showInvite:boolean=false;
+  directCompetitionId: any = null;
+  limitedCompetitionId: any = null;
+  showInvite: boolean = false;
   userName: string = ''
   uploading = false;
   showAttachments = false;
@@ -60,25 +60,25 @@ limitedCompetitionId: any = null;
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = ['contractType','competitionType','competitionName','estimatedCost','DurationType','ProjDur','workLocation','activity', 'subactivity'];
+  private basicRequiredControls = [ 'competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
   directPurchaseOptions = [
-  // { value: 'below100k', label: 'Less than 100k' },
-  { value: 'Emergency', label: 'Emergency' },
-  { value: 'GovernmentToG', label: 'Government Contract​' },
-  { value: 'oneSupplier', label: 'One Supplier' },
-  { value: 'sensitiveSecurity', label: 'Sensitive security project' }
-];
+    // { value: 'below100k', label: 'Less than 100k' },
+    { value: 'Emergency', label: 'Emergency' },
+    { value: 'GovernmentToG', label: 'Government Contract​' },
+    { value: 'oneSupplier', label: 'One Supplier' },
+    { value: 'sensitiveSecurity', label: 'Sensitive security project' }
+  ];
 
-limitedOptions = [
-  // { value: 'below500k', label: 'Less than 500k' },
-  { value: 'urgent​', label: 'urgent​' },
-  { value: 'Except', label: 'Except' },
-  { value: 'Consultative​', label: 'Consultative​' }
-];
+  limitedOptions = [
+    // { value: 'below500k', label: 'Less than 500k' },
+    { value: 'urgent​', label: 'urgent​' },
+    { value: 'Except', label: 'Except' },
+    { value: 'Consultative​', label: 'Consultative​' }
+  ];
 
-// threshold constant
-DIRECT_COST_THRESHOLD = 1_000_00;
-DIRECT_COST_THRESHOLD2=500000;
+  // threshold constant
+  DIRECT_COST_THRESHOLD = 1_000_00;
+  DIRECT_COST_THRESHOLD2 = 500000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
    
@@ -130,10 +130,6 @@ DIRECT_COST_THRESHOLD2=500000;
       path: 'assets/forms/معايير تقييم العروض الفنية _.docx',         // or rename and remove spaces
       filename: 'معايير تقييم العروض الفنية _.docx'
     },
-
-
-
-
   ];
 
   selectedFormKey: string | null = null;
@@ -206,7 +202,7 @@ DIRECT_COST_THRESHOLD2=500000;
 
   dtypes = dtypes;
   durationTypes = durationTypes;
-  contractTypes = contractTypes;
+  // contractTypes = contractTypes;
   competitionTypes = competitionTypes;
   activityList = activities;
   filteredSubactivities: any[] = [];
@@ -296,90 +292,90 @@ DIRECT_COST_THRESHOLD2=500000;
     this.buildMainFormGroup();
     console.log(activities, 'activities====')
   }
-get basicInfoValid(): boolean {
-  if (!this.rfpForm) {
-    return false;
+  get basicInfoValid(): boolean {
+    if (!this.rfpForm) {
+      return false;
+    }
+
+    for (const name of this.basicRequiredControls) {
+      const ctrl = this.rfpForm.get(name);
+      if (!ctrl) {
+        return false; // missing control -> invalid
+      }
+      if (ctrl.invalid) {
+        return false; // invalid
+      }
+      const val = ctrl.value;
+      if (
+        val === null ||
+        val === undefined ||
+        (typeof val === 'string' && val.trim() === '') ||
+        (Array.isArray(val) && val.length === 0)
+      ) {
+        return false; // empty
+      }
+    }
+    return true;
   }
 
-  for (const name of this.basicRequiredControls) {
-    const ctrl = this.rfpForm.get(name);
-    if (!ctrl) {
-      return false; // missing control -> invalid
-    }
-    if (ctrl.invalid) {
-      return false; // invalid
-    }
-    const val = ctrl.value;
-    if (
-      val === null ||
-      val === undefined ||
-      (typeof val === 'string' && val.trim() === '') ||
-      (Array.isArray(val) && val.length === 0)
-    ) {
-      return false; // empty
+  /** mark basic controls touched so validation messages show */
+  private markBasicControlsTouched(): void {
+    for (const name of this.basicRequiredControls) {
+      const ctrl = this.rfpForm.get(name);
+      if (ctrl) {
+        ctrl.markAsTouched();
+        ctrl.updateValueAndValidity();
+      }
     }
   }
-  return true;
-}
 
-/** mark basic controls touched so validation messages show */
-private markBasicControlsTouched(): void {
-  for (const name of this.basicRequiredControls) {
-    const ctrl = this.rfpForm.get(name);
-    if (ctrl) {
-      ctrl.markAsTouched();
-      ctrl.updateValueAndValidity();
+  /** Save & Continue: validate basic info and reveal attachments */
+  saveAndContinue(): void {
+    this.markBasicControlsTouched();
+
+    if (!this.basicInfoValid) {
+      // your existing message service used elsewhere in the app
+      if (this.cs && typeof this.cs.createMessage === 'function') {
+        this.cs.createMessage('error', 'Please fill required basic information');
+      }
+      return;
     }
+
+    // optionally persist basic data before progressing (call API here if needed)
+    // this.saveBasicInfo();
+
+    // reveal attachments
+    this.showAttachments = false;
+    // or if using Option B:
+    // this.attachmentsActive = true;
+
+    // scroll to attachments smoothly
+    setTimeout(() => {
+      const el = document.querySelector('.attachment-body');
+      if (el) {
+        (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 10);
   }
-}
 
-/** Save & Continue: validate basic info and reveal attachments */
-saveAndContinue(): void {
-  this.markBasicControlsTouched();
+  /** Save as Draft: validate and call your draft logic */
+  saveAsDraft(): void {
+    this.markBasicControlsTouched();
 
-  if (!this.basicInfoValid) {
-    // your existing message service used elsewhere in the app
+    if (!this.basicInfoValid) {
+      if (this.cs && typeof this.cs.createMessage === 'function') {
+        this.cs.createMessage('error', 'Please fill required basic information to save as draft');
+      }
+      return;
+    }
+
+    // call your draft saving routine here (API request, local store etc.)
+    // this.saveDraftApi();
+
     if (this.cs && typeof this.cs.createMessage === 'function') {
-      this.cs.createMessage('error', 'Please fill required basic information');
+      this.cs.createMessage('success', 'Saved as draft');
     }
-    return;
   }
-
-  // optionally persist basic data before progressing (call API here if needed)
-  // this.saveBasicInfo();
-
-  // reveal attachments
-  this.showAttachments = true;
-  // or if using Option B:
-  // this.attachmentsActive = true;
-
-  // scroll to attachments smoothly
-  setTimeout(() => {
-    const el = document.querySelector('.attachment-body');
-    if (el) {
-      (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, 10);
-}
-
-/** Save as Draft: validate and call your draft logic */
-saveAsDraft(): void {
-  this.markBasicControlsTouched();
-
-  if (!this.basicInfoValid) {
-    if (this.cs && typeof this.cs.createMessage === 'function') {
-      this.cs.createMessage('error', 'Please fill required basic information to save as draft');
-    }
-    return;
-  }
-
-  // call your draft saving routine here (API request, local store etc.)
-  // this.saveDraftApi();
-
-  if (this.cs && typeof this.cs.createMessage === 'function') {
-    this.cs.createMessage('success', 'Saved as draft');
-  }
-}
 
   get initialSubCriteria() {
     return this.fb.group({
@@ -449,7 +445,7 @@ saveAsDraft(): void {
     // Reset both flags initially
     this.showDirectPurchaseField = false;
     this.showLimitedField = false;
-     this.showInvite=false;
+    this.showInvite = false;
     // Clear previous validators
     this.rfpForm.get('directPurchaseType')?.clearValidators();
     this.rfpForm.get('limitedType')?.clearValidators();
@@ -458,7 +454,7 @@ saveAsDraft(): void {
     if (value === 'L') {
       console.log(this.showLimitedField)
       // this.showLimitedField = true;
-      this.showInvite=true;
+      this.showInvite = true;
       this.isPrivateSelected = false;
       // this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
       this.rfpForm.get('invite')?.setValue('');
@@ -468,7 +464,7 @@ saveAsDraft(): void {
     // Handle Direct Purchase
     if (value === 'D') {
       // this.showDirectPurchaseField = true;
-        this.showInvite=true;
+      this.showInvite = true;
       this.rfpForm.get('crNumber')?.reset();
       // this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
     }
@@ -548,19 +544,18 @@ saveAsDraft(): void {
     });
   }
   // easy getter for the FormArray
- get crNumberArray(): FormArray {
-  return this.rfpForm.get('crNumber') as FormArray;
-}
+  get crNumberArray() {
+    return this.rfpForm.get('crNumber') as FormArray;
+  }
 
   // methods to add/remove
   addCrNumber() {
-  this.crNumberArray.push(this.fb.control('', Validators.required));
-}
+    this.crNumberArray.push(this.fb.control('', Validators.required));
+  }
 
-removeCrNumber(index: number) {
-  this.crNumberArray.removeAt(index);
-}
-
+  removeCrNumber(index: number) {
+    this.crNumberArray.removeAt(index);
+  }
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
@@ -577,19 +572,19 @@ removeCrNumber(index: number) {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
- onActivityChange(selectedActivityId: string): void {
+  onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
- 
+
     if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===');
- 
+
       // Force toggle ON and make it read-only
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.setValue(true, { emitEvent: false });
       prequalRequired?.disable({ emitEvent: false });
- 
+
       // Make prequalificationDetails required
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.setValidators([Validators.required]);
@@ -599,13 +594,13 @@ removeCrNumber(index: number) {
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
       prequalRequired?.setValue(false, { emitEvent: false });
- 
+
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.clearValidators();
       prequalDetails?.updateValueAndValidity();
     }
- 
- 
+
+
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
         (sub: any) => ({
@@ -618,36 +613,36 @@ removeCrNumber(index: number) {
     } else {
       this.filteredSubactivities = [];
     }
- 
+
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
   }
- // Getter for easy access
+  // Getter for easy access
   get members(): FormArray {
     return this.rfpForm.get('members') as FormArray;
   }
- 
+
   committeeMembers = [
     { role: 'Project Director', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
     { role: 'Committee Member', name: '', jobTitle: '', extension: '' },
   ];
- 
- 
+
+
   // Add new row Technical Committee Members
   addMember(index: number): void {
     if (this.members.length < 5) {
       this.members.insert(index + 1, this.createMemberRow(''));
     }
   }
- 
+
   // Delete row
   deleteMember(index: number): void {
     if (index >= 3) {
       this.members.removeAt(index);
     }
   }
- 
+
   // Create one row (form group)
   createMemberRow(role = ''): FormGroup {
     return this.fb.group({
@@ -657,61 +652,61 @@ removeCrNumber(index: number) {
       jobTitle: ['', Validators.required],
     });
   }
- 
+
   /**
    * Builds the main for group for create RFP
    */
 
 
   buildMainFormGroup(): void {
-  this.rfpForm = this.fb.group({
-    limitedType: new FormControl(''),    // for limited competition options
-    directPurchaseType: new FormControl('') ,// for direct purchase options
-    invite: new FormControl('', [Validators.required]),
-    crNumber: this.fb.array([this.fb.control('', Validators.required)]),
-   
-    contractType: new FormControl('', [Validators.required]),
-    competitionType: new FormControl('', [Validators.required]),
-  
-    prequalificationDetails: new FormControl('', [Validators.required]),
-    coordinatorName: new FormControl('', [Validators.required]),
-    coordinatorNumber: new FormControl('', [Validators.required]),
+    this.rfpForm = this.fb.group({
+      limitedType: new FormControl(''),    // for limited competition options
+      directPurchaseType: new FormControl(''),// for direct purchase options
+      invite: new FormControl('', [Validators.required]),
+      crNumber: this.fb.array([this.fb.control('', Validators.required)]),
 
-    activity: [''],
-    subactivity: [''],
+      // contractType: new FormControl('', [Validators.required]),
+      competitionType: new FormControl('', [Validators.required]),
 
-    requiresSiteVisit: [false, [Validators.required]], // toggle
-    email: new FormControl('', [Validators.email]),
-    contactNumber: new FormControl(''),
-    projectRelaunched: [false, [Validators.required]], // toggle
-    number: new FormControl('', [Validators.min(1)]),
+      prequalificationDetails: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl('', [Validators.required]),
+      coordinatorNumber: new FormControl('', [Validators.required]),
 
-    requestStatus: ['', [Validators.required]],
-    estimatedCost: ['', [Validators.required, Validators.min(1)]],
-    includeFrameworkItems: ['', [Validators.required]],
-    prequalificationRequired: [false, [Validators.required]],
-    qualificationReference: [''],
-    qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
-    dividedIntoLots: [false, [Validators.required]],
-    contractDuration: ['', [Validators.required]],
-    MatGrpId: ['', [Validators.required]],
-    DeliveryDate: ['', [Validators.required]],
-    ProjJust: new FormControl('', [
-      Validators.required,
-      Validators.maxLength(300),
-    ]),
-    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-    DurationType: new FormControl('', [Validators.required]),
-    workLocation: new FormControl([], [Validators.required]),
-    workExecutionLocation: ['', [Validators.required]],
-    reAnnounced: [false, [Validators.required]],
-    cancellationReport: [''],
-    projectJustification: [
-      '',
-      [Validators.required, Validators.maxLength(500)],
-    ],
-    projectContinuous: [false, [Validators.required]],
+      activity: [''],
+      subactivity: [''],
+
+      requiresSiteVisit: [false, [Validators.required]], // toggle
+      email: new FormControl('', [Validators.email]),
+      contactNumber: new FormControl(''),
+      projectRelaunched: [false, [Validators.required]], // toggle
+      number: new FormControl('', [Validators.min(1)]),
+
+      requestStatus: ['', [Validators.required]],
+      estimatedCost: ['', [Validators.required, Validators.min(1)]],
+      includeFrameworkItems: ['', [Validators.required]],
+      prequalificationRequired: [false, [Validators.required]],
+      qualificationReference: [''],
+      qualificationLink: [''],
+      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+      dividedIntoLots: [false, [Validators.required]],
+      contractDuration: ['', [Validators.required]],
+      MatGrpId: ['', [Validators.required]],
+      DeliveryDate: ['', [Validators.required]],
+      ProjJust: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+      DurationType: new FormControl('', [Validators.required]),
+      workLocation: new FormControl([], [Validators.required]),
+      workExecutionLocation: ['', [Validators.required]],
+      reAnnounced: [false, [Validators.required]],
+      cancellationReport: [''],
+      projectJustification: [
+        '',
+        [Validators.required, Validators.maxLength(500)],
+      ],
+      projectContinuous: [false, [Validators.required]],
       //projectRelaunched: [false, [Validators.required]],
       // members: this.fb.array([this.createMemberRow()])
       members: this.fb.array(
@@ -724,8 +719,13 @@ removeCrNumber(index: number) {
           })
         )
       ),
-  });
-  
+
+      // scope of work
+      MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+      MemManagerName: new FormControl('', [Validators.required]),
+      SOP: new FormControl('', [Validators.required]),
+    });
+
 
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
@@ -912,171 +912,171 @@ removeCrNumber(index: number) {
     }
   }
 
-ngOnInit(): void {
-  this.step1 = true;
-  this.boqList = this.rfpForm.get('billOFQty') as FormArray;
-  this.attList = this.rfpForm.get('Attachments') as FormArray;
-  const compCtrl = this.rfpForm.get('competitionType')!;
-  const costCtrl = this.rfpForm.get('estimatedCost')!;
+  ngOnInit(): void {
+    this.step1 = true;
+    this.boqList = this.rfpForm.get('billOFQty') as FormArray;
+    this.attList = this.rfpForm.get('Attachments') as FormArray;
+    const compCtrl = this.rfpForm.get('competitionType')!;
+    const costCtrl = this.rfpForm.get('estimatedCost')!;
 
-   compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
-    .subscribe(v => console.log('DBG competitionType emitted:', v));
+    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe(v => console.log('DBG competitionType emitted:', v));
 
     // If competitionTypes is an array like [{ id: 'direct', value: 'Direct Purchase', valueAr: '...' }, ...]
-if (Array.isArray(this.competitionTypes)) {
-  const direct = this.competitionTypes.find(o => 
-    (o.value && o.value.toString().toLowerCase().includes('direct')) ||
-    (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
-    (String(o.id).toLowerCase().includes('direct'))
-  );
-  const limited = this.competitionTypes.find(o =>
-    (o.value && o.value.toString().toLowerCase().includes('limited')) ||
-    (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
-    (String(o.id).toLowerCase().includes('limited'))
-  );
+    if (Array.isArray(this.competitionTypes)) {
+      const direct = this.competitionTypes.find(o =>
+        (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+        (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
+        (String(o.id).toLowerCase().includes('direct'))
+      );
+      const limited = this.competitionTypes.find(o =>
+        (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+        (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
+        (String(o.id).toLowerCase().includes('limited'))
+      );
 
-  this.directCompetitionId = direct ? direct.id : null;
-  this.limitedCompetitionId = limited ? limited.id : null;
+      this.directCompetitionId = direct ? direct.id : null;
+      this.limitedCompetitionId = limited ? limited.id : null;
 
-  // OPTIONAL debug to confirm what ids we detected:
-  console.log('DBG: directCompetitionId=', this.directCompetitionId, 'limitedCompetitionId=', this.limitedCompetitionId);
-}
+      // OPTIONAL debug to confirm what ids we detected:
+      console.log('DBG: directCompetitionId=', this.directCompetitionId, 'limitedCompetitionId=', this.limitedCompetitionId);
+    }
 
 
 
-// debug so you can see exactly what competitionType emits (remove later)
-compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
-  .subscribe(v => console.log('DBG competitionType emitted:', v));
+    // debug so you can see exactly what competitionType emits (remove later)
+    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe(v => console.log('DBG competitionType emitted:', v));
 
-combineLatest([
-  compCtrl.valueChanges.pipe(startWith(compCtrl.value)),
-  costCtrl.valueChanges.pipe(startWith(costCtrl.value))
-])
-.pipe(takeUntil(this.destroy$))
-.subscribe(() => {
-  this.updatePurchaseVisibility();
-});
+    combineLatest([
+      compCtrl.valueChanges.pipe(startWith(compCtrl.value)),
+      costCtrl.valueChanges.pipe(startWith(costCtrl.value))
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updatePurchaseVisibility();
+      });
 
-// initial sync
-this.updatePurchaseVisibility();
- 
-  // Dynamically update validators based on switch
-  this.rfpForm
-    .get('requiresSiteVisit')
-    ?.valueChanges.pipe(takeUntil(this.destroy$))
-    .subscribe((value) => {
-      this.toggleSiteVisitValidators(value);
-    });
- 
-  // Initial validation sync
- this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
- 
-  let usernameBtoa = localStorage.getItem('ID');
-  if (usernameBtoa) {
-    this.userName = atob(usernameBtoa);
+    // initial sync
+    this.updatePurchaseVisibility();
+
+    // Dynamically update validators based on switch
+    this.rfpForm
+      .get('requiresSiteVisit')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.toggleSiteVisitValidators(value);
+      });
+
+    // Initial validation sync
+    this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+
+    let usernameBtoa = localStorage.getItem('ID');
+    if (usernameBtoa) {
+      this.userName = atob(usernameBtoa);
+    }
+
+    this.toggleDescrValidatorTechEval();
+
+    combineLatest([
+      this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
+      this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.resetDeliveryDate();
+      });
+
+    this.listenDeliveryDateChange();
+
+
   }
- 
-  this.toggleDescrValidatorTechEval();
- 
-  combineLatest([
-    this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
-    this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
-  ])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(() => {
-      this.resetDeliveryDate();
-    });
- 
-  this.listenDeliveryDateChange();
-
-  
-}
-private isDirectCompetitionSelected(): boolean {
-  const compVal = this.rfpForm.get('competitionType')?.value;
-  if (compVal == null) return false;
-  // `compVal` may be id or object — normalize:
-  const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
-  return this.directCompetitionId != null && String(val) === String(this.directCompetitionId);
-}
-
-private isLimitedCompetitionSelected(): boolean {
-  const compVal = this.rfpForm.get('competitionType')?.value;
-  if (compVal == null) return false;
-  const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
-  return this.limitedCompetitionId != null && String(val) === String(this.limitedCompetitionId);
-}
-
-
-
-private updatePurchaseVisibility(): void {
-  const costVal = Number(this.rfpForm.get('estimatedCost')?.value) || 0;
-  const directSelected = this.isDirectCompetitionSelected();
-  const limitedSelected = this.isLimitedCompetitionSelected();
-
-  this.showDirectPurchaseField = directSelected && costVal >= this.DIRECT_COST_THRESHOLD;
-  this.showLimitedField = limitedSelected && costVal >= this.DIRECT_COST_THRESHOLD;
-
-  // Clear values when panels are hidden
-  if (!this.showDirectPurchaseField) {
-    const ctrl = this.rfpForm.get('directPurchaseType');
-    if (ctrl?.value) { ctrl.setValue(null); }
+  private isDirectCompetitionSelected(): boolean {
+    const compVal = this.rfpForm.get('competitionType')?.value;
+    if (compVal == null) return false;
+    // `compVal` may be id or object — normalize:
+    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+    return this.directCompetitionId != null && String(val) === String(this.directCompetitionId);
   }
-  if (!this.showLimitedField) {
-    const ctrl = this.rfpForm.get('limitedType');
-    if (ctrl?.value) { ctrl.setValue(null); }
+
+  private isLimitedCompetitionSelected(): boolean {
+    const compVal = this.rfpForm.get('competitionType')?.value;
+    if (compVal == null) return false;
+    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+    return this.limitedCompetitionId != null && String(val) === String(this.limitedCompetitionId);
   }
-}
 
 
 
-// async downloadSelectedForm(): Promise<void> { sampath commentted
- //   if (!this.selectedFormKey) {
-//     this.cs.createMessage('warning', 'Please select a form first.');
-//     return;
-//   }
- 
-//   const form = this.formOptions.find(f => f.key === this.selectedFormKey);
-//   if (!form) {
-//     this.cs.createMessage('error', 'Selected form not found.');
-//     return;
-//   }
- 
-//   const url = encodeURI(form.path); // handles spaces/special chars
- 
-//   this.http.get(url, { responseType: 'blob' }).subscribe({
-//     next: (blob) => {
-//       const filename =
-//         form.filename ||
-//         (form.path.split('/').pop() ?? 'download.pdf');
- 
-//       saveAs(blob, filename);
-//       this.cs.createMessage('success', 'Downloaded successfully.');
-//     },
-//     error: (err) => {
-//       console.error('Download failed:', err);
-//       this.cs.createMessage('error', 'Unable to download the selected form.');
-//     }
-//   });
-// }
-toggleSiteVisitValidators(requiresVisit: boolean): void {
-  const emailControl = this.rfpForm.get('email');
-  const contactControl = this.rfpForm.get('contactNumber');
- 
-  if (requiresVisit) {
-    // When ON, make fields required
-    emailControl?.setValidators([Validators.required, Validators.email]);
-    contactControl?.setValidators([Validators.required]);
-  } else {
-    // When OFF, clear values and remove validators
-    emailControl?.setValue('');
-    contactControl?.setValue('');
-    emailControl?.clearValidators();
-    contactControl?.clearValidators();
+  private updatePurchaseVisibility(): void {
+    const costVal = Number(this.rfpForm.get('estimatedCost')?.value) || 0;
+    const directSelected = this.isDirectCompetitionSelected();
+    const limitedSelected = this.isLimitedCompetitionSelected();
+
+    this.showDirectPurchaseField = directSelected && costVal > this.DIRECT_COST_THRESHOLD;
+    this.showLimitedField = limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
+
+    // Clear values when panels are hidden
+    if (!this.showDirectPurchaseField) {
+      const ctrl = this.rfpForm.get('directPurchaseType');
+      if (ctrl?.value) { ctrl.setValue(null); }
+    }
+    if (!this.showLimitedField) {
+      const ctrl = this.rfpForm.get('limitedType');
+      if (ctrl?.value) { ctrl.setValue(null); }
+    }
   }
- 
-  emailControl?.updateValueAndValidity();
-  contactControl?.updateValueAndValidity();
-}
+
+
+
+  // async downloadSelectedForm(): Promise<void> { sampath commentted
+  //   if (!this.selectedFormKey) {
+  //     this.cs.createMessage('warning', 'Please select a form first.');
+  //     return;
+  //   }
+
+  //   const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+  //   if (!form) {
+  //     this.cs.createMessage('error', 'Selected form not found.');
+  //     return;
+  //   }
+
+  //   const url = encodeURI(form.path); // handles spaces/special chars
+
+  //   this.http.get(url, { responseType: 'blob' }).subscribe({
+  //     next: (blob) => {
+  //       const filename =
+  //         form.filename ||
+  //         (form.path.split('/').pop() ?? 'download.pdf');
+
+  //       saveAs(blob, filename);
+  //       this.cs.createMessage('success', 'Downloaded successfully.');
+  //     },
+  //     error: (err) => {
+  //       console.error('Download failed:', err);
+  //       this.cs.createMessage('error', 'Unable to download the selected form.');
+  //     }
+  //   });
+  // }
+  toggleSiteVisitValidators(requiresVisit: boolean): void {
+    const emailControl = this.rfpForm.get('email');
+    const contactControl = this.rfpForm.get('contactNumber');
+
+    if (requiresVisit) {
+      // When ON, make fields required
+      emailControl?.setValidators([Validators.required, Validators.email]);
+      contactControl?.setValidators([Validators.required]);
+    } else {
+      // When OFF, clear values and remove validators
+      emailControl?.setValue('');
+      contactControl?.setValue('');
+      emailControl?.clearValidators();
+      contactControl?.clearValidators();
+    }
+
+    emailControl?.updateValueAndValidity();
+    contactControl?.updateValueAndValidity();
+  }
 
   listenDeliveryDateChange() {
     this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
