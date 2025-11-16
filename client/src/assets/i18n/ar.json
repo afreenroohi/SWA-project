@@ -464,8 +464,10 @@
     "Subactivity":"Subactivity",
     "Project Duration":"مدة المشروع",
     "Email for Site Visit": "البريد الإلكتروني للزيارة الميدانية",
-    "ContactNumber for Site Visit": "رقم الاتصال للزيارة الميدانية"
-
+    "ContactNumber for Site Visit": "رقم الاتصال للزيارة الميدانية",
+     "Technical Committee Members":"أعضاء اللجنة الفنية",
+    "Is the project a continuous nature":"هل المشروع ذو طابع مستمر؟",
+    "Is the project being relaunched?":"هل المشروع معاد طرحة؟"
 
   },
   "COC": {

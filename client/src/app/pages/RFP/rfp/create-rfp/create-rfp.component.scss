@@ -500,8 +500,9 @@ input::selection {
 }
 .cr-number-container {
   display: flex;
-  flex-direction: column; /* stack inputs vertically */
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .cr-number-item {
@@ -510,10 +511,188 @@ input::selection {
   gap: 6px;
 }
 
-@media (min-width: 768px) {
-  .cr-number-container {
-    flex-direction: row; /* horizontally on wider screens */
-    flex-wrap: wrap;
-  }
+.cr-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
 }
 
+// Technical Committee member
+ 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+ 
+.table th,
+.table td {
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid #e8e8e8;
+  font-size: 14px;
+}
+ 
+.table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+ 
+.table input[nz-input] {
+  width: 100%;
+  border-radius: 4px;
+  height: 34px;
+  font-size: 14px;
+}
+ 
+button[nz-button] {
+  font-size: 13px;
+  padding: 2px 10px;
+}
+ 
+button[nzType="primary"] {
+  margin-top: 10px;
+}
+ 
+.table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+ 
+.table tbody tr:hover {
+  background-color: #f0f7ff;
+}
+ 
+.mt-2 {
+  margin-top: 10px;
+}
+ 
+.cancellation-upload {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cancel-upload-box {
+  flex: 1;
+}
+
+
+/* Align upload area + trash button */
+/* ========== global styles (styles.scss) ========== */
+
+/* wrapper */
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  position: relative;
+}
+
+/* outer, input-like box */
+.upload-inline-box {
+  flex: 1;
+  position: relative;              /* important - for absolute content inside */
+  height: 44px !important;         /* match other inputs; tweak if needed */
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px;
+  background: #fff !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 220px;
+}
+
+/* Force NG-Zorro internal elements to be invisible and occupy full area */
+.upload-inline-box,
+.upload-inline-box .ant-upload,
+.upload-inline-box .ant-upload-drag,
+.upload-inline-box .ant-upload-drag-container {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove dashed inner pseudo-elements or dotted borders */
+.upload-inline-box .ant-upload-drag-container::before,
+.upload-inline-box .ant-upload-drag-container::after {
+  display: none !important;
+}
+
+/* Hide default internal icon/text */
+.upload-inline-box .ant-upload-drag-icon,
+.upload-inline-box .ant-upload-text,
+.upload-inline-box p,
+.upload-inline-box .ant-upload-drag-container > * {
+  display: none !important;
+}
+
+/* Our custom content absolutely placed inside the box */
+.upload-inline-content {
+  position: absolute;
+  left: 12px;                     /* padding from left inside the box */
+  right: 56px;                    /* leave room for trash button at right */
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;            /* vertical center */
+  gap: 10px;
+  pointer-events: auto;           /* allow clicks */
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* Icon & text styling */
+.upload-inline-icon {
+  font-size: 18px;
+  color: #0b6aa0;
+  line-height: 1;
+}
+.upload-inline-text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Trash button (right aligned) */
+.trash-btn {
+  border: 1px solid #d9534f;
+  color: #d9534f;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.trash-btn:hover {
+  background: rgba(217, 83, 79, 0.06);
+  border-color: #b52b27;
+  color: #b52b27;
+}
+
+/* small responsive tweak if the container is narrow */
+@media (max-width: 560px) {
+  .upload-inline-content { right: 48px; left: 8px; }
+  .upload-inline-text { font-size: 13px; }
+  .upload-inline-box { height: 40px !important; }
+}
