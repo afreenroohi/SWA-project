@@ -193,6 +193,7 @@
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
             </div> -->
+
             <!-- * CR Number  -->
             <div class="col-12 my-2" *ngIf="isPrivateSelected">
               <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
@@ -868,7 +869,11 @@
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
 
-              <button nz-button nzType="default" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
+              <!-- <button nz-button nzType="default" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
+                Save As Draft
+              </button> -->
+
+              <button nz-button nzType="primary" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
                 Save As Draft
               </button>
 

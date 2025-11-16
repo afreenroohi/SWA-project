@@ -547,12 +547,12 @@ export class CreateRFPComponent implements OnInit {
   get crNumberArray() {
     return this.rfpForm.get('crNumber') as FormArray;
   }
-
+ 
   // methods to add/remove
   addCrNumber() {
     this.crNumberArray.push(this.fb.control('', Validators.required));
   }
-
+ 
   removeCrNumber(index: number) {
     this.crNumberArray.removeAt(index);
   }

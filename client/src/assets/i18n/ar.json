@@ -467,7 +467,9 @@
     "ContactNumber for Site Visit": "رقم الاتصال للزيارة الميدانية",
      "Technical Committee Members":"أعضاء اللجنة الفنية",
     "Is the project a continuous nature":"هل المشروع ذو طابع مستمر؟",
-    "Is the project being relaunched?":"هل المشروع معاد طرحة؟"
+    "Is the project being relaunched?":"هل المشروع معاد طرحة؟",
+    "Purchase Request Number":"رقم طلب الشراء",
+    "Pending with User":"قيد الانتظار لدى المستخدم"
 
   },
   "COC": {

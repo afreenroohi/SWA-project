@@ -484,7 +484,9 @@
     "Is the project a continuous nature":"Is the project a continuous nature",
     "Is the project being relaunched?":"Is the project being relaunched?",
     "Previous Project Number":"Previous Project Number",
-    "Cancellation documents":"Cancellation documents"
+    "Cancellation documents":"Cancellation documents",
+    "Purchase Request Number":"Purchase Request Number",
+    "Pending with User":"Pending with User"
   },
   "COC": {
     "Create COC": "Create COC",
