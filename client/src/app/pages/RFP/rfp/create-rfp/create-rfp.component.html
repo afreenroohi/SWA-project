@@ -96,7 +96,13 @@
 </nz-drawer>
 
 
-<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
+ <ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="large"
+  color="#1fcecb"
+  type="line-scale"
+></ngx-spinner>
 <div class="container-fluid">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
@@ -192,40 +198,39 @@
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
             </div> -->
-  <!-- * CR Number  -->
+            <!-- * CR Number  -->
             <div class="col-12 my-2" *ngIf="isPrivateSelected">
-  <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+              <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
 
-  <div formArrayName="crNumber" class="cr-number-container">
+              <div formArrayName="crNumber" class="cr-number-container">
 
-    <div *ngFor="let ctrl of crNumberArray.controls; let i = index"
-         [formGroupName]="i"
-         class="cr-number-item">
+                <div *ngFor="let ctrl of crNumberArray.controls; let i = index" [formGroupName]="i"
+                  class="cr-number-item">
 
-      <input nz-input [formControlName]="null" placeholder="Enter CR Number" style="width: 150px;" />
+                  <input nz-input [formControlName]="null" placeholder="Enter CR Number" style="width: 150px;" />
 
-      <!-- Minus button -->
-      <button nz-button nzType="default" nzShape="circle" nzSize="default"
-              (click)="removeCrNumber(i)" *ngIf="crNumberArray.length > 1">
-        <i nz-icon nzType="minus"></i>
-      </button>
+                  <!-- Minus button -->
+                  <button nz-button nzType="default" nzShape="circle" nzSize="default" (click)="removeCrNumber(i)"
+                    *ngIf="crNumberArray.length > 1">
+                    <i nz-icon nzType="minus"></i>
+                  </button>
 
-    </div>
+                </div>
 
-    <!-- Plus button -->
-    <button nz-button nzType="dashed" nzShape="circle" nzSize="default"
-            (click)="addCrNumber()" class="cr-add-btn">
-      <i nz-icon nzType="plus"></i>
-    </button>
+                <!-- Plus button -->
+                <button nz-button nzType="dashed" nzShape="circle" nzSize="default" (click)="addCrNumber()"
+                  class="cr-add-btn">
+                  <i nz-icon nzType="plus"></i>
+                </button>
 
-  </div>
+              </div>
 
-  <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
-         style="margin-top: 8px; color: red">
-    {{ 'RFP.FieldIsRequired' | translate }}
-  </small>
+              <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
 
-</div>
+            </div>
 
 
             <!-- * CR Numbers (visible only if private is selected) -->
@@ -394,7 +399,7 @@
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
               <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
             </div>
-            
+
             <!-- * Technical Committee Members -->
             <div class="col-12 my-3">
               <nz-form-label nzRequired>
@@ -461,28 +466,23 @@
               <input nz-input placeholder="Enter Previous Project Number" formControlName="number" />
             </div>
 
-         <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
-  <nz-form-label>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
+            <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
+              <nz-form-label>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
 
-  <div class="upload-row">
-    <nz-upload 
-      nzType="drag"
-      [nzBeforeUpload]="beforeUpload"
-      nzMultiple
-      nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
-      class="upload-inline-box"
-    >
-      <div class="upload-inline-content">
-        <i nz-icon nzType="upload" class="upload-inline-icon"></i>
-        <span class="upload-inline-text">Click or drag files to upload</span>
-      </div>
-    </nz-upload>
+              <div class="upload-row">
+                <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
+                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box">
+                  <div class="upload-inline-content">
+                    <i nz-icon nzType="upload" class="upload-inline-icon"></i>
+                    <span class="upload-inline-text">Click or drag files to upload</span>
+                  </div>
+                </nz-upload>
 
-    <button nz-button nzType="default" nzShape="circle" class="trash-btn">
-      <i nz-icon nzType="delete"></i>
-    </button>
-  </div>
-</div>
+                <button nz-button nzType="default" nzShape="circle" class="trash-btn">
+                  <i nz-icon nzType="delete"></i>
+                </button>
+              </div>
+            </div>
 
 
 
@@ -869,8 +869,8 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-       <!-- Attachments   *ngIf="showAttachments" -->
-      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <!-- Attachments   *ngIf="showAttachments" -->
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel nzActive="true" nzHeader="Attachments">
           <div class="attachment-body">
 
