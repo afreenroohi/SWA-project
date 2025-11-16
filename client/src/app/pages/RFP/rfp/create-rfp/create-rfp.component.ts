@@ -60,7 +60,7 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = ['contractType', 'competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+  private basicRequiredControls = [ 'competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
   directPurchaseOptions = [
     // { value: 'below100k', label: 'Less than 100k' },
     { value: 'Emergency', label: 'Emergency' },
@@ -666,12 +666,12 @@ export class CreateRFPComponent implements OnInit {
       invite: new FormControl('', [Validators.required]),
       crNumber: this.fb.array([this.fb.control('', Validators.required)]),
 
-      contractType: new FormControl('', [Validators.required]),
+      // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
 
       prequalificationDetails: new FormControl('', [Validators.required]),
-      coordinatorName: new FormControl('', [Validators.required]),
-      coordinatorNumber: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl(''),
+      coordinatorNumber: new FormControl(''),
 
       activity: [''],
       subactivity: [''],

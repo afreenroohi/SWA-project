@@ -446,12 +446,12 @@
                     </td>
 
                     <!-- <td class="text-center"> -->
-                      <!-- + icon -->
-                      <!-- <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                    <!-- + icon -->
+                    <!-- <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
                         [class.disabled]="members.length >= 5"></i> -->
 
-                      <!-- delete icon (only for optional members) -->
-                      <!-- <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
+                    <!-- delete icon (only for optional members) -->
+                    <!-- <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
                         *ngIf="i >= 3"></i>
                     </td> -->
                   </tr>
@@ -866,17 +866,14 @@
 
           </div>
           <div class="row mt-2">
-            <div class="col-12 d-flex justify-content-end gap-2">
-              <!-- Save as draft -->
-              <button nz-button nzType="default" nzSize="default" class="mr-2" (click)="saveAsDraft()"
-                [disabled]="!basicInfoValid" title="Save as draft">
-                {{ 'RFP.SaveAs' | translate }}
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+
+              <button nz-button nzType="default" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
+                Save As Draft
               </button>
 
-              <!-- Save & Continue (reveal attachments) -->
               <button nz-button nzType="primary" nzSize="default" (click)="saveAndContinue()"
-                [disabled]="!basicInfoValid" title="Save & Continue">
-                <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
+                [disabled]="!basicInfoValid">
                 Save & Continue
               </button>
             </div>
