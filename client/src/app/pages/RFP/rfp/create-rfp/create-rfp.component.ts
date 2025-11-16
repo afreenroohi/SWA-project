@@ -71,7 +71,7 @@ export class CreateRFPComponent implements OnInit {
 
   limitedOptions = [
     // { value: 'below500k', label: 'Less than 500k' },
-    { value: 'urgent​', label: 'urgent​' },
+    { value: 'urgent​', label: 'Urgent​' },
     { value: 'Except', label: 'Except' },
     { value: 'Consultative​', label: 'Consultative​' }
   ];
@@ -81,7 +81,7 @@ export class CreateRFPComponent implements OnInit {
   DIRECT_COST_THRESHOLD2 = 500000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
-   
+
     {
       key: 'الشروط الخاصة المواد والمعدات',
       label: 'الشروط الخاصة المواد والمعدات.docx',
@@ -571,6 +571,7 @@ export class CreateRFPComponent implements OnInit {
   test(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
   }
+
 
   onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
