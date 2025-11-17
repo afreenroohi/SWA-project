@@ -147,6 +147,10 @@
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
+              <!-- Warning message -->
+               <small *ngIf="showDirectPurchaseField"  style="margin-top: 8px; color: #1890ff">Estimated cost is more than 100K SAR</small>
+               <small *ngIf="showLimitedField"  style="margin-top: 8px; color: #1890ff">Estimated cost is more than 500K SAR</small>
+
               <!-- Max Value Validation -->
               <small *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('max') "
                 style="margin-top: 8px; color: red">
