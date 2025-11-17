@@ -498,24 +498,75 @@ input::selection {
   font-weight: 700;
   font-family: 'Roboto';
 }
+// .cr-number-container {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   flex-wrap: wrap;
+// }
+
+// .cr-number-item {
+//   display: flex;
+//   align-items: center;
+//   gap: 6px;
+// }
+
+// .cr-add-btn {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   height: 32px;
+// }
+/* CR number layout */
 .cr-number-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
-
+ 
 .cr-number-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
-
+ 
+/* Match input sizing and spacing */
+.cr-input {
+  width: 150px;
+  min-width: 120px;
+}
+ 
+/* Make circle buttons visually consistent and visible at zooms */
+.cr-minus-btn,
 .cr-add-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+ 
+/* dashed + button slightly bigger / more visible */
+.cr-add-btn {
+  width: 40px;
+  height: 40px;
+}
+ 
+/* ensure icon has visible size */
+.cr-minus-btn i[nz-icon],
+.cr-add-btn i[nz-icon] {
+  font-size: 14px;
+  line-height: 1;
+}
+ 
+/* optional: add a small responsive rule if UI compresses at low zoom */
+@media (max-width: 900px) {
+  .cr-input { width: 130px; }
+  .cr-minus-btn, .cr-add-btn { width: 34px; height: 34px; }
 }
 .btn-Review{
    background-color: #ffffff !important;

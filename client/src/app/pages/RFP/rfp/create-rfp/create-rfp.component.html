@@ -199,7 +199,7 @@
             </div> -->
 
             <!-- * CR Number  -->
-            <div class="col-12 my-2" *ngIf="isPrivateSelected">
+            <!-- <div class="col-12 my-2" *ngIf="isPrivateSelected">
               <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
 
               <div formArrayName="crNumber" class="cr-number-container">
@@ -210,27 +210,77 @@
                   <input nz-input [formControlName]="null" placeholder="Enter CR Number" style="width: 150px;" />
 
                   <!-- Minus button -->
-                  <button nz-button nzType="default" nzShape="circle" nzSize="default" (click)="removeCrNumber(i)"
+                  <!-- <button nz-button nzType="default" nzShape="circle" nzSize="default" (click)="removeCrNumber(i)"
                     *ngIf="crNumberArray.length > 1">
                     <i nz-icon nzType="minus"></i>
                   </button>
 
                 </div>
 
-                <!-- Plus button -->
+                <!-- Plus button 
                 <button nz-button nzType="dashed" nzShape="circle" nzSize="default" (click)="addCrNumber()"
                   class="cr-add-btn">
                   <i nz-icon nzType="plus"></i>
                 </button>
 
-              </div>
+              </div> -->
 
-              <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
+              <!-- <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
 
-            </div>
+            </div> --> 
+            <div class="col-12 my-2" *ngIf="isPrivateSelected">
+  <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+ 
+  <div formArrayName="crNumber" class="cr-number-container">
+ 
+    <div
+      *ngFor="let ctrl of crNumberArray.controls; let i = index; trackBy: trackByIndex"
+      class="cr-number-item"
+    >
+      <!-- Use formControlName with the index for FormControl items -->
+      <input nz-input [formControlName]="i" placeholder="Enter CR Number" class="cr-input" />
+ 
+      <!-- Minus button -->
+      <button
+        type="button"
+        nz-button
+        nzType="default"
+        nzShape="circle"
+        nzSize="default"
+        (click)="removeCrNumber(i)"
+        *ngIf="crNumberArray.length > 1"
+        class="cr-minus-btn"
+        aria-label="Remove CR number"
+      >
+        <i nz-icon nzType="minus"></i>
+      </button>
+    </div>
+ 
+    <!-- Plus button -->
+    <button
+      type="button"
+      nz-button
+      nzType="dashed"
+      nzShape="circle"
+      nzSize="default"
+      (click)="addCrNumber()"
+      class="cr-add-btn"
+      aria-label="Add CR number"
+    >
+      <i nz-icon nzType="plus"></i>
+    </button>
+ 
+  </div>
+ 
+  <small *ngIf="crNumberArray.controls[0].touched && crNumberArray.controls[0].hasError('required')"
+         style="margin-top: 8px; color: red">
+    {{ 'RFP.FieldIsRequired' | translate }}
+  </small>
+ 
+</div>
 
 
             <!-- * CR Numbers (visible only if private is selected) -->
