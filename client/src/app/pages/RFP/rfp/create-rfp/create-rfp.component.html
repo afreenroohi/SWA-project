@@ -193,9 +193,10 @@
                 {{ 'RFP.FieldIsRequired' | translate }}
               </small>
             </div> -->
-           <!-- * CR Number  -->
-<div class="col-12 my-2" *ngIf="isPrivateSelected">
-  <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
+
+            <!-- * CR Number  -->
+            <div class="col-12 my-2" *ngIf="isPrivateSelected">
+              <nz-form-label nzRequired>{{ "RFP.CR Number" | translate }}</nz-form-label>
 
   <div formArrayName="crNumber" class="cr-number-container">
 
@@ -465,12 +466,12 @@
                     </td>
 
                     <!-- <td class="text-center"> -->
-                      <!-- + icon -->
-                      <!-- <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
+                    <!-- + icon -->
+                    <!-- <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="addMember(i)"
                         [class.disabled]="members.length >= 5"></i> -->
 
-                      <!-- delete icon (only for optional members) -->
-                      <!-- <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
+                    <!-- delete icon (only for optional members) -->
+                    <!-- <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" (click)="deleteMember(i)"
                         *ngIf="i >= 3"></i>
                     </td> -->
                   </tr>
@@ -884,25 +885,24 @@
             </div> -->
 
           </div>
-  <div class="d-flex justify-content-end mt-2 actions gap-2">
-    
-  <button nz-button nzType="primary" nzSize="default"
-          (click)="saveAsDraft()" class="btn-save-draft" [disabled]="!basicInfoValid">
-    Save As Draft
-  </button>
-  <!-- <button nz-button nzType="default" nzSize="default"
-          (click)="saveAsDraft()" [disabled]="!basicInfoValid">
-    {{ 'RFP.SaveAs' | translate }}
-""  </button> -->
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
 
-  <button nz-button nzType="primary" nzSize="default"
-          (click)="saveAndContinue()" class="btn-save-continue" [disabled]="!basicInfoValid">
-    Save & Continue
-  </button>
-</div>
+              <!-- <button nz-button nzType="default" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
+                Save As Draft
+              </button> -->
 
+              <button nz-button nzType="primary" nzSize="default"  (click)="saveAsDraft()" class="btn-save-draft" [disabled]="!basicInfoValid">
+                Save As Draft
+              </button>
 
-
+              <button nz-button nzType="primary" nzSize="default" class="btn-save-continue"
+  (click)="saveAndContinue()"
+                [disabled]="!basicInfoValid">
+                Save & Continue
+              </button>
+            </div>
+          </div>
         </nz-collapse-panel>
       </nz-collapse>
 
@@ -1347,7 +1347,7 @@
       </nz-collapse>
 
       <!-- Scope of Work -->
-      <nz-collapse *ngIf="step2" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showAttachments"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <!-- *ngIf="step2" -->
         <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
@@ -1367,7 +1367,7 @@
             </div> -->
 
 
-            <div class="col-12 my-1">
+            <!-- <div class="col-12 my-1">
               <nz-form-label nzRequired for="MemName">{{
                 "RFP.Technical Member Name" | translate
                 }}</nz-form-label>
@@ -1391,9 +1391,9 @@
                     rfpForm.controls.MemName.errors?.minlength
                   ">{{ "RFP.Minimum Technical Member" | translate }}</small>
               </nz-form-control>
-            </div>
+            </div> -->
 
-            <div class="col-md-12 col-12 my-1">
+            <!-- <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="MemManagerName">{{
                 "RFP.Technical Member Manager Name" | translate
                 }}</nz-form-label>
@@ -1409,11 +1409,23 @@
                     rfpForm.controls.MemManagerName.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
+            </div> -->
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">
+                {{ "RFP.Definition of competition" | translate }}</nz-form-label>
+              <nz-form-control>
+                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <small *ngIf="
+                    rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
             </div>
+
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="ProjJust">
-                {{ "RFP.Project Justification" | translate }}</nz-form-label>
+                {{ "RFP.Work program" | translate }}</nz-form-label>
               <nz-form-control nzHasFeedback>
                 <textarea rows="4" nz-input formControlName="ProjJust"></textarea>
 
@@ -1439,12 +1451,93 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">
+                {{ "RFP.Place of execution of works and services" | translate }}</nz-form-label>
+              <nz-form-control>
+                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <small *ngIf="
+                    rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">
+                {{ "RFP.How to carry out work and services" | translate }}</nz-form-label>
+              <nz-form-control>
+                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <small *ngIf="
+                    rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">
                 {{ "RFP.SCOPE OF WORK" | translate }}</nz-form-label>
               <nz-form-control>
                 <textarea rows="8" nz-input formControlName="SOP"></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.SOP.touched && rfpForm.controls.SOP.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">{{ "RFP.Labor" | translate }}</nz-form-label>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertLaborText()">Review the default text</button>
+              <nz-form-control>
+                <textarea rows="8" nz-input formControlName="labor"></textarea>
+                <small *ngIf="
+                    rfpForm.controls.labor.touched && rfpForm.controls.labor.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">{{ "RFP.Materials" | translate }}</nz-form-label>
+                <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertMaterialsText()">Review the default text</button>
+              <nz-form-control>
+                <textarea rows="4" nz-input formControlName="materials"></textarea>
+
+                <small *ngIf="
+                    rfpForm.controls.materials.touched && rfpForm.controls.materials.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">{{ "RFP.Equipment" | translate }}</nz-form-label>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertEquipmentText()">Review the default text</button>
+              <nz-form-control>
+                <textarea rows="4" nz-input formControlName="equipment"></textarea>
+
+                <small *ngIf="
+                    rfpForm.controls.equipment.touched && rfpForm.controls.equipment.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertQualityText()">Review the default text</button>
+              <nz-form-control>
+                <textarea rows="4" nz-input formControlName="qualitySpecifications"></textarea>
+
+                <small *ngIf="
+                    rfpForm.controls.qualitySpecifications.touched && rfpForm.controls.qualitySpecifications.invalid
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+              </nz-form-control>
+            </div>
+
+            <div class="col-md-12 col-12 my-1">
+              <nz-form-label nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertSafetyText()">Review the default text</button>
+              <nz-form-control>
+                <textarea rows="4" nz-input formControlName="safetySpecifications"></textarea>
+
+                <small *ngIf="
+                    rfpForm.controls.safetySpecifications.touched && rfpForm.controls.safetySpecifications.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>

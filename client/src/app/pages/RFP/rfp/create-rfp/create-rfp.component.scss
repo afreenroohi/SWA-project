@@ -550,6 +550,24 @@ input::selection {
   .cr-minus-btn, .cr-add-btn { width: 34px; height: 34px; }
 }
 /* White button (Save As Draft) */
+.btn-Review{
+   background-color: #ffffff !important;
+  color: #0b6aa0 !important;         /* Text color */
+  border: 1px solid #0b6aa0 !important;
+  font-weight: 500;
+
+  /* Keep same height as primary buttons */
+  min-width: 130px;
+  height: 38px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+}
+.btn-Review:hover {
+  background-color: #eef7fc !important;
+  color: #0a5b87 !important;
+  border-color: #0a5b87 !important;
+}
+
 .btn-save-draft {
   background-color: #ffffff !important;
   color: #0b6aa0 !important;         /* Text color */

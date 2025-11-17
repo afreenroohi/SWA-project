@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, sopData } from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -60,7 +60,7 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = [ 'competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+  private basicRequiredControls = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
   directPurchaseOptions = [
     // { value: 'below100k', label: 'Less than 100k' },
     { value: 'Emergency', label: 'Emergency' },
@@ -205,6 +205,7 @@ export class CreateRFPComponent implements OnInit {
   // contractTypes = contractTypes;
   competitionTypes = competitionTypes;
   activityList = activities;
+  sopData = sopData;
   filteredSubactivities: any[] = [];
 
   responseMessage: any;
@@ -345,7 +346,7 @@ export class CreateRFPComponent implements OnInit {
     // this.saveBasicInfo();
 
     // reveal attachments
-    this.showAttachments = false;
+    this.showAttachments = true;
     // or if using Option B:
     // this.attachmentsActive = true;
 
@@ -396,6 +397,41 @@ export class CreateRFPComponent implements OnInit {
   get subCriterias() {
     return this.subCriteriaForm.controls['subCriterias'] as FormArray;
   }
+
+  insertLaborText() {
+    const data = this.sopData.find((item:any) => item.id === 'Labor');
+    if (data) {
+      this.rfpForm.get('labor')?.setValue(data.text);
+    }
+  }
+
+  insertMaterialsText() {
+    const data = this.sopData.find((item:any) => item.id === 'Material');
+    if (data) {
+      this.rfpForm.get('materials')?.setValue(data.text);
+    }
+  }
+
+  insertEquipmentText() {
+    const data = this.sopData.find((item:any) => item.id === 'Equipment');
+    if (data) {
+      this.rfpForm.get('equipment')?.setValue(data.text);
+    }
+  }
+  insertQualityText() {
+    const data = this.sopData.find((item:any) => item.id === 'Quality');
+    if (data) {
+      this.rfpForm.get('qualitySpecifications')?.setValue(data.text);
+    }
+  }
+  insertSafetyText() {
+    const data = this.sopData.find((item:any) => item.id === 'Safety');
+    if (data) {
+      this.rfpForm.get('safetySpecifications')?.setValue(data.text);
+    }
+  }
+
+
 
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
@@ -680,8 +716,8 @@ trackByIndex(index: number): number {
       competitionType: new FormControl('', [Validators.required]),
 
       prequalificationDetails: new FormControl('', [Validators.required]),
-      coordinatorName: new FormControl('', [Validators.required]),
-      coordinatorNumber: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl(''),
+      coordinatorNumber: new FormControl(''),
 
       activity: [''],
       subactivity: [''],
@@ -735,6 +771,13 @@ trackByIndex(index: number): number {
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
       MemManagerName: new FormControl('', [Validators.required]),
       SOP: new FormControl('', [Validators.required]),
+      labor: new FormControl(''),
+      materials: new FormControl(''),
+      equipment: new FormControl(''),
+      qualitySpecifications: new FormControl(''),
+      safetySpecifications: new FormControl(''),
+      definationCompetition: new FormControl('')
+
     });
 
 
