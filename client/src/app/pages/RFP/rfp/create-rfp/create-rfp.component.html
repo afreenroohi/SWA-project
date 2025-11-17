@@ -854,13 +854,13 @@
             <div class="col-12 d-flex justify-content-end gap-2">
               <!-- Save as draft -->
               <button nz-button nzType="default" nzSize="default" class="mr-2" (click)="saveAsDraft()"
-                [disabled]="!basicInfoValid" title="Save as draft">
+                [disabled]="basicInfoValid" title="Save as draft">
                 {{ 'RFP.SaveAs' | translate }}
               </button>
 
               <!-- Save & Continue (reveal attachments) -->
               <button nz-button nzType="primary" nzSize="default" (click)="saveAndContinue()"
-                [disabled]="!basicInfoValid" title="Save & Continue">
+                [disabled]="basicInfoValid" title="Save & Continue">
                 <!-- {{ 'RFP.SaveAndContinue' | translate }} -->
                 Save & Continue
               </button>
