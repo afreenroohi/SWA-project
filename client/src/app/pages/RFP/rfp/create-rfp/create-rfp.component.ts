@@ -42,6 +42,7 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  step: number = 0;
   directCompetitionId: any = null;
   limitedCompetitionId: any = null;
   showInvite: boolean = false;
@@ -68,7 +69,12 @@ export class CreateRFPComponent implements OnInit {
     { value: 'oneSupplier', label: 'One Supplier' },
     { value: 'sensitiveSecurity', label: 'Sensitive security project' }
   ];
-
+  readonly STEPS = {
+    BASIC_INFO: 0,  
+    ATTACHMENTS: 1,
+    BOQ: 2,
+    SCOPE_OF_WORK: 3
+  };
   limitedOptions = [
     // { value: 'below500k', label: 'Less than 500k' },
     { value: 'urgent​', label: 'urgent​' },
@@ -328,7 +334,10 @@ export class CreateRFPComponent implements OnInit {
       }
     }
   }
-
+  goto(ste: number): void {
+    this.step = ste;
+    window.scrollTo(0, 0);
+  }
   /** Save & Continue: validate basic info and reveal attachments */
   saveAndContinue(): void {
     this.markBasicControlsTouched();

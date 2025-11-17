@@ -104,6 +104,17 @@
   type="line-scale"
 ></ngx-spinner>
 <div class="container-fluid">
+  <div class="row">
+    
+    <div class="col-3">
+      <nz-steps [nzCurrent]="step" nzDirection="vertical">
+        <nz-step nzTitle="{{ 'RFP.Basic Information' | translate }}" ></nz-step>
+        <nz-step nzTitle="{{ 'RFP.Attachments' | translate }}" > (click)=goto(STEPS.ATTACHMENTS)</nz-step>
+        <nz-step nzTitle="{{ 'RFP.Bill of Quantity' | translate }}" ></nz-step>
+        <nz-step nzTitle="{{ 'RFP.SCOPE OF WORK' | translate }}" ></nz-step>
+        </nz-steps>
+    </div>
+    <div class="col-9">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
       <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
@@ -870,7 +881,7 @@
       </nz-collapse>
 
       <!-- Attachments   *ngIf="showAttachments" -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4" *ngIf="step === STEPS.ATTACHMENTS">
         <nz-collapse-panel nzActive="true" nzHeader="Attachments">
           <div class="attachment-body">
 
