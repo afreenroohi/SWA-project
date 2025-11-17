@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, sopData } from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -60,7 +60,7 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = [ 'competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+  private basicRequiredControls = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
   directPurchaseOptions = [
     // { value: 'below100k', label: 'Less than 100k' },
     { value: 'Emergency', label: 'Emergency' },
@@ -205,6 +205,7 @@ export class CreateRFPComponent implements OnInit {
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
   activityList = activities;
+  sopData = sopData;
   filteredSubactivities: any[] = [];
 
   responseMessage: any;
@@ -397,6 +398,41 @@ export class CreateRFPComponent implements OnInit {
     return this.subCriteriaForm.controls['subCriterias'] as FormArray;
   }
 
+  insertLaborText() {
+    const data = this.sopData.find((item:any) => item.id === 'Labor');
+    if (data) {
+      this.rfpForm.get('labor')?.setValue(data.text);
+    }
+  }
+
+  insertMaterialsText() {
+    const data = this.sopData.find((item:any) => item.id === 'Material');
+    if (data) {
+      this.rfpForm.get('materials')?.setValue(data.text);
+    }
+  }
+
+  insertEquipmentText() {
+    const data = this.sopData.find((item:any) => item.id === 'Equipment');
+    if (data) {
+      this.rfpForm.get('equipment')?.setValue(data.text);
+    }
+  }
+  insertQualityText() {
+    const data = this.sopData.find((item:any) => item.id === 'Quality');
+    if (data) {
+      this.rfpForm.get('qualitySpecifications')?.setValue(data.text);
+    }
+  }
+  insertSafetyText() {
+    const data = this.sopData.find((item:any) => item.id === 'Safety');
+    if (data) {
+      this.rfpForm.get('safetySpecifications')?.setValue(data.text);
+    }
+  }
+
+
+
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
     if (totalPercentage <
@@ -547,12 +583,12 @@ export class CreateRFPComponent implements OnInit {
   get crNumberArray() {
     return this.rfpForm.get('crNumber') as FormArray;
   }
- 
+
   // methods to add/remove
   addCrNumber() {
     this.crNumberArray.push(this.fb.control('', Validators.required));
   }
- 
+
   removeCrNumber(index: number) {
     this.crNumberArray.removeAt(index);
   }
@@ -725,6 +761,13 @@ export class CreateRFPComponent implements OnInit {
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
       MemManagerName: new FormControl('', [Validators.required]),
       SOP: new FormControl('', [Validators.required]),
+      labor: new FormControl(''),
+      materials: new FormControl(''),
+      equipment: new FormControl(''),
+      qualitySpecifications: new FormControl(''),
+      safetySpecifications: new FormControl(''),
+      definationCompetition: new FormControl('')
+
     });
 
 

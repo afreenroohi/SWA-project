@@ -486,7 +486,16 @@
     "Previous Project Number":"Previous Project Number",
     "Cancellation documents":"Cancellation documents",
     "Purchase Request Number":"Purchase Request Number",
-    "Pending with User":"Pending with User"
+    "Pending with User":"Pending with User",
+    "Labor":"Labor",
+    "Materials":"Materials",
+    "Equipment":"Equipment",
+    "Quality specifications":"Quality specifications",
+    "Safety specifications":"Safety specifications",
+    "How to carry out work and services":"How to carry out work and services",
+    "Place of execution of works and services":"Place of execution of works and services",
+    "Work program":"Work program",
+    "Definition of competition":"Definition of competition"
   },
   "COC": {
     "Create COC": "Create COC",
