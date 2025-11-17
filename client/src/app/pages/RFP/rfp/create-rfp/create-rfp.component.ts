@@ -708,6 +708,8 @@ export class CreateRFPComponent implements OnInit {
       prequalificationDetails: new FormControl('', [Validators.required]),
       coordinatorName: new FormControl(''),
       coordinatorNumber: new FormControl(''),
+      coordinatorEmail: new FormControl(''),
+
 
       activity: [''],
       subactivity: [''],
@@ -715,6 +717,7 @@ export class CreateRFPComponent implements OnInit {
       requiresSiteVisit: [false, [Validators.required]], // toggle
       email: new FormControl('', [Validators.email]),
       contactNumber: new FormControl(''),
+      userId: new FormControl(''),
       projectRelaunched: [false, [Validators.required]], // toggle
       number: new FormControl('', [Validators.min(1)]),
 

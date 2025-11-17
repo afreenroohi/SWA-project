@@ -397,7 +397,13 @@
             <!-- * coordinator number -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter coordinator Number" formControlName="coordinatorNumber" />
+              <input nz-input placeholder="Enter coordinator Phone Number" formControlName="coordinatorNumber" />
+            </div>
+
+             <!-- * coordinator email -->
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.coordinator email" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter coordinator email" formControlName="coordinatorEmail" />
             </div>
 
             <!-- * Technical Committee Members -->
@@ -526,6 +532,12 @@
                 {{ "RFP.requiresSiteVisit" | translate }}
               </label>
               <nz-switch formControlName="requiresSiteVisit"></nz-switch>
+            </div>
+
+            <!-- * Site Visit Contact Details -->
+            <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
+              <nz-form-label nzRequired>{{ "RFP.userId" | translate }}</nz-form-label>
+              <input nz-input placeholder="Enter Email" formControlName="userId" />
             </div>
 
             <!-- * Site Visit Contact Details -->
