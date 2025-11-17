@@ -544,18 +544,28 @@ export class CreateRFPComponent implements OnInit {
     });
   }
   // easy getter for the FormArray
-  get crNumberArray() {
-    return this.rfpForm.get('crNumber') as FormArray;
-  }
+ get crNumberArray(): FormArray {
+  return this.rfpForm.get('crNumber') as FormArray;
+}
 
-  // methods to add/remove
-  addCrNumber() {
-    this.crNumberArray.push(this.fb.control('', Validators.required));
-  }
+// methods to add/remove
+addCrNumber() {
+  this.crNumberArray.push(this.fb.control('', Validators.required));
+  // optional: mark the new control touched to show validation immediately if needed
+  // this.crNumberArray.at(this.crNumberArray.length - 1).markAsTouched();
+}
 
-  removeCrNumber(index: number) {
+removeCrNumber(index: number) {
+  if (this.crNumberArray.length > 1) {
     this.crNumberArray.removeAt(index);
   }
+}
+
+// trackBy for ngFor
+trackByIndex(index: number): number {
+  return index;
+}
+
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
