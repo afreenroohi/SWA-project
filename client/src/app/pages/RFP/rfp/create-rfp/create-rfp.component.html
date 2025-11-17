@@ -574,12 +574,13 @@
                 </label>
                 <nz-switch formControlName="frameworkIncluded"></nz-switch>
               </div>
-              <div class="col-4 my-1 toggle-field">
+
+              <!-- <div class="col-4 my-1 toggle-field">
                 <label class="toggle-label">
                   {{ "RFP.dividedIntoLots" | translate }}
                 </label>
                 <nz-switch formControlName="dividedIntoLots"></nz-switch>
-              </div>
+              </div> -->
 
               <!-- <div class="col-4 my-1 toggle-field">
                 <label class="toggle-label">
@@ -877,11 +878,11 @@
                 Save As Draft
               </button> -->
 
-              <button nz-button nzType="primary" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()" [disabled]="!basicInfoValid">
                 Save As Draft
               </button>
 
-              <button nz-button nzType="primary" nzSize="default" (click)="saveAndContinue()"
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinue()"
                 [disabled]="!basicInfoValid">
                 Save & Continue
               </button>
@@ -1331,7 +1332,7 @@
       </nz-collapse>
 
       <!-- Scope of Work -->
-      <nz-collapse *ngIf="step2" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <!-- *ngIf="step2" -->
         <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
@@ -1469,7 +1470,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">{{ "RFP.Labor" | translate }}</nz-form-label>
-              <button nz-button nzType="primary" class="ms-2" (click)="insertLaborText()">Review the default text</button>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertLaborText()">Review the default text</button>
               <nz-form-control>
                 <textarea rows="8" nz-input formControlName="labor"></textarea>
                 <small *ngIf="
@@ -1480,7 +1481,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">{{ "RFP.Materials" | translate }}</nz-form-label>
-                <button nz-button nzType="primary" class="ms-2" (click)="insertMaterialsText()">Review the default text</button>
+                <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertMaterialsText()">Review the default text</button>
               <nz-form-control>
                 <textarea rows="4" nz-input formControlName="materials"></textarea>
 
@@ -1492,7 +1493,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">{{ "RFP.Equipment" | translate }}</nz-form-label>
-              <button nz-button nzType="primary" class="ms-2" (click)="insertEquipmentText()">Review the default text</button>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertEquipmentText()">Review the default text</button>
               <nz-form-control>
                 <textarea rows="4" nz-input formControlName="equipment"></textarea>
 
@@ -1504,7 +1505,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
-              <button nz-button nzType="primary" class="ms-2" (click)="insertQualityText()">Review the default text</button>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertQualityText()">Review the default text</button>
               <nz-form-control>
                 <textarea rows="4" nz-input formControlName="qualitySpecifications"></textarea>
 
@@ -1516,7 +1517,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <nz-form-label nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
-              <button nz-button nzType="primary" class="ms-2" (click)="insertSafetyText()">Review the default text</button>
+              <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertSafetyText()">Review the default text</button>
               <nz-form-control>
                 <textarea rows="4" nz-input formControlName="safetySpecifications"></textarea>
 

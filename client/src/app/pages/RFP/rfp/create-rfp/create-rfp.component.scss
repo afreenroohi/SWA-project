@@ -517,7 +517,79 @@ input::selection {
   justify-content: center;
   height: 32px;
 }
+.btn-Review{
+   background-color: #ffffff !important;
+  color: #0b6aa0 !important;         /* Text color */
+  border: 1px solid #0b6aa0 !important;
+  font-weight: 500;
+ 
+  /* Keep same height as primary buttons */
+  min-width: 130px;
+  height: 38px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+}
+.btn-Review:hover {
+  background-color: #eef7fc !important;
+  color: #0a5b87 !important;
+  border-color: #0a5b87 !important;
+}
 
+// draft button design 
+.btn-save-draft {
+  background-color: #ffffff !important;
+  color: #0b6aa0 !important;         /* Text color */
+  border: 1px solid #0b6aa0 !important;
+  font-weight: 500;
+ 
+  /* Keep same height as primary buttons */
+  min-width: 130px;
+  height: 38px;
+}
+ 
+/* Hover effect */
+.btn-save-draft:hover {
+  background-color: #eef7fc !important;
+  color: #0a5b87 !important;
+  border-color: #0a5b87 !important;
+}
+ 
+/* Disabled state */
+.btn-save-draft[disabled] {
+  background-color: #f5f5f5 !important;
+  color: #bfbfbf !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed !important;
+}
+
+// save and continue 
+
+.btn-save-continue {
+  background-color: #0b6aa0 !important;   /* Blue background */
+  color: #ffffff !important;              /* White text */
+  border: 1px solid #0b6aa0 !important;
+  font-weight: 500;
+ 
+  /* Matching size */
+  min-width: 130px;
+  height: 38px;
+}
+ 
+/* Hover effect */
+.btn-save-continue:hover {
+  background-color: #0a5b87 !important;   /* Darker blue */
+  border-color: #0a5b87 !important;
+}
+ 
+/* Disabled state */
+.btn-save-continue[disabled] {
+  background-color: #f5f5f5 !important;
+  color: #bfbfbf !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed !important;
+}
+ 
+ 
 // Technical Committee member
  
 .table {
