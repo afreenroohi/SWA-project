@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, sopData } from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -43,12 +43,15 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
 })
 export class CreateRFPComponent implements OnInit {
   step: number = 0;
+  tooltipVisible = false;
+  
   directCompetitionId: any = null;
   limitedCompetitionId: any = null;
   showInvite: boolean = false;
   userName: string = ''
   uploading = false;
   showAttachments = false;
+  showScope = false;
   attachmentsActive = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
@@ -69,15 +72,10 @@ export class CreateRFPComponent implements OnInit {
     { value: 'oneSupplier', label: 'One Supplier' },
     { value: 'sensitiveSecurity', label: 'Sensitive security project' }
   ];
-  readonly STEPS = {
-    BASIC_INFO: 0,  
-    ATTACHMENTS: 1,
-    BOQ: 2,
-    SCOPE_OF_WORK: 3
-  };
+
   limitedOptions = [
     // { value: 'below500k', label: 'Less than 500k' },
-    { value: 'urgent​', label: 'urgent​' },
+    { value: 'urgent​', label: 'Urgent​' },
     { value: 'Except', label: 'Except' },
     { value: 'Consultative​', label: 'Consultative​' }
   ];
@@ -87,7 +85,7 @@ export class CreateRFPComponent implements OnInit {
   DIRECT_COST_THRESHOLD2 = 500000;
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
-   
+
     {
       key: 'الشروط الخاصة المواد والمعدات',
       label: 'الشروط الخاصة المواد والمعدات.docx',
@@ -211,6 +209,7 @@ export class CreateRFPComponent implements OnInit {
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
   activityList = activities;
+  sopData = sopData;
   filteredSubactivities: any[] = [];
 
   responseMessage: any;
@@ -226,11 +225,13 @@ export class CreateRFPComponent implements OnInit {
 
   step3 = true;
 
-  step4 = false;
+  step4 = true;
 
   invalidFileSize = false;
   invalidFileType = false;
   certificatedet = false;
+
+
 
   expcriteria = false;
   concriteria = false;
@@ -298,6 +299,18 @@ export class CreateRFPComponent implements OnInit {
     this.buildMainFormGroup();
     console.log(activities, 'activities====')
   }
+  get attachmentsValid(): boolean {
+  if (!this.rfpForm) {
+    return false;
+  }
+
+  const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+  if (!attachmentsGroup) {
+    return false;
+  }
+
+  return attachmentsGroup.valid;
+}
   get basicInfoValid(): boolean {
     if (!this.rfpForm) {
       return false;
@@ -334,38 +347,107 @@ export class CreateRFPComponent implements OnInit {
       }
     }
   }
-  goto(ste: number): void {
-    this.step = ste;
-    window.scrollTo(0, 0);
-  }
-  /** Save & Continue: validate basic info and reveal attachments */
-  saveAndContinue(): void {
-    this.markBasicControlsTouched();
+goto(stepNumber: number): void {
 
-    if (!this.basicInfoValid) {
-      // your existing message service used elsewhere in the app
-      if (this.cs && typeof this.cs.createMessage === 'function') {
-        this.cs.createMessage('error', 'Please fill required basic information');
-      }
+  // prevent skipping ahead without validation
+  if (stepNumber > this.step) {
+    if (!this.isCurrentStepValid()) {
+      this.cs.createMessage('error', "Please complete the required fields");
       return;
     }
-
-    // optionally persist basic data before progressing (call API here if needed)
-    // this.saveBasicInfo();
-
-    // reveal attachments
-    this.showAttachments = true;
-    // or if using Option B:
-    // this.attachmentsActive = true;
-
-    // scroll to attachments smoothly
-    setTimeout(() => {
-      const el = document.querySelector('.attachment-body');
-      if (el) {
-        (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 10);
   }
+
+  // set the new step
+  this.step = stepNumber;
+
+  // open only correct collapse
+  this.openCollapse(this.step);
+}
+toggleTooltip(): void {
+  this.tooltipVisible = !this.tooltipVisible;
+}
+isCurrentStepValid(): boolean {
+  switch (this.step) {
+    case 0:
+      return this.basicInfoValid;
+
+    case 1:
+      return this.attachmentsValid;
+
+    case 2:
+      //return this.scopeValid;  // add your scope validation
+
+    case 3:
+      //return this.boqValid;    // add BOQ validation
+
+    default:
+      return true;
+  }
+}
+  showError(): void {
+    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
+  }
+  /** Save & Continue: validate basic info and reveal attachments */
+saveAndContinue(): void {
+
+  if (!this.isCurrentStepValid()) {
+    this.cs.createMessage('error', "Please complete the required fields");
+    return;
+  }
+
+  // Move one step forward only
+  this.step++;
+
+  // Open corresponding collapse
+  this.openCollapse(this.step);
+
+  // Smooth scroll
+  setTimeout(() => {
+    const el = document.querySelector('.attachment-body');
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 10);
+}
+// openCollapse(step: number) {
+//   //this.showBasic = (step === 0);
+//   this.showAttachments = (step === 1);
+//   this.showScope = (step === 2);
+//   // continue for all remaining steps
+// }
+
+openCollapse(step: number) {
+  // FIRST: RESET all collapses
+  //this.showBasic = false;
+  this.showAttachments = false;
+  this.showScope = false;
+  //this.showBoq = false;
+  //this.showTerms = false;
+
+  // THEN: Open based on step
+  switch (step) {
+    case 0:
+     // this.showBasic = true;
+      break;
+
+    case 1:
+      this.showAttachments = true;
+      break;
+
+    case 2:
+      this.showScope = true;
+      break;
+
+    case 3:
+      //this.showBoq = true;
+      break;
+
+    case 4:
+      //this.showTerms = true;
+      break;
+
+    default:
+      //this.showBasic = true;
+  }
+}
 
   /** Save as Draft: validate and call your draft logic */
   saveAsDraft(): void {
@@ -405,6 +487,41 @@ export class CreateRFPComponent implements OnInit {
   get subCriterias() {
     return this.subCriteriaForm.controls['subCriterias'] as FormArray;
   }
+
+  insertLaborText() {
+    const data = this.sopData.find((item:any) => item.id === 'Labor');
+    if (data) {
+      this.rfpForm.get('labor')?.setValue(data.text);
+    }
+  }
+
+  insertMaterialsText() {
+    const data = this.sopData.find((item:any) => item.id === 'Material');
+    if (data) {
+      this.rfpForm.get('materials')?.setValue(data.text);
+    }
+  }
+
+  insertEquipmentText() {
+    const data = this.sopData.find((item:any) => item.id === 'Equipment');
+    if (data) {
+      this.rfpForm.get('equipment')?.setValue(data.text);
+    }
+  }
+  insertQualityText() {
+    const data = this.sopData.find((item:any) => item.id === 'Quality');
+    if (data) {
+      this.rfpForm.get('qualitySpecifications')?.setValue(data.text);
+    }
+  }
+  insertSafetyText() {
+    const data = this.sopData.find((item:any) => item.id === 'Safety');
+    if (data) {
+      this.rfpForm.get('safetySpecifications')?.setValue(data.text);
+    }
+  }
+
+
 
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
@@ -553,18 +670,25 @@ export class CreateRFPComponent implements OnInit {
     });
   }
   // easy getter for the FormArray
-  get crNumberArray() {
-    return this.rfpForm.get('crNumber') as FormArray;
-  }
-
-  // methods to add/remove
-  addCrNumber() {
-    this.crNumberArray.push(this.fb.control('', Validators.required));
-  }
-
-  removeCrNumber(index: number) {
+get crNumberArray(): FormArray {
+  return this.rfpForm.get('crNumber') as FormArray;
+}
+ 
+// methods to add/remove
+addCrNumber() {
+  this.crNumberArray.push(this.fb.control('', Validators.required));
+  // optional: mark the new control touched to show validation immediately if needed
+  // this.crNumberArray.at(this.crNumberArray.length - 1).markAsTouched();
+}
+ 
+removeCrNumber(index: number) {
+  if (this.crNumberArray.length > 1) {
     this.crNumberArray.removeAt(index);
   }
+}
+trackByIndex(index: number, item: any): number {
+  return index; 
+}
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
@@ -580,6 +704,7 @@ export class CreateRFPComponent implements OnInit {
   test(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
   }
+
 
   onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
@@ -674,12 +799,14 @@ export class CreateRFPComponent implements OnInit {
       invite: new FormControl('', [Validators.required]),
       crNumber: this.fb.array([this.fb.control('', Validators.required)]),
 
-      contractType: new FormControl('', [Validators.required]),
+      // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
 
       prequalificationDetails: new FormControl('', [Validators.required]),
-      coordinatorName: new FormControl('', [Validators.required]),
-      coordinatorNumber: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl(''),
+      coordinatorNumber: new FormControl(''),
+      coordinatorEmail: new FormControl(''),
+
 
       activity: [''],
       subactivity: [''],
@@ -687,6 +814,7 @@ export class CreateRFPComponent implements OnInit {
       requiresSiteVisit: [false, [Validators.required]], // toggle
       email: new FormControl('', [Validators.email]),
       contactNumber: new FormControl(''),
+      userId: new FormControl(''),
       projectRelaunched: [false, [Validators.required]], // toggle
       number: new FormControl('', [Validators.min(1)]),
 
@@ -733,6 +861,13 @@ export class CreateRFPComponent implements OnInit {
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
       MemManagerName: new FormControl('', [Validators.required]),
       SOP: new FormControl('', [Validators.required]),
+      labor: new FormControl(''),
+      materials: new FormControl(''),
+      equipment: new FormControl(''),
+      qualitySpecifications: new FormControl(''),
+      safetySpecifications: new FormControl(''),
+      definationCompetition: new FormControl('')
+
     });
 
 
@@ -2273,10 +2408,10 @@ export class CreateRFPComponent implements OnInit {
   get boqFormGroup() {
     return this.rfpForm.get('billOFQty') as FormArray;
   }
-  get Attachments() {
-    return this.rfpForm.get('Attachments') as FormArray;
-  }
-
+ get Attachments(): boolean {
+  const fg = this.rfpForm.get('attachments') as FormGroup;
+  return fg ? fg.valid : false;
+}
 
 
   get Evalcrt() {

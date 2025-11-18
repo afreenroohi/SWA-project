@@ -1,42 +1,70 @@
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <div class="container-fluid">
     <div class="row">
+        <h1 class="page-title">List of RFPs</h1>
+         <!-- <div class="rfp-header">List of RFPs</div> -->
         <div class="col-12 mt-2">
-            <form *ngIf="false" [formGroup]="repForm">
+            <form [formGroup]="repForm">
                 <div class="create__form__section">
                     <div class="row w-100 my-3 justify-content-center">
 
-                        <!-- * Requestor Department -->
-                        <div class="col-12 col-md-4 mt-3">
-                            <nz-form-label for="dep">{{ 'RFP.Requester Department' | translate }}</nz-form-label>
+                        <!-- * Project Name -->
+                        <div class="col-12 col-md-2 mt-3">
+                            <nz-form-label for="dep">{{ 'RFP.Project Name' | translate }}</nz-form-label>
                             <nz-select id="dep" formControlName="dep" nzShowSearch style="width: 100%;" nzAllowClear>
-                                <nz-option *ngFor="let department of departmentList" [nzValue]="department.DeptId"
-                                    [nzLabel]="department.DeptText"></nz-option>
+                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
+                                    [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
                             </nz-select>
                         </div>
 
-                        <!-- * Pending with Department -->
-                        <div class="col-12 col-md-4 mt-3">
-                            <nz-form-label for="pendingDept">{{ 'RFP.Pending with Department' | translate }}</nz-form-label>
-                            <nz-select id="pendingDept" formControlName="pendingDept" nzShowSearch style="width: 100%;" nzAllowClear>
-                                <nz-option *ngFor="let department of pendingDepartmentList" [nzValue]="department.RfpWfDept"
-                                    [nzLabel]="cs.userLanguage === 'en' ? department.RfpWfDeptEn : department.RfpWfDeptAr"></nz-option>
+                        <!-- * Purchase Request Number -->
+                        <div class="col-12 col-md-2 mt-3">
+                            <nz-form-label for="rfpNo">{{ 'RFP.Purchase Request Number' | translate }}</nz-form-label>
+                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
+                                [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.PurchaseReqNo"
+                                    [nzLabel]="cs.userLanguage === 'en' ? o.PurchaseReqNo : o.PurchaseReqNo"></nz-option>
                             </nz-select>
                         </div>
 
                         <!-- * RFP Number -->
-                        <div class="col-12 col-md-4 mt-3">
+                        <div class="col-12 col-md-2 mt-3">
                             <nz-form-label for="rfpNo">{{ 'RFP.RFP Number' | translate }}</nz-form-label>
                             <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
-                            [nzDisabled]="rfpList.length === 0">
-                                <nz-option *ngFor="let o of rfpList" [nzValue]="o.RfpNo"
-                                    [nzLabel]="o.RfpNo"></nz-option>
+                                [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpNo"
+                                    [nzLabel]="cs.userLanguage === 'en' ? o.RfpNo : o.RfpNo"></nz-option>
                             </nz-select>
                         </div>
 
+                        <!-- * Pending with User -->
+                        <div class="col-12 col-md-2 mt-3">
+                            <nz-form-label for="rfpNo">{{ 'RFP.Pending with User' | translate }}</nz-form-label>
+                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
+                                [nzDisabled]="rfpList.length === 0">
+                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
+                                    [nzLabel]="o.WfPendUsrEn"></nz-option>
+                            </nz-select>
+                        </div>
+
+                        <!-- * Status -->
+                        <div class="col-12 col-md-2 mt-3">
+                            <nz-form-label for="status">Status</nz-form-label>
+                            <nz-select formControlName="status" nzShowSearch style="width: 100%;" nzAllowClear>
+                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
+                                    [nzLabel]="o.WfPendUsrEn"></nz-option>
+                                <!-- <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
+                                <nz-option nzValue="Draft" nzLabel="Draft"></nz-option>
+                                <nz-option nzValue="Cancelled" nzLabel="Cancelled"></nz-option>
+                                <nz-option nzValue="Returned" nzLabel="Returned"></nz-option>
+                                <nz-option nzValue="Submitted" nzLabel="Submitted"></nz-option> -->
+                            </nz-select>
+                        </div>
+
+
                         <div class="col-12 col-md-2 text-center" style="margin-top: 1.5rem;">
-                            <button nz-button nzType="primary" style="margin-top: 1.4rem;"
-                             nzSize="default" (click)="filterSearch()"> {{ 'RFP.search' | translate }}</button>
+                            <button nz-button nzType="primary" style="margin-top: 1.4rem;" nzSize="default"
+                                (click)="filterSearch()"> {{ 'RFP.search' | translate }}</button>
                         </div>
                     </div>
                 </div>
