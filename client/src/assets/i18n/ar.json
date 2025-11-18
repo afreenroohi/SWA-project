@@ -70,6 +70,7 @@
     "WfDeptDesc": "قسم سير العمل"
   },
   "RFP": {
+    "userId":"userId",
     "Id": "Id",
     "View": "مراجعة",
     "Edit": "تعديل",

@@ -74,6 +74,7 @@
     "Description": "Description"
   },
   "RFP": {
+     "userId":"userId",
     "Id": "Id",
     "View": "View",
     "Edit": "Edit",
@@ -473,7 +474,7 @@
     "dividedIntoLots":"Is the competition divided into lots?",
     "reAnnounced":"Has it been re-announced?",
     "requiresSiteVisit":"Does it require a site visit?",
-    "coordinator name":"Coordinator name",
+    "coordinator name":"Coordinator name (uid)",
     "coordinator number":"Coordinator number",
     "Activity":"Activity",
     "Subactivity":"Subactivity",
@@ -1046,6 +1047,7 @@
   "Framework Service Agreement Form - General": "Framework Service Agreement Form - General",
   "N/A": "N/A",
   "Userid": "Userid",
+  "userId":"userId",
   "print": "Select to print",
   "totalPercentage": "Total Percentage (%)",
   "contract": {
