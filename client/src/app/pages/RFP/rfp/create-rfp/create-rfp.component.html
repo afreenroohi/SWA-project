@@ -102,6 +102,19 @@
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
       <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
+        <div class="stepper-card mt-4">
+  <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
+ 
+    <nz-step nzTitle="Basic Information" (click)="goto(0)"></nz-step>
+    <nz-step nzTitle="Scope of Work" (click)="goto(1)"></nz-step>
+    <nz-step nzTitle="Standards" (click)="goto(2)"></nz-step>
+    <nz-step nzTitle="Bill of Quantity" (click)="goto(3)"></nz-step>
+    <nz-step nzTitle="Attachments" (click)="goto(4)"></nz-step>
+ 
+  </nz-steps>
+</div>
+ 
+      
 
       <!-- * Create RFP -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
@@ -2124,36 +2137,39 @@
 
 <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
   <nz-collapse-panel nzHeader="{{ 'Standards - Technical Criteria / vendor Criteria' | translate }}">
-   <div class="tech-info-row">
+<div class="tech-info-row">
  
   <div class="tech-info-text-with-icon">
+   
     Kindly specifies the criteria for evaluating the offers.
  
-    <i
-      nz-icon
-      nzType="info-circle"
-      nzTheme="fill"
-      class="tech-icon-inline trigger-icon"
-      (click)="toggleTooltip()"
-    ></i>
+    <div class="tooltip-wrapper">
+      <i
+        nz-icon
+        nzType="info-circle"
+        nzTheme="fill"
+        class="tech-icon-inline trigger-icon">
+      </i>
  
-    <!-- Custom tooltip LIST -->
-    <div class="custom-tooltip" *ngIf="tooltipVisible">
-      <ul class="tooltip-list">
-        <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
-       
-        <li>The Evaluation and analysis of the offers will be based on following elements.</li>
-      </ul>
+      <!-- Tooltip shown on hover -->
+      <div class="custom-tooltip">
+        <ul class="tooltip-list">
+          <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
+          <li>The Evaluation and analysis of the offers will be based on following elements.</li>
+        </ul>
+      </div>
     </div>
+ 
   </div>
  
 </div>
-
+ 
   
 
     <!-- ===================== TECHNICAL REQUIREMENTS ===================== -->
     <div class="row w-100 mb-4">
   <div formGroupName="TechReq" class="row align-items-start">
+    
     <!-- ItemNo column -->
     <div class="col-2">
       <nz-form-label nzRequired for="qslNo">{{ "RFP.slNo" | translate }}</nz-form-label>
@@ -2174,9 +2190,9 @@
         <!-- Add button sits to the right of the input -->
         <button
           nz-button
-          nzType="primary"
+         
           nzSize="default"
-          class="btn-save-continue"
+          class="btn-add"
         
           [disabled]="rfpForm.controls.TechReq.invalid"
           (click)="addTechReq('add')"
@@ -2286,28 +2302,63 @@
 
 
     <!-- ===================== EVALUATION CRITERIA ===================== -->
-    <hr class="seperationLine w-98" />
+    <hr class="seperationLine w-98 mb-2" />
+     <div class="tech-info-row mt-2">
+ 
+  <div class="tech-info-text-with-icon">
+   Evaluation and analysis of offer
+ 
+    <i
+      nz-icon
+      nzType="info-circle"
+      nzTheme="fill"
+      class="tech-icon-inline trigger-icon"
+      (click)="toggleTooltip()"
+    ></i>
+ 
+    <!-- Custom tooltip LIST -->
+    <div class="custom-tooltip" *ngIf="tooltipVisible">
+      <ul class="tooltip-list">
+        <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
+       
+        <li>The Evaluation and analysis of the offers will be based on following elements.</li>
+      </ul>
+    </div>
+  </div>
+ 
+</div>
 
-    <div class="row w-100 mt-4">
+
+    <div class="row w-100 mt-2">
       <div class="row mt-1">
         <div class="col-md-4">
           <nz-form-label nzRequired>{{ "RFP.TechEvalCritTot" | translate }}</nz-form-label>
           <nz-form-control>
-            <nz-input-number nz-input nzPlaceHolder="%" formControlName="TotTechEval" style="width: 100%" [nzMin]="1" [nzMax]="100"></nz-input-number>
-            <small *ngIf="rfpForm.controls.TotTechEval.touched && rfpForm.controls.TotTechEval.invalid" style="margin-top: 8px; color: red">
-              {{ "RFP.FieldIsRequired" | translate }}
-            </small>
-          </nz-form-control>
+<nz-input-number 
+    nz-input 
+    formControlName="TotTechEval"
+    style="width: 100%" 
+    [nzMin]="1" 
+    [nzMax]="100"
+    [nzDisabled]="true">
+</nz-input-number>
+ 
+  <small 
+    *ngIf="rfpForm.controls.TotTechEval.touched && rfpForm.controls.TotTechEval.invalid" 
+    style="margin-top: 8px; color: red">
+    {{ "RFP.FieldIsRequired" | translate }}
+</small>
+</nz-form-control>
         </div>
 
-        <div class="col d-flex justify-content-fx-start posr-t-2 gap-2">
+        <!-- <div class="col d-flex justify-content-fx-start posr-t-2 gap-2">
           <button [disabled]="!editTotTechEval" nz-button nzType="primary" nzSize="default" (click)="handleTotTechEvalEdit(false)">
             <span>{{ "contract.buttons.Save" | translate }}</span>
           </button>
           <button [disabled]="editTotTechEval" nz-button nzType="primary" nzSize="default" (click)="handleTotTechEvalEdit(true)">
             <span>{{ "RFP.Edit" | translate }}</span>
           </button>
-        </div>
+        </div> -->
       </div>
 
       <div formGroupName="EvalCriteria" class="row mt-3 w-100">
@@ -2372,13 +2423,12 @@
 
     </div>
 
-    <hr class="seperationLine" />
 
     <nz-table #nestedTable [nzFrontPagination]="false" *ngIf="EvalListData" [nzData]="EvalListData"
-              nzBordered="true" style="margin-top: 5%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+              nzBordered="true" style="margin-top: 3%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
       <thead>
         <tr>
-          <th></th>
+          <!-- <th></th> -->
           <th *ngFor="let column of listOfColumnEvalCriteria; index as i" [ngStyle]="{ width: i === listOfColumnEvalCriteria.length - 1 ? '10%' : '' }" nzCustomFilter>
             <span>{{ column | translate }}</span>
           </th>
@@ -2387,17 +2437,17 @@
       <tbody style="background: white">
         <ng-container *ngFor="let data of nestedTable.data; index as i">
           <tr>
-            <td *ngIf="data.TechToTechSub.length; else emptyData" [(nzExpand)]="data.expand"></td>
+            <!-- <td *ngIf="data.TechToTechSub.length; else emptyData" [(nzExpand)]="data.expand"></td> -->
             <ng-template #emptyData><td></td></ng-template>
 
             <td>{{ data.ItemNo }}</td>
             <td><h3>{{ data.Headline }}</h3> <span>{{ data.Descr }}</span></td>
             <td>{{ data.Percentage }}</td>
-            <td class="d-flex">
-              <button [disabled]="showEditEval" nz-button nzType="default" class="boqbuttonDelete mx-2" nzSize="default" (click)="removeEval(i + 1)">
+            <td class="d-flex" *ngIf="data.TechToTechSub.length; else emptyData" [(nzExpand)]="data.expand">
+              <button [disabled]="showEditEval" nz-button nzType="default" nzSize="default" (click)="removeEval(i + 1)">
                 <app-icon [icon]="IconList.deleteIcon"></app-icon>
               </button>
-              <button nz-button nzType="default" class="boqbuttonEdit mx-2" nzSize="default" (click)="editEval(i)">
+              <button nz-button nzType="default"  nzSize="default" (click)="editEval(i)">
                 <app-icon [icon]="IconList.edit"></app-icon>
               </button>
             </td>

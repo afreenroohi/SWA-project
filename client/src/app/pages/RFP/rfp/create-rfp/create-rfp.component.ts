@@ -163,7 +163,7 @@ export class CreateRFPComponent implements OnInit {
   slcon = 1;
 
   expandIconPosition: 'left' | 'right' = 'right';
-
+  step:number=0;
   evalEditIndex = 0;
   techReqEditIndex = 0;
   payEditIndex = 0;
@@ -335,33 +335,134 @@ export class CreateRFPComponent implements OnInit {
   }
 
   /** Save & Continue: validate basic info and reveal attachments */
-  saveAndContinue(): void {
-    this.markBasicControlsTouched();
+//   saveAndContinue(): void {
+//     this.markBasicControlsTouched();
 
-    if (!this.basicInfoValid) {
-      // your existing message service used elsewhere in the app
-      if (this.cs && typeof this.cs.createMessage === 'function') {
-        this.cs.createMessage('error', 'Please fill required basic information');
-      }
+//     if (!this.basicInfoValid) {
+//       // your existing message service used elsewhere in the app
+//       if (this.cs && typeof this.cs.createMessage === 'function') {
+//         this.cs.createMessage('error', 'Please fill required basic information');
+//       }
+//       return;
+//     }
+
+//     // optionally persist basic data before progressing (call API here if needed)
+//     // this.saveBasicInfo();
+
+//     // reveal attachments
+//      this.showScopeOfWork=true;
+//     // or if using Option B:
+//     // this.attachmentsActive = true;
+
+//     // scroll to attachments smoothly
+//      setTimeout(() => {
+//   const el = document.getElementById('scopeOfWorkSection');
+//   if (el) {
+//     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+//   }
+// }, 10);
+//   }
+  goto(stepNumber: number): void {
+ 
+  // prevent skipping ahead without validation
+  if (stepNumber > this.step) {
+    if (!this.isCurrentStepValid()) {
+      this.cs.createMessage('error', "Please complete the required fields");
       return;
     }
-
-    // optionally persist basic data before progressing (call API here if needed)
-    // this.saveBasicInfo();
-
-    // reveal attachments
-     this.showScopeOfWork=true;
-    // or if using Option B:
-    // this.attachmentsActive = true;
-
-    // scroll to attachments smoothly
-     setTimeout(() => {
-  const el = document.getElementById('scopeOfWorkSection');
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-}, 10);
+ 
+  // set the new step
+  this.step = stepNumber;
+ 
+  // open only correct collapse
+  this.openCollapse(this.step);
+}
+ 
+isCurrentStepValid(): boolean {
+  switch (this.step) {
+    case 0:
+      return this.basicInfoValid;
+ 
+    case 1:
+      //return this.attachmentsValid;
+ 
+    case 2:
+      //return this.scopeValid;  // add your scope validation
+ 
+    case 3:
+      //return this.boqValid;    // add BOQ validation
+ 
+    default:
+      return true;
   }
+}
+  showError(): void {
+    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
+  }
+  /** Save & Continue: validate basic info and reveal attachments */
+saveAndContinue(): void {
+ 
+  if (!this.isCurrentStepValid()) {
+    this.cs.createMessage('error', "Please complete the required fields");
+    return;
+  }
+ 
+  // Move one step forward only
+  this.step++;
+ 
+  // Open corresponding collapse
+  this.openCollapse(this.step);
+ 
+  // Smooth scroll
+  setTimeout(() => {
+    const el = document.querySelector('.attachment-body');
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 10);
+}
+// openCollapse(step: number) {
+//   //this.showBasic = (step === 0);
+//   this.showAttachments = (step === 1);
+//   this.showScope = (step === 2);
+//   // continue for all remaining steps
+// }
+ 
+openCollapse(step: number) {
+  // FIRST: RESET all collapses
+  //this.showBasic = false;
+  this.showAttachments = false;
+  //this.showScope = false;
+  //this.showBoq = false;
+  //this.showTerms = false;
+ 
+  // THEN: Open based on step
+  switch (step) {
+    case 0:
+     // this.showBasic = true;
+      break;
+ 
+    case 1:
+      this.showAttachments = true;
+      break;
+ 
+    case 2:
+      //this.showScope = true;
+      break;
+ 
+    case 3:
+      //this.showBoq = true;
+      break;
+ 
+    case 4:
+      //this.showTerms = true;
+      break;
+ 
+    default:
+      //this.showBasic = true;
+  }
+}
+ 
+ 
   /** Save & Continue:for attachments to reveal scope of work */
 // saveAndContinueForSOW(){
 //   this.showScopeOfWork=true;
@@ -728,7 +829,10 @@ toggleTooltip(): void {
 
 
   buildMainFormGroup(): void {
+       
+      //  this.rfpForm.get('TotTechEval')?.disable();
     this.rfpForm = this.fb.group({
+   
        userId: new FormControl(''),
       limitedType: new FormControl(''),    // for limited competition options
       directPurchaseType: new FormControl(''),// for direct purchase options
@@ -849,6 +953,8 @@ toggleTooltip(): void {
       definationCompetition: new FormControl('')
 
     });
+    this.rfpForm.get('TotTechEval')?.setValue(100);
+    this.rfpForm.get('TotTechEval')?.setValue(100);
 
 
     // this.rfpForm = this.fb.group({
