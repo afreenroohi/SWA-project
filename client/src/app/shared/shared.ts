@@ -814,17 +814,17 @@ export const listOfColumnRFPMG = [
     title: 'Pending with User',
     titleAr: 'قيد الانتظار مع المستخدم',
   },
+  // {
+  //   id: 6,
+  //   title: 'Status',
+  //   titleAr: 'الحالة',
+  //   filterMultiple: true,
+  //   listOfFilter: STATUS_FILTER,
+  //   listOfFilterAr: STATUS_FILTER_AR,
+  //   filterFn: (list: string[], item: DataItem) => list.some(name => item.RfpStatus.indexOf(name) !== -1)
+  // },
   {
     id: 6,
-    title: 'Status',
-    titleAr: 'الحالة',
-    filterMultiple: true,
-    listOfFilter: STATUS_FILTER,
-    listOfFilterAr: STATUS_FILTER_AR,
-    filterFn: (list: string[], item: DataItem) => list.some(name => item.RfpStatus.indexOf(name) !== -1)
-  },
-  {
-    id: 7,
     title: 'SLA',
     titleAr: 'اتفاقية مستوي التشغيل',
     sortFn: (prev: DataItem, next: DataItem) => {
@@ -841,16 +841,16 @@ export const listOfColumnRFPMG = [
     sortDirections: ['ascend', 'descend', null],
   },
   {
-    id: 9,
+    id: 7,
     title: 'Action',
     titleAr: 'الإجراء',
   },
-  {
-    id:10,
-    title:'Has it been re-announced?',
-    titleAr: 'هل تم الإعلان عنه مرة أخرى؟',
+  // {
+  //   id:10,
+  //   title:'Has it been re-announced?',
+  //   titleAr: 'هل تم الإعلان عنه مرة أخرى؟',
 
-  }
+  // }
 
 ];
 
