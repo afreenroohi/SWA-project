@@ -751,6 +751,9 @@ openCollapse(step: number) {
 
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
+    
+    // Update evaluation weights based on activity and estimated cost
+    this.updateEvaluationWeights();
   }
   // Getter for easy access
   get members(): FormArray {
@@ -988,7 +991,7 @@ openCollapse(step: number) {
       // Vendor evaluation weightage
       vendorEvaluationWeightage: this.fb.group({
         technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99),]],
-        financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
+        financialEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]]
       }),
 
     });
@@ -1238,6 +1241,12 @@ openCollapse(step: number) {
 
     // Initial validation sync
     this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+
+    // Listen to estimated cost and activity changes to update evaluation weights
+    this.rfpForm.get('estimatedCost')?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateEvaluationWeights());
+    this.rfpForm.get('activity')?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateEvaluationWeights());
 
     let usernameBtoa = localStorage.getItem('ID');
     if (usernameBtoa) {
@@ -4024,6 +4033,57 @@ openCollapse(step: number) {
     const financialWeightage = 100 - technicalEvaluationWeightageValue;
     const financialControl = this.rfpForm.get('vendorEvaluationWeightage.financialEvaluationWeightage');
     financialControl!.setValue(financialWeightage, { emitEvent: false });
+  }
+
+  // Add new method to update evaluation weights based on business rules
+  updateEvaluationWeights(): void {
+    const estimatedCost = this.rfpForm.get('estimatedCost')?.value;
+    const activityId = this.rfpForm.get('activity')?.value;
+    
+    if (!estimatedCost || !activityId) {
+      return;
+    }
+
+    const costInMillions = estimatedCost / 1000000; // Convert to millions
+    let financialWeight = 80; // Default for other activities
+    let technicalWeight = 20; // Default for other activities
+    let technicalPassRate = 70; // Default pass rate
+
+    if (costInMillions > 25) {
+      // More than 25 million SAR
+      if (activityId === 'ACT_CON') { // Contracting
+        financialWeight = 80;
+        technicalWeight = 20;
+      } else if (activityId === 'ACT_CONS') { // Consultancy
+        financialWeight = 30;
+        technicalWeight = 70;
+      } else if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+        financialWeight = 65;
+        technicalWeight = 35;
+      }
+      // For all other activities: use default 80, 20, 70
+    } else {
+      // Less than 25 million SAR
+      if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+        financialWeight = 70;
+        technicalWeight = 30;
+      } else if (activityId === 'ACT_CONS') { // Consultancy
+        financialWeight = 35;
+        technicalWeight = 65;
+      } else if (activityId === 'ACT_CON') { // Contracting
+        financialWeight = 85;
+        technicalWeight = 15;
+      }
+      // For all other activities: use default 80, 20, 70
+    }
+
+    // Update the form controls
+    const vendorEvaluationGroup = this.rfpForm.get('vendorEvaluationWeightage');
+    vendorEvaluationGroup?.get('financialEvaluationWeightage')?.setValue(financialWeight, { emitEvent: false });
+    vendorEvaluationGroup?.get('technicalEvaluationWeightage')?.setValue(technicalWeight, { emitEvent: false });
+    
+    // Update technical pass rate
+    this.rfpForm.get('TotTechEval')?.setValue(technicalPassRate, { emitEvent: false });
   }
 
 
