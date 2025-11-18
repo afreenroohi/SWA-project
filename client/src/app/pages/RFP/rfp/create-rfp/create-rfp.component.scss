@@ -74,7 +74,7 @@
 // //   flex-direction: column; /* stack inputs vertically */
 // //   gap: 8px;
 // // }
- 
+
 // // .cr-number-item {
 // //   display: flex;
 // //   align-items: center;
@@ -179,7 +179,7 @@
   border-radius: 5px;
   background-color: transparent;
 }
- 
+
 /* ========== Attachments card ========== */
 .attachment-body {
   background: #ffffff;
@@ -189,7 +189,7 @@
   padding: 18px;
   margin: 12px 0 28px;
 }
- 
+
 /* ========== ROW 1: Select Form + Download button ========== */
 .attachment-row {
   display: flex;
@@ -199,7 +199,7 @@
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
- 
+
 .field-label {
   display: block;
   font-size: 0.9rem;
@@ -207,17 +207,17 @@
   margin-bottom: 8px;
   font-weight: 600;
 }
- 
+
 .attachment-select {
   flex: 1 1 70%;
   min-width: 240px;
 }
- 
+
 .attachment-select nz-select {
   width: 100%;
   display: block;
 }
- 
+
 /* DOWNLOAD BUTTON aligned beside select */
 .attachment-actions {
   flex: 0 0 auto;
@@ -226,7 +226,7 @@
   justify-content: flex-start;
   margin-top: 26px;
 }
- 
+
 .download_button {
   background-color: #005c99 !important;
   color: #fff !important;
@@ -241,23 +241,23 @@
   gap: 8px;
   min-height: 38px;
 }
- 
+
 .download_button:hover {
   background-color: #004b80 !important;
   box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
   transform: translateY(-1px);
 }
- 
+
 .download_button:active {
   background-color: #003f6a !important;
   box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
   transform: translateY(1px);
 }
- 
+
 .download_button span[nz-icon] {
   font-size: 16px;
 }
- 
+
 /* ========== ROW 2: Upload section ========== */
 .section {
   display: flex;
@@ -266,14 +266,15 @@
   gap: 14px;
   margin-top: 14px;
 }
- 
+
 /* Upload area — light background and border hover effect */
 .upload-area {
   position: relative;
   flex: 1 1 auto;
   width: 100%;
   min-height: 160px;
-  background: #f1f1f1; /* same as attachment header background */
+  background: #f1f1f1;
+  /* same as attachment header background */
   border-color: #0b6aa0;
   border: 2px dashed #0b6aa0;
   border-radius: 8px;
@@ -286,59 +287,65 @@
   justify-content: center;
   align-items: center;
 }
- 
+
 /* On hover — match attachment header grey and show subtle border */
 .upload-area:hover,
 .upload-area.dragover {
-  background: #e2e0e0; /* same as attachment header background */
-  border-color:#e9eef2;; /* blue accent on hover */
+  background: #e2e0e0;
+  /* same as attachment header background */
+  border-color: #e9eef2;
+  ;
+  /* blue accent on hover */
   // box-shadow: 0 0 0 3px rgba(35, 35, 36, 0.05);
 }
- 
+
 /* Hide the real input, make whole area clickable */
 .upload-input {
   display: none;
 }
- 
+
 .upload-content {
-  pointer-events: none; /* ensure clicks reach parent */
+  pointer-events: none;
+  /* ensure clicks reach parent */
 }
- 
+
 .upload-content [nz-icon] {
   font-size: 42px;
   color: #0b6aa0;
   margin-bottom: 10px;
   transition: color 0.2s ease;
 }
- 
+
 /* On hover, icon gets slightly dimmer for contrast */
 .upload-area:hover [nz-icon] {
   color: #777;
 }
- 
+
 .upload-message {
   font-size: 1rem;
   font-weight: 600;
   color: #333;
 }
- 
+
 .helper {
   display: block;
   font-size: 0.82rem;
   color: #9aa6ad;
   margin-top: 6px;
 }
-.attachment-list{
+
+.attachment-list {
   margin-bottom: 2px;
-  margintop:3px;
+  margintop: 3px;
 }
+
 /* Uploaded files list styling */
 .custom-uploaded-list {
   list-style: none;
   margin: 12px 0 0;
   padding: 0;
 }
- 
+
 .uploaded-file-item {
   display: flex;
   align-items: center;
@@ -347,26 +354,27 @@
   border: 1px solid #e9eef2;
   border-radius: 6px;
   background-color: #fafafa;
-  margin-bottom: 6px; /* small margin between uploaded files */
+  margin-bottom: 6px;
+  /* small margin between uploaded files */
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
- 
+
 .uploaded-file-item:hover {
   background-color: #f5f8fb;
   box-shadow: 0 2px 6px rgba(11, 106, 160, 0.05);
 }
- 
+
 .file-info {
   display: flex;
   align-items: center;
   gap: 8px;
 }
- 
+
 .file-info [nz-icon] {
   color: #0b6aa0;
   font-size: 16px;
 }
- 
+
 .file-name {
   font-size: 0.92rem;
   color: #333;
@@ -376,7 +384,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
- 
+
 /* Delete icon inside each file */
 .delete-icon {
   color: #d9534f;
@@ -386,29 +394,31 @@
   border-radius: 4px;
   transition: background 0.15s ease, color 0.15s ease;
 }
- 
+
 .delete-icon:hover {
   color: #b52b27;
   background: rgba(217, 83, 79, 0.08);
 }
+
 /* Compact multiple-select styling so it matches other inputs */
 .compact-multi-select {
   width: 100%;
- 
+
   /* override ng-zorro / ant styles to keep the control height compact */
   ::ng-deep .ant-select-selector {
-    min-height: 36px !important;   /* match your input height */
+    min-height: 36px !important;
+    /* match your input height */
     height: 36px !important;
     display: flex;
     align-items: center;
     padding: 0 11px !important;
   }
- 
+
   /* ensure placeholder vertically centered */
   ::ng-deep .ant-select-selection-placeholder {
     line-height: 38px !important;
   }
- 
+
   /* contain tags in a single line and truncate overflowing text */
   ::ng-deep .ant-select-selection-overflow,
   ::ng-deep .ant-select-selection-overflow-item {
@@ -417,7 +427,7 @@
     max-width: 100%;
     overflow: hidden;
   }
- 
+
   ::ng-deep .ant-select-selection-item,
   ::ng-deep .ant-select-selection-item-content {
     white-space: nowrap;
@@ -425,79 +435,473 @@
     text-overflow: ellipsis;
     max-width: 100%;
   }
- 
+
   /* when nzMaxTagCount renders +N tag, make it small and centered */
   ::ng-deep .ant-select-selection-overflow-item-ellipsis {
     display: inline-flex;
     align-items: center;
     margin-left: 6px;
   }
- 
+
   /* tweak tokens appearance slightly so they don't push height */
   ::ng-deep .ant-select-selection-overflow-item .ant-select-selection-item-remove {
     margin-left: 6px;
     margin-right: 2px;
   }
 }
+
+//  toggle design
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  /* pushes toggle to right */
+  align-items: center;
+}
+
+.toggle-label {
+  margin-right: 10px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.info-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  padding: 12px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.info-box:hover {
+  border-color: #0b6aa0;
+  background: #f5f9fc;
+  box-shadow: 0 2px 4px rgba(11, 106, 160, 0.08);
+}
+
+// /* toggle design */
+// .toggle-row {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// }
+
+// .toggle-label {
+//   margin-right: 10px;
+// }
+
+// /* updated info-box to match table styling */
+// .info-box {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+
+//   border: 1px solid #d9d9d9;     /* same light border as table */
+//   background: #fafafa;           /* soft light gray like table rows */
+
+//   padding: 10px 14px;
+//   border-radius: 6px;            /* same rounded corner style */
+  
+// }
+
+//standards section label
+.tech-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #d0e6eb;        // subtle cyan border like screenshot
+  background: #f6feff;              // very light cyan background
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
  
+/* left side message style */
+.tech-info-text {
+  color: #0b6aa0;
+  font-size: 14px;
+  line-height: 1.3;
+  flex: 1 1 auto;
+  padding-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
  
+/* right aligned info button */
+/* make add button a square and vertically aligned with the input */
+.tech-add-btn {
+  width: 60px;              /* matches typical input height */
+  height: 38px;
+  padding: 0;
+  border-radius: 6px;       /* square with slight rounding */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
  
+/* ensure the input next to the button doesn't overflow the row */
+.form-row .flex-grow-1,
+.d-flex .flex-grow-1 {
+  min-width: 0; /* allow proper shrinking inside flex container */
+}
+ 
+/* optional: small responsive tweak so button stacks under input on very small screens */
+@media (max-width: 480px) {
+  .d-flex.align-items-start {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tech-add-btn {
+    width: 100%;
+    height: 38px;
+  }
+}
+ 
+.tech-info-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(11,106,160,0.12);
+  color: #0b6aa0;
+  padding: 0;
+}
+ 
+/* hover / focus */
+.tech-info-btn:hover,
+.tech-info-btn:focus {
+  background: #eef7fc;
+  border-color: #0b6aa0;
+  color: #064e6b;
+}
+/* ensure the description wraps and is vertically aligned */
+.tech-key-criteria {
+  display: block;
+  white-space: normal;
+  word-break: break-word;
+  max-height: 4.5em;       /* optional limit */
+  overflow: hidden;
+}
+ 
+/* pass/fail pills */
+.pass-pill, .fail-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 13px;
+}
+ 
+.pass-pill {
+  background: #e6f7ff;
+  color: #0b6aa0;
+  border: 1px solid rgba(11,106,160,0.12);
+}
+ 
+.fail-pill {
+  background: #fff1f0;
+  color: #d9534f;
+  border: 1px solid rgba(217,83,79,0.08);
+}
+ 
+/* placeholder dash */
+.pass-fail-placeholder {
+  color: #9aa6ad;
+}
+ 
+/* action icon spacing */
+.action-btn {
+  min-width: 36px;
+  padding: 4px 6px;
+}
+//  toggle design
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  /* pushes toggle to right */
+  align-items: center;
+}
+ 
+.toggle-label {
+  margin-right: 10px;
+  /* optional */
+}
+ 
+.info-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+  // border: 1px solid #0b6aa0;
+  // background: rgba(11, 106, 160, 0.05); /* lighter shade of border color */
+  border: 1px solid #6c757d;
+  /* dark gray */
+  background: #f2f2f2;
+  /* light gray */
+ 
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+/* ================================================= */
+/* TECHNICAL INFO ROW STYLES (MODIFIED FOR RIGHT ALIGNMENT) */
+/* ================================================= */
+ 
+.tech-info-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #d0e6eb;
+  background: #f6feff;
+  border-radius: 6px;
+  position: relative;
+}
+ 
+.tech-info-text-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  position: relative;
+}
+ 
+/* wrapper that controls hover */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+ 
+/* icon styling */
+.trigger-icon {
+  cursor: pointer;
+  font-size: 18px;
+  color: #0d877e;
+}
+ 
+/* tooltip hidden by default */
+.custom-tooltip {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  z-index: 20;
+  display: none;
+ 
+  background: #ffffff;
+  padding: 12px 14px;
+  border: 1px solid #c2e7f3;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  width: 280px;
+}
+ 
+/* SHOW tooltip when hovering icon */
+.tooltip-wrapper:hover .custom-tooltip {
+  display: block;
+}
+ 
+/* arrow */
+.custom-tooltip::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #ffffff transparent;
+}
+ 
+.tooltip-list {
+  margin: 0;
+  padding-left: 18px;
+ 
+  li {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: #333;
+  }
+}
+// /* Stepper Card Styles */
+.stepper-card {
+width: 100%;
+background: #fff;
+border: 1px solid #e5e5e5;
+border-radius: 8px;
+padding: 18px 22px;
+box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-top: -10px; /* Example adjustment to move it up */
+}
+ 
+/* Keep NG-Zorro default stepper clean */
+.simple-stepper {
+width: 100%;
+}
+ 
+/* Style titles lightly */
+:host ::ng-deep .ant-steps-item-title {
+font-size: 14px;
+font-weight: 500;
+color: #444;
+}
+ 
+/* Clean, not heavy circle */
+:host ::ng-deep .ant-steps-item-icon {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+  /* FIX: Ensure content (number) is centered */
+  display: flex;
+  align-items: center;      /* Vertically center */
+  justify-content: center;  /* Horizontally center */
+}
+ 
+/* Active step highlight */
+:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+background-color: #005bbd !important;
+border-color: #005bbd !important;
+color: #fff !important;
+}
+ 
+/* Make connecting line subtle, NOT overridden */
+:host ::ng-deep .ant-steps-item-tail::after {
+border-color: #cccccc !important;
+}
+.btn-add {
+  margin-top: -2px;        /* pushes it slightly upward */
+  background-color: #0b6aa0 !important;
+  color: #ffffff !important;
+  border: 1px solid #0b6aa0 !important;
+  font-weight: 500;
+  min-width: 130px;
+  height: 38px;
+}
+ 
+.btn-add:hover {
+  background-color: #0a5b87 !important;
+  border-color: #0a5b87 !important;
+}
+ 
+.btn-add[disabled] {
+  background-color: #f5f5f5 !important;
+  color: #bfbfbf !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed !important;
+}
+ 
+ .stepper-card {
+width: 100%;
+background: #fff;
+border: 1px solid #e5e5e5;
+border-radius: 8px;
+padding: 18px 22px;
+box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-top: -10px; /* Example adjustment to move it up */
+}
+ 
+/* Keep NG-Zorro default stepper clean */
+.simple-stepper {
+width: 100%;
+}
+ 
+/* Style titles lightly */
+:host ::ng-deep .ant-steps-item-title {
+font-size: 14px;
+font-weight: 500;
+color: #444;
+}
+ 
+/* Clean, not heavy circle */
+:host ::ng-deep .ant-steps-item-icon {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+  /* FIX: Ensure content (number) is centered */
+  display: flex;
+  align-items: center;      /* Vertically center */
+  justify-content: center;  /* Horizontally center */
+}
+ 
+/* Active step highlight */
+:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+background-color: #005bbd !important;
+border-color: #005bbd !important;
+color: #fff !important;
+}
+ 
+/* Make connecting line subtle, NOT overridden */
+:host ::ng-deep .ant-steps-item-tail::after {
+border-color: #cccccc !important;
+}
+
+
 /* ========== Responsive ========== */
 @media (max-width: 880px) {
+
   .attachment-row,
   .section {
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
- 
+
   .attachment-select,
   .upload-area {
     width: 100% !important;
     max-width: 100%;
   }
- 
+
   .attachment-actions {
     margin-top: 0;
     justify-content: flex-start;
   }
- 
+
   .upload-area {
     min-height: 140px;
   }
 }
- 
+
 /* ========== Misc (form styling) ========== */
 h6 {
   font-size: 1rem !important;
 }
- 
+
 input {
   width: 100%;
   border: 1px solid #d9d9d9;
   height: 32px;
   padding: 9px;
 }
- 
+
 input::selection {
   background: rgba(65, 173, 79, 0.12);
 }
- 
+
 .create_rfp_head {
   font-size: 18px;
   font-family: 'Roboto';
   font-weight: 600;
 }
- 
+
 ::ng-deep .ant-collapse-content {
   background: #fcfcfc !important;
 }
- 
+
 ::ng-deep .ant-collapse-header {
   background: #f1f1f1 !important;
   font-weight: 700;
   font-family: 'Roboto';
 }
+
 // .cr-number-container {
 //   display: flex;
 //   align-items: center;
@@ -524,19 +928,19 @@ input::selection {
   gap: 8px;
   flex-wrap: wrap;
 }
- 
+
 .cr-number-item {
   display: flex;
   align-items: center;
   gap: 8px;
 }
- 
+
 /* Match input sizing and spacing */
 .cr-input {
   width: 150px;
   min-width: 120px;
 }
- 
+
 /* Make circle buttons visually consistent and visible at zooms */
 .cr-minus-btn,
 .cr-add-btn {
@@ -549,37 +953,48 @@ input::selection {
   border-radius: 50%;
   box-sizing: border-box;
 }
- 
+
 /* dashed + button slightly bigger / more visible */
 .cr-add-btn {
   width: 40px;
   height: 40px;
 }
- 
+
 /* ensure icon has visible size */
 .cr-minus-btn i[nz-icon],
 .cr-add-btn i[nz-icon] {
   font-size: 14px;
   line-height: 1;
 }
- 
+
+
 /* optional: add a small responsive rule if UI compresses at low zoom */
 @media (max-width: 900px) {
-  .cr-input { width: 130px; }
-  .cr-minus-btn, .cr-add-btn { width: 34px; height: 34px; }
+  .cr-input {
+    width: 130px;
+  }
+
+  .cr-minus-btn,
+  .cr-add-btn {
+    width: 34px;
+    height: 34px;
+  }
 }
-.btn-Review{
-   background-color: #ffffff !important;
-  color: #0b6aa0 !important;         /* Text color */
+
+.btn-Review {
+  background-color: #ffffff !important;
+  color: #0b6aa0 !important;
+  /* Text color */
   border: 1px solid #0b6aa0 !important;
   font-weight: 500;
- 
+
   /* Keep same height as primary buttons */
   min-width: 130px;
   height: 38px;
   border-radius: 3px;
   margin-bottom: 3px;
 }
+
 .btn-Review:hover {
   background-color: #eef7fc !important;
   color: #0a5b87 !important;
@@ -589,22 +1004,23 @@ input::selection {
 // draft button design 
 .btn-save-draft {
   background-color: #ffffff !important;
-  color: #0b6aa0 !important;         /* Text color */
+  color: #0b6aa0 !important;
+  /* Text color */
   border: 1px solid #0b6aa0 !important;
   font-weight: 500;
- 
+
   /* Keep same height as primary buttons */
   min-width: 130px;
   height: 38px;
 }
- 
+
 /* Hover effect */
 .btn-save-draft:hover {
   background-color: #eef7fc !important;
   color: #0a5b87 !important;
   border-color: #0a5b87 !important;
 }
- 
+
 /* Disabled state */
 .btn-save-draft[disabled] {
   background-color: #f5f5f5 !important;
@@ -616,22 +1032,25 @@ input::selection {
 // save and continue 
 
 .btn-save-continue {
-  background-color: #0b6aa0 !important;   /* Blue background */
-  color: #ffffff !important;              /* White text */
+  background-color: #0b6aa0 !important;
+  /* Blue background */
+  color: #ffffff !important;
+  /* White text */
   border: 1px solid #0b6aa0 !important;
   font-weight: 500;
- 
+
   /* Matching size */
   min-width: 130px;
   height: 38px;
 }
- 
+
 /* Hover effect */
 .btn-save-continue:hover {
-  background-color: #0a5b87 !important;   /* Darker blue */
+  background-color: #0a5b87 !important;
+  /* Darker blue */
   border-color: #0a5b87 !important;
 }
- 
+
 /* Disabled state */
 .btn-save-continue[disabled] {
   background-color: #f5f5f5 !important;
@@ -639,10 +1058,10 @@ input::selection {
   border-color: #d9d9d9 !important;
   cursor: not-allowed !important;
 }
- 
- 
+
+
 // Technical Committee member
- 
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -651,7 +1070,7 @@ input::selection {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
- 
+
 .table th,
 .table td {
   padding: 10px 12px;
@@ -659,41 +1078,41 @@ input::selection {
   border: 1px solid #e8e8e8;
   font-size: 14px;
 }
- 
+
 .table th {
   background-color: #f5f5f5;
   font-weight: 600;
   color: #333;
 }
- 
+
 .table input[nz-input] {
   width: 100%;
   border-radius: 4px;
   height: 34px;
   font-size: 14px;
 }
- 
+
 button[nz-button] {
   font-size: 13px;
   padding: 2px 10px;
 }
- 
+
 button[nzType="primary"] {
   margin-top: 10px;
 }
- 
+
 .table tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
- 
+
 .table tbody tr:hover {
   background-color: #f0f7ff;
 }
- 
+
 .mt-2 {
   margin-top: 10px;
 }
- 
+
 .cancellation-upload {
   display: flex;
   flex-direction: column;
@@ -725,8 +1144,10 @@ button[nzType="primary"] {
 /* outer, input-like box */
 .upload-inline-box {
   flex: 1;
-  position: relative;              /* important - for absolute content inside */
-  height: 44px !important;         /* match other inputs; tweak if needed */
+  position: relative;
+  /* important - for absolute content inside */
+  height: 44px !important;
+  /* match other inputs; tweak if needed */
   border: 1px solid #d9d9d9 !important;
   border-radius: 6px;
   background: #fff !important;
@@ -760,21 +1181,25 @@ button[nzType="primary"] {
 .upload-inline-box .ant-upload-drag-icon,
 .upload-inline-box .ant-upload-text,
 .upload-inline-box p,
-.upload-inline-box .ant-upload-drag-container > * {
+.upload-inline-box .ant-upload-drag-container>* {
   display: none !important;
 }
 
 /* Our custom content absolutely placed inside the box */
 .upload-inline-content {
   position: absolute;
-  left: 12px;                     /* padding from left inside the box */
-  right: 56px;                    /* leave room for trash button at right */
+  left: 12px;
+  /* padding from left inside the box */
+  right: 56px;
+  /* leave room for trash button at right */
   top: 0;
   bottom: 0;
   display: flex;
-  align-items: center;            /* vertical center */
+  align-items: center;
+  /* vertical center */
   gap: 10px;
-  pointer-events: auto;           /* allow clicks */
+  pointer-events: auto;
+  /* allow clicks */
   cursor: pointer;
   z-index: 5;
 }
@@ -785,6 +1210,7 @@ button[nzType="primary"] {
   color: #0b6aa0;
   line-height: 1;
 }
+
 .upload-inline-text {
   font-size: 14px;
   color: #333;
@@ -807,6 +1233,7 @@ button[nzType="primary"] {
   border-radius: 50%;
   box-sizing: border-box;
 }
+
 .trash-btn:hover {
   background: rgba(217, 83, 79, 0.06);
   border-color: #b52b27;
@@ -815,7 +1242,96 @@ button[nzType="primary"] {
 
 /* small responsive tweak if the container is narrow */
 @media (max-width: 560px) {
-  .upload-inline-content { right: 48px; left: 8px; }
-  .upload-inline-text { font-size: 13px; }
-  .upload-inline-box { height: 40px !important; }
+  .upload-inline-content {
+    right: 48px;
+    left: 8px;
+  }
+
+  .upload-inline-text {
+    font-size: 13px;
+  }
+
+  .upload-inline-box {
+    height: 40px !important;
+  }
+}
+
+
+.btn-review-text {
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 500;
+  min-width: 180px;
+  height: 38px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(11, 106, 160, 0.25);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-review-text:hover {
+  background: linear-gradient(135deg, #005c99 0%, #004b80 100%) !important;
+  box-shadow: 0 4px 10px rgba(11, 106, 160, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-review-text:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(11, 106, 160, 0.2);
+}
+
+.btn-review-text span[nz-icon] {
+  font-size: 16px;
+}
+
+.enhanced-textarea {
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  transition: all 0.3s ease !important;
+  background-color: #fafafa !important;
+  resize: vertical !important;
+}
+
+.enhanced-textarea:hover {
+  border-color: #0b6aa0 !important;
+  background-color: #ffffff !important;
+}
+
+.enhanced-textarea:focus {
+  border-color: #0b6aa0 !important;
+  box-shadow: 0 0 0 2px rgba(11, 106, 160, 0.1) !important;
+  background-color: #ffffff !important;
+  outline: none !important;
+}
+
+/* Enhanced dropdown styling - keeping original height */
+::ng-deep .ant-select-dropdown {
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+::ng-deep .ant-select-item {
+  transition: all 0.2s ease !important;
+}
+
+::ng-deep .ant-select-item-option:hover {
+  background-color: #f5f9fc !important;
+  color: #0b6aa0 !important;
+}
+
+::ng-deep .ant-select-item-option-selected {
+  background-color: #e6f4ff !important;
+  color: #0b6aa0 !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: #f5f9fc !important;
 }
