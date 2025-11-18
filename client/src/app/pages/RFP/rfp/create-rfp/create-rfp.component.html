@@ -98,17 +98,6 @@
 
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#1fcecb" type="line-scale"></ngx-spinner>
-<!-- <div class="stepper-card mt-4">
-  <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
-
-    <nz-step nzTitle="Basic Information" (click)="goto(0)"></nz-step>
-    <nz-step nzTitle="Scope of Work" (click)="goto(1)"></nz-step>
-    <nz-step nzTitle="Standards" (click)="goto(2)"></nz-step>
-    <nz-step nzTitle="Bill of Quantity" (click)="goto(3)"></nz-step>
-    <nz-step nzTitle="Attachments" (click)="goto(4)"></nz-step>
-
-  </nz-steps>
-</div> -->
 
     <div class="col-12">
   <nz-form [formGroup]="rfpForm">
@@ -150,24 +139,26 @@
 <!-- <div class="tech-info-row">
 
   <div class="tech-info-text-with-icon">
+    
     Kindly specifies the criteria for evaluating the offers.
 
-    <i 
-      nz-icon 
-      nzType="info-circle" 
-      nzTheme="fill" 
-      class="tech-icon-inline trigger-icon"
-      (click)="toggleTooltip()"
-    ></i>
+    <div class="tooltip-wrapper">
+      <i 
+        nz-icon 
+        nzType="info-circle" 
+        nzTheme="fill" 
+        class="tech-icon-inline trigger-icon">
+      </i>
 
-    <!-- Custom tooltip LIST >
-    <div class="custom-tooltip" *ngIf="tooltipVisible">
-      <ul class="tooltip-list">
-        <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
-        
-        <li>The Evaluation and analysis of the offers will be based on following elements.</li>
-      </ul>
+      <!-- Tooltip shown on hover >
+      <div class="custom-tooltip">
+        <ul class="tooltip-list">
+          <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
+          <li>The Evaluation and analysis of the offers will be based on following elements.</li>
+        </ul>
+      </div>
     </div>
+
   </div>
 
 </div> -->
@@ -1528,7 +1519,7 @@
               <nz-form-label nzRequired for="SOP">
                 {{ "RFP.Definition of competition" | translate }}</nz-form-label>
               <nz-form-control>
-                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <textarea rows="8" nz-input formControlName="definationCompetition" data-scope-field></textarea>
                 <small *ngIf="
                     rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
@@ -1540,7 +1531,7 @@
               <nz-form-label nzRequired for="ProjJust">
                 {{ "RFP.Work program" | translate }}</nz-form-label>
               <nz-form-control nzHasFeedback>
-                <textarea rows="4" nz-input formControlName="ProjJust"></textarea>
+                <textarea rows="4" nz-input formControlName="ProjJust" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.ProjJust.touched &&
@@ -1566,7 +1557,7 @@
               <nz-form-label nzRequired for="SOP">
                 {{ "RFP.Place of execution of works and services" | translate }}</nz-form-label>
               <nz-form-control>
-                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <textarea rows="8" nz-input formControlName="definationCompetition" data-scope-field></textarea>
                 <small *ngIf="
                     rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
@@ -1577,7 +1568,7 @@
               <nz-form-label nzRequired for="SOP">
                 {{ "RFP.How to carry out work and services" | translate }}</nz-form-label>
               <nz-form-control>
-                <textarea rows="8" nz-input formControlName="definationCompetition"></textarea>
+                <textarea rows="8" nz-input formControlName="definationCompetition" data-scope-field></textarea>
                 <small *ngIf="
                     rfpForm.controls.definationCompetition.touched && rfpForm.controls.definationCompetition.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
@@ -1588,7 +1579,7 @@
               <nz-form-label nzRequired for="SOP">
                 {{ "RFP.SCOPE OF WORK" | translate }}</nz-form-label>
               <nz-form-control>
-                <textarea rows="8" nz-input formControlName="SOP"></textarea>
+                <textarea rows="8" nz-input formControlName="SOP" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.SOP.touched && rfpForm.controls.SOP.invalid
@@ -1600,7 +1591,7 @@
               <nz-form-label nzRequired for="SOP">{{ "RFP.Labor" | translate }}</nz-form-label>
               <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertLaborText()">Review the default text</button>
               <nz-form-control>
-                <textarea rows="8" nz-input formControlName="labor"></textarea>
+                <textarea rows="8" nz-input formControlName="labor" data-scope-field></textarea>
                 <small *ngIf="
                     rfpForm.controls.labor.touched && rfpForm.controls.labor.invalid
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
@@ -1611,7 +1602,7 @@
               <nz-form-label nzRequired for="SOP">{{ "RFP.Materials" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertMaterialsText()">Review the default text</button>
               <nz-form-control>
-                <textarea rows="4" nz-input formControlName="materials"></textarea>
+                <textarea rows="4" nz-input formControlName="materials" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.materials.touched && rfpForm.controls.materials.invalid
@@ -1623,7 +1614,7 @@
               <nz-form-label nzRequired for="SOP">{{ "RFP.Equipment" | translate }}</nz-form-label>
               <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertEquipmentText()">Review the default text</button>
               <nz-form-control>
-                <textarea rows="4" nz-input formControlName="equipment"></textarea>
+                <textarea rows="4" nz-input formControlName="equipment" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.equipment.touched && rfpForm.controls.equipment.invalid
@@ -1635,7 +1626,7 @@
               <nz-form-label nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
               <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertQualityText()">Review the default text</button>
               <nz-form-control>
-                <textarea rows="4" nz-input formControlName="qualitySpecifications"></textarea>
+                <textarea rows="4" nz-input formControlName="qualitySpecifications" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.qualitySpecifications.touched && rfpForm.controls.qualitySpecifications.invalid
@@ -1647,7 +1638,7 @@
               <nz-form-label nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
               <button nz-button nzType="primary" class="ms-2" class="btn-Review" (click)="insertSafetyText()">Review the default text</button>
               <nz-form-control>
-                <textarea rows="4" nz-input formControlName="safetySpecifications"></textarea>
+                <textarea rows="4" nz-input formControlName="safetySpecifications" data-scope-field></textarea>
 
                 <small *ngIf="
                     rfpForm.controls.safetySpecifications.touched && rfpForm.controls.safetySpecifications.invalid
