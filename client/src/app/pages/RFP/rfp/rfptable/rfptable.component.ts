@@ -165,6 +165,7 @@ export class RfptableComponent implements OnInit, OnChanges {
   }
 
   openDetails(detail: any, Action: any) {
+    console.log(detail,'detail=========')
     this.router.navigate(['rfp/detail'], {
       state: {
         RfpNo: detail.RfpNo,
