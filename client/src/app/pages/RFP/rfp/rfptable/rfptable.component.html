@@ -45,7 +45,7 @@
       <!--end of columns for manager dashboad-->
 
 
-      <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td>
+      <!-- <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td> -->
       <td [ngStyle]="{
         color: data.SlaInd === 'N' ? 'red' : 'green'
       }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td>
@@ -97,10 +97,10 @@
         </button> -->
       </td>
 
-      <td>
+      <!-- <td>
         <nz-switch [(ngModel)]="data.isReAnnounced" (ngModelChange)="onReAnnouncedChange(data)">
         </nz-switch>
-      </td>
+      </td> -->
 
     </tr>
   </tbody>
