@@ -1714,7 +1714,7 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Standards -->
+      <!-- Standards *ngIf="showStandards"-->
       <nz-collapse *ngIf="showStandards" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'Standards' | translate }}">
           <div class="tech-info-row">
@@ -1923,229 +1923,83 @@
           </button>
         </div> -->
             </div>
+          </div>
 
-            <div formGroupName="EvalCriteria" class="row mt-3 w-100">
-              <div class="col-2">
-                <nz-form-label nzRequired for="qslNo">{{ "RFP.slNo" | translate }}</nz-form-label>
-                <input nz-input formControlName="ItemNo" />
-                <small
-                  *ngIf="rfpForm.controls.EvalCriteria.get('ItemNo')?.touched && rfpForm.controls.EvalCriteria.get('ItemNo')?.invalid">
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
+          <table class="table table-bordered technical-table mt-3">
+            <thead>
+              <tr>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.slNo" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Headline" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Weightage" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.AreThereSubCriteria" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.TechEvalDecr" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="evalCriteriaItems">
+              <ng-container *ngFor="let item of evalCriteriaItems.controls; let i = index">
+                <tr [formGroupName]="i">
+                  <td style="text-align: center;">{{ i + 1 }}</td>
+                  <td><input nz-input formControlName="Headline" placeholder="Enter headline" /></td>
+                  <td><nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100" [nzStep]="1"></nz-input-number></td>
+                  <td>
+                    <nz-select style="width: 100%" formControlName="SubCriFlg">
+                      <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate"></nz-option>
+                      <nz-option nzValue="y" [nzLabel]="'COM.No' | translate"></nz-option>
+                    </nz-select>
+                  </td>
+                  <td><textarea nz-input formControlName="Descr" rows="2" placeholder="Enter description"></textarea></td>
+                  <td class="text-center">
+                    <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="openSubCriteriaForRow(i)" title="Add Sub Criteria" style="cursor: pointer; color: #1890ff; font-size: 18px;"></i>
+                    <i nz-icon nzType="eye" nzTheme="outline" class="mx-1" (click)="toggleSubCriteriaView(i)" title="View Sub Criteria" style="cursor: pointer; color: #1f4e79; font-size: 18px;"></i>
+                  </td>
+                </tr>
+                <tr *ngIf="item.value.subCriteriaList && item.value.subCriteriaList.length > 0 && item.value.showSubCriteria">
+                  <td colspan="6" style="padding: 0; background-color: #fafafa;">
+                    <div style="padding: 20px; margin-left: 50px; margin-right: 20px;">
+                      <div style="background-color: #1f4e79; padding: 8px 16px; border-radius: 4px 4px 0 0; margin-bottom: 0;">
+                        <span style="color: white; font-weight: 600; font-size: 14px;">
+                          <i nz-icon nzType="unordered-list" nzTheme="outline" style="margin-right: 8px;"></i>
+                          Sub-Criteria Details
+                        </span>
+                      </div>
+                      <table class="table table-bordered mb-0" style="box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 0 0 4px 4px; overflow: hidden;">
+                        <thead>
+                          <tr style="background-color: #1f4e79;">
+                            <th style="width: 80px; text-align: center; border: 1px solid #dee2e6; color: white; font-weight: 600;">{{ "RFP.slNo" | translate }}</th>
+                            <th style="text-align: center; border: 1px solid #dee2e6; color: white; font-weight: 600;">{{ "RFP.Des" | translate }}</th>
+                            <th style="width: 120px; text-align: center; border: 1px solid #dee2e6; color: white; font-weight: 600;">{{ "RFP.Weightage" | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let subItem of item.value.subCriteriaList; let j = index" style="background-color: white; transition: all 0.3s;" 
+                              onmouseover="this.style.backgroundColor='#f0f5ff'" 
+                              onmouseout="this.style.backgroundColor='white'">
+                            <td style="text-align: center; border-left: 3px solid #1f4e79; padding: 12px; font-weight: 500;">{{ j + 1 }}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">{{ subItem.Descr }}</td>
+                            <td style="text-align: center; font-weight: 600; color: #1f4e79; padding: 12px; border: 1px solid #dee2e6;">
+                              <span style="background: #e6f0ff; padding: 4px 12px; border-radius: 12px;">{{ subItem.Percentage }}%</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
 
-              <div class="col-4">
-                <nz-form-label nzRequired for="headline">{{ "RFP.Headline" | translate }}</nz-form-label>
-                <input nz-input formControlName="Headline" />
-                <small
-                  *ngIf="rfpForm.controls.EvalCriteria.get('Headline')?.touched && rfpForm.controls.EvalCriteria.get('Headline')?.invalid">
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
-
-              <div class="col-4">
-                <nz-form-label nzRequired for="qPerct">{{ "RFP.Weightage" | translate }}</nz-form-label>
-                <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100"
-                  [nzStep]="1"></nz-input-number>
-                <small
-                  *ngIf="rfpForm.controls.EvalCriteria.get('Percentage')?.touched && rfpForm.controls.EvalCriteria.get('Percentage')?.invalid">
-                  {{ "RFP.FieldIsRequired" | translate }}
-                </small>
-              </div>
-
-              <div class="col-2">
-                <nz-form-label nzRequired for="headline">{{ "RFP.AreThereSubCriteria" | translate }}</nz-form-label>
-                <nz-select style="width: 100%" formControlName="SubCriFlg">
-                  <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate"></nz-option>
-                  <nz-option nzValue="y" [nzLabel]="'COM.No' | translate"></nz-option>
-                </nz-select>
-              </div>
-            </div>
-
-            <!-- Sub criteria UI -->
-            <div *ngIf="rfpForm?.get('EvalCriteria.SubCriFlg')?.value === 'y'" class="w-100 mt-3">
-              <nz-form-label nzRequired for="qDes">{{ "RFP.TechEvalDecr" | translate }}({{ EvalListData.length + 1
-                }})</nz-form-label>
-              <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
-              <small
-                *ngIf="rfpForm.controls.EvalCriteria.get('Descr')?.touched && rfpForm.controls.EvalCriteria.get('Descr')?.invalid">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
-              <small *ngIf="rfpForm.controls.EvalCriteria.get('Descr')?.errors?.maxlength">
-                {{ "RFP.DescrMaxLen" | translate }}
-              </small>
-
-              <div class="mt-3">
-                <button [disabled]="rfpForm.controls.EvalCriteria.invalid" nz-button nzType="primary" nzSize="default"
-                  (click)="addEval('add')">
-                  <span>{{ "RFP.Add Criteria" | translate }}</span>
-                </button>
-              </div>
-            </div>
-
-            <ng-container *ngIf="rfpForm?.get('EvalCriteria.SubCriFlg')?.value === 'X'">
-              <div class="mt-4">
-                <button [disabled]="rfpForm.controls.EvalCriteria.invalid" nz-button nzType="primary" nzSize="default"
-                  (click)="isSubCriteria = true">
-                  <span>{{ "RFP.Add Sub Criteria" | translate }}</span>
-                </button>
-              </div>
-            </ng-container>
-
+          <div class="mt-3">
+            <button nz-button nzType="primary" nzSize="default" (click)="addEvalCriteriaItem(evalCriteriaItems.length - 1)">
+              <span nz-icon nzType="plus"></span>
+              <span>{{ "RFP.Add Criteria" | translate }}</span>
+            </button>
           </div>
 
 
-          <nz-table #nestedTable [nzFrontPagination]="false" *ngIf="EvalListData" [nzData]="EvalListData"
-            nzBordered="true" style="margin-top: 3%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
-            <thead>
-              <tr>
-               
-                <th *ngFor="let column of listOfColumnEvalCriteria; index as i"
-                  [ngStyle]="{ width: i === listOfColumnEvalCriteria.length - 1 ? '10%' : '' }" nzCustomFilter
-                  style="background-color: #1f4e79; color: white; text-align: center;">
-                  <span>{{ column | translate }}</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody style="background: white">
-              <ng-container *ngFor="let data of nestedTable.data; index as i">
-                <tr>
-                  
-                  <ng-template #emptyData>
-                    <td></td>
-                  </ng-template>
-
-                  <td style="text-align: center;">{{ data.ItemNo }}</td>
-                  <td style="text-align: center;">
-                    <h3>{{ data.Headline }}</h3> <span>{{ data.Descr }}</span>
-                  </td>
-                  <td style="text-align: center;">{{ data.Percentage }}</td>
-                  <!-- Actions: always render, align in a row. Expand shown enabled only when sub-items exist -->
-<td style="text-align: center;" >
-  <div class="action-cell">
-<button
-    nz-button
-    nzType="default"
-    nzSize="default"
-    class="action-btn"
-    (click)="toggleExpand(i)"
-
-   
-    [attr.title]="data.expand ? 'Collapse' : 'Expand'">
-    <i nz-icon [nzType]="data.expand ? 'minus' : 'plus'"></i>
-  </button>
-
-  <!-- Delete -->
-  <button
-    nz-button
-    nzType="default"
-    nzSize="default"
-    class="action-btn delete-btn"
-    (click)="removeEval(i + 1)"
-    title="Delete">
-    <i nz-icon nzType="delete" nzTheme="outline"></i>
-  </button>
-
-  <!-- Edit -->
-  <button
-    nz-button
-    nzType="default"
-    nzSize="default"
-    class="action-btn edit-btn"
-    (click)="editEval(i)"
-    title="Edit">
-    <i nz-icon nzType="edit" nzTheme="outline"></i>
-  </button>
-  </div>
-</td>
-
-                </tr>
-
-                <!-- Nested subtable for sub-criteria -->
-                <tr *ngIf="data.TechToTechSub.length" [nzExpand]="data.expand">
-                  <td colspan="5">
-                    <nz-table #innerTable [nzData]="data.TechToTechSub" nzSize="middle" [ngClass]="{
-        'inner-table-align-margin-left-class': cs.userLanguage === 'en',
-        'inner-table-align-margin-right-class': cs.userLanguage === 'ar'
-      }" [nzShowPagination]="false">
-                      <thead>
-                        <tr>
-                          <ng-container *ngFor="let column of listOfSubCatColumnEvalCriteria; index as j">
-                            <th *ngIf="column !== 'RFP.Action'"  style="background-color: #1f4e79; color: white; text-align: center;"
-                              [ngStyle]="{ width: j === listOfSubCatColumnEvalCriteria.length - 1 ? '10%' : '' }"
-                              nzCustomFilter>
-                              <span>{{ column | translate }}</span>
-                            </th>
-                          </ng-container>
-                        </tr>
-                      </thead>
-
-            <tbody>
-              <tr *ngFor="let innerData of innerTable.data">
-                <td style="text-align: center;" >{{ innerData.SubItemNo }}</td>
-                <td style="text-align: center;" >{{ innerData.Descr }}</td>
-                <td style="text-align: center;" >{{ innerData.Percentage }}</td>
-              </tr>
-            </tbody>
-          </nz-table>
-          </td>
-          </tr>
 
 
-          <!-- Edit row for EvalCriteria (keeps existing EvalCriteriaEdit formGroup) -->
-          <tr *ngIf="EvalListData.length != 0 && i == evalEditIndex && showEditEval">
-            <td colspan="5" formGroupName="EvalCriteriaEdit" style="background: #f1f1f1; padding: 3%">
-              <div class="row">
-                <div class="col-2">
-                  <nz-form-label nzRequired for="qslNo">{{ "RFP.slNo" | translate }}</nz-form-label>
-                  <input nz-input formControlName="ItemNo" />
-                </div>
-                <div class="col-4">
-                  <nz-form-label nzRequired for="headline">{{ "RFP.Headline" | translate }}</nz-form-label>
-                  <input nz-input formControlName="Headline" />
-                </div>
-                <div class="col-4">
-                  <nz-form-label nzRequired for="qPerct">{{ "RFP.Weightage" | translate }}</nz-form-label>
-                  <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100"
-                    [nzStep]="1"></nz-input-number>
-                </div>
-                <div class="col-2">
-                  <nz-form-label nzRequired for="headline">{{ "RFP.AreThereSubCriteria" | translate }}</nz-form-label>
-                  <nz-select style="width: 100%" formControlName="SubCriFlg">
-                    <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate"></nz-option>
-                    <nz-option nzValue="y" [nzLabel]="'COM.No' | translate"></nz-option>
-                  </nz-select>
-                </div>
-              </div>
-
-              <div *ngIf="rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y'">
-                <div class="mt-3">
-                  <nz-form-label nzRequired for="qDes">{{ "RFP.Des" | translate }}</nz-form-label>
-                  <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
-                </div>
-              </div>
-
-              <div class="mt-3 d-flex gap-2">
-                <button [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid" nz-button nzType="primary"
-                  nzSize="default" (click)="saveEditEval('')">
-                  <span>{{ "contract.buttons.Save" | translate }}</span>
-                </button>
-                <button [disabled]="rfpForm.controls.EvalCriteriaEdit.invalid" nz-button nzType="primary"
-                  nzSize="default" (click)="isSubCriteriaEdit = true">
-                  <span>
-                    {{ (rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.value === 'y' ? 'RFP.Add Sub Criteria' : 'RFP.Edit
-                    Sub Criteria') | translate }}
-                  </span>
-                </button>
-                <button nz-button nzType="primary" nzSize="default" nzGhost (click)="cancelEditEval()">
-                  <span>{{ "RFP.Cancel" | translate }}</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          </ng-container>
-          </tbody>
-          </nz-table>
 
           <!-- ===================== VENDOR EVALUATION WEIGHTAGE ===================== -->
           <!-- <hr class="seperationLine" /> -->
