@@ -929,6 +929,10 @@ toggleExpand(index: number): void {
     return this.rfpForm.get('equipmentItems') as FormArray;
   }
 
+  get evalCriteriaItems(): FormArray {
+    return this.rfpForm.get('evalCriteriaItems') as FormArray;
+  }
+
   committeeMembers = [
     { role: 'Project Director', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
@@ -1005,6 +1009,33 @@ toggleExpand(index: number): void {
       specifications: ['', Validators.required],
       unit: ['', Validators.required]
     });
+  }
+
+  addEvalCriteriaItem(index: number): void {
+    this.evalCriteriaItems.insert(index + 1, this.createEvalCriteriaRow());
+  }
+
+  deleteEvalCriteriaItem(index: number): void {
+    if (this.evalCriteriaItems.length > 1) {
+      this.evalCriteriaItems.removeAt(index);
+    }
+  }
+
+  createEvalCriteriaRow(): FormGroup {
+    return this.fb.group({
+      Headline: ['', Validators.required],
+      Percentage: [0, [Validators.required, Validators.min(1), Validators.max(100)]],
+      SubCriFlg: ['y', Validators.required],
+      Descr: ['', Validators.required],
+      subCriteriaList: [[]],
+      showSubCriteria: [false]
+    });
+  }
+
+  toggleSubCriteriaView(index: number) {
+    const item = this.evalCriteriaItems.at(index);
+    const currentValue = item.get('showSubCriteria')?.value;
+    item.patchValue({ showSubCriteria: !currentValue });
   }
 
   // Create one row (form group)
@@ -1097,6 +1128,7 @@ toggleExpand(index: number): void {
       laborItems: this.fb.array([this.createLaborRow()]),
       materialItems: this.fb.array([this.createMaterialRow()]),
       equipmentItems: this.fb.array([this.createEquipmentRow()]),
+      evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
 
       // scope of work
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
@@ -2365,6 +2397,37 @@ saveEditTechReq() {
 
   // add teachnical evaluation criteria from group
   addEval(cond: any) {
+    if (cond === 'sub') {
+      const totalEval = this.checkEvalPer(true);
+      const percentage = this.rfpForm.controls.EvalCriteria.get('Percentage')?.value;
+      
+      if (totalEval != percentage) {
+        this.cs.createMessage(
+          'error',
+          totalEval + this.translate.instant('RFP.SubCritriaEval')
+        );
+        return;
+      }
+      
+      const subCriteriaData = this.subCriterias.value.map((subCriteria: any, index: number) => {
+        return {
+          SubItemNo: (index + 1).toString(),
+          Percentage: subCriteria.Percentage.toString(),
+          Descr: subCriteria.Descr
+        };
+      });
+      
+      const item = this.evalCriteriaItems.at(this.evalEditIndex);
+      item.patchValue({
+        subCriteriaList: subCriteriaData
+      });
+      
+      this.isSubCriteria = false;
+      this.subCriterias.clear();
+      this.subCriterias.push(this.initialSubCriteria);
+      return;
+    }
+    
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
     if (cond === 'sub') {
@@ -2439,6 +2502,47 @@ saveEditTechReq() {
         Headline: '',
         SubCriFlg: 'X'
       });
+    }
+  }
+
+  addNewCriteria() {
+    this.slel++;
+    this.rfpForm.controls.EvalCriteria.reset();
+    this.rfpForm.controls.EvalCriteria.setValue({
+      RfpNo: '',
+      ItemNo: this.slel.toString(),
+      Descr: '',
+      Percentage: '0',
+      Headline: '',
+      SubCriFlg: 'y'
+    });
+  }
+
+  openSubCriteria(index: number, subCriFlg: string) {
+    if (subCriFlg === 'X') {
+      this.isSubCriteriaEdit = true;
+      this.editEval(index);
+    }
+  }
+
+  openSubCriteriaForRow(index: number) {
+    const item = this.evalCriteriaItems.at(index);
+    const subCriFlg = item.get('SubCriFlg')?.value;
+    
+    if (subCriFlg === 'X') {
+      this.evalEditIndex = index;
+      const percentage = item.get('Percentage')?.value || 100;
+      
+      this.rfpForm.controls.EvalCriteria.patchValue({
+        Percentage: percentage,
+        ItemNo: (index + 1).toString()
+      });
+      
+      this.subCriterias.clear();
+      this.subCriterias.push(this.initialSubCriteria);
+      this.isSubCriteria = true;
+    } else {
+      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria first');
     }
   }
 
