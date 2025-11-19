@@ -1,270 +1,263 @@
+// Existing utility styles from the beginning of your file
 // .create__form__section {
-//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-//   padding: 20px;
-//   margin-bottom: 20px;
-//   width: 100%;
-//   border-top: 3px solid #41ad4f;
-//   border-radius: 5px;
-//   background-color: transparent;
+// box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+// padding: 20px;
+// margin-bottom: 20px;
+// width: 100%;
+// border-top: 3px solid #41ad4f;
+// border-radius: 5px;
+// background-color: transparent;
 // }
 // ::ng-deep .ant-select-multiple .ant-select-selector {
-//   min-height: 32px !important; /* same height as other inputs */
-//   height: 32px !important;
-//   padding: 0 8px !important;
-//   display: flex;
-//   align-items: center;
+// min-height: 32px !important; /* same height as other inputs */
+// height: 32px !important;
+// padding: 0 8px !important;
+// display: flex;
+// align-items: center;
 // }
 
 // ::ng-deep .ant-select-multiple .ant-select-selection-overflow {
-//   flex-wrap: nowrap !important; /* prevents tall wrapping */
+// flex-wrap: nowrap !important; /* prevents tall wrapping */
 // }
 
 // ::ng-deep .ant-select-multiple .ant-select-selection-item {
-//   margin: 0 4px 0 0 !important;
-//   line-height: 24px !important;
+// margin: 0 4px 0 0 !important;
+// line-height: 24px !important;
 // }
 
 // ::ng-deep .cr-number-container {
-//   display: flex;
-//   flex-wrap: wrap;
-//   align-items: center;
-//   gap: 6px; /* spacing between fields */
+// display: flex;
+// flex-wrap: wrap;
+// align-items: center;
+// gap: 6px; /* spacing between fields */
 // }
 
 // ::ng-deep .cr-number-item {
-//   display: flex;
-//   align-items: center;
+// display: flex;
+// align-items: center;
 // }
-
 
 
 // // toggle UI 
 
 // .toggle-field {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
+// display: flex;
+// align-items: center;
+// justify-content: space-between;
 // }
 
 // .toggle-label {
-//   font-weight: 500;
-//   color: #333;
-//   flex: 1;
-//   margin-right: 10px;
-//   white-space: normal;
+// font-weight: 500;
+// color: #333;
+// flex: 1;
+// margin-right: 10px;
+// white-space: normal;
 // }
 
 // ::ng-deep nz-switch {
-//   transform: scale(0.9);
+// transform: scale(0.9);
 // }
 
 // @media (max-width: 768px) {
-//   .toggle-field {
-//     flex-direction: row;
-//     justify-content: space-between;
-//   }
+// .toggle-field {
+// flex-direction: row;
+// justify-content: space-between;
+// }
 // }
 
 
-
-// //
-
 // // .cr-number-container {
-// //   display: flex;
-// //   flex-direction: column; /* stack inputs vertically */
-// //   gap: 8px;
+// // display: flex;
+// // flex-direction: column; /* stack inputs vertically */
+// // gap: 8px;
 // // }
 
 // // .cr-number-item {
-// //   display: flex;
-// //   align-items: center;
-// //   gap: 6px;
+// // display: flex;
+// // align-items: center;
+// // gap: 6px;
 // // }
 
 
-
-
-
-
 // .create__form__section {
-//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-//   padding: 20px;
-//   margin-bottom: 20px;
-//   width: 100%;
-//   border-top: 3px solid #41ad4f;
-//   border-radius: 5px;
-//   background-color: transparent;
+// box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+// padding: 20px;
+// margin-bottom: 20px;
+// width: 100%;
+// border-top: 3px solid #41ad4f;
+// border-radius: 5px;
+// background-color: transparent;
 // }
 
 // h6 {
-//   font-size: 1rem !important;
+// font-size: 1rem !important;
 // }
 
 // input {
-//   width: 100%;
-//   border: 1px solid #d9d9d9;
-//   height: 32px;
-//   padding: 9px;
+// width: 100%;
+// border: 1px solid #d9d9d9;
+// height: 32px;
+// padding: 9px;
 // }
 
 // input::selection {
-//   border-color: 1px solid #41ad4f;
-//   border: #41ad4f;
-//   padding: 9px;
+// border-color: 1px solid #41ad4f;
+// border: #41ad4f;
+// padding: 9px;
 // }
 
 // .create_rfp_head {
-//   font-size: 18px;
-//   font-family: 'Roboto';
-//   font-weight: 600;
+// font-size: 18px;
+// font-family: 'Roboto';
+// font-weight: 600;
 // }
 
 // ::ng-deep .ant-collapse-content {
-//   background: #FCFCFC !important;
+// background: #FCFCFC !important;
 // }
 
 // ::ng-deep .ant-collapse-header {
-//   background: #F1F1F1 !important;
-//   font-weight: 700;
-//   font-family: 'Roboto';
+// background: #F1F1F1 !important;
+// font-weight: 700;
+// font-family: 'Roboto';
 // }
 
 // .boqbuttonDelete {
-//   // height: 26px;
-//   // width: 42px;
-//   color: red;
-//   border-color: red;
+// // height: 26px;
+// // width: 42px;
+// color: red;
+// border-color: red;
 // }
 
 // .boqbuttonEdit {
-//   // height: 26px;
-//   // width: 42px;
-//   color: #005c99;
-//   border-color: #005c99;
+// // height: 26px;
+// // width: 42px;
+// color: #005c99;
+// border-color: #005c99;
 // }
 
 // .addBtn {
-//   background: none !important;
-//   color: #005c99 !important;
+// background: none !important;
+// color: #005c99 !important;
 // }
 
 // .seperationLine {
-//   margin-top: 3%;
-//   background: #e9e9e9 !important;
-//   border: none;
-//   height: 2px;
+// margin-top: 3%;
+// background: #e9e9e9 !important;
+// border: none;
+// height: 2px;
 // }
 // .check{
-//   display: flex;
-//   justify-content: center;
-//   font-size: 17px;
+// display: flex;
+// justify-content: center;
+// font-size: 17px;
 // }
 
 // .w-98 {
-//   width: 98%;
+// width: 98%;
 // }
 
 // .posr-t-2 {
-//   position: relative;
-//   top: 2rem
+// position: relative;
+// top: 2rem
 // }
 
 /* ========== Card / Section ========== */
 .create__form__section {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  border-top: 3px solid #41ad4f;
-  border-radius: 5px;
-  background-color: transparent;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+padding: 20px;
+margin-bottom: 20px;
+width: 100%;
+border-top: 3px solid #41ad4f;
+border-radius: 5px;
+background-color: transparent;
 }
 
 /* ========== Attachments card ========== */
 .attachment-body {
-  background: #ffffff;
-  border: 1px solid #e9eef2;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(12, 40, 60, 0.06);
-  padding: 18px;
-  margin: 12px 0 28px;
+background: #ffffff;
+border: 1px solid #e9eef2;
+border-radius: 8px;
+box-shadow: 0 6px 18px rgba(12, 40, 60, 0.06);
+padding: 18px;
+margin: 12px 0 28px;
 }
 
 /* ========== ROW 1: Select Form + Download button ========== */
 .attachment-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+flex-wrap: wrap;
+margin-bottom: 10px;
 }
 
 .field-label {
-  display: block;
-  font-size: 0.9rem;
-  color: #2b3b43;
-  margin-bottom: 8px;
-  font-weight: 600;
+display: block;
+font-size: 0.9rem;
+color: #2b3b43;
+margin-bottom: 8px;
+font-weight: 600;
 }
 
 .attachment-select {
-  flex: 1 1 70%;
-  min-width: 240px;
+flex: 1 1 70%;
+min-width: 240px;
 }
 
 .attachment-select nz-select {
-  width: 100%;
-  display: block;
+width: 100%;
+display: block;
 }
 
 /* DOWNLOAD BUTTON aligned beside select */
 .attachment-actions {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  margin-top: 26px;
+flex: 0 0 auto;
+display: flex;
+align-items: flex-end;
+justify-content: flex-start;
+margin-top: 26px;
 }
 
 .download_button {
-  background-color: #005c99 !important;
-  color: #fff !important;
-  font-weight: 500;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 92, 153, 0.2);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
+background-color: #005c99 !important;
+color: #fff !important;
+font-weight: 500;
+border: none;
+border-radius: 6px;
+padding: 8px 16px;
+transition: all 0.2s ease-in-out;
+box-shadow: 0 2px 4px rgba(0, 92, 153, 0.2);
+display: inline-flex;
+align-items: center;
+gap: 8px;
+min-height: 38px;
 }
 
 .download_button:hover {
-  background-color: #004b80 !important;
-  box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
-  transform: translateY(-1px);
+background-color: #004b80 !important;
+box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
+transform: translateY(-1px);
 }
 
 .download_button:active {
-  background-color: #003f6a !important;
-  box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
-  transform: translateY(1px);
+background-color: #003f6a !important;
+box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
+transform: translateY(1px);
 }
 
 .download_button span[nz-icon] {
-  font-size: 16px;
+font-size: 16px;
 }
 
 /* ========== ROW 2: Upload section ========== */
 .section {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 14px;
-  margin-top: 14px;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 14px;
+margin-top: 14px;
 }
 
 /* Upload area — light background and border hover effect */
@@ -301,7 +294,7 @@
 
 /* Hide the real input, make whole area clickable */
 .upload-input {
-  display: none;
+display: none;
 }
 
 .upload-content {
@@ -310,28 +303,28 @@
 }
 
 .upload-content [nz-icon] {
-  font-size: 42px;
-  color: #0b6aa0;
-  margin-bottom: 10px;
-  transition: color 0.2s ease;
+font-size: 42px;
+color: #0b6aa0;
+margin-bottom: 10px;
+transition: color 0.2s ease;
 }
 
 /* On hover, icon gets slightly dimmer for contrast */
 .upload-area:hover [nz-icon] {
-  color: #777;
+color: #777;
 }
 
 .upload-message {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
+font-size: 1rem;
+font-weight: 600;
+color: #333;
 }
 
 .helper {
-  display: block;
-  font-size: 0.82rem;
-  color: #9aa6ad;
-  margin-top: 6px;
+display: block;
+font-size: 0.82rem;
+color: #9aa6ad;
+margin-top: 6px;
 }
 
 .attachment-list {
@@ -341,9 +334,9 @@
 
 /* Uploaded files list styling */
 .custom-uploaded-list {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
+list-style: none;
+margin: 12px 0 0;
+padding: 0;
 }
 
 .uploaded-file-item {
@@ -360,44 +353,44 @@
 }
 
 .uploaded-file-item:hover {
-  background-color: #f5f8fb;
-  box-shadow: 0 2px 6px rgba(11, 106, 160, 0.05);
+background-color: #f5f8fb;
+box-shadow: 0 2px 6px rgba(11, 106, 160, 0.05);
 }
 
 .file-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
 }
 
 .file-info [nz-icon] {
-  color: #0b6aa0;
-  font-size: 16px;
+color: #0b6aa0;
+font-size: 16px;
 }
 
 .file-name {
-  font-size: 0.92rem;
-  color: #333;
-  font-weight: 500;
-  max-width: 90%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+font-size: 0.92rem;
+color: #333;
+font-weight: 500;
+max-width: 90%;
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
 }
 
 /* Delete icon inside each file */
 .delete-icon {
-  color: #d9534f;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background 0.15s ease, color 0.15s ease;
+color: #d9534f;
+font-size: 16px;
+cursor: pointer;
+padding: 4px;
+border-radius: 4px;
+transition: background 0.15s ease, color 0.15s ease;
 }
 
 .delete-icon:hover {
-  color: #b52b27;
-  background: rgba(217, 83, 79, 0.08);
+color: #b52b27;
+background: rgba(217, 83, 79, 0.08);
 }
 
 /* Compact multiple-select styling so it matches other inputs */
@@ -872,34 +865,34 @@ border-color: #cccccc !important;
 
 /* ========== Misc (form styling) ========== */
 h6 {
-  font-size: 1rem !important;
+font-size: 1rem !important;
 }
 
 input {
-  width: 100%;
-  border: 1px solid #d9d9d9;
-  height: 32px;
-  padding: 9px;
+width: 100%;
+border: 1px solid #d9d9d9;
+height: 32px;
+padding: 9px;
 }
 
 input::selection {
-  background: rgba(65, 173, 79, 0.12);
+background: rgba(65, 173, 79, 0.12);
 }
 
 .create_rfp_head {
-  font-size: 18px;
-  font-family: 'Roboto';
-  font-weight: 600;
+font-size: 18px;
+font-family: 'Roboto';
+font-weight: 600;
 }
 
 ::ng-deep .ant-collapse-content {
-  background: #fcfcfc !important;
+background: #fcfcfc !important;
 }
 
 ::ng-deep .ant-collapse-header {
-  background: #f1f1f1 !important;
-  font-weight: 700;
-  font-family: 'Roboto';
+background: #f1f1f1 !important;
+font-weight: 700;
+font-family: 'Roboto';
 }
 
 // .cr-number-container {
@@ -923,48 +916,48 @@ input::selection {
 // }
 /* CR number layout */
 .cr-number-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+display: flex;
+align-items: center;
+gap: 8px;
+flex-wrap: wrap;
 }
 
 .cr-number-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
 }
 
 /* Match input sizing and spacing */
 .cr-input {
-  width: 150px;
-  min-width: 120px;
+width: 150px;
+min-width: 120px;
 }
 
 /* Make circle buttons visually consistent and visible at zooms */
 .cr-minus-btn,
 .cr-add-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 50%;
-  box-sizing: border-box;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 36px;
+height: 36px;
+padding: 0;
+border-radius: 50%;
+box-sizing: border-box;
 }
 
 /* dashed + button slightly bigger / more visible */
 .cr-add-btn {
-  width: 40px;
-  height: 40px;
+width: 40px;
+height: 40px;
 }
 
 /* ensure icon has visible size */
 .cr-minus-btn i[nz-icon],
 .cr-add-btn i[nz-icon] {
-  font-size: 14px;
-  line-height: 1;
+font-size: 14px;
+line-height: 1;
 }
 
 
@@ -996,9 +989,9 @@ input::selection {
 }
 
 .btn-Review:hover {
-  background-color: #eef7fc !important;
-  color: #0a5b87 !important;
-  border-color: #0a5b87 !important;
+background-color: #eef7fc !important;
+color: #0a5b87 !important;
+border-color: #0a5b87 !important;
 }
 
 // draft button design 
@@ -1016,17 +1009,17 @@ input::selection {
 
 /* Hover effect */
 .btn-save-draft:hover {
-  background-color: #eef7fc !important;
-  color: #0a5b87 !important;
-  border-color: #0a5b87 !important;
+background-color: #eef7fc !important;
+color: #0a5b87 !important;
+border-color: #0a5b87 !important;
 }
 
 /* Disabled state */
 .btn-save-draft[disabled] {
-  background-color: #f5f5f5 !important;
-  color: #bfbfbf !important;
-  border-color: #d9d9d9 !important;
-  cursor: not-allowed !important;
+background-color: #f5f5f5 !important;
+color: #bfbfbf !important;
+border-color: #d9d9d9 !important;
+cursor: not-allowed !important;
 }
 
 // save and continue 
@@ -1053,79 +1046,79 @@ input::selection {
 
 /* Disabled state */
 .btn-save-continue[disabled] {
-  background-color: #f5f5f5 !important;
-  color: #bfbfbf !important;
-  border-color: #d9d9d9 !important;
-  cursor: not-allowed !important;
+background-color: #f5f5f5 !important;
+color: #bfbfbf !important;
+border-color: #d9d9d9 !important;
+cursor: not-allowed !important;
 }
 
 
 // Technical Committee member
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+width: 100%;
+border-collapse: collapse;
+background: #fff;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .table th,
 .table td {
-  padding: 10px 12px;
-  text-align: left;
-  border: 1px solid #e8e8e8;
-  font-size: 14px;
+padding: 10px 12px;
+text-align: left;
+border: 1px solid #e8e8e8;
+font-size: 14px;
 }
 
 .table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  color: #333;
+background-color: #f5f5f5;
+font-weight: 600;
+color: #333;
 }
 
 .table input[nz-input] {
-  width: 100%;
-  border-radius: 4px;
-  height: 34px;
-  font-size: 14px;
+width: 100%;
+border-radius: 4px;
+height: 34px;
+font-size: 14px;
 }
 
 button[nz-button] {
-  font-size: 13px;
-  padding: 2px 10px;
+font-size: 13px;
+padding: 2px 10px;
 }
 
 button[nzType="primary"] {
-  margin-top: 10px;
+margin-top: 10px;
 }
 
 .table tbody tr:nth-child(even) {
-  background-color: #fafafa;
+background-color: #fafafa;
 }
 
 .table tbody tr:hover {
-  background-color: #f0f7ff;
+background-color: #f0f7ff;
 }
 
 .mt-2 {
-  margin-top: 10px;
+margin-top: 10px;
 }
 
 .cancellation-upload {
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 }
 
 .upload-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 
 .cancel-upload-box {
-  flex: 1;
+flex: 1;
 }
 
 
@@ -1134,11 +1127,11 @@ button[nzType="primary"] {
 
 /* wrapper */
 .upload-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  position: relative;
+display: flex;
+align-items: center;
+gap: 12px;
+width: 100%;
+position: relative;
 }
 
 /* outer, input-like box */
@@ -1162,19 +1155,19 @@ button[nzType="primary"] {
 .upload-inline-box .ant-upload,
 .upload-inline-box .ant-upload-drag,
 .upload-inline-box .ant-upload-drag-container {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+width: 100% !important;
+height: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
 }
 
 /* Remove dashed inner pseudo-elements or dotted borders */
 .upload-inline-box .ant-upload-drag-container::before,
 .upload-inline-box .ant-upload-drag-container::after {
-  display: none !important;
+display: none !important;
 }
 
 /* Hide default internal icon/text */
@@ -1206,38 +1199,38 @@ button[nzType="primary"] {
 
 /* Icon & text styling */
 .upload-inline-icon {
-  font-size: 18px;
-  color: #0b6aa0;
-  line-height: 1;
+font-size: 18px;
+color: #0b6aa0;
+line-height: 1;
 }
 
 .upload-inline-text {
-  font-size: 14px;
-  color: #333;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+font-size: 14px;
+color: #333;
+font-weight: 500;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 /* Trash button (right aligned) */
 .trash-btn {
-  border: 1px solid #d9534f;
-  color: #d9534f;
-  width: 42px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-sizing: border-box;
+border: 1px solid #d9534f;
+color: #d9534f;
+width: 42px;
+height: 42px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #fff;
+border-radius: 50%;
+box-sizing: border-box;
 }
 
 .trash-btn:hover {
-  background: rgba(217, 83, 79, 0.06);
-  border-color: #b52b27;
-  color: #b52b27;
+background: rgba(217, 83, 79, 0.06);
+border-color: #b52b27;
+color: #b52b27;
 }
 
 /* small responsive tweak if the container is narrow */

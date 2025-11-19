@@ -43,14 +43,28 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
 })
 export class CreateRFPComponent implements OnInit {
   step:number=0;
-  showScope=false;
+  //showScope=false;
   directCompetitionId: any = null;
   limitedCompetitionId: any = null;
   showInvite: boolean = false;
   userName: string = ''
   uploading = false;
   showAttachments = false;
+  showScope = false;
   attachmentsActive = false;
+  
+  // Collapse panel states
+  basicInfoActive = true;
+  scopeOfWorkActive = false;
+  standardsActive = false;
+  billOfQuantityActive = false;
+  attachmentsCollapseActive = false;
+
+  // Collapse panel visibility
+  showScopeOfWork = false;
+  showStandards = false;
+  showBillOfQuantity = false;
+  //showAttachments = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
   tooltipVisible: boolean = false;
@@ -225,11 +239,13 @@ export class CreateRFPComponent implements OnInit {
 
   step3 = true;
 
-  step4 = false;
+  step4 = true;
 
   invalidFileSize = false;
   invalidFileType = false;
   certificatedet = false;
+
+
 
   expcriteria = false;
   concriteria = false;
@@ -278,9 +294,13 @@ export class CreateRFPComponent implements OnInit {
 
   private readonly destroy$ = new Subject<void>();
 
+
+
   get billOFQtyFA(): FormArray {
     return this.rfpForm?.get('billOFQty') as FormArray;
   }
+
+
 
   constructor(
     public cs: CommonService,
@@ -297,31 +317,138 @@ export class CreateRFPComponent implements OnInit {
     this.buildMainFormGroup();
     console.log(activities, 'activities====')
   }
-  get basicInfoValid(): boolean {
-    if (!this.rfpForm) {
-      return false;
-    }
 
-    for (const name of this.basicRequiredControls) {
-      const ctrl = this.rfpForm.get(name);
-      if (!ctrl) {
-        return false; // missing control -> invalid
-      }
-      if (ctrl.invalid) {
-        return false; // invalid
-      }
-      const val = ctrl.value;
-      if (
-        val === null ||
-        val === undefined ||
-        (typeof val === 'string' && val.trim() === '') ||
-        (Array.isArray(val) && val.length === 0)
-      ) {
-        return false; // empty
-      }
-    }
-    return true;
+  // Form validation getters
+  get basicInfoValid(): boolean {
+    if (!this.rfpForm) return false;
+    const requiredFields = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+    return requiredFields.every(field => {
+      const control = this.rfpForm.get(field);
+      return control && control.valid && control.value;
+    });
   }
+
+  get scopeOfWorkValid(): boolean {
+    if (!this.rfpForm) return false;
+    const requiredFields = ['definationCompetition', 'ProjJust', 'SOP', 'labor', 'materials', 'equipment', 'qualitySpecifications', 'safetySpecifications'];
+    return requiredFields.every(field => {
+      const control = this.rfpForm.get(field);
+      return control && control.valid && control.value;
+    });
+  }
+
+  get standardsValid(): boolean {
+    return this.TechReqListData.length > 0 && this.EvalListData.length > 0;
+  }
+
+  get billOfQuantityValid(): boolean {
+    return true; // Always valid to allow progression
+  }
+
+  // Navigation methods
+  goto(stepIndex: number): void {
+    if (!this.canNavigateToStep(stepIndex)) return;
+    this.step = stepIndex;
+    this.activateCollapse(this.getCollapseSection(stepIndex));
+  }
+
+  private getCollapseSection(stepIndex: number): string {
+    const sections = ['basicInfo', 'scopeOfWork', 'standards', 'billOfQuantity', 'attachments'];
+    return sections[stepIndex] || 'basicInfo';
+  }
+
+  activateCollapse(section: string): void {
+    this.basicInfoActive = section === 'basicInfo';
+    this.scopeOfWorkActive = section === 'scopeOfWork';
+    this.standardsActive = section === 'standards';
+    this.billOfQuantityActive = section === 'billOfQuantity';
+    this.attachmentsCollapseActive = section === 'attachments';
+  }
+
+  canNavigateToStep(stepIndex: number): boolean {
+    switch (stepIndex) {
+      case 0: return true;
+      case 1: return this.basicInfoValid;
+      case 2: return this.basicInfoValid && this.scopeOfWorkValid;
+      case 3: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid;
+      case 4: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid && this.billOfQuantityValid;
+      default: return false;
+    }
+  }
+
+  saveAsDraft(): void {
+    console.log('Saving as draft...');
+    // Add your draft save logic here
+  }
+
+  saveAndContinue(): void {
+    if (this.basicInfoValid) {
+      this.step = 1;
+      this.activateCollapse('scopeOfWork');
+      this.showScopeOfWork = true;
+    }
+  }
+
+  saveAndContinueScope(): void {
+    if (this.scopeOfWorkValid) {
+      this.step = 2;
+      this.activateCollapse('standards');
+      this.showStandards = true;
+    }
+  }
+
+  saveAndContinueStandards(): void {
+    if (this.standardsValid) {
+      this.step = 3;
+      this.activateCollapse('billOfQuantity');
+      this.showBillOfQuantity = true;
+    }
+  }
+
+  saveAndContinueBOQ(): void {
+    if (this.billOfQuantityValid) {
+      this.step = 4;
+      this.activateCollapse('attachments');
+      this.showAttachments = true;
+    }
+  }
+//   get attachmentsValid(): boolean {
+//   if (!this.rfpForm) {
+//     return false;
+//   }
+
+//   const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+//   if (!attachmentsGroup) {
+//     return false;
+//   }
+
+//   return attachmentsGroup.valid;
+// }
+  // get basicInfoValid(): boolean {
+  //   if (!this.rfpForm) {
+  //     return false;
+  //   }
+
+  //   for (const name of this.basicRequiredControls) {
+  //     const ctrl = this.rfpForm.get(name);
+  //     if (!ctrl) {
+  //       return false; // missing control -> invalid
+  //     }
+  //     if (ctrl.invalid) {
+  //       return false; // invalid
+  //     }
+  //     const val = ctrl.value;
+  //     if (
+  //       val === null ||
+  //       val === undefined ||
+  //       (typeof val === 'string' && val.trim() === '') ||
+  //       (Array.isArray(val) && val.length === 0)
+  //     ) {
+  //       return false; // empty
+  //     }
+  //   }
+  //   return true;
+  // }
 
   /** mark basic controls touched so validation messages show */
   private markBasicControlsTouched(): void {
@@ -333,54 +460,91 @@ export class CreateRFPComponent implements OnInit {
       }
     }
   }
+// goto(stepNumber: number): void {
 
+//   // prevent skipping ahead without validation
+//   if (stepNumber > this.step) {
+//     if (!this.isCurrentStepValid()) {
+//       this.cs.createMessage('error', "Please complete the required fields");
+//       return;
+//     }
+//   }
+
+//   // set the new step
+//   this.step = stepNumber;
+
+//   // open only correct collapse
+//   this.openCollapse(this.step);
+// }
+// toggleTooltip(): void {
+//   this.tooltipVisible = !this.tooltipVisible;
+// }
+// isCurrentStepValid(): boolean {
+//   switch (this.step) {
+//     case 0:
+//       return this.basicInfoValid;
+
+//     case 1:
+//       return this.attachmentsValid;
+
+//     case 2:
+//       //return this.scopeValid;  // add your scope validation
+
+//     case 3:
+//       //return this.boqValid;    // add BOQ validation
+
+//     default:
+//       return true;
+//   }
+// }
+  showError(): void {
+    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
+  }
   /** Save & Continue: validate basic info and reveal attachments */
-  saveAndContinue(): void {
-    this.markBasicControlsTouched();
 
-    if (!this.basicInfoValid) {
-      // your existing message service used elsewhere in the app
-      if (this.cs && typeof this.cs.createMessage === 'function') {
-        this.cs.createMessage('error', 'Please fill required basic information');
-      }
-      return;
-    }
+// openCollapse(step: number) {
+//   //this.showBasic = (step === 0);
+//   this.showAttachments = (step === 1);
+//   this.showScope = (step === 2);
+//   // continue for all remaining steps
+// }
 
-    // optionally persist basic data before progressing (call API here if needed)
-    // this.saveBasicInfo();
+// openCollapse(step: number) {
+//   // FIRST: RESET all collapses
+//   //this.showBasic = false;
+//   this.showAttachments = false;
+//   this.showScope = false;
+//   //this.showBoq = false;
+//   //this.showTerms = false;
 
-    // reveal attachments
-    this.showAttachments = true;
-    // or if using Option B:
-    // this.attachmentsActive = true;
+//   // THEN: Open based on step
+//   switch (step) {
+//     case 0:
+//      // this.showBasic = true;
+//       break;
 
-    // scroll to attachments smoothly
-    setTimeout(() => {
-      const el = document.querySelector('.attachment-body');
-      if (el) {
-        (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 10);
-  }
+//     case 1:
+//       this.showAttachments = true;
+//       break;
 
-  /** Save as Draft: validate and call your draft logic */
-  saveAsDraft(): void {
-    this.markBasicControlsTouched();
+//     case 2:
+//       this.showScope = true;
+//       break;
 
-    if (!this.basicInfoValid) {
-      if (this.cs && typeof this.cs.createMessage === 'function') {
-        this.cs.createMessage('error', 'Please fill required basic information to save as draft');
-      }
-      return;
-    }
+//     case 3:
+//       //this.showBoq = true;
+//       break;
 
-    // call your draft saving routine here (API request, local store etc.)
-    // this.saveDraftApi();
+//     case 4:
+//       //this.showTerms = true;
+//       break;
 
-    if (this.cs && typeof this.cs.createMessage === 'function') {
-      this.cs.createMessage('success', 'Saved as draft');
-    }
-  }
+//     default:
+//       //this.showBasic = true;
+//   }
+// }
+
+
 
   get initialSubCriteria() {
     return this.fb.group({
@@ -669,22 +833,7 @@ export class CreateRFPComponent implements OnInit {
       return true;
   }
 }
-  goto(stepNumber: number): void {
- 
-  // prevent skipping ahead without validation
-  if (stepNumber > this.step) {
-    if (!this.isCurrentStepValid()) {
-      this.cs.createMessage('error', "Please complete the required fields");
-      return;
-    }
-  }
- 
-  // set the new step
-  this.step = stepNumber;
- 
-  // open only correct collapse
-  this.openCollapse(this.step);
-}
+
 openCollapse(step: number) {
   // FIRST: RESET all collapses
   //this.showBasic = false;
@@ -1196,6 +1345,7 @@ toggleExpand(index: number): void {
   }
 
   ngOnInit(): void {
+    this.activateCollapse('basicInfo');
     this.step1 = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
@@ -2592,10 +2742,10 @@ saveEditTechReq() {
   get boqFormGroup() {
     return this.rfpForm.get('billOFQty') as FormArray;
   }
-  get Attachments() {
-    return this.rfpForm.get('Attachments') as FormArray;
-  }
-
+ get Attachments(): boolean {
+  const fg = this.rfpForm.get('attachments') as FormGroup;
+  return fg ? fg.valid : false;
+}
 
 
   get Evalcrt() {

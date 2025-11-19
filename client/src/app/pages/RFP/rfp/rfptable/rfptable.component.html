@@ -45,10 +45,10 @@
       <!--end of columns for manager dashboad-->
 
 
-      <!-- <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td> -->
-      <td [ngStyle]="{
+      <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td>
+      <!-- <td [ngStyle]="{
         color: data.SlaInd === 'N' ? 'red' : 'green'
-      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td>
+      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td> -->
 
       <td style="padding: 0%; padding-inline: 0.5%;">
         <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 0%;"

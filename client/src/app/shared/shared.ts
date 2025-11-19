@@ -814,32 +814,32 @@ export const listOfColumnRFPMG = [
     title: 'Pending with User',
     titleAr: 'قيد الانتظار مع المستخدم',
   },
-  // {
-  //   id: 6,
-  //   title: 'Status',
-  //   titleAr: 'الحالة',
-  //   filterMultiple: true,
-  //   listOfFilter: STATUS_FILTER,
-  //   listOfFilterAr: STATUS_FILTER_AR,
-  //   filterFn: (list: string[], item: DataItem) => list.some(name => item.RfpStatus.indexOf(name) !== -1)
-  // },
   {
     id: 6,
-    title: 'SLA',
-    titleAr: 'اتفاقية مستوي التشغيل',
-    sortFn: (prev: DataItem, next: DataItem) => {
-      const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-        nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
-      if (preEndDate > nextEndDate) {
-        return -1;
-      } else if (preEndDate < nextEndDate) {
-        return 1;
-      } else {
-        return 0;
-      }
-    },
-    sortDirections: ['ascend', 'descend', null],
+    title: 'Status',
+    titleAr: 'الحالة',
+    filterMultiple: true,
+    listOfFilter: STATUS_FILTER,
+    listOfFilterAr: STATUS_FILTER_AR,
+    filterFn: (list: string[], item: DataItem) => list.some(name => item.RfpStatus.indexOf(name) !== -1)
   },
+  // {
+  //   id: 6,
+  //   title: 'SLA',
+  //   titleAr: 'اتفاقية مستوي التشغيل',
+  //   sortFn: (prev: DataItem, next: DataItem) => {
+  //     const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
+  //       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
+  //     if (preEndDate > nextEndDate) {
+  //       return -1;
+  //     } else if (preEndDate < nextEndDate) {
+  //       return 1;
+  //     } else {
+  //       return 0;
+  //     }
+  //   },
+  //   sortDirections: ['ascend', 'descend', null],
+  // },
   {
     id: 7,
     title: 'Action',
