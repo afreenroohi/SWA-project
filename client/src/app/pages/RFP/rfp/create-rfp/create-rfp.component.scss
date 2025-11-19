@@ -1335,3 +1335,46 @@ button[nzType="primary"] {
 ::ng-deep .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background-color: #f5f9fc !important;
 }
+
+/* Weight Table Styling */
+.weight-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.weight-table thead {
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%);
+}
+
+.weight-table thead th {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 14px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.weight-table thead th:last-child {
+  border-right: none;
+}
+
+.weight-table tbody tr {
+  background: #ffffff;
+}
+
+.weight-table tbody td {
+  padding: 12px 16px;
+  text-align: center;
+  border: 1px solid #e8e8e8;
+}
+
+.weight-table tbody td input[nz-input] {
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
