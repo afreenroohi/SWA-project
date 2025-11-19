@@ -1329,312 +1329,45 @@ color: #b52b27;
   background-color: #f5f9fc !important;
 }
 
-
-.steps-container {
-width: 100%;
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
-
-.steps-wrapper {
-width: 70%; // same alignment as your screenshot
-display: flex;
-justify-content: center;
-
-::ng-deep .ant-steps {
-width: 100%;
-}
-
-::ng-deep .ant-steps-item {
-cursor: pointer; // clickable steps
-transition: all 0.2s ease;
-
-&.ant-steps-item-process .ant-steps-item-container .ant-steps-item-title {
-font-weight: 600;
-}
-}
-
-::ng-deep .ant-steps-item-title {
-font-size: 16px;
-font-weight: 500;
-}
-
-::ng-deep .ant-steps-item-icon {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-font-size: 16px;
-}
-}
-}
-
-
-/* --- FIX: Make nz-collapse occupy full width --- */
-
-:host ::ng-deep nz-collapse,
-:host ::ng-deep .ant-collapse,
-:host ::ng-deep .ant-collapse-item,
-:host ::ng-deep .ant-collapse-header,
-:host ::ng-deep .ant-collapse-content,
-:host ::ng-deep .ant-collapse-content-box {
-width: 100% !important;
-display: block !important;
-}
-
-/* Optional: removes unwanted spacing around collapse */
-.collapse-wrapper {
-width: 100% !important;
-margin: 0 !important;
-padding: 0 !important;
-}
-
-// /* Stepper Card Styles */
-.stepper-card {
-width: 100%;
-background: #fff;
-border: 1px solid #e5e5e5;
-border-radius: 8px;
-padding: 18px 22px;
-box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px; /* Example adjustment to move it up */
-}
-
-/* Keep NG-Zorro default stepper clean */
-.simple-stepper {
-width: 100%;
-}
-
-/* Style titles lightly */
-:host ::ng-deep .ant-steps-item-title {
-font-size: 14px;
-font-weight: 500;
-color: #444;
-}
-
-/* Clean, not heavy circle */
-:host ::ng-deep .ant-steps-item-icon {
-width: 28px;
-height: 28px;
-border-radius: 50%;
-  /* FIX: Ensure content (number) is centered */
-  display: flex;
-  align-items: center;      /* Vertically center */
-  justify-content: center;  /* Horizontally center */
-}
-
-/* Active step highlight */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-background-color: #005bbd !important;
-border-color: #005bbd !important;
-color: #fff !important;
-}
-
-/* Make connecting line subtle, NOT overridden */
-:host ::ng-deep .ant-steps-item-tail::after {
-border-color: #cccccc !important;
-}
-/* Card container */
-// .stepper-card {
-//   width: 100%;
-//   background: #fff;
-//   border: 1px solid #e5e5e5;
-//   border-radius: 8px;
-//   padding: 18px 22px;
-//   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-// }
-
-// /* Keep NG-Zorro default stepper clean */
-// .simple-stepper {
-//   width: 100%;
-// }
-
-// /* Style titles lightly */
-// :host ::ng-deep .ant-steps-item-title {
-//   font-size: 14px;
-//   font-weight: 500;
-//   color: #444;
-// }
-
-// /* Clean, not heavy circle */
-// :host ::ng-deep .ant-steps-item-icon {
-//   width: 28px;
-//   height: 28px;
-//   border-radius: 50%;
-//   justify-content: center;
-//   align-items: center;
-//   display: flex;
-//   .ant-steps-icon {
-//     /* Ensure this inner content wrapper also uses centering properties */
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     line-height: 1; /* Helps prevent extra vertical space around the number */
-//     height: 100%;
-//   }
-// }
-
-// /* Active step highlight */
-// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-//   background-color: #005bbd !important;
-//   border-color: #005bbd !important;
-//   color: #fff !important;
-// }
-
-// /* Make connecting line subtle, NOT overridden */
-// :host ::ng-deep .ant-steps-item-tail::after {
-//   border-color: #cccccc !important;
-// }
-
-/* ================================================= */
-/* TECHNICAL INFO ROW STYLES (MODIFIED FOR RIGHT ALIGNMENT) */
-/* ================================================= */
-
-.tech-info-row {
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  border: 1px solid #d0e6eb;
-  background: #f6feff;
+/* Weight Table Styling */
+.weight-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  position: relative;
+  overflow: hidden;
 }
 
-.tech-info-text-with-icon {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  position: relative;
+.weight-table thead {
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%);
 }
 
-/* wrapper that controls hover */
-.tooltip-wrapper {
-  position: relative;
-  display: inline-block;
+.weight-table thead th {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 14px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* icon styling */
-.trigger-icon {
-  cursor: pointer;
-  font-size: 18px;
-  color: #0d877e;
+.weight-table thead th:last-child {
+  border-right: none;
 }
 
-/* tooltip hidden by default */
-.custom-tooltip {
-  position: absolute;
-  top: 28px;
-  left: 0;
-  z-index: 20;
-  display: none;
-
+.weight-table tbody tr {
   background: #ffffff;
-  padding: 12px 14px;
-  border: 1px solid #c2e7f3;
-  border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-  width: 280px;
 }
 
-/* SHOW tooltip when hovering icon */
-.tooltip-wrapper:hover .custom-tooltip {
-  display: block;
+.weight-table tbody td {
+  padding: 12px 16px;
+  text-align: center;
+  border: 1px solid #e8e8e8;
 }
 
-/* arrow */
-.custom-tooltip::after {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 14px;
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent #ffffff transparent;
-}
-
-.tooltip-list {
-  margin: 0;
-  padding-left: 18px;
-
-  li {
-    font-size: 13px;
-    line-height: 1.4;
-    margin-bottom: 6px;
-    color: #333;
-  }
-}
-
-/* Stepper Navigation Enhancement */
-:host ::ng-deep .ant-steps-item {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* Disabled step styling */
-:host ::ng-deep .ant-steps-item.step-disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-:host ::ng-deep .ant-steps-item.step-disabled .ant-steps-item-icon {
-  background-color: #f5f5f5 !important;
-  border-color: #d9d9d9 !important;
-  color: #bfbfbf !important;
-}
-
-:host ::ng-deep .ant-steps-item.step-disabled .ant-steps-item-title {
-  color: #bfbfbf !important;
-}
-
-/* Completed step styling */
-:host ::ng-deep .ant-steps-item-finish .ant-steps-item-icon {
-  background-color: #52c41a !important;
-  border-color: #52c41a !important;
-  color: #fff !important;
-}
-
-/* Current active step */
-:host ::ng-deep .ant-steps-item-process .ant-steps-item-icon {
-  background-color: #005bbd !important;
-  border-color: #005bbd !important;
-  color: #fff !important;
-}
-
-/* Hover effect for clickable steps */
-:host ::ng-deep .ant-steps-item:not(.step-disabled):hover .ant-steps-item-icon {
-  border-color: #005bbd !important;
-  transform: scale(1.05);
-}
-
-/* Form validation indicators */
-.validation-indicator {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-left: 8px;
-}
-
-.validation-indicator.valid {
-  background-color: #52c41a;
-}
-
-.validation-indicator.invalid {
-  background-color: #ff4d4f;
-}
-
-/* Collapse panel enhancements */
-:host ::ng-deep .ant-collapse-item.panel-disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-:host ::ng-deep .ant-collapse-item.panel-completed .ant-collapse-header {
-  background: #f6ffed !important;
-  border-left: 4px solid #52c41a;
-}
-
-:host ::ng-deep .ant-collapse-item.panel-active .ant-collapse-header {
-  background: #e6f7ff !important;
-  border-left: 4px solid #005bbd;
+.weight-table tbody td input[nz-input] {
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
 }
