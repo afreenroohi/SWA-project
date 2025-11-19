@@ -110,11 +110,37 @@
       <div class="stepper-card mt-4">
         <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
 
-          <nz-step nzTitle="Basic Information" (click)="goto(0)"></nz-step>
-          <nz-step nzTitle="Scope of Work" (click)="goto(1)"></nz-step>
-          <nz-step nzTitle="Standards" (click)="goto(2)"></nz-step>
-          <nz-step nzTitle="Bill of Quantity" (click)="goto(3)"></nz-step>
-          <nz-step nzTitle="Attachments" (click)="goto(4)"></nz-step>
+          <nz-step nzTitle="Basic Information" (click)="goto(0)" 
+                   [ngClass]="{'step-disabled': false}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': basicInfoValid, 'invalid': !basicInfoValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Scope of Work" (click)="goto(1)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Standards" (click)="goto(2)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Bill of Quantity" (click)="goto(3)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Attachments" (click)="goto(4)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
+          </nz-step>
 
         </nz-steps>
       </div>
@@ -122,7 +148,7 @@
 
       <!-- * Create RFP -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100">
-        <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Basic Information' | translate }}">
+        <nz-collapse-panel [nzActive]="basicInfoActive" nzHeader="{{ 'RFP.Basic Information' | translate }}">
           <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
           <div class="row w-100 my-2">
 
@@ -970,63 +996,6 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Attachments   *ngIf="showAttachments" -->
-      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="true" nzHeader="Attachments">
-          <div class="attachment-body">
-
-            <!-- ROW 1 — Select Form + Download button (same row) -->
-            <div class="attachment-row">
-              <div class="attachment-select">
-                <label class="field-label">Download a Template</label>
-                <nz-select style="width: 100%" nzPlaceHolder="Select Templates" nzAllowClear
-                  [(ngModel)]="selectedFormKey" [ngModelOptions]="{ standalone: true }">
-                  <nz-option *ngFor="let f of formOptions" [nzLabel]="f.label" [nzValue]="f.key"></nz-option>
-                </nz-select>
-              </div>
-
-              <!-- Download button sits on same horizontal row -->
-              <div class="attachment-actions">
-                <button nz-button nzType="default" class="download_button" (click)="downloadSelectedForm()"
-                  [disabled]="!selectedFormKey" title="Download selected form">
-                  <i nz-icon nzType="download"></i>
-                  <span class="ml-1">{{ 'RFP.Download' | translate }}</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- ROW 2 — Upload area (below the select row) -->
-            <label class="field-label">Upload</label>
-            <div class="section" style="margin-top:12px">
-              <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
-                nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-area">
-                <p class="ant-upload-drag-icon"><i nz-icon nzType="upload"></i></p>
-                <p class="upload-message">Click or drag files to upload</p>
-                <p class="helper">Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.</p>
-              </nz-upload>
-
-              <!-- custom styled uploaded list -->
-              <ul class="custom-uploaded-list" *ngIf="fileList?.length">
-                <li *ngFor="let file of fileList" class="uploaded-file-item">
-                  <div class="file-info">
-                    <i nz-icon nzType="paper-clip"></i>
-                    <span class="file-name" [title]="file.name">{{ file.name }}</span>
-                  </div>
-
-                  <a nz-tooltip nzTooltipTitle="Remove" (click)="removeFile(file)" class="delete-icon">
-                    <i nz-icon nzType="delete"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-
-
-
-          </div>
-        </nz-collapse-panel>
-      </nz-collapse>
-
 
       <!-- * Bill of Quantity -->
       <nz-collapse *ngIf="false" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
@@ -1410,10 +1379,9 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Scope of Work *ngIf="showAttachments"-->
+      <!-- Scope of Work -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <!-- *ngIf="step2" -->
-        <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
+        <nz-collapse-panel [nzActive]="scopeOfWorkActive" nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
 
 
@@ -1732,12 +1700,23 @@
               </nz-form-control>
             </div>
           </div>
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+                Save As Draft
+              </button>
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueScope()"
+                [disabled]="!scopeOfWorkValid">
+                Save & Continue
+              </button>
+            </div>
+          </div>
         </nz-collapse-panel>
       </nz-collapse>
 
       <!-- Standards -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzHeader="{{ 'Standards' | translate }}">
+        <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'Standards' | translate }}">
           <div class="tech-info-row">
 
             <div class="tech-info-text-with-icon">
@@ -2189,20 +2168,42 @@
               </nz-form-control>
             </div>
           </div>
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+                Save As Draft
+              </button>
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueStandards()"
+                [disabled]="!standardsValid">
+                Save & Continue
+              </button>
+            </div>
+          </div>
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Bill of Quantity   *ngIf="showAttachments" -->
+      <!-- Bill of Quantity -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="true" nzHeader="Bill of Quantity">
+        <nz-collapse-panel [nzActive]="billOfQuantityActive" nzHeader="Bill of Quantity">
 
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+                Save As Draft
+              </button>
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueBOQ()"
+                [disabled]="!billOfQuantityValid">
+                Save & Continue
+              </button>
+            </div>
+          </div>
         </nz-collapse-panel>
       </nz-collapse>
 
 
-      <!-- Attachments   *ngIf="showAttachments" -->
+      <!-- Attachments -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="true" nzHeader="Attachments">
+        <nz-collapse-panel [nzActive]="attachmentsCollapseActive" nzHeader="Attachments">
           <div class="attachment-body">
 
             <!-- ROW 1 — Select Form + Download button (same row) -->
@@ -2246,6 +2247,16 @@
                   </a>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+                Save As Draft
+              </button>
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="submitCase()">
+                Submit RFP
+              </button>
             </div>
           </div>
         </nz-collapse-panel>

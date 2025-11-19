@@ -1563,3 +1563,78 @@ border-color: #cccccc !important;
     color: #333;
   }
 }
+
+/* Stepper Navigation Enhancement */
+:host ::ng-deep .ant-steps-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Disabled step styling */
+:host ::ng-deep .ant-steps-item.step-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+:host ::ng-deep .ant-steps-item.step-disabled .ant-steps-item-icon {
+  background-color: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
+  color: #bfbfbf !important;
+}
+
+:host ::ng-deep .ant-steps-item.step-disabled .ant-steps-item-title {
+  color: #bfbfbf !important;
+}
+
+/* Completed step styling */
+:host ::ng-deep .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #52c41a !important;
+  border-color: #52c41a !important;
+  color: #fff !important;
+}
+
+/* Current active step */
+:host ::ng-deep .ant-steps-item-process .ant-steps-item-icon {
+  background-color: #005bbd !important;
+  border-color: #005bbd !important;
+  color: #fff !important;
+}
+
+/* Hover effect for clickable steps */
+:host ::ng-deep .ant-steps-item:not(.step-disabled):hover .ant-steps-item-icon {
+  border-color: #005bbd !important;
+  transform: scale(1.05);
+}
+
+/* Form validation indicators */
+.validation-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.validation-indicator.valid {
+  background-color: #52c41a;
+}
+
+.validation-indicator.invalid {
+  background-color: #ff4d4f;
+}
+
+/* Collapse panel enhancements */
+:host ::ng-deep .ant-collapse-item.panel-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+:host ::ng-deep .ant-collapse-item.panel-completed .ant-collapse-header {
+  background: #f6ffed !important;
+  border-left: 4px solid #52c41a;
+}
+
+:host ::ng-deep .ant-collapse-item.panel-active .ant-collapse-header {
+  background: #e6f7ff !important;
+  border-left: 4px solid #005bbd;
+}
