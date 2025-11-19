@@ -1380,7 +1380,7 @@
       </nz-collapse>
 
       <!-- Scope of Work -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="scopeOfWorkActive" nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
 
@@ -1715,7 +1715,7 @@
       </nz-collapse>
 
       <!-- Standards -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showStandards" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'Standards' | translate }}">
           <div class="tech-info-row">
 
@@ -2166,7 +2166,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" nzHeader="Bill of Quantity">
 
           <div class="row mt-2">
@@ -2184,8 +2184,8 @@
 
 
       <!-- Attachments -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="false" nzHeader="Attachments">
+      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel [nzActive]="attachmentsCollapseActive" nzHeader="Attachments">
           <div class="attachment-body">
 
             <!-- ROW 1 — Select Form + Download button (same row) -->

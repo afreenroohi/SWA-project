@@ -59,6 +59,12 @@ export class CreateRFPComponent implements OnInit {
   standardsActive = false;
   billOfQuantityActive = false;
   attachmentsCollapseActive = false;
+
+  // Collapse panel visibility
+  showScopeOfWork = false;
+  showStandards = false;
+  showBillOfQuantity = false;
+  //showAttachments = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
   tooltipVisible: boolean = false;
@@ -379,6 +385,7 @@ export class CreateRFPComponent implements OnInit {
     if (this.basicInfoValid) {
       this.step = 1;
       this.activateCollapse('scopeOfWork');
+      this.showScopeOfWork = true;
     }
   }
 
@@ -386,6 +393,7 @@ export class CreateRFPComponent implements OnInit {
     if (this.scopeOfWorkValid) {
       this.step = 2;
       this.activateCollapse('standards');
+      this.showStandards = true;
     }
   }
 
@@ -393,20 +401,15 @@ export class CreateRFPComponent implements OnInit {
     if (this.standardsValid) {
       this.step = 3;
       this.activateCollapse('billOfQuantity');
+      this.showBillOfQuantity = true;
     }
   }
-
-  // saveAndContinueStandards(): void {
-  //   if (this.standardsValid) {
-  //     this.step = 3;
-  //     this.activateCollapse('billOfQuantity');
-  //   }
-  // }
 
   saveAndContinueBOQ(): void {
     if (this.billOfQuantityValid) {
       this.step = 4;
       this.activateCollapse('attachments');
+      this.showAttachments = true;
     }
   }
 //   get attachmentsValid(): boolean {
