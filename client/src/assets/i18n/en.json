@@ -474,8 +474,15 @@
     "dividedIntoLots":"Is the competition divided into lots?",
     "reAnnounced":"Has it been re-announced?",
     "requiresSiteVisit":"Does it require a site visit?",
+<<<<<<< HEAD
     "coordinator name":"Coordinator name (uid)",
     "coordinator number":"Coordinator number",
+=======
+    "coordinator name":"Coordinator name (UID)",
+    "coordinator number":"Coordinator Phone Number",
+    "coordinator email":"Coordinator Email",
+    "userId":"UID",
+>>>>>>> d54c7b2699d299cd5cd8900bf221e678f810c6da
     "Activity":"Activity",
     "Subactivity":"Subactivity",
     "Project Duration":"Project Duration",

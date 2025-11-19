@@ -42,17 +42,18 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  step:number=0;
+  showScope=false;
   directCompetitionId: any = null;
   limitedCompetitionId: any = null;
   showInvite: boolean = false;
-  showScopeOfWork:boolean=false;
-  tooltipVisible=false;
   userName: string = ''
   uploading = false;
   showAttachments = false;
   attachmentsActive = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
+  tooltipVisible: boolean = false;
   value = '';
   title = 'Input a number';
   listOfColumnBOQ = ["RFP.slNo", "RFP.MatDes", "RFP.QTY", "RFP.Uom", "RFP.Price", "RFP.TotalPrice", "RFP.VATAmount", "RFP.TotalWithVAT", "RFP.Action"]
@@ -81,7 +82,6 @@ export class CreateRFPComponent implements OnInit {
   // threshold constant
   DIRECT_COST_THRESHOLD = 1_000_00;
   DIRECT_COST_THRESHOLD2 = 500000;
-
 
 
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
@@ -163,7 +163,7 @@ export class CreateRFPComponent implements OnInit {
   slcon = 1;
 
   expandIconPosition: 'left' | 'right' = 'right';
-  step:number=0;
+
   evalEditIndex = 0;
   techReqEditIndex = 0;
   payEditIndex = 0;
@@ -206,7 +206,7 @@ export class CreateRFPComponent implements OnInit {
 
   dtypes = dtypes;
   durationTypes = durationTypes;
-  // contractTypes = contractTypes;
+  contractTypes = contractTypes;
   competitionTypes = competitionTypes;
   activityList = activities;
   sopData = sopData;
@@ -335,145 +335,34 @@ export class CreateRFPComponent implements OnInit {
   }
 
   /** Save & Continue: validate basic info and reveal attachments */
-//   saveAndContinue(): void {
-//     this.markBasicControlsTouched();
+  saveAndContinue(): void {
+    this.markBasicControlsTouched();
 
-//     if (!this.basicInfoValid) {
-//       // your existing message service used elsewhere in the app
-//       if (this.cs && typeof this.cs.createMessage === 'function') {
-//         this.cs.createMessage('error', 'Please fill required basic information');
-//       }
-//       return;
-//     }
-
-//     // optionally persist basic data before progressing (call API here if needed)
-//     // this.saveBasicInfo();
-
-//     // reveal attachments
-//      this.showScopeOfWork=true;
-//     // or if using Option B:
-//     // this.attachmentsActive = true;
-
-//     // scroll to attachments smoothly
-//      setTimeout(() => {
-//   const el = document.getElementById('scopeOfWorkSection');
-//   if (el) {
-//     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-//   }
-// }, 10);
-//   }
-  goto(stepNumber: number): void {
- 
-  // prevent skipping ahead without validation
-  if (stepNumber > this.step) {
-    if (!this.isCurrentStepValid()) {
-      this.cs.createMessage('error', "Please complete the required fields");
+    if (!this.basicInfoValid) {
+      // your existing message service used elsewhere in the app
+      if (this.cs && typeof this.cs.createMessage === 'function') {
+        this.cs.createMessage('error', 'Please fill required basic information');
+      }
       return;
     }
-  }
- 
-  // set the new step
-  this.step = stepNumber;
- 
-  // open only correct collapse
-  this.openCollapse(this.step);
-}
- 
-isCurrentStepValid(): boolean {
-  switch (this.step) {
-    case 0:
-      return this.basicInfoValid;
- 
-    case 1:
-      //return this.attachmentsValid;
- 
-    case 2:
-      //return this.scopeValid;  // add your scope validation
- 
-    case 3:
-      //return this.boqValid;    // add BOQ validation
- 
-    default:
-      return true;
-  }
-}
-  showError(): void {
-    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
-  }
-  /** Save & Continue: validate basic info and reveal attachments */
-saveAndContinue(): void {
- 
-  if (!this.isCurrentStepValid()) {
-    this.cs.createMessage('error', "Please complete the required fields");
-    return;
-  }
- 
-  // Move one step forward only
-  this.step++;
- 
-  // Open corresponding collapse
-  this.openCollapse(this.step);
- 
-  // Smooth scroll
-  setTimeout(() => {
-    const el = document.querySelector('.attachment-body');
-    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 10);
-}
-// openCollapse(step: number) {
-//   //this.showBasic = (step === 0);
-//   this.showAttachments = (step === 1);
-//   this.showScope = (step === 2);
-//   // continue for all remaining steps
-// }
- 
-openCollapse(step: number) {
-  // FIRST: RESET all collapses
-  //this.showBasic = false;
-  this.showAttachments = false;
-  //this.showScope = false;
-  //this.showBoq = false;
-  //this.showTerms = false;
- 
-  // THEN: Open based on step
-  switch (step) {
-    case 0:
-     // this.showBasic = true;
-      break;
- 
-    case 1:
-      this.showAttachments = true;
-      break;
- 
-    case 2:
-      //this.showScope = true;
-      break;
- 
-    case 3:
-      //this.showBoq = true;
-      break;
- 
-    case 4:
-      //this.showTerms = true;
-      break;
- 
-    default:
-      //this.showBasic = true;
-  }
-}
- 
- 
-  /** Save & Continue:for attachments to reveal scope of work */
-// saveAndContinueForSOW(){
-//   this.showScopeOfWork=true;
-//    setTimeout(() => {
-//   const el = document.getElementById('scopeOfWorkSection');
-//   if (el) {
-//     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-//   }
-// }, 10);
 
-// }
+    // optionally persist basic data before progressing (call API here if needed)
+    // this.saveBasicInfo();
+
+    // reveal attachments
+    this.showAttachments = true;
+    // or if using Option B:
+    // this.attachmentsActive = true;
+
+    // scroll to attachments smoothly
+    setTimeout(() => {
+      const el = document.querySelector('.attachment-body');
+      if (el) {
+        (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 10);
+  }
+
   /** Save as Draft: validate and call your draft logic */
   saveAsDraft(): void {
     this.markBasicControlsTouched();
@@ -513,34 +402,49 @@ openCollapse(step: number) {
     return this.subCriteriaForm.controls['subCriterias'] as FormArray;
   }
 
+  // insertLaborText() {
+  //   const data = this.sopData.find((item:any) => item.id === 'Labor');
+  //   if (data) {
+  //     this.rfpForm.get('labor')?.setValue(data.text);
+  //   }
+  // }
+
   insertLaborText() {
-    const data = this.sopData.find((item:any) => item.id === 'Labor');
+    const data = this.sopData.find((item: any) => item.id === 'Labor');
     if (data) {
       this.rfpForm.get('labor')?.setValue(data.text);
     }
   }
 
+  private autoPopulateSopFields() {
+    this.insertLaborText();
+    this.insertMaterialsText();
+    this.insertEquipmentText();
+    this.insertQualityText();
+    this.insertSafetyText();
+  }
+
   insertMaterialsText() {
-    const data = this.sopData.find((item:any) => item.id === 'Material');
+    const data = this.sopData.find((item: any) => item.id === 'Material');
     if (data) {
       this.rfpForm.get('materials')?.setValue(data.text);
     }
   }
 
   insertEquipmentText() {
-    const data = this.sopData.find((item:any) => item.id === 'Equipment');
+    const data = this.sopData.find((item: any) => item.id === 'Equipment');
     if (data) {
       this.rfpForm.get('equipment')?.setValue(data.text);
     }
   }
   insertQualityText() {
-    const data = this.sopData.find((item:any) => item.id === 'Quality');
+    const data = this.sopData.find((item: any) => item.id === 'Quality');
     if (data) {
       this.rfpForm.get('qualitySpecifications')?.setValue(data.text);
     }
   }
   insertSafetyText() {
-    const data = this.sopData.find((item:any) => item.id === 'Safety');
+    const data = this.sopData.find((item: any) => item.id === 'Safety');
     if (data) {
       this.rfpForm.get('safetySpecifications')?.setValue(data.text);
     }
@@ -695,28 +599,26 @@ openCollapse(step: number) {
     });
   }
   // easy getter for the FormArray
- get crNumberArray(): FormArray {
-  return this.rfpForm.get('crNumber') as FormArray;
-}
-
-// methods to add/remove
-addCrNumber() {
-  this.crNumberArray.push(this.fb.control('', Validators.required));
-  // optional: mark the new control touched to show validation immediately if needed
-  // this.crNumberArray.at(this.crNumberArray.length - 1).markAsTouched();
-}
-
-removeCrNumber(index: number) {
-  if (this.crNumberArray.length > 1) {
-    this.crNumberArray.removeAt(index);
+  get crNumberArray(): FormArray {
+    return this.rfpForm.get('crNumber') as FormArray;
   }
-}
 
-// trackBy for ngFor
-trackByIndex(index: number): number {
-  return index;
-}
+  // methods to add/remove
+  addCrNumber() {
+    this.crNumberArray.push(this.fb.group({
+      crNumber: ['', Validators.required],
+      companyName: ['', Validators.required]
+    }));
+  }
 
+  removeCrNumber(index: number) {
+    if (this.crNumberArray.length > 1) {
+      this.crNumberArray.removeAt(index);
+    }
+  }
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
@@ -733,7 +635,78 @@ trackByIndex(index: number): number {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
-
+  toggleTooltip(): void {
+    this.tooltipVisible = !this.tooltipVisible;
+  }
+  get attachmentsValid(): boolean {
+  if (!this.rfpForm) {
+    return false;
+  }
+ 
+  const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+  if (!attachmentsGroup) {
+    return false;
+  }
+ 
+  return attachmentsGroup.valid;
+}
+  isCurrentStepValid(): boolean {
+  switch (this.step) {
+    case 0:
+      return this.basicInfoValid;
+ 
+    case 1:
+      return this.attachmentsValid;
+ 
+    case 2:
+      //return this.scopeValid;  // add your scope validation
+ 
+    case 3:
+      //return this.boqValid;    // add BOQ validation
+ 
+    default:
+      return true;
+  }
+}
+  goto(stepNumber: number): void {
+ 
+  // prevent skipping ahead without validation
+  if (stepNumber > this.step) {
+    if (!this.isCurrentStepValid()) {
+      this.cs.createMessage('error', "Please complete the required fields");
+      return;
+    }
+  }
+ 
+  // set the new step
+  this.step = stepNumber;
+ 
+  // open only correct collapse
+  this.openCollapse(this.step);
+}
+openCollapse(step: number) {
+  // FIRST: RESET all collapses
+  //this.showBasic = false;
+  this.showAttachments = false;
+  this.showScope = false;
+  //this.showBoq = false;
+  //this.showTerms = false;
+ 
+  // THEN: Open based on step
+  switch (step) {
+    case 0:
+     // this.showBasic = true;
+      break;
+ 
+    case 1:
+      this.showAttachments = true;
+      break;
+ 
+    case 2:
+      this.showScope = true;
+      break;
+  }
+}
   onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
@@ -784,6 +757,18 @@ trackByIndex(index: number): number {
     return this.rfpForm.get('members') as FormArray;
   }
 
+  get laborItems(): FormArray {
+    return this.rfpForm.get('laborItems') as FormArray;
+  }
+
+  get materialItems(): FormArray {
+    return this.rfpForm.get('materialItems') as FormArray;
+  }
+
+  get equipmentItems(): FormArray {
+    return this.rfpForm.get('equipmentItems') as FormArray;
+  }
+
   committeeMembers = [
     { role: 'Project Director', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
@@ -793,9 +778,9 @@ trackByIndex(index: number): number {
 
   // Add new row Technical Committee Members
   addMember(index: number): void {
-   if (this.members.length < 15) {
-  this.members.insert(index + 1, this.createMemberRow(''));
-}
+    if (this.members.length < 5) {
+      this.members.insert(index + 1, this.createMemberRow(''));
+    }
   }
 
   // Delete row
@@ -805,39 +790,87 @@ trackByIndex(index: number): number {
     }
   }
 
+  // Labor Items
+  addLaborItem(index: number): void {
+    this.laborItems.insert(index + 1, this.createLaborRow());
+  }
+
+  deleteLaborItem(index: number): void {
+    if (this.laborItems.length > 1) {
+      this.laborItems.removeAt(index);
+    }
+  }
+
+  createLaborRow(): FormGroup {
+    return this.fb.group({
+      jobTitle: ['', Validators.required],
+      minQualification: ['', Validators.required],
+      minExperience: ['', Validators.required]
+    });
+  }
+
+  // Material Items
+  addMaterialItem(index: number): void {
+    this.materialItems.insert(index + 1, this.createMaterialRow());
+  }
+
+  deleteMaterialItem(index: number): void {
+    if (this.materialItems.length > 1) {
+      this.materialItems.removeAt(index);
+    }
+  }
+
+  createMaterialRow(): FormGroup {
+    return this.fb.group({
+      material: ['', Validators.required],
+      specifications: ['', Validators.required],
+      unit: ['', Validators.required]
+    });
+  }
+
+  // Equipment Items
+  addEquipmentItem(index: number): void {
+    this.equipmentItems.insert(index + 1, this.createEquipmentRow());
+  }
+
+  deleteEquipmentItem(index: number): void {
+    if (this.equipmentItems.length > 1) {
+      this.equipmentItems.removeAt(index);
+    }
+  }
+
+  createEquipmentRow(): FormGroup {
+    return this.fb.group({
+      machine: ['', Validators.required],
+      specifications: ['', Validators.required],
+      unit: ['', Validators.required]
+    });
+  }
+
   // Create one row (form group)
-createMemberRow(role = '', disabledRole = false): FormGroup {
-  const roleControl = disabledRole
-    ? [{ value: role, disabled: true }]
-    : [role];
+  createMemberRow(role = ''): FormGroup {
+    return this.fb.group({
+      role: [role, Validators.required],
+      name: ['', Validators.required],
+      extension: ['', Validators.required],
+      jobTitle: ['', Validators.required],
+    });
+  }
 
-  return this.fb.group({
-    role: roleControl,
-    name: ['', Validators.required],
-    extension: ['', Validators.required],
-    jobTitle: ['', Validators.required],
-  });
-}
-
-toggleTooltip(): void {
-  this.tooltipVisible = !this.tooltipVisible;
-}
- 
   /**
    * Builds the main for group for create RFP
    */
 
 
   buildMainFormGroup(): void {
-       
-      //  this.rfpForm.get('TotTechEval')?.disable();
     this.rfpForm = this.fb.group({
-   
-       userId: new FormControl(''),
       limitedType: new FormControl(''),    // for limited competition options
       directPurchaseType: new FormControl(''),// for direct purchase options
       invite: new FormControl('', [Validators.required]),
-      crNumber: this.fb.array([this.fb.control('', Validators.required)]),
+      crNumber: this.fb.array([this.fb.group({
+        crNumber: ['', Validators.required],
+        companyName: ['', Validators.required]
+      })]),
 
       // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
@@ -845,6 +878,8 @@ toggleTooltip(): void {
       prequalificationDetails: new FormControl('', [Validators.required]),
       coordinatorName: new FormControl(''),
       coordinatorNumber: new FormControl(''),
+      coordinatorEmail: new FormControl(''),
+
 
       activity: [''],
       subactivity: [''],
@@ -852,6 +887,7 @@ toggleTooltip(): void {
       requiresSiteVisit: [false, [Validators.required]], // toggle
       email: new FormControl('', [Validators.email]),
       contactNumber: new FormControl(''),
+      userId: new FormControl(''),
       projectRelaunched: [false, [Validators.required]], // toggle
       number: new FormControl('', [Validators.min(1)]),
 
@@ -893,53 +929,10 @@ toggleTooltip(): void {
           })
         )
       ),
-      // Eval Criteria group (used when adding a new criterion)
-      EvalCriteria: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: (this.slel).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline:['', Validators.required],
-        SubCriFlg:['',Validators.required ]
 
-      }),
-
-        // Eval Criteria edit group (used for editing)
-      EvalCriteriaEdit: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline:[''],
-        SubCriFlg:['']
-      }),
-
-
-      //Technical Evaluation
-        TotTechEval: new FormControl(''),
-
-        
-  // Technical Requirements group
-        TechReq: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-      // Technical Requirements edit group
-         TechReqEdit: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-
-      // Vendor evaluation weightage
-       vendorEvaluationWeightage: this.fb.group({
-        technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99), ]],
-        financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
-      }),
-    
+      laborItems: this.fb.array([this.createLaborRow()]),
+      materialItems: this.fb.array([this.createMaterialRow()]),
+      equipmentItems: this.fb.array([this.createEquipmentRow()]),
 
       // scope of work
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
@@ -950,13 +943,57 @@ toggleTooltip(): void {
       equipment: new FormControl(''),
       qualitySpecifications: new FormControl(''),
       safetySpecifications: new FormControl(''),
-      definationCompetition: new FormControl('')
+      definationCompetition: new FormControl(''),
+
+      EvalCriteria: this.fb.group({
+        RfpNo: [''],
+        ItemNo: [{ value: (this.slel).toString(), disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+        Percentage: ['0'],
+        Headline: ['', Validators.required],
+        SubCriFlg: ['', Validators.required]
+
+      }),
+
+      // Eval Criteria edit group (used for editing)
+      EvalCriteriaEdit: this.fb.group({
+        RfpNo: [''],
+        ItemNo: [{ value: '', disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+        Percentage: ['0'],
+        Headline: [''],
+        SubCriFlg: ['']
+      }),
+
+
+      //Technical Evaluation
+      TotTechEval: new FormControl(''),
+
+
+      // Technical Requirements group
+      TechReq: this.fb.group({
+        RfpNo: [''],
+        RfpVersion: [''],
+        ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]]
+      }),
+      // Technical Requirements edit group
+      TechReqEdit: this.fb.group({
+        RfpNo: [''],
+        RfpVersion: [''],
+        ItemNo: [{ value: '', disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]]
+      }),
+
+      // Vendor evaluation weightage
+      vendorEvaluationWeightage: this.fb.group({
+        technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99),]],
+        financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
+      }),
 
     });
-    this.rfpForm.get('TotTechEval')?.setValue(100);
-    this.rfpForm.get('TotTechEval')?.setValue(100);
 
-
+    this.rfpForm.get('TotTechEval')?.setValue(100);
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
     //   CostCenter1: new FormControl(
@@ -1081,27 +1118,6 @@ toggleTooltip(): void {
     //   procurementChecklist: this.fb.group({})
     // });
   }
-private initTechnicalCommitteeMembers(): void {
-  // ensure the array exists and clear any existing controls
-  while (this.members.length) {
-    this.members.removeAt(0);
-  }
-
-  // push the 3 preset (disabled-role) rows
-  const preset = [
-    'Project Director',
-    'Project Coordinator',
-    'Committee Member'
-  ];
-
-  for (const p of preset) {
-    // create row with role prefilled and role control disabled
-    this.members.push(this.createMemberRow(p, true));
-  }
-
-  // optionally add one empty editable row so user can immediately type
-  this.members.push(this.createMemberRow('', false));
-}
 
   beforeUpload = (file: NzUploadFile): boolean => {
     const ext = (file.name.split('.').pop() || '').toLowerCase();
@@ -1167,6 +1183,7 @@ private initTechnicalCommitteeMembers(): void {
     this.step1 = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
+    this.autoPopulateSopFields();
     const compCtrl = this.rfpForm.get('competitionType')!;
     const costCtrl = this.rfpForm.get('estimatedCost')!;
 
@@ -1239,12 +1256,6 @@ private initTechnicalCommitteeMembers(): void {
       });
 
     this.listenDeliveryDateChange();
-    this.initTechnicalCommitteeMembers();
-this.members.clear();
-this.members.push(this.createMemberRow('Project Director', true));
-this.members.push(this.createMemberRow('Project Coordinator', true));
-this.members.push(this.createMemberRow('Committee Member', true));
-this.members.push(this.createMemberRow('', false)); // blank row
 
 
   }
@@ -2059,44 +2070,27 @@ this.members.push(this.createMemberRow('', false)); // blank row
   }
 
   // add technical requirment item
-//  addTechReq(mode: 'add' | 'save'): void {
-//   const techReqGroup = this.rfpForm.get('TechReq');
-//   if (!techReqGroup) { return; }
+  addTechReq(cond: any) {
+    const data = this.rfpForm.getRawValue().TechReq;
+    if (this.TechReqListData.length == this.srNoTechReq) {
+      this.TechReqListData[this.TechReqListData.length - 1] = data;
+    } else {
+      this.TechReqListData.push(data);
+    }
+    this.TechReqListData = [...this.TechReqListData];
+    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
 
-//   // read values
-//   const itemNoVal = techReqGroup.get('ItemNo')?.value;
-//   const descrVal = techReqGroup.get('Descr')?.value?.trim();
-
-//   // basic validation: ensure description present
-//   if (!descrVal) {
-//     if (this.cs && typeof this.cs.createMessage === 'function') {
-//       this.cs.createMessage('error', 'Please enter a description before adding.');
-//     }
-//     techReqGroup.get('Descr')?.markAsTouched();
-//     return;
-//   }
-
-//   // Determine item number: use length+1 to keep sequential numbering
-//   const nextIndex = this.TechReqListData.length + 1;
-
-//   // Push into the array (the shape below can be extended with extra fields)
-//   this.TechReqListData.push({
-//     ItemNo: nextIndex,
-//     Descr: descrVal,
-//     // optional fields — keep placeholders
-//     PassFail: undefined,
-//     TechToTechSub: [],
-//     expand: false
-//   });
-
-//   // Reset top form fields (only description) and keep ItemNo as next if you want
-//   techReqGroup.get('Descr')?.setValue('');
-//   techReqGroup.get('ItemNo')?.setValue(nextIndex + 1); // if you want to auto increment for next add
-
-//   // close edit mode (if open)
-//   this.showEditTechReq = false;
-//   this.techReqEditIndex = -1;
-// }
+    if (cond == 'add') {
+      this.srNoTechReq++;
+      this.rfpForm.controls.TechReq.reset();
+      this.rfpForm.controls.TechReq.setValue({
+        RfpNo: '',
+        RfpVersion: '',
+        ItemNo: this.srNoTechReq.toString(),
+        Descr: ''
+      });
+    }
+  }
 
   // remove tech requirement
   removeTechReq(index: any) {
@@ -2120,159 +2114,43 @@ this.members.push(this.createMemberRow('', false)); // blank row
     }
   }
 
-
-// add from top form into TechReqListData
-addTechReq(mode: 'add' | 'save' = 'add'): void {
-  const techReqGroup = this.rfpForm.get('TechReq');
-  if (!techReqGroup) {
-    console.warn('TechReq formGroup not found');
-    return;
+  // edit tech requirement
+  editTechReq(index: number) {
+    this.techReqEditIndex = index;
+    this.showEditTechReq = true;
+    const data = this.TechReqListData[index];
+    this.rfpForm.controls.TechReqEdit.reset();
+    this.rfpForm.controls.TechReqEdit.setValue({
+      RfpNo: '',
+      RfpVersion: '',
+      ItemNo: (index + 1).toString(),
+      Descr: data.Descr,
+    });
+    this.rfpForm.controls['TechReqEdit'].get('Descr')?.setValidators([
+      Validators.required,
+    ]);
+    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
 
-  // grab and trim description
-  const descrControl = techReqGroup.get('Descr');
-  const descrVal = (descrControl?.value || '').toString().trim();
+  // save edit part tech requirement
+  saveEditTechReq() {
+    const data = this.rfpForm.getRawValue().TechReqEdit;
+    this.TechReqListData[this.techReqEditIndex] = data;
+    if (this.srNoTechReq == this.techReqEditIndex + 1) {
 
-  // validation: require description
-  if (!descrVal) {
-    descrControl?.markAsTouched();
-    descrControl?.setErrors({ required: true });
-    return;
-  }
-
-  // compute next sl no
-  const nextIndex = this.TechReqListData.length + 1;
-
-  // push the new item
-  this.TechReqListData.push({
-    ItemNo: nextIndex,
-    Descr: descrVal,
-    PassFail: undefined,
-    TechToTechSub: [],
-    expand: false
-  });
-
-  // ensure Angular change-detection picks up the new row in nz-table
-  this.TechReqListData = [...this.TechReqListData];
-
-  // prepare next input: set ItemNo and clear description
-  techReqGroup.get('ItemNo')?.setValue(this.TechReqListData.length + 1);
-  descrControl?.setValue('');
-
-  // reset any edit state
-  this.showEditTechReq = false;
-  this.techReqEditIndex = -1;
-}
-
-// // delete row (note template used removeTechReq(i + 1) earlier -> index is 1-based)
-// removeTechReq(oneBasedIndex: number): void {
-//   const idx = oneBasedIndex - 1;
-//   if (idx < 0 || idx >= this.TechReqListData.length) { return; }
-
-//   this.TechReqListData.splice(idx, 1);
-
-//   // renumber remaining items so Sl.No stays sequential
-//   this.TechReqListData.forEach((d: any, i: number) => {
-//     d.ItemNo = i + 1;
-//   });
-
-//   // if currently editing the deleted row, close editor
-//   if (this.techReqEditIndex === idx) {
-//     this.showEditTechReq = false;
-//     this.techReqEditIndex = -1;
-//   } else if (this.techReqEditIndex > idx) {
-//     // adjust edit index if it was after removed row
-//     this.techReqEditIndex = this.techReqEditIndex - 1;
-//   }
-// }
-
-// open edit area for an index (table uses editTechReq(i))
-editTechReq(idx: number): void {
-  // idx is zero-based (we used editTechReq(i) in template)
-  if (idx < 0 || idx >= this.TechReqListData.length) { return; }
-
-  this.techReqEditIndex = idx;
-  this.showEditTechReq = true;
-
-  // populate the edit form group with selected data
-  const target = this.TechReqListData[idx];
-  const editGroup = this.rfpForm.get('TechReqEdit');
-  if (!editGroup) { return; }
-
-  editGroup.get('ItemNo')?.setValue(target.ItemNo);
-  editGroup.get('Descr')?.setValue(target.Descr);
-}
-
-// save changes from the edit area back to array and close editor
-saveEditTechReq(): void {
-  const editGroup = this.rfpForm.get('TechReqEdit');
-  if (!editGroup || this.techReqEditIndex < 0) { return; }
-
-  // simple validation
-  const descr = editGroup.get('Descr')?.value?.trim();
-  if (!descr) {
-    editGroup.get('Descr')?.markAsTouched();
-    if (this.cs && typeof this.cs.createMessage === 'function') {
-      this.cs.createMessage('error', 'Description is required');
+      this.rfpForm.controls.TechReq.patchValue({
+        Descr: data.Descr
+      })
     }
-    return;
+    this.TechReqListData = [...this.TechReqListData];
+    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+    this.showEditTechReq = false;
+    this.rfpForm.controls.TechReqEdit.reset();
+    this.rfpForm.controls['TechReqEdit'].get('Descr')?.removeValidators([
+      Validators.required,
+    ]);
+    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
-
-  // update model
-  const idx = this.techReqEditIndex;
-  this.TechReqListData[idx].Descr = descr;
-  // keep ItemNo as-is (or update from form if you allow editing ItemNo)
-  const itemNoFromForm = editGroup.get('ItemNo')?.value;
-  if (itemNoFromForm) {
-    this.TechReqListData[idx].ItemNo = itemNoFromForm;
-  }
-
-  // close editor
-  this.showEditTechReq = false;
-  this.techReqEditIndex = -1;
-
-  // optionally reset edit form
-  editGroup.reset();
-}
-
-
-  // // edit tech requirement
-  // editTechReq(index: number) {
-  //   this.techReqEditIndex = index;
-  //   this.showEditTechReq = true;
-  //   const data = this.TechReqListData[index];
-  //   this.rfpForm.controls.TechReqEdit.reset();
-  //   this.rfpForm.controls.TechReqEdit.setValue({
-  //     RfpNo: '',
-  //     RfpVersion: '',
-  //     ItemNo: (index + 1).toString(),
-  //     Descr: data.Descr,
-  //   });
-  //   this.rfpForm.controls['TechReqEdit'].get('Descr')?.setValidators([
-  //     Validators.required,
-  //   ]);
-  //   this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
-  // }
-
-  // // save edit part tech requirement
-  // saveEditTechReq() {
-  //   const data = this.rfpForm.getRawValue().TechReqEdit;
-  //   this.TechReqListData[this.techReqEditIndex] = data;
-  //   if (this.srNoTechReq == this.techReqEditIndex + 1) {
-
-  //     this.rfpForm.controls.TechReq.patchValue({
-  //       Descr: data.Descr
-  //     })
-  //   }
-  //   this.TechReqListData = [...this.TechReqListData];
-  //   this.rfpForm.value.RfpTreq.value = this.TechReqListData;
-  //   this.showEditTechReq = false;
-  //   this.rfpForm.controls.TechReqEdit.reset();
-  //   this.rfpForm.controls['TechReqEdit'].get('Descr')?.removeValidators([
-  //     Validators.required,
-  //   ]);
-  //   this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
-  // }
 
 
   // add teachnical evaluation criteria from group
