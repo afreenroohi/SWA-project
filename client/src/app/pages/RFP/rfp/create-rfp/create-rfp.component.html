@@ -984,12 +984,12 @@
 
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()"
                 [disabled]="!basicInfoValid">
-                Save As Draft
+                {{ "RFP.Save As Draft" | translate }}
               </button>
 
               <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinue()"
                 [disabled]="!basicInfoValid">
-                Save & Continue
+                {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
           </div>
@@ -1703,11 +1703,11 @@
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
-                Save As Draft
+                {{ "RFP.Save As Draft" | translate }}
               </button>
               <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueScope()"
                 [disabled]="!scopeOfWorkValid">
-                Save & Continue
+                {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
           </div>
@@ -2150,21 +2150,32 @@
             </nz-table>
           </div>
 
+          <div class="row mt-2">
+            <div class="d-flex justify-content-end mt-2 actions gap-2">
+              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+                {{ "RFP.Save As Draft" | translate }}
+              </button>
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueStandards()"
+                [disabled]="!standardsValid">
+                {{ "RFP.Save & Continue" | translate }}
+              </button>
+            </div>
+          </div>
+
         </nz-collapse-panel>
       </nz-collapse>
 
       <!-- Bill of Quantity -->
       <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel nzActive="false" nzHeader="Bill of Quantity">
+        <nz-collapse-panel [nzActive]="billOfQuantityActive" nzHeader="Bill of Quantity">
 
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
-                Save As Draft
+                {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueBOQ()"
-                [disabled]="!billOfQuantityValid">
-                Save & Continue
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueBOQ()">
+                {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
           </div>
@@ -2223,10 +2234,10 @@
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
-                Save As Draft
+                {{ "RFP.Save As Draft" | translate }}
               </button>
               <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="submitCase()">
-                Submit RFP
+                {{ "RFP.Submit" | translate }}
               </button>
             </div>
           </div>

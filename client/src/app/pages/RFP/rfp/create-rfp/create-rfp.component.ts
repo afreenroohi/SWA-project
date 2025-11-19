@@ -336,7 +336,7 @@ export class CreateRFPComponent implements OnInit {
   }
 
   get billOfQuantityValid(): boolean {
-    return this.boqTabelList && this.boqTabelList.length > 0;
+    return true; // Always valid to allow progression
   }
 
   // Navigation methods
@@ -395,6 +395,13 @@ export class CreateRFPComponent implements OnInit {
       this.activateCollapse('billOfQuantity');
     }
   }
+
+  // saveAndContinueStandards(): void {
+  //   if (this.standardsValid) {
+  //     this.step = 3;
+  //     this.activateCollapse('billOfQuantity');
+  //   }
+  // }
 
   saveAndContinueBOQ(): void {
     if (this.billOfQuantityValid) {
