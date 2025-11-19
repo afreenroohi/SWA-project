@@ -708,6 +708,13 @@ openCollapse(step: number) {
       break;
   }
 }
+toggleExpand(index: number): void {
+  if (!this.EvalListData || !this.EvalListData[index]) return;
+  this.EvalListData[index].expand = !this.EvalListData[index].expand;
+  // force change detection if needed:
+  // this.EvalListData = [...this.EvalListData];
+}
+
   onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
       (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
@@ -782,7 +789,7 @@ openCollapse(step: number) {
 
   // Add new row Technical Committee Members
   addMember(index: number): void {
-    if (this.members.length < 5) {
+    if (this.members.length < 15) {
       this.members.insert(index + 1, this.createMemberRow(''));
     }
   }
@@ -926,10 +933,14 @@ openCollapse(step: number) {
       members: this.fb.array(
         this.committeeMembers.map((m) =>
           this.fb.group({
-            role: [m.role, Validators.required],
-            name: ['', Validators.required],
-            extension: ['', Validators.required],
-            jobTitle: ['', Validators.required],
+           role: [{ 
+          value: m.role, 
+          disabled: true  // <--- This line disables the FormControl
+      }, Validators.required],
+      
+      name: ['', Validators.required],
+      extension: ['', Validators.required],
+      jobTitle: ['', Validators.required],
           })
         )
       ),
@@ -998,6 +1009,7 @@ openCollapse(step: number) {
     });
 
     this.rfpForm.get('TotTechEval')?.setValue(100);
+    
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
     //   CostCenter1: new FormControl(
@@ -2079,88 +2091,126 @@ openCollapse(step: number) {
     // this.checkQualPer();
   }
 
-  // add technical requirment item
-  addTechReq(cond: any) {
-    const data = this.rfpForm.getRawValue().TechReq;
-    if (this.TechReqListData.length == this.srNoTechReq) {
-      this.TechReqListData[this.TechReqListData.length - 1] = data;
-    } else {
-      this.TechReqListData.push(data);
-    }
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+ addTechReq(cond: 'add' | 'save' | any) {
+  // read the TechReq form group value (not the whole form)
+  const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+  if (!techReqGroup) { return; }
 
-    if (cond == 'add') {
-      this.srNoTechReq++;
-      this.rfpForm.controls.TechReq.reset();
-      this.rfpForm.controls.TechReq.setValue({
-        RfpNo: '',
-        RfpVersion: '',
-        ItemNo: this.srNoTechReq.toString(),
-        Descr: ''
-      });
-    }
+  if (techReqGroup.invalid) {
+    // mark touched so errors show if any
+    techReqGroup.markAllAsTouched();
+    return;
   }
 
-  // remove tech requirement
-  removeTechReq(index: any) {
-    this.TechReqListData = this.TechReqListData.filter((item, i) => i !== index - 1);
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+  // clone to avoid reference problems
+  const data = {
+    RfpNo: techReqGroup.get('RfpNo')?.value || '',
+    RfpVersion: techReqGroup.get('RfpVersion')?.value || '',
+    ItemNo: techReqGroup.get('ItemNo')?.value?.toString() || (this.srNoTechReq).toString(),
+    Descr: techReqGroup.get('Descr')?.value || ''
+  };
 
-    if (index != this.srNoTechReq) {
-      this.srNoTechReq--;
-      this.rfpForm.controls.TechReq.patchValue({
-        ItemNo: this.srNoTechReq.toString(),
-      })
-    } else {
-      this.rfpForm.controls.TechReq.reset();
-      this.rfpForm.controls.TechReq.setValue({
-        RfpNo: '',
-        RfpVersion: '',
-        ItemNo: this.srNoTechReq.toString(),
-        Descr: ''
-      });
-    }
+  // push new entry
+  this.TechReqListData.push(data);
+  // create a new array reference so change detection picks it up
+  this.TechReqListData = [...this.TechReqListData];
+
+  // update any other storage you use (avoid writing into rfpForm.value directly)
+  // for example set a property or call an API payload builder. If you must keep in form,
+  // keep it in a separate control RfpTreq:
+  if (this.rfpForm.get('RfpTreq')) {
+    this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
   }
 
-  // edit tech requirement
-  editTechReq(index: number) {
-    this.techReqEditIndex = index;
-    this.showEditTechReq = true;
-    const data = this.TechReqListData[index];
-    this.rfpForm.controls.TechReqEdit.reset();
-    this.rfpForm.controls.TechReqEdit.setValue({
+  if (cond === 'add') {
+    // increment serial and reset the input group for the next entry
+    this.srNoTechReq++;
+    techReqGroup.reset();
+    techReqGroup.patchValue({
       RfpNo: '',
       RfpVersion: '',
-      ItemNo: (index + 1).toString(),
-      Descr: data.Descr,
+      ItemNo: this.srNoTechReq.toString(),
+      Descr: ''
     });
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
+  }
+}
+
+removeTechReq(index: number) {
+  // index is 1-based in your current calls, convert:
+  const idx = index - 1;
+  if (idx < 0 || idx >= this.TechReqListData.length) { return; }
+
+  this.TechReqListData.splice(idx, 1);
+  // renumber serials if you want to keep sequential
+  this.TechReqListData = this.TechReqListData.map((item, i) => ({
+    ...item,
+    ItemNo: (i + 1).toString()
+  }));
+  this.srNoTechReq = this.TechReqListData.length + 1;
+
+  if (this.rfpForm.get('RfpTreq')) {
+    this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
   }
 
-  // save edit part tech requirement
-  saveEditTechReq() {
-    const data = this.rfpForm.getRawValue().TechReqEdit;
-    this.TechReqListData[this.techReqEditIndex] = data;
-    if (this.srNoTechReq == this.techReqEditIndex + 1) {
-
-      this.rfpForm.controls.TechReq.patchValue({
-        Descr: data.Descr
-      })
-    }
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+  // if the edit panel was open for a removed index, close it
+  if (this.techReqEditIndex === idx) {
     this.showEditTechReq = false;
-    this.rfpForm.controls.TechReqEdit.reset();
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
+}
+
+editTechReq(index: number) {
+  // index is 0-based in table loop (your template uses index as i)
+  const data = this.TechReqListData[index];
+  if (!data) { return; }
+
+  this.techReqEditIndex = index;
+  this.showEditTechReq = true;
+
+  // populate the edit group
+  const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+  editG.reset();
+  editG.patchValue({
+    RfpNo: data.RfpNo || '',
+    RfpVersion: data.RfpVersion || '',
+    ItemNo: (index + 1).toString(),
+    Descr: data.Descr || ''
+  });
+
+  // ensure required validator is applied for edit description while editing
+  editG.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
+  editG.get('Descr')?.updateValueAndValidity();
+}
+
+saveEditTechReq() {
+  const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+  if (!editG || editG.invalid) {
+    editG?.markAllAsTouched();
+    return;
+  }
+
+  const data = {
+    RfpNo: editG.get('RfpNo')?.value || '',
+    RfpVersion: editG.get('RfpVersion')?.value || '',
+    ItemNo: editG.get('ItemNo')?.value?.toString() || (this.techReqEditIndex + 1).toString(),
+    Descr: editG.get('Descr')?.value || ''
+  };
+
+  // replace in the array
+  this.TechReqListData[this.techReqEditIndex] = data;
+  this.TechReqListData = [...this.TechReqListData];
+
+  // reflect in the full list control if you have one
+  if (this.rfpForm.get('RfpTreq')) {
+    this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+  }
+
+  // hide edit panel and clear the edit group
+  this.showEditTechReq = false;
+  editG.reset();
+  editG.get('Descr')?.clearValidators();
+  editG.get('Descr')?.updateValueAndValidity();
+}
+
 
 
   // add teachnical evaluation criteria from group

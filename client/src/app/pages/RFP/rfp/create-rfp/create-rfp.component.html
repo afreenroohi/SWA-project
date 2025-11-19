@@ -478,7 +478,7 @@
                 <tbody formArrayName="members">
                   <tr *ngFor="let member of members.controls; let i = index" [formGroupName]="i">
                     <td>
-                      <input nz-input formControlName="role" [disabled]="i < 3" />
+                      <input nz-input formControlName="role" [disabled]="i < 3"  placeholder="Committee Member" />
                     </td>
                     <td>
                       <input nz-input formControlName="name" placeholder="Enter name" />
@@ -1658,6 +1658,19 @@
             <div class="tech-info-text-with-icon">
 
               Kindly specifies the criteria for evaluating the offers
+                <div class="tooltip-wrapper">
+                <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
+                </i>
+
+                <!-- Tooltip shown on hover -->
+                <div class="custom-tooltip">
+                  <ul class="tooltip-list">
+                    <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.
+                    </li>
+                    <li>The Evaluation and analysis of the offers will be based on following elements.</li>
+                  </ul>
+                </div>
+              </div>
 
             </div>
 
@@ -1712,10 +1725,10 @@
             nzBordered="true" style="margin-top: 2%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
             <thead>
               <tr>
-                <th style="width:80px">Sl.No.</th>
-                <th>Key assessment criteria</th>
-                <th style="width:130px">Pass/Fail</th>
-                <th style="width:120px">Action</th>
+                <th  style="background-color: #1f4e79; color: white; text-align: center; width: 80px;">Sl.No.</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">Key assessment criteria</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center; width:130px;">Pass/Fail</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center; width:120px;">Action</th>
               </tr>
             </thead>
 
@@ -1723,16 +1736,16 @@
               <ng-container *ngFor="let data of nzTable.data; index as i">
                 <!-- Normal row -->
                 <tr>
-                  <td class="text-center">{{ i + 1 }}</td>
+                  <td style="text-align: center;" class="text-center">{{ i + 1 }}</td>
 
                   <!-- Key assessment criteria -->
-                  <td>
+                  <td style="text-align: center;">
                     <!-- show description, prevent overflow -->
                     <div class="tech-key-criteria">{{ data?.Descr }}</div>
                   </td>
 
                   <!-- Pass / Fail: adapt you may have boolean or string -->
-                  <td class="text-center">
+                  <td style="text-align: center;" class="text-center">
                     <ng-container *ngIf="data?.PassFail !== undefined">
                       <span [ngClass]="data.PassFail ? 'pass-pill' : 'fail-pill'">
                         {{ data.PassFail ? 'Pass' : 'Fail' }}
@@ -1741,18 +1754,18 @@
 
                     <!-- fallback if no PassFail property exist -->
                     <ng-container *ngIf="data?.PassFail === undefined">
-                      <span class="pass-fail-placeholder">—</span>
+                      <span class="pass-fail-placeholder">Basic Requirements</span>
                     </ng-container>
                   </td>
 
                   <!-- Actions -->
                   <td class="text-center">
-                    <button nz-button nzType="default" nzSize="small" (click)="removeTechReq(i + 1)" title="Delete"
+                    <button nz-button nzType="default" nzSize="small" (click)="removeTechReq(i + 1)" title="Delete" class="action-btn delete-btn"
                       class="me-2 action-btn">
                       <i nz-icon nzType="delete" nzTheme="outline"></i>
                     </button>
 
-                    <button nz-button nzType="default" nzSize="small" (click)="editTechReq(i)" title="Edit"
+                    <button nz-button nzType="default" nzSize="small" (click)="editTechReq(i)" title="Edit" class="action-btn edit-btn"
                       class="action-btn">
                       <i nz-icon nzType="edit" nzTheme="outline"></i>
                     </button>
@@ -1805,16 +1818,18 @@
             <div class="tech-info-text-with-icon">
               Evaluation and analysis of offer
 
-              <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon"
-                (click)="toggleTooltip()"></i>
+              <div class="tooltip-wrapper">
+                <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
+                </i>
 
-              <!-- Custom tooltip LIST -->
-              <div class="custom-tooltip" *ngIf="tooltipVisible">
-                <ul class="tooltip-list">
-                  <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.</li>
-
-                  <li>The Evaluation and analysis of the offers will be based on following elements.</li>
-                </ul>
+                <!-- Tooltip shown on hover -->
+                <div class="custom-tooltip">
+                  <ul class="tooltip-list">
+                    <li>All basic criteria must be met for the competitor to be evaluated on the technical criteria.
+                    </li>
+                    <li>The Evaluation and analysis of the offers will be based on following elements.</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -1922,9 +1937,10 @@
             nzBordered="true" style="margin-top: 3%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
             <thead>
               <tr>
-                <th></th>
+               
                 <th *ngFor="let column of listOfColumnEvalCriteria; index as i"
-                  [ngStyle]="{ width: i === listOfColumnEvalCriteria.length - 1 ? '10%' : '' }" nzCustomFilter>
+                  [ngStyle]="{ width: i === listOfColumnEvalCriteria.length - 1 ? '10%' : '' }" nzCustomFilter
+                  style="background-color: #1f4e79; color: white; text-align: center;">
                   <span>{{ column | translate }}</span>
                 </th>
               </tr>
@@ -1932,25 +1948,55 @@
             <tbody style="background: white">
               <ng-container *ngFor="let data of nestedTable.data; index as i">
                 <tr>
-                  <td *ngIf="data.TechToTechSub.length; else emptyData" [(nzExpand)]="data.expand"></td>
+                  
                   <ng-template #emptyData>
                     <td></td>
                   </ng-template>
 
-                  <td>{{ data.ItemNo }}</td>
-                  <td>
+                  <td style="text-align: center;">{{ data.ItemNo }}</td>
+                  <td style="text-align: center;">
                     <h3>{{ data.Headline }}</h3> <span>{{ data.Descr }}</span>
                   </td>
-                  <td>{{ data.Percentage }}</td>
-                  <td class="d-flex">
-                    <button [disabled]="showEditEval" nz-button nzType="default" nzSize="default"
-                      (click)="removeEval(i + 1)">
-                      <app-icon [icon]="IconList.deleteIcon"></app-icon>
-                    </button>
-                    <button nz-button nzType="default" nzSize="default" (click)="editEval(i)">
-                      <app-icon [icon]="IconList.edit"></app-icon>
-                    </button>
-                  </td>
+                  <td style="text-align: center;">{{ data.Percentage }}</td>
+                  <!-- Actions: always render, align in a row. Expand shown enabled only when sub-items exist -->
+<td style="text-align: center;" >
+  <div class="action-cell">
+<button
+    nz-button
+    nzType="default"
+    nzSize="default"
+    class="action-btn"
+    (click)="toggleExpand(i)"
+
+   
+    [attr.title]="data.expand ? 'Collapse' : 'Expand'">
+    <i nz-icon [nzType]="data.expand ? 'minus' : 'plus'"></i>
+  </button>
+
+  <!-- Delete -->
+  <button
+    nz-button
+    nzType="default"
+    nzSize="default"
+    class="action-btn delete-btn"
+    (click)="removeEval(i + 1)"
+    title="Delete">
+    <i nz-icon nzType="delete" nzTheme="outline"></i>
+  </button>
+
+  <!-- Edit -->
+  <button
+    nz-button
+    nzType="default"
+    nzSize="default"
+    class="action-btn edit-btn"
+    (click)="editEval(i)"
+    title="Edit">
+    <i nz-icon nzType="edit" nzTheme="outline"></i>
+  </button>
+  </div>
+</td>
+
                 </tr>
 
                 <!-- Nested subtable for sub-criteria -->
@@ -1963,7 +2009,7 @@
                       <thead>
                         <tr>
                           <ng-container *ngFor="let column of listOfSubCatColumnEvalCriteria; index as j">
-                            <th *ngIf="column !== 'RFP.Action'"
+                            <th *ngIf="column !== 'RFP.Action'"  style="background-color: #1f4e79; color: white; text-align: center;"
                               [ngStyle]="{ width: j === listOfSubCatColumnEvalCriteria.length - 1 ? '10%' : '' }"
                               nzCustomFilter>
                               <span>{{ column | translate }}</span>
@@ -1974,9 +2020,9 @@
 
             <tbody>
               <tr *ngFor="let innerData of innerTable.data">
-                <td>{{ innerData.SubItemNo }}</td>
-                <td>{{ innerData.Descr }}</td>
-                <td>{{ innerData.Percentage }}</td>
+                <td style="text-align: center;" >{{ innerData.SubItemNo }}</td>
+                <td style="text-align: center;" >{{ innerData.Descr }}</td>
+                <td style="text-align: center;" >{{ innerData.Percentage }}</td>
               </tr>
             </tbody>
           </nz-table>

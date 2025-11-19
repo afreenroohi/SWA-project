@@ -1378,3 +1378,68 @@ button[nzType="primary"] {
   font-weight: 500;
   font-size: 14px;
 }
+
+/* container for action column */
+.action-cell {
+  /* Flex properties for Centering and Gap (Kept for alignment) */
+  display: flex;
+  align-items: center; /* Center buttons vertically */
+  justify-content: center; /* Center buttons horizontally */
+  gap: 8px; /* Adds space between buttons */
+  
+  /* Retain existing padding */
+  padding: 8px 6px;
+  
+  /* Prevent wrapping */
+  white-space: nowrap;
+  
+ 
+  min-height: 51px; /* 35px (button height) + 8px (top padding) + 8px (bottom padding) */
+}
+
+/* general action button */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  min-width: 36px;
+  
+  border-radius: 6px;
+  transition: all 0.12s ease;
+}
+
+/* make expand button bigger so it looks prominent */
+.expand-btn {
+  min-width: 35px;
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  font-size: 18px;
+}
+.expand-btn i {
+  font-size: 12px; /* larger icon */
+}
+
+/* disabled-looking state when no sub-items */
+.action-btn.disabled,
+.action-btn.disabled:hover {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* style delete / edit */
+.delete-btn {
+  color: #d9534f;
+  border-color: rgba(217,83,79,0.12);
+  background: #fff;
+}
+.delete-btn:hover { background: rgba(217,83,79,0.04); }
+
+.edit-btn {
+  color: #0b6aa0;
+  border-color: rgba(11,106,160,0.12);
+  background: #fff;
+}
+.edit-btn:hover { background: rgba(11,106,160,0.04); }
