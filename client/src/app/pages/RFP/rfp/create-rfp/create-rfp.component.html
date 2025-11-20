@@ -1711,7 +1711,7 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse *ngIf="showStandards" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'Standards' | translate }}">
           <div class="tech-info-row">
 
@@ -1947,7 +1947,7 @@
                   <!-- <td><textarea nz-input formControlName="Descr" rows="2" placeholder="Enter description"></textarea></td> -->
                   <td class="text-center">
                     <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="openSubCriteriaForRow(i)" title="Add Sub Criteria" style="cursor: pointer; color: #1890ff; font-size: 18px;"></i>
-                    <i nz-icon nzType="eye" nzTheme="outline" class="mx-1" (click)="toggleSubCriteriaView(i)" title="View Sub Criteria" style="cursor: pointer; color: #1f4e79; font-size: 18px;"></i>
+                    <i nz-icon nzType="eye" nzTheme="outline" class="mx-1" (click)="toggleSubCriteriaView(i)" title="View Sub Criteria" style="cursor: pointer; color: #52c41a; font-size: 18px;"></i>
                   </td>
                 </tr>
                 <tr *ngIf="item.value.subCriteriaList && item.value.subCriteriaList.length > 0 && item.value.showSubCriteria">
