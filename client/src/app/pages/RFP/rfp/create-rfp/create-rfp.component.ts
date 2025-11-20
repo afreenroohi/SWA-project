@@ -1460,7 +1460,7 @@ toggleExpand(index: number): void {
       });
 
     this.listenDeliveryDateChange();
-
+    this.rfpForm.get("SubCriFlg")?.setValue('X');
 
   }
   private isDirectCompetitionSelected(): boolean {
@@ -2527,7 +2527,8 @@ saveEditTechReq() {
 
   openSubCriteriaForRow(index: number) {
     const item = this.evalCriteriaItems.at(index);
-    const subCriFlg = item.get('SubCriFlg')?.value;
+    // const subCriFlg = item.get('SubCriFlg')?.value;
+    const subCriFlg = "X";
     
     if (subCriFlg === 'X') {
       this.evalEditIndex = index;
@@ -2542,7 +2543,7 @@ saveEditTechReq() {
       this.subCriterias.push(this.initialSubCriteria);
       this.isSubCriteria = true;
     } else {
-      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria first');
+      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
     }
   }
 
