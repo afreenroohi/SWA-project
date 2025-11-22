@@ -3,7 +3,26 @@
     padding: 20px;
     margin-bottom: 20px;
     width: 100%;
-    border-top: 3px solid #41ad4f;
+    border-top: 3px solid #1890ff; /* 1fcecb*/
     border-radius: 5px;
     background-color: transparent;
   }
+  .page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937; /* dark gray */
+  margin-top: 10px;
+  border-left: 5px solid #1890ff; /* NZ-Blue Accent 1890ff */
+  padding-left: 12px;
+}
+.rfp-header {
+  display: inline-block;
+  background: #0b6aa0;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+

@@ -106,121 +106,9 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   applicationVersion = '1.0.0';
 
   // logoSrc = "assets/logo/mwan_logo.png";
-logoSrc = this.expandedLogo;
+  logoSrc = "assets/logo/swa-logo-dark.svg";
+  
 
-/**
- * Accepts boolean or MediaQueryListEvent and normalizes to boolean.
- * (Used by <nz-sider nzBreakpoint="md" (nzBreakpoint)="onBreakpoint($event)">)
- */
-/**
- * nzBreakpoint may emit:
- *  - boolean (some older ng-zorro versions)
- *  - MediaQueryListEvent (has .matches)
- *  - or a generic Event in some environments
- *
- * We accept `any` and normalize to a boolean `isBroken`.
- * 
- */
-private setWidthsFromCollapse(): void {
-  // numeric width in px
-  const w = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
-
-  // header width uses string with "px"
-  this.headerLeftWidth = `${w}px`;
-
-  // layout margins use numeric values only
-  if (this.cs?.userLanguage === 'ar') {
-    // RTL: right margin shifts content
-    this.layoutContentMarginRight = w;
-    this.layoutContentMarginLeft = 0;
-  } else {
-    // LTR: left margin shifts content
-    this.layoutContentMarginLeft = w;
-    this.layoutContentMarginRight = 0;
-  }
-
-  // update logo dynamically
-  this.logoSrc = this.isCollapsed ? '': this.expandedLogo;
-}
-
-  onBreakpoint(evt: any): void {
-    // Normalize to boolean:
-    let isBroken = false;
-
-    if (typeof evt === 'boolean') {
-      isBroken = evt;
-    } else if (evt && typeof evt === 'object') {
-      if ('matches' in evt && typeof evt.matches === 'boolean') {
-        isBroken = !!evt.matches;
-      } else if ('target' in evt && evt.target && 'matches' in evt.target) {
-        isBroken = !!evt.target.matches;
-      } else {
-        isBroken = false;
-      }
-    }
-
-    if (isBroken) {
-      // small screen: collapse and mark mobile
-      this.isCollapsed = true;
-      this.isMobile = true;
-    } else {
-      // desktop breakpoint: keep current user collapse state but not mobile
-      this.isMobile = false;
-    }
-
-    // keep header and layout widths synced with collapse state
-    this.setWidthsFromCollapse();
-  }
-  private setActiveMenuFromUrl(): void {
-  const url = this.router.url || '';
-  // define mapping from route to menu key(s)
-  if (url.includes('/rfp/dashboard')) {
-    this.cs.activeMenu = 'Dashboard';           // matches Module: 'Dashboard'
-  } else if (url.includes('/rfp/create')) {
-    this.cs.activeMenu = 'create';              // matches subItem.name
-  } else if (url.includes('/rfp/myrfp')) {
-    this.cs.activeMenu = 'myrfp';
-  } else {
-    // fallback (you can expand mapping as needed)
-    this.cs.activeMenu = 'home';
-  }
-}
-
-
-
-// get headerLeftWidth(): string {
-//   return this.isCollapsed ? `${this.collapsedWidth}px` : `250px`;
-// }
-
- toggleSidebar(): void {
-  this.isCollapsed = !this.isCollapsed;
-  // keep header left width in sync with sider
-  // headerLeftWidth will be updated inside updateLayoutMargins()
-  this.updateLayoutMargins();
-}
-private updateLayoutMargins(): void {
-  // compute numeric sider width (px)
-  const siderWidth: number = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
-
-  // set numeric margins (numbers only)
-  if (this.cs?.userLanguage === 'ar') {
-    this.layoutContentMarginLeft = 0;
-    this.layoutContentMarginRight = siderWidth;
-  } else {
-    this.layoutContentMarginLeft = siderWidth;
-    this.layoutContentMarginRight = 0;
-  }
-
-  // headerLeftWidth is used in inline style and expects a "px" string
-  this.headerLeftWidth = `${siderWidth}px`;
-
-  // update logo src if you toggle that visually
-  this.updateLogoForCollapse?.();
-}
-
-private updateLogoForCollapse(): void {
-  this.logoSrc = this.isCollapsed ? '' : this.expandedLogo;
-}
   login() {
     this.oauthService.initLoginFlow();
 
@@ -315,7 +203,7 @@ private updateLogoForCollapse(): void {
 
   ngOnInit(): void {
     this.cs.activeMenu = 'home';
-    this.setActiveMenuFromUrl();
+    // this.setActiveMenuFromUrl();
      this.isUserLoggedIn = true;
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
@@ -451,6 +339,12 @@ private updateLogoForCollapse(): void {
    */
   
   async getNavItem(userName: string) {
+
+      this.isUserLoggedIn = true;
+    this.dispname = userName.toUpperCase();
+    this.ProxyUserId = userName.toUpperCase();
+
+    
     // console.log(userName,'userName==')
     this.navItems = [];
     this.navItems.push(

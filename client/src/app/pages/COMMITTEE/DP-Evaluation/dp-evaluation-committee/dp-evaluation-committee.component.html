@@ -1,5 +1,5 @@
 <!-- * Spinner loader -->
-<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
 <!-- * Main Content -->
 <div *ngIf="bidEvalutaionObj && committeeHeadDetails" class="container-fluid">
@@ -140,7 +140,7 @@
           <nz-collapse class="mt-4" *ngIf="isChairmanInitial || isChairmanQaul || isOfficer || isLegalMember || isTechnicalMember || isChairmanFinal  || GenFinal || MemFinal || ChFinal" [nzExpandIconPosition]="expandIconPosition">
             <nz-collapse-panel nzActive="true" nzHeader="{{ 'COM.CommitteeMembers' | translate }}">
               <div class="col-md-12 col-12 mt-3 committee-members-list">
-                <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+                <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
                 <nz-table nzBordered #basicTable name="committeeHeadMembers" [nzData]="committeeMemberDetails">
                   <thead>
                     <tr style="font-size: 18px;">

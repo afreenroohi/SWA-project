@@ -13,11 +13,14 @@ import {
   ValidatorFn,
   AbstractControl
 } from '@angular/forms';
+// import { HttpClient } from '@angular/common/http';
+// import { Observable, of } from 'rxjs';
+// import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, sopData } from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -50,11 +53,33 @@ type FormOption = {
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
-  
+  showEmergencyDocs: boolean = false;
+  step:number=0;
+  //showScope=false;
+  directCompetitionId: any = null;
+  limitedCompetitionId: any = null;
+  showInvite: boolean = false;
   userName: string = ''
   uploading = false;
+  showAttachments = false;
+  showScope = false;
+  attachmentsActive = false;
+  
+  // Collapse panel states
+  basicInfoActive = true;
+  scopeOfWorkActive = false;
+  standardsActive = false;
+  billOfQuantityActive = false;
+  attachmentsCollapseActive = false;
+
+  // Collapse panel visibility
+  showScopeOfWork = false;
+  showStandards = false;
+  showBillOfQuantity = false;
+  //showAttachments = false;
   fileList: NzUploadFile[] = [];
   uploadedfiles: any[] = [];
+  tooltipVisible: boolean = false;
   value = '';
   title = 'Input a number';
   listOfColumnBOQ = ["RFP.slNo", "RFP.MatDes", "RFP.QTY", "RFP.Uom", "RFP.Price", "RFP.TotalPrice", "RFP.VATAmount", "RFP.TotalWithVAT", "RFP.Action"]
@@ -64,20 +89,78 @@ export class CreateRFPComponent implements OnInit {
   listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
   listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
   listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
+  private basicRequiredControls = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+  directPurchaseOptions = [
+    // { value: 'below100k', label: 'Less than 100k' },
+    { value: 'Emergency', label: 'Emergency' },
+    { value: 'GovernmentToG', label: 'Government Contract​' },
+    { value: 'oneSupplier', label: 'One Supplier' },
+    { value: 'sensitiveSecurity', label: 'Sensitive security project' }
+  ];
+
+  limitedOptions = [
+    // { value: 'below500k', label: 'Less than 500k' },
+    { value: 'urgent​', label: 'Urgent​' },
+    { value: 'Except', label: 'Except' },
+    { value: 'Consultative​', label: 'Consultative​' }
+  ];
+
+  // threshold constant
+  DIRECT_COST_THRESHOLD = 1_000_00;
+  DIRECT_COST_THRESHOLD2 = 500000;
+
+
   formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
-  {
-    key: 'RFP_PDF_1',
-    label: 'RFP 1 (PDF)',
-    path: 'assets/forms/KaarTech_SWA_Technical Proposal.pdf',   // or rename and remove spaces
-    filename: 'KaarTech_SWA_Technical Proposal.pdf'
-  },
-  {
-    key: 'RFP_PDF_2',
-    label: 'RFP 2 (PDF)',
-    path: 'assets/forms/Personal Information Form.pdf',         // or rename and remove spaces
-    filename: 'Personal Information Form.pdf'
-  }
-];
+
+    {
+      key: 'الشروط الخاصة المواد والمعدات',
+      label: 'الشروط الخاصة المواد والمعدات.docx',
+      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة المواد والمعدات.docx'
+    },
+    {
+      key: 'نموذج اتفاقية إطارية',
+      label: 'نموذج اتفاقية إطارية.docx',
+      path: 'assets/forms/نموذج اتفاقية إطارية.docx',         // or rename and remove spaces
+      filename: 'نموذج اتفاقية إطارية.docx'
+    },
+    {
+      key: 'الشروط الخاصة بالعمالة',
+      label: 'الشروط الخاصة بالعمالة.docx',
+      path: 'assets/forms/الشروط الخاصة بالعمالة.docx',         // or rename and remove spaces
+      filename: 'الشروط الخاصة بالعمالة.docx'
+    },
+    {
+      key: 'الملحق الاسترشادي',
+      label: 'الملحق الاسترشادي.docx',
+      path: 'assets/forms/الملحق الاسترشادي.docx',         // or rename and remove spaces
+      filename: 'الملحق الاسترشادي.docx'
+    },
+    {
+      key: 'آلية تقديم العطاء وخطاب تقديم العروض',
+      label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx',         // or rename and remove spaces
+      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx'
+    },
+    {
+      key: 'شـهادة زيـارة الموقع 2024',
+      label: 'شـهادة زيـارة الموقع 2024.docx',
+      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx',         // or rename and remove spaces
+      filename: 'شـهادة زيـارة الموقع 2024.docx'
+    },
+    {
+      key: 'كيفية تنفيذ الأعمال والخدمات',
+      label: 'كيفية تنفيذ الأعمال والخدمات.docx',
+      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx',         // or rename and remove spaces
+      filename: 'كيفية تنفيذ الأعمال والخدمات.docx'
+    },
+    {
+      key: 'معايير تقييم العروض الفنية _',
+      label: 'معايير تقييم العروض الفنية _.docx',
+      path: 'assets/forms/معايير تقييم العروض الفنية _.docx',         // or rename and remove spaces
+      filename: 'معايير تقييم العروض الفنية _.docx'
+    },
+  ];
 
   selectedFormKey: string | null = null;
 
@@ -151,8 +234,9 @@ export class CreateRFPComponent implements OnInit {
   durationTypes = durationTypes;
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
-  activityList = activities; 
-  filteredSubactivities: any[] = []; 
+  activityList = activities;
+  sopData = sopData;
+  filteredSubactivities: any[] = [];
 
   responseMessage: any;
   submitConfirmation: boolean = false;
@@ -167,11 +251,13 @@ export class CreateRFPComponent implements OnInit {
 
   step3 = true;
 
-  step4 = false;
+  step4 = true;
 
   invalidFileSize = false;
   invalidFileType = false;
   certificatedet = false;
+
+
 
   expcriteria = false;
   concriteria = false;
@@ -193,7 +279,7 @@ export class CreateRFPComponent implements OnInit {
 
   managerSubId: string = '';
 
-  costvalue:any;
+  costvalue: any;
 
   editTotTechEval: boolean = true;
 
@@ -220,9 +306,13 @@ export class CreateRFPComponent implements OnInit {
 
   private readonly destroy$ = new Subject<void>();
 
+
+
   get billOFQtyFA(): FormArray {
     return this.rfpForm?.get('billOFQty') as FormArray;
   }
+
+
 
   constructor(
     public cs: CommonService,
@@ -237,8 +327,235 @@ export class CreateRFPComponent implements OnInit {
     private http: HttpClient
   ) {
     this.buildMainFormGroup();
-    console.log(activities,'activities====')
+    console.log(activities, 'activities====')
   }
+
+  // Form validation getters
+  get basicInfoValid(): boolean {
+    if (!this.rfpForm) return false;
+    const requiredFields = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+    return requiredFields.every(field => {
+      const control = this.rfpForm.get(field);
+      return control && control.valid && control.value;
+    });
+  }
+
+  get scopeOfWorkValid(): boolean {
+    if (!this.rfpForm) return false;
+    const requiredFields = ['definationCompetition', 'ProjJust', 'SOP', 'labor', 'materials', 'equipment', 'qualitySpecifications', 'safetySpecifications'];
+    return requiredFields.every(field => {
+      const control = this.rfpForm.get(field);
+      return control && control.valid && control.value;
+    });
+  }
+
+  get standardsValid(): boolean {
+    return this.TechReqListData.length > 0 && this.EvalListData.length > 0;
+  }
+
+  get billOfQuantityValid(): boolean {
+    return true; // Always valid to allow progression
+  }
+
+  // Navigation methods
+  goto(stepIndex: number): void {
+    if (!this.canNavigateToStep(stepIndex)) return;
+    this.step = stepIndex;
+    this.activateCollapse(this.getCollapseSection(stepIndex));
+  }
+
+  private getCollapseSection(stepIndex: number): string {
+    const sections = ['basicInfo', 'scopeOfWork', 'standards', 'billOfQuantity', 'attachments'];
+    return sections[stepIndex] || 'basicInfo';
+  }
+
+  activateCollapse(section: string): void {
+    this.basicInfoActive = section === 'basicInfo';
+    this.scopeOfWorkActive = section === 'scopeOfWork';
+    this.standardsActive = section === 'standards';
+    this.billOfQuantityActive = section === 'billOfQuantity';
+    this.attachmentsCollapseActive = section === 'attachments';
+  }
+
+  canNavigateToStep(stepIndex: number): boolean {
+    switch (stepIndex) {
+      case 0: return true;
+      case 1: return this.basicInfoValid;
+      case 2: return this.basicInfoValid && this.scopeOfWorkValid;
+      case 3: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid;
+      case 4: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid && this.billOfQuantityValid;
+      default: return false;
+    }
+  }
+
+  saveAsDraft(): void {
+    console.log('Saving as draft...');
+    // Add your draft save logic here
+  }
+
+  saveAndContinue(): void {
+    if (this.basicInfoValid) {
+      this.step = 1;
+      this.activateCollapse('scopeOfWork');
+      this.showScopeOfWork = true;
+    }
+  }
+
+  saveAndContinueScope(): void {
+    if (this.scopeOfWorkValid) {
+      this.step = 2;
+      this.activateCollapse('standards');
+      this.showStandards = true;
+    }
+  }
+
+  saveAndContinueStandards(): void {
+    if (this.standardsValid) {
+      this.step = 3;
+      this.activateCollapse('billOfQuantity');
+      this.showBillOfQuantity = true;
+    }
+  }
+
+  saveAndContinueBOQ(): void {
+    if (this.billOfQuantityValid) {
+      this.step = 4;
+      this.activateCollapse('attachments');
+      this.showAttachments = true;
+    }
+  }
+//   get attachmentsValid(): boolean {
+//   if (!this.rfpForm) {
+//     return false;
+//   }
+
+//   const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+//   if (!attachmentsGroup) {
+//     return false;
+//   }
+
+//   return attachmentsGroup.valid;
+// }
+  // get basicInfoValid(): boolean {
+  //   if (!this.rfpForm) {
+  //     return false;
+  //   }
+
+  //   for (const name of this.basicRequiredControls) {
+  //     const ctrl = this.rfpForm.get(name);
+  //     if (!ctrl) {
+  //       return false; // missing control -> invalid
+  //     }
+  //     if (ctrl.invalid) {
+  //       return false; // invalid
+  //     }
+  //     const val = ctrl.value;
+  //     if (
+  //       val === null ||
+  //       val === undefined ||
+  //       (typeof val === 'string' && val.trim() === '') ||
+  //       (Array.isArray(val) && val.length === 0)
+  //     ) {
+  //       return false; // empty
+  //     }
+  //   }
+  //   return true;
+  // }
+
+  /** mark basic controls touched so validation messages show */
+  private markBasicControlsTouched(): void {
+    for (const name of this.basicRequiredControls) {
+      const ctrl = this.rfpForm.get(name);
+      if (ctrl) {
+        ctrl.markAsTouched();
+        ctrl.updateValueAndValidity();
+      }
+    }
+  }
+// goto(stepNumber: number): void {
+
+//   // prevent skipping ahead without validation
+//   if (stepNumber > this.step) {
+//     if (!this.isCurrentStepValid()) {
+//       this.cs.createMessage('error', "Please complete the required fields");
+//       return;
+//     }
+//   }
+
+//   // set the new step
+//   this.step = stepNumber;
+
+//   // open only correct collapse
+//   this.openCollapse(this.step);
+// }
+// toggleTooltip(): void {
+//   this.tooltipVisible = !this.tooltipVisible;
+// }
+// isCurrentStepValid(): boolean {
+//   switch (this.step) {
+//     case 0:
+//       return this.basicInfoValid;
+
+//     case 1:
+//       return this.attachmentsValid;
+
+//     case 2:
+//       //return this.scopeValid;  // add your scope validation
+
+//     case 3:
+//       //return this.boqValid;    // add BOQ validation
+
+//     default:
+//       return true;
+//   }
+// }
+  showError(): void {
+    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
+  }
+  /** Save & Continue: validate basic info and reveal attachments */
+
+// openCollapse(step: number) {
+//   //this.showBasic = (step === 0);
+//   this.showAttachments = (step === 1);
+//   this.showScope = (step === 2);
+//   // continue for all remaining steps
+// }
+
+// openCollapse(step: number) {
+//   // FIRST: RESET all collapses
+//   //this.showBasic = false;
+//   this.showAttachments = false;
+//   this.showScope = false;
+//   //this.showBoq = false;
+//   //this.showTerms = false;
+
+//   // THEN: Open based on step
+//   switch (step) {
+//     case 0:
+//      // this.showBasic = true;
+//       break;
+
+//     case 1:
+//       this.showAttachments = true;
+//       break;
+
+//     case 2:
+//       this.showScope = true;
+//       break;
+
+//     case 3:
+//       //this.showBoq = true;
+//       break;
+
+//     case 4:
+//       //this.showTerms = true;
+//       break;
+
+//     default:
+//       //this.showBasic = true;
+//   }
+// }
+
 
 
   get initialSubCriteria() {
@@ -260,6 +577,56 @@ export class CreateRFPComponent implements OnInit {
   get subCriterias() {
     return this.subCriteriaForm.controls['subCriterias'] as FormArray;
   }
+
+  // insertLaborText() {
+  //   const data = this.sopData.find((item:any) => item.id === 'Labor');
+  //   if (data) {
+  //     this.rfpForm.get('labor')?.setValue(data.text);
+  //   }
+  // }
+
+  insertLaborText() {
+    const data = this.sopData.find((item: any) => item.id === 'Labor');
+    if (data) {
+      this.rfpForm.get('labor')?.setValue(data.text);
+    }
+  }
+
+  private autoPopulateSopFields() {
+    this.insertLaborText();
+    this.insertMaterialsText();
+    this.insertEquipmentText();
+    this.insertQualityText();
+    this.insertSafetyText();
+  }
+
+  insertMaterialsText() {
+    const data = this.sopData.find((item: any) => item.id === 'Material');
+    if (data) {
+      this.rfpForm.get('materials')?.setValue(data.text);
+    }
+  }
+
+  insertEquipmentText() {
+    const data = this.sopData.find((item: any) => item.id === 'Equipment');
+    if (data) {
+      this.rfpForm.get('equipment')?.setValue(data.text);
+    }
+  }
+  insertQualityText() {
+    const data = this.sopData.find((item: any) => item.id === 'Quality');
+    if (data) {
+      this.rfpForm.get('qualitySpecifications')?.setValue(data.text);
+    }
+  }
+  insertSafetyText() {
+    const data = this.sopData.find((item: any) => item.id === 'Safety');
+    if (data) {
+      this.rfpForm.get('safetySpecifications')?.setValue(data.text);
+    }
+  }
+
+
 
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
@@ -299,9 +666,7 @@ export class CreateRFPComponent implements OnInit {
     this.isSubCriteria = false;
     this.isSubCriteriaEdit = false;
   }
-  onSiteVisitChange(value: string) {
 
-  }
   onReannounceChange(value: string) {
 
   }
@@ -311,25 +676,28 @@ export class CreateRFPComponent implements OnInit {
     // Reset both flags initially
     this.showDirectPurchaseField = false;
     this.showLimitedField = false;
-
+    this.showInvite = false;
     // Clear previous validators
     this.rfpForm.get('directPurchaseType')?.clearValidators();
     this.rfpForm.get('limitedType')?.clearValidators();
 
     // Handle Limited Competition
     if (value === 'L') {
-      this.showLimitedField = true;
+      console.log(this.showLimitedField)
+      // this.showLimitedField = true;
+      this.showInvite = true;
       this.isPrivateSelected = false;
-      this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
+      // this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
       this.rfpForm.get('invite')?.setValue('');
       this.rfpForm.get('estimatedCost')?.reset()
     }
 
     // Handle Direct Purchase
     if (value === 'D') {
-      this.showDirectPurchaseField = true;
+      // this.showDirectPurchaseField = true;
+      this.showInvite = true;
       this.rfpForm.get('crNumber')?.reset();
-      this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
+      // this.rfpForm.get('directPurchaseType')?.setValidators([Validators.required]);
     }
 
     // Update validation state
@@ -358,6 +726,7 @@ export class CreateRFPComponent implements OnInit {
     } else {
       estimatedCostControl?.clearValidators();
     }
+    
 
     estimatedCostControl?.updateValueAndValidity();
   }
@@ -366,7 +735,7 @@ export class CreateRFPComponent implements OnInit {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below500k') {
-       this.costvalue = 500
+      this.costvalue = 500
       estimatedCostControl?.setValidators([
         Validators.required,
         Validators.max(500)   // ⛔ max value 500
@@ -377,48 +746,168 @@ export class CreateRFPComponent implements OnInit {
 
     estimatedCostControl?.updateValueAndValidity();
   }
+  async downloadSelectedForm(): Promise<void> {
+    if (!this.selectedFormKey) {
+      this.cs.createMessage('warning', 'Please select a form first.');
+      return;
+    }
 
+    const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+    if (!form) {
+      this.cs.createMessage('error', 'Selected form not found.');
+      return;
+    }
+
+    const url = encodeURI(form.path); // handles spaces/special chars
+
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const filename =
+          form.filename ||
+          (form.path.split('/').pop() ?? 'download.pdf');
+
+        saveAs(blob, filename);
+        this.cs.createMessage('success', 'Downloaded successfully.');
+      },
+      error: (err) => {
+        console.error('Download failed:', err);
+        this.cs.createMessage('error', 'Unable to download the selected form.');
+      }
+    });
+  }
   // easy getter for the FormArray
-  get crNumberArray() {
+  get crNumberArray(): FormArray {
     return this.rfpForm.get('crNumber') as FormArray;
   }
 
   // methods to add/remove
   addCrNumber() {
-    this.crNumberArray.push(this.fb.control('', Validators.required));
+    this.crNumberArray.push(this.fb.group({
+      crNumber: ['', Validators.required],
+      companyName: ['', Validators.required]
+    }));
   }
 
   removeCrNumber(index: number) {
-    this.crNumberArray.removeAt(index);
+    if (this.crNumberArray.length > 1) {
+      this.crNumberArray.removeAt(index);
+    }
+  }
+  trackByIndex(index: number, item: any): number {
+    return index;
   }
   onPrequalificationChange(value: boolean) {
-    console.log(value,'valueeeeeeeeeeee')
-  const detailsControl = this.rfpForm.get('prequalificationDetails');
-  if (value) {
-    detailsControl?.setValidators([Validators.required]);
-  } else {
-    detailsControl?.clearValidators();
-    detailsControl?.setValue('');
+    console.log(value, 'valueeeeeeeeeeee')
+    const detailsControl = this.rfpForm.get('prequalificationDetails');
+    if (value) {
+      detailsControl?.setValidators([Validators.required]);
+    } else {
+      detailsControl?.clearValidators();
+      detailsControl?.setValue('');
+    }
+    detailsControl?.updateValueAndValidity();
   }
-  detailsControl?.updateValueAndValidity();
+
+  test(value: boolean) {
+    console.log(value, 'valueeeeeeeeeeee')
+  }
+
+  toggleTooltip(): void {
+    this.tooltipVisible = !this.tooltipVisible;
+  }
+  get attachmentsValid(): boolean {
+  if (!this.rfpForm) {
+    return false;
+  }
+ 
+  const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+  if (!attachmentsGroup) {
+    return false;
+  }
+ 
+  return attachmentsGroup.valid;
+}
+  isCurrentStepValid(): boolean {
+  switch (this.step) {
+    case 0:
+      return this.basicInfoValid;
+ 
+    case 1:
+      return this.attachmentsValid;
+ 
+    case 2:
+      //return this.scopeValid;  // add your scope validation
+ 
+    case 3:
+      //return this.boqValid;    // add BOQ validation
+ 
+    default:
+      return true;
+  }
 }
 
- onActivityChange(selectedActivityId: string): void {
+openCollapse(step: number) {
+  // FIRST: RESET all collapses
+  //this.showBasic = false;
+  this.showAttachments = false;
+  this.showScope = false;
+  //this.showBoq = false;
+  //this.showTerms = false;
+ 
+  // THEN: Open based on step
+  switch (step) {
+    case 0:
+     // this.showBasic = true;
+      break;
+ 
+    case 1:
+      this.showAttachments = true;
+      break;
+ 
+    case 2:
+      this.showScope = true;
+      break;
+  }
+}
+toggleExpand(index: number): void {
+  if (!this.EvalListData || !this.EvalListData[index]) return;
+  this.EvalListData[index].expand = !this.EvalListData[index].expand;
+  // force change detection if needed:
+  // this.EvalListData = [...this.EvalListData];
+}
+
+  onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
-      (act:any) => act.id === selectedActivityId || act.value === selectedActivityId
+      (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
     );
 
-    if(selectedActivityId === 'ACT_FAC'){
-      console.log('yes===')
-       this.rfpForm.get('prequalificationRequired')?.enable();
-       this.rfpForm.get('prequalificationRequired')?.setValue(true);
-    }else{
-      this.rfpForm.get('prequalificationRequired')?.setValue(false);
+    if (selectedActivityId === 'ACT_FAC') {
+      console.log('yes===');
+
+      // Force toggle ON and make it read-only
+      const prequalRequired = this.rfpForm.get('prequalificationRequired');
+      prequalRequired?.setValue(true, { emitEvent: false });
+      prequalRequired?.disable({ emitEvent: false });
+
+      // Make prequalificationDetails required
+      const prequalDetails = this.rfpForm.get('prequalificationDetails');
+      prequalDetails?.setValidators([Validators.required]);
+      prequalDetails?.updateValueAndValidity();
+    } else {
+      // Allow toggle again and clear required validator
+      const prequalRequired = this.rfpForm.get('prequalificationRequired');
+      prequalRequired?.enable({ emitEvent: false });
+      prequalRequired?.setValue(false, { emitEvent: false });
+
+      const prequalDetails = this.rfpForm.get('prequalificationDetails');
+      prequalDetails?.clearValidators();
+      prequalDetails?.updateValueAndValidity();
     }
+
 
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
-        (sub:any) => ({
+        (sub: any) => ({
           id: sub.id,
           name: sub.value,
           nameAr: sub.valueAr,
@@ -431,229 +920,353 @@ export class CreateRFPComponent implements OnInit {
 
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
+    
+    // Update evaluation weights based on activity and estimated cost
+    this.updateEvaluationWeights();
+  }
+  // Getter for easy access
+  get members(): FormArray {
+    return this.rfpForm.get('members') as FormArray;
   }
 
+  get laborItems(): FormArray {
+    return this.rfpForm.get('laborItems') as FormArray;
+  }
+
+  get materialItems(): FormArray {
+    return this.rfpForm.get('materialItems') as FormArray;
+  }
+
+  get equipmentItems(): FormArray {
+    return this.rfpForm.get('equipmentItems') as FormArray;
+  }
+
+  get evalCriteriaItems(): FormArray {
+    return this.rfpForm.get('evalCriteriaItems') as FormArray;
+  }
+
+  committeeMembers = [
+    { role: 'Project Director', name: '', jobTitle: '', extension: '' },
+    { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
+    { role: 'Committee Member', name: '', jobTitle: '', extension: '' },
+  ];
+
+
+  // Add new row Technical Committee Members
+  addMember(index: number): void {
+    if (this.members.length < 15) {
+      this.members.insert(index + 1, this.createMemberRow(''));
+    }
+  }
+
+  // Delete row
+  deleteMember(index: number): void {
+    if (index >= 3) {
+      this.members.removeAt(index);
+    }
+  }
+
+  // Labor Items
+  addLaborItem(index: number): void {
+    this.laborItems.insert(index + 1, this.createLaborRow());
+  }
+
+  deleteLaborItem(index: number): void {
+    if (this.laborItems.length > 1) {
+      this.laborItems.removeAt(index);
+    }
+  }
+
+  createLaborRow(): FormGroup {
+    return this.fb.group({
+      jobTitle: ['', Validators.required],
+      minQualification: ['', Validators.required],
+      minExperience: ['', Validators.required]
+    });
+  }
+
+  // Material Items
+  addMaterialItem(index: number): void {
+    this.materialItems.insert(index + 1, this.createMaterialRow());
+  }
+
+  deleteMaterialItem(index: number): void {
+    if (this.materialItems.length > 1) {
+      this.materialItems.removeAt(index);
+    }
+  }
+
+  createMaterialRow(): FormGroup {
+    return this.fb.group({
+      material: ['', Validators.required],
+      specifications: ['', Validators.required],
+      unit: ['', Validators.required]
+    });
+  }
+
+  // Equipment Items
+  addEquipmentItem(index: number): void {
+    this.equipmentItems.insert(index + 1, this.createEquipmentRow());
+  }
+
+  deleteEquipmentItem(index: number): void {
+    if (this.equipmentItems.length > 1) {
+      this.equipmentItems.removeAt(index);
+    }
+  }
+
+  createEquipmentRow(): FormGroup {
+    return this.fb.group({
+      machine: ['', Validators.required],
+      specifications: ['', Validators.required],
+      unit: ['', Validators.required]
+    });
+  }
+
+  addEvalCriteriaItem(index: number): void {
+    this.evalCriteriaItems.insert(index + 1, this.createEvalCriteriaRow());
+  }
+
+  deleteEvalCriteriaItem(index: number): void {
+    if (this.evalCriteriaItems.length > 1) {
+      this.evalCriteriaItems.removeAt(index);
+    }
+  }
+
+  createEvalCriteriaRow(): FormGroup {
+    return this.fb.group({
+      Headline: ['', Validators.required],
+      Percentage: [0, [Validators.required, Validators.min(1), Validators.max(100)]],
+      SubCriFlg: ['y', Validators.required],
+      Descr: ['', Validators.required],
+      subCriteriaList: [[]],
+      showSubCriteria: [false]
+    });
+  }
+
+  toggleSubCriteriaView(index: number) {
+    const item = this.evalCriteriaItems.at(index);
+    const currentValue = item.get('showSubCriteria')?.value;
+    item.patchValue({ showSubCriteria: !currentValue });
+  }
+
+  // Create one row (form group)
+  createMemberRow(role = ''): FormGroup {
+    return this.fb.group({
+      role: [role, Validators.required],
+      name: ['', Validators.required],
+      extension: ['', Validators.required],
+      jobTitle: ['', Validators.required],
+    });
+  }
 
   /**
    * Builds the main for group for create RFP
    */
-  buildMainFormGroup(): void {
-    this.rfpForm = this.fb.group({
-      // Basic Competition Info
-      invite: new FormControl('', [Validators.required]),
-      crNumber: new FormControl('', [Validators.required]),
-      // crNumber: this.fb.array([this.fb.control('', Validators.required)]),
-      directPurchaseType: new FormControl('', [Validators.required]),
-      contractType: new FormControl('', [Validators.required]),
-      competitionType: new FormControl('', [Validators.required]),
-      limitedType: new FormControl('', [Validators.required]),
-      prequalificationDetails: new FormControl('',[Validators.required]),
-      coordinatorName: new FormControl('',[Validators.required]),
-      coordinatorNumber: new FormControl('',[Validators.required]),
-      activity: [''],
-      subactivity: [''],
 
 
-      // New Fields
-      requestStatus: ['', [Validators.required]], // Emergency / Business Plan / Urgent
-      estimatedCost: ['', [Validators.required, Validators.min(1)]],
+ // Updated buildMainFormGroup() with correct ItemNo reset after delete
+buildMainFormGroup(): void {
+  this.rfpForm = this.fb.group({
+    limitedType: new FormControl(''),
+    directPurchaseType: new FormControl(''),
+    invite: new FormControl('', [Validators.required]),
 
-      includeFrameworkItems: ['', [Validators.required]], // Yes / No
-      prequalificationRequired: [false, [Validators.required]], // Yes / No
-      qualificationReference: [''], // Optional if 'Yes'
-      qualificationLink: [''], // Optional if 'Yes'
+    crNumber: this.fb.array([
+      this.fb.group({
+        crNumber: ['', Validators.required],
+        companyName: ['', Validators.required]
+      })
+    ]),
 
-      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    competitionType: new FormControl('', [Validators.required]),
+    prequalificationDetails: new FormControl('', [Validators.required]),
+    coordinatorName: new FormControl(''),
+    coordinatorNumber: new FormControl(''),
+    coordinatorEmail: new FormControl(''),
 
-      dividedIntoLots: [false, [Validators.required]], // Yes / No
-      contractDuration: ['', [Validators.required]], // Dropdown based on platform options
-      MatGrpId: ['', [Validators.required]],
-      DeliveryDate: ['', [Validators.required]],
-      ProjJust: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(300),
-      ]),
-      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-      DurationType: new FormControl('', [Validators.required]),
-      workLocation: new FormControl([], [Validators.required]),
+    activity: [''],
+    subactivity: [''],
 
+    requiresSiteVisit: [false, [Validators.required]],
+    email: new FormControl('', [Validators.email]),
+    contactNumber: new FormControl(''),
+    userId: new FormControl(''),
+    projectRelaunched: [false, [Validators.required]],
+    number: new FormControl('', [Validators.min(1)]),
 
-      workExecutionLocation: ['', [Validators.required]], // Dropdown based on platform
+    requestStatus: ['', [Validators.required]],
+    estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    includeFrameworkItems: ['', [Validators.required]],
+    prequalificationRequired: [false, [Validators.required]],
+    qualificationReference: [''],
+    qualificationLink: [''],
+    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    dividedIntoLots: [false, [Validators.required]],
+    contractDuration: ['', [Validators.required]],
+    MatGrpId: ['', [Validators.required]],
+    DeliveryDate: ['', [Validators.required]],
+    ProjJust: new FormControl('', [Validators.required, Validators.maxLength(300)]),
+    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+    DurationType: new FormControl('', [Validators.required]),
+    workLocation: new FormControl([], [Validators.required]),
+    workExecutionLocation: ['', [Validators.required]],
+    reAnnounced: [false, [Validators.required]],
+    cancellationReport: [''],
+    projectJustification: ['', [Validators.required, Validators.maxLength(500)]],
+    projectContinuous: [false, [Validators.required]],
 
-      reAnnounced: [false, [Validators.required]], // Yes / No
-      cancellationReport: [''], // File upload if yes
+    members: this.fb.array(
+      this.committeeMembers.map((m) =>
+        this.fb.group({
+          role: [{ value: m.role, disabled: true }, Validators.required],
+          name: ['', Validators.required],
+          extension: ['', Validators.required],
+          jobTitle: ['', Validators.required]
+        })
+      )
+    ),
 
-      siteVisitRequired: ['', [Validators.required]], // Yes / No
-      siteContactDetails: [''], // Conditional if yes
+    technicalDocs: this.fb.array([this.createTechnicalDocRow()]),
+    laborItems: this.fb.array([this.createLaborRow()]),
+    materialItems: this.fb.array([this.createMaterialRow()]),
+    equipmentItems: this.fb.array([this.createEquipmentRow()]),
+    evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
 
-      projectJustification: ['', [
-        Validators.required,
-        Validators.maxLength(500)
-      ]], // Project necessity and impact
-    });
+    // scope of work
+    MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+    MemManagerName: new FormControl('', [Validators.required]),
+    SOP: new FormControl('', [Validators.required]),
+    labor: new FormControl(''),
+    materials: new FormControl(''),
+    equipment: new FormControl(''),
+    qualitySpecifications: new FormControl(''),
+    safetySpecifications: new FormControl(''),
+    definationCompetition: new FormControl(''),
 
-    // this.rfpForm = this.fb.group({
-    //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
-    //   CostCenter1: new FormControl(
-    //     { value: localStorage.getItem('CC'), disabled: true }
-    //     ,
-    //     Validators.required
-    //   ),
+    EvalCriteria: this.fb.group({
+      RfpNo: [''],
+      ItemNo: [{ value: (this.slel).toString(), disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]],
+      Percentage: ['0'],
+      Headline: ['', Validators.required],
+      SubCriFlg: ['', Validators.required]
+    }),
 
-    //   Dept: new FormControl({ value: '', disabled: true }, [
-    //     Validators.required,
-    //   ]),
-    //   MatGrpId: ['', [Validators.required]],
-    //   DeliveryDate: ['', [Validators.required]],
-    //   ProjJust: new FormControl('', [
-    //     Validators.required,
-    //     Validators.maxLength(300),
-    //   ]),
-    //   MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
-    //   MemManagerName: new FormControl('', [Validators.required]),
+    EvalCriteriaEdit: this.fb.group({
+      RfpNo: [''],
+      ItemNo: [{ value: '', disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]],
+      Percentage: ['0'],
+      Headline: [''],
+      SubCriFlg: ['']
+    }),
 
-    //   SOP: new FormControl('', [Validators.required]),
-    //   PurGrpId: new FormControl('', [Validators.required]),
-    //   billOFQty: this.fb.array([this.createBoQ()], [Validators.required]),
-    //   estPrice: new FormControl({ value: '', disabled: true }, [
-    //     Validators.required,
-    //   ]),
-    //   vatAmount: new FormControl({ value: '', disabled: true }),
-    //   estPriceVAT: new FormControl({ value: '', disabled: true }, [
-    //     Validators.required
-    //   ]),
-    //   DurationType: new FormControl('', [Validators.required]),
-    //   // new flow afreen
-    //   invite: new FormControl('', [Validators.required]),
-    //   crNumber: new FormControl('', [Validators.required]),
-    //   directPurchaseType: new FormControl('', [Validators.required]),
-    //   contractType: new FormControl('', [Validators.required]),
-    //   competitionType: new FormControl('', [Validators.required]),
-    //   limitedType: new FormControl('', [Validators.required]),
-    //   //
+    TotTechEval: new FormControl(''),
 
+    // Technical Requirements form groups
+    TechReq: this.fb.group({
+      RfpNo: [''],
+      RfpVersion: [''],
+      ItemNo: [{ value: this.srNoTechReq.toString(), disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]]
+    }),
 
-    //   ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+    TechReqEdit: this.fb.group({
+      RfpNo: [''],
+      RfpVersion: [''],
+      ItemNo: [{ value: '', disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]]
+    }),
 
-    //   Payment: this.fb.array([]),
+    vendorEvaluationWeightage: this.fb.group({
+      technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]],
+      financialEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]]
+    })
+  });
 
-    //   PayTermsEdit: this.fb.group({
-    //     RfpNo: [''],
-    //     ItemNo: [{ value: '', disabled: true }],
-    //     Descr: [''],
-    //     Percentage: ['0'],
-    //   }),
-    //   CC: new FormControl(''),
+  // Set default technical eval value
+  this.rfpForm.get('TotTechEval')?.setValue(100);
 
-
-
-    //   TechRFP: new FormControl('N'),
-
-    //   TotTechEval: new FormControl(''),
-
-    //   // TechEval: new FormControl(''),
-    //   vendorEvaluationWeightage: this.fb.group({
-    //     technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99), ]],
-    //     financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
-    //   }),
-
-    //   ProjManpower: new FormControl(this.isManPow),
-    //   CancelRFP: new FormControl(''),
-    //   Evalcrt: this.fb.array([]),
-    //   EvalCriteria: this.fb.group({
-    //     RfpNo: [''],
-    //     ItemNo: [{ value: (this.slel).toString(), disabled: true }],
-    //     Descr: ['', [Validators.maxLength(600)]],
-    //     Percentage: ['0'],
-    //     Headline:['', Validators.required],
-    //     SubCriFlg:['',Validators.required ]
-
-    //   }),
-    //   EvalCriteriaEdit: this.fb.group({
-    //     RfpNo: [''],
-    //     ItemNo: [{ value: '', disabled: true }],
-    //     Descr: ['', [Validators.maxLength(600)]],
-    //     Percentage: ['0'],
-    //     Headline:[''],
-    //     SubCriFlg:['']
-    //   }),
-    //   RfpTreq: this.fb.array([]),
-    //   TechReq: this.fb.group({
-    //     RfpNo: [''],
-    //     RfpVersion: [''],
-    //     ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
-    //     Descr: ['', [Validators.maxLength(600)]]
-    //   }),
-    //   TechReqEdit: this.fb.group({
-    //     RfpNo: [''],
-    //     RfpVersion: [''],
-    //     ItemNo: [{ value: '', disabled: true }],
-    //     Descr: ['', [Validators.maxLength(600)]]
-    //   }),
+  // Direct purchase change listener
+  this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
+    this.showEmergencyDocs = value === 'Emergency';
+  });
+}
 
 
-    //   Attachments: this.fb.array([]),
-    //   ManPower: this.fb.array([]),
-    //   ManPowerForm: this.fb.group({
-    //     ItemNo: [{ value: this.slman.toString(), disabled: true }],
-    //     JobTitle: [''],
-    //     Amount: [''],
-    //     SpeQualf:[''],
-    //     Specilization:[''],
-    //     SpeExp: ['', Validators.maxLength(300)],
 
-    //   }),
-    //   ManPowerFormEdit: this.fb.group({
-    //     ItemNo: [{ value: '', disabled: true }],
-    //     JobTitle: [''],
-    //     Amount: [''],
-    //     SpeQualf:[''],
-    //     Specilization:[''],
-    //     SpeExp: ['', Validators.maxLength(300)],
+get technicalDocs(): FormArray {
+  return this.rfpForm.get('technicalDocs') as FormArray;
+}
 
-    //   }),
-    //   ConsultWork: this.fb.array([]),
-    //   procurementChecklist: this.fb.group({})
-    // });
+createTechnicalDocRow(): FormGroup {
+  return this.fb.group({
+    documentNumber: ['']
+  });
+}
+
+addTechnicalDoc(index: number): void {
+  this.technicalDocs.insert(index + 1, this.createTechnicalDocRow());
+}
+
+deleteTechnicalDoc(index: number): void {
+  if (this.technicalDocs.length > 1) {
+    this.technicalDocs.removeAt(index);
+  }
+}
+
+
+
+  onDirectPurchaseEmergency(value: any) {
+  // Example: show only when user selects "cancel"
+  this.showEmergencyDocs = value === 'Emergency';  
+}
+
+
+  beforeUpload = (file: NzUploadFile): boolean => {
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
+    const isAllowed = allowed.includes(ext);
+    const isLt10M = (file.size || 0) / 1024 / 1024 <= 10;
+
+    if (!isAllowed) {
+      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      return false;
+    }
+    if (!isLt10M) {
+      this.cs.createMessage('error', 'File must be 10MB or smaller.');
+      return false;
+    }
+
+    this.fileList = [...this.fileList, file]; // add to manual list
+    return false; // stop auto upload
+  };
+
+  /** remove file when ✖ is clicked */
+  handleRemove = (file: NzUploadFile): boolean => {
+    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+    return true; // allow remove
+  };
+  removeFile(file: NzUploadFile): void {
+    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
   }
 
+get progressPx(): number {
+  const segment = 890 / 4; // 222.5px per segment
+  return this.step * segment;
+}
 
 
 
+get progressWidth(): number {
+  return (this.step / 4) * 100;
+}
 
   // beforeUpload = (file: NzUploadFile): boolean => {
   //   this.fileList = this.fileList.concat(file);
   //   return false;
   // };
-beforeUpload = (file: NzUploadFile): boolean => {
-  const ext = (file.name.split('.').pop() || '').toLowerCase();
-  const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
-  const isAllowed = allowed.includes(ext);
-  const isLt10M = (file.size || 0) / 1024 / 1024 <= 10;
-
-  if (!isAllowed) {
-    this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
-    return false;
-  }
-  if (!isLt10M) {
-    this.cs.createMessage('error', 'File must be 10MB or smaller.');
-    return false;
-  }
-
-  this.fileList = [...this.fileList, file]; // add to manual list
-  return false; // stop auto upload
-};
-
-/** remove file when ✖ is clicked */
-handleRemove = (file: NzUploadFile): boolean => {
-  this.fileList = this.fileList.filter(f => f.uid !== file.uid);
-  return true; // allow remove
-};
-removeFile(file: NzUploadFile): void {
-  this.fileList = this.fileList.filter(f => f.uid !== file.uid);
-}
-
-
 
   setManagerList() {  
     if (
@@ -678,20 +1291,82 @@ removeFile(file: NzUploadFile): void {
   }
 
   ngOnInit(): void {
+    this.activateCollapse('basicInfo');
     this.step1 = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
+    this.autoPopulateSopFields();
+    const compCtrl = this.rfpForm.get('competitionType')!;
+    const costCtrl = this.rfpForm.get('estimatedCost')!;
 
+     this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
+    this.showEmergencyDocs = value === 'Emergency';   // <-- check actual value!
+  });
 
+    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe(v => console.log('DBG competitionType emitted:', v));
 
-    let usernameBtoa = localStorage.getItem('ID')
-    console.log('userName', usernameBtoa)
-    if (usernameBtoa) {
-      this.userName = atob(usernameBtoa)
-      console.log(this.userName)
+    // If competitionTypes is an array like [{ id: 'direct', value: 'Direct Purchase', valueAr: '...' }, ...]
+    if (Array.isArray(this.competitionTypes)) {
+      const direct = this.competitionTypes.find(o =>
+        (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+        (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
+        (String(o.id).toLowerCase().includes('direct'))
+      );
+      const limited = this.competitionTypes.find(o =>
+        (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+        (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
+        (String(o.id).toLowerCase().includes('limited'))
+      );
+
+      this.directCompetitionId = direct ? direct.id : null;
+      this.limitedCompetitionId = limited ? limited.id : null;
+
+      // OPTIONAL debug to confirm what ids we detected:
+      console.log('DBG: directCompetitionId=', this.directCompetitionId, 'limitedCompetitionId=', this.limitedCompetitionId);
     }
-    // this.loadLookUpData();  // afreen commented
-    this.toggleDescrValidatorTechEval()
+
+
+
+    // debug so you can see exactly what competitionType emits (remove later)
+    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe(v => console.log('DBG competitionType emitted:', v));
+
+    combineLatest([
+      compCtrl.valueChanges.pipe(startWith(compCtrl.value)),
+      costCtrl.valueChanges.pipe(startWith(costCtrl.value))
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updatePurchaseVisibility();
+      });
+
+    // initial sync
+    this.updatePurchaseVisibility();
+
+    // Dynamically update validators based on switch
+    this.rfpForm
+      .get('requiresSiteVisit')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.toggleSiteVisitValidators(value);
+      });
+
+    // Initial validation sync
+    this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+
+    // Listen to estimated cost and activity changes to update evaluation weights
+    this.rfpForm.get('estimatedCost')?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateEvaluationWeights());
+    this.rfpForm.get('activity')?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateEvaluationWeights());
+
+    let usernameBtoa = localStorage.getItem('ID');
+    if (usernameBtoa) {
+      this.userName = atob(usernameBtoa);
+    }
+
+    this.toggleDescrValidatorTechEval();
 
     combineLatest([
       this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
@@ -701,38 +1376,97 @@ removeFile(file: NzUploadFile): void {
       .subscribe(() => {
         this.resetDeliveryDate();
       });
-    this.listenDeliveryDateChange()
+
+    this.listenDeliveryDateChange();
+    this.rfpForm.get("SubCriFlg")?.setValue('X');
+
   }
-async downloadSelectedForm(): Promise<void> {
-  if (!this.selectedFormKey) {
-    this.cs.createMessage('warning', 'Please select a form first.');
-    return;
+  private isDirectCompetitionSelected(): boolean {
+    const compVal = this.rfpForm.get('competitionType')?.value;
+    if (compVal == null) return false;
+    // `compVal` may be id or object — normalize:
+    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+    return this.directCompetitionId != null && String(val) === String(this.directCompetitionId);
   }
 
-  const form = this.formOptions.find(f => f.key === this.selectedFormKey);
-  if (!form) {
-    this.cs.createMessage('error', 'Selected form not found.');
-    return;
+  private isLimitedCompetitionSelected(): boolean {
+    const compVal = this.rfpForm.get('competitionType')?.value;
+    if (compVal == null) return false;
+    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
+    return this.limitedCompetitionId != null && String(val) === String(this.limitedCompetitionId);
   }
 
-  const url = encodeURI(form.path); // handles spaces/special chars
 
-  this.http.get(url, { responseType: 'blob' }).subscribe({
-    next: (blob) => {
-      const filename =
-        form.filename ||
-        (form.path.split('/').pop() ?? 'download.pdf');
 
-      saveAs(blob, filename);
-      this.cs.createMessage('success', 'Downloaded successfully.');
-    },
-    error: (err) => {
-      console.error('Download failed:', err);
-      this.cs.createMessage('error', 'Unable to download the selected form.');
+  private updatePurchaseVisibility(): void {
+    const costVal = Number(this.rfpForm.get('estimatedCost')?.value) || 0;
+    const directSelected = this.isDirectCompetitionSelected();
+    const limitedSelected = this.isLimitedCompetitionSelected();
+
+    this.showDirectPurchaseField = directSelected && costVal > this.DIRECT_COST_THRESHOLD;
+    this.showLimitedField = limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
+
+    // Clear values when panels are hidden
+    if (!this.showDirectPurchaseField) {
+      const ctrl = this.rfpForm.get('directPurchaseType');
+      if (ctrl?.value) { ctrl.setValue(null); }
     }
-  });
-}
+    if (!this.showLimitedField) {
+      const ctrl = this.rfpForm.get('limitedType');
+      if (ctrl?.value) { ctrl.setValue(null); }
+    }
+  }
 
+
+
+  // async downloadSelectedForm(): Promise<void> { sampath commentted
+  //   if (!this.selectedFormKey) {
+  //     this.cs.createMessage('warning', 'Please select a form first.');
+  //     return;
+  //   }
+
+  //   const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+  //   if (!form) {
+  //     this.cs.createMessage('error', 'Selected form not found.');
+  //     return;
+  //   }
+
+  //   const url = encodeURI(form.path); // handles spaces/special chars
+
+  //   this.http.get(url, { responseType: 'blob' }).subscribe({
+  //     next: (blob) => {
+  //       const filename =
+  //         form.filename ||
+  //         (form.path.split('/').pop() ?? 'download.pdf');
+
+  //       saveAs(blob, filename);
+  //       this.cs.createMessage('success', 'Downloaded successfully.');
+  //     },
+  //     error: (err) => {
+  //       console.error('Download failed:', err);
+  //       this.cs.createMessage('error', 'Unable to download the selected form.');
+  //     }
+  //   });
+  // }
+  toggleSiteVisitValidators(requiresVisit: boolean): void {
+    const emailControl = this.rfpForm.get('email');
+    const contactControl = this.rfpForm.get('contactNumber');
+
+    if (requiresVisit) {
+      // When ON, make fields required
+      emailControl?.setValidators([Validators.required, Validators.email]);
+      contactControl?.setValidators([Validators.required]);
+    } else {
+      // When OFF, clear values and remove validators
+      emailControl?.setValue('');
+      contactControl?.setValue('');
+      emailControl?.clearValidators();
+      contactControl?.clearValidators();
+    }
+
+    emailControl?.updateValueAndValidity();
+    contactControl?.updateValueAndValidity();
+  }
 
   listenDeliveryDateChange() {
     this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -1073,7 +1807,7 @@ async downloadSelectedForm(): Promise<void> {
 
   /**
    * Update the Form Group based on the total estimated value.
-   * @param totalEstimatedPrice 
+   * @param totalEstimatedPrice
    */
   updateFormGroup(totalEstimatedPrice: number, totalEstimatedPriceVAT: number): void {
     //console.log("Total Estimated Price", totalEstimatedPrice);
@@ -1193,7 +1927,7 @@ async downloadSelectedForm(): Promise<void> {
 
   /**
  * Update the BOQ Table List
- * 
+ *
  */
   selectedBOQIndex: any = null;
 
@@ -1456,93 +2190,152 @@ async downloadSelectedForm(): Promise<void> {
 
     // this.checkQualPer();
   }
+// ------------ RENUMBER & SYNC FUNCTION (MOST IMPORTANT) ------------ //
 
-  // add technical requirment item
-  addTechReq(cond: any) {
-    const data = this.rfpForm.getRawValue().TechReq;
-    if (this.TechReqListData.length == this.srNoTechReq) {
-      this.TechReqListData[this.TechReqListData.length - 1] = data;
-    } else {
-      this.TechReqListData.push(data);
-    }
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+private renumberTechReq(): void {
+  this.TechReqListData = this.TechReqListData.map((item, index) => ({
+    ...item,
+    ItemNo: (index + 1).toString()
+  }));
 
-    if (cond == 'add') {
-      this.srNoTechReq++;
-      this.rfpForm.controls.TechReq.reset();
-      this.rfpForm.controls.TechReq.setValue({
-        RfpNo: '',
-        RfpVersion: '',
-        ItemNo: this.srNoTechReq.toString(),
-        Descr: ''
-      });
-    }
+  this.srNoTechReq = this.TechReqListData.length + 1;
+
+  // update list control
+  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+
+  // update the SL.No input at the top
+  this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+}
+
+
+// ------------ ADD ROW ------------ //
+
+addTechReq(cond: 'add' | 'save' | any) {
+  const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+  if (techReqGroup.invalid) {
+    techReqGroup.markAllAsTouched();
+    return;
   }
 
-  // remove tech requirement
-  removeTechReq(index: any) {
-    this.TechReqListData = this.TechReqListData.filter((item, i) => i !== index - 1);
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+  const row = {
+    ItemNo: this.srNoTechReq.toString(),
+    Descr: techReqGroup.get('Descr')?.value || '',
+    RfpNo: techReqGroup.get('RfpNo')?.value || '',
+    RfpVersion: techReqGroup.get('RfpVersion')?.value || ''
+  };
 
-    if (index != this.srNoTechReq) {
-      this.srNoTechReq--;
-      this.rfpForm.controls.TechReq.patchValue({
-        ItemNo: this.srNoTechReq.toString(),
-      })
-    } else {
-      this.rfpForm.controls.TechReq.reset();
-      this.rfpForm.controls.TechReq.setValue({
-        RfpNo: '',
-        RfpVersion: '',
-        ItemNo: this.srNoTechReq.toString(),
-        Descr: ''
-      });
-    }
-  }
+  this.TechReqListData.push(row);
 
-  // edit tech requirement
-  editTechReq(index: number) {
-    this.techReqEditIndex = index;
-    this.showEditTechReq = true;
-    const data = this.TechReqListData[index];
-    this.rfpForm.controls.TechReqEdit.reset();
-    this.rfpForm.controls.TechReqEdit.setValue({
-      RfpNo: '',
-      RfpVersion: '',
-      ItemNo: (index + 1).toString(),
-      Descr: data.Descr,
+  this.renumberTechReq();
+
+  if (cond === 'add') {
+    techReqGroup.reset();
+    techReqGroup.patchValue({
+      ItemNo: this.srNoTechReq.toString()
     });
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
+}
 
-  // save edit part tech requirement
-  saveEditTechReq() {
-    const data = this.rfpForm.getRawValue().TechReqEdit;
-    this.TechReqListData[this.techReqEditIndex] = data;
-    if (this.srNoTechReq == this.techReqEditIndex + 1) {
 
-      this.rfpForm.controls.TechReq.patchValue({
-        Descr: data.Descr
-      })
-    }
-    this.TechReqListData = [...this.TechReqListData];
-    this.rfpForm.value.RfpTreq.value = this.TechReqListData;
+// ------------ DELETE ROW ------------ //
+
+removeTechReq(index: number) {
+  const idx = index - 1;
+  if (idx < 0 || idx >= this.TechReqListData.length) return;
+
+  this.TechReqListData.splice(idx, 1);
+
+  this.renumberTechReq();
+
+  if (this.techReqEditIndex === idx) {
     this.showEditTechReq = false;
-    this.rfpForm.controls.TechReqEdit.reset();
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
   }
+}
+
+
+// ------------ EDIT ROW ------------ //
+
+editTechReq(index: number) {
+  const row = this.TechReqListData[index];
+  if (!row) return;
+
+  this.techReqEditIndex = index;
+  this.showEditTechReq = true;
+
+  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+
+  editGroup.reset({
+    ItemNo: row.ItemNo,
+    Descr: row.Descr,
+    RfpNo: row.RfpNo,
+    RfpVersion: row.RfpVersion
+  });
+
+  editGroup.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
+  editGroup.get('Descr')?.updateValueAndValidity();
+}
+
+
+// ------------ SAVE EDIT ------------ //
+
+saveEditTechReq() {
+  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+  if (editGroup.invalid) {
+    editGroup.markAllAsTouched();
+    return;
+  }
+
+  const updated = {
+    ItemNo: (this.techReqEditIndex + 1).toString(),
+    Descr: editGroup.value.Descr,
+    RfpNo: editGroup.value.RfpNo,
+    RfpVersion: editGroup.value.RfpVersion
+  };
+
+  this.TechReqListData[this.techReqEditIndex] = updated;
+
+  this.TechReqListData = [...this.TechReqListData];
+
+  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+
+  this.showEditTechReq = false;
+  editGroup.reset();
+}
 
 
   // add teachnical evaluation criteria from group
   addEval(cond: any) {
+    if (cond === 'sub') {
+      const totalEval = this.checkEvalPer(true);
+      const percentage = this.rfpForm.controls.EvalCriteria.get('Percentage')?.value;
+      
+      if (totalEval != percentage) {
+        this.cs.createMessage(
+          'error',
+          totalEval + this.translate.instant('RFP.SubCritriaEval')
+        );
+        return;
+      }
+      
+      const subCriteriaData = this.subCriterias.value.map((subCriteria: any, index: number) => {
+        return {
+          SubItemNo: (index + 1).toString(),
+          Percentage: subCriteria.Percentage.toString(),
+          Descr: subCriteria.Descr
+        };
+      });
+      
+      const item = this.evalCriteriaItems.at(this.evalEditIndex);
+      item.patchValue({
+        subCriteriaList: subCriteriaData
+      });
+      
+      this.isSubCriteria = false;
+      this.subCriterias.clear();
+      this.subCriterias.push(this.initialSubCriteria);
+      return;
+    }
+    
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
     if (cond === 'sub') {
@@ -1617,6 +2410,48 @@ async downloadSelectedForm(): Promise<void> {
         Headline: '',
         SubCriFlg: 'X'
       });
+    }
+  }
+
+  addNewCriteria() {
+    this.slel++;
+    this.rfpForm.controls.EvalCriteria.reset();
+    this.rfpForm.controls.EvalCriteria.setValue({
+      RfpNo: '',
+      ItemNo: this.slel.toString(),
+      Descr: '',
+      Percentage: '0',
+      Headline: '',
+      SubCriFlg: 'y'
+    });
+  }
+
+  openSubCriteria(index: number, subCriFlg: string) {
+    if (subCriFlg === 'X') {
+      this.isSubCriteriaEdit = true;
+      this.editEval(index);
+    }
+  }
+
+  openSubCriteriaForRow(index: number) {
+    const item = this.evalCriteriaItems.at(index);
+    // const subCriFlg = item.get('SubCriFlg')?.value;
+    const subCriFlg = "X";
+    
+    if (subCriFlg === 'X') {
+      this.evalEditIndex = index;
+      const percentage = item.get('Percentage')?.value || 100;
+      
+      this.rfpForm.controls.EvalCriteria.patchValue({
+        Percentage: percentage,
+        ItemNo: (index + 1).toString()
+      });
+      
+      this.subCriterias.clear();
+      this.subCriterias.push(this.initialSubCriteria);
+      this.isSubCriteria = true;
+    } else {
+      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
     }
   }
 
@@ -1920,10 +2755,10 @@ async downloadSelectedForm(): Promise<void> {
   get boqFormGroup() {
     return this.rfpForm.get('billOFQty') as FormArray;
   }
-  get Attachments() {
-    return this.rfpForm.get('Attachments') as FormArray;
-  }
-
+ get Attachments(): boolean {
+  const fg = this.rfpForm.get('attachments') as FormGroup;
+  return fg ? fg.valid : false;
+}
 
 
   get Evalcrt() {
@@ -3412,6 +4247,57 @@ async downloadSelectedForm(): Promise<void> {
     const financialWeightage = 100 - technicalEvaluationWeightageValue;
     const financialControl = this.rfpForm.get('vendorEvaluationWeightage.financialEvaluationWeightage');
     financialControl!.setValue(financialWeightage, { emitEvent: false });
+  }
+
+  // Add new method to update evaluation weights based on business rules
+  updateEvaluationWeights(): void {
+    const estimatedCost = this.rfpForm.get('estimatedCost')?.value;
+    const activityId = this.rfpForm.get('activity')?.value;
+    
+    if (!estimatedCost || !activityId) {
+      return;
+    }
+
+    const costInMillions = estimatedCost / 1000000; // Convert to millions
+    let financialWeight = 80; // Default for other activities
+    let technicalWeight = 20; // Default for other activities
+    let technicalPassRate = 70; // Default pass rate
+
+    if (costInMillions > 25) {
+      // More than 25 million SAR
+      if (activityId === 'ACT_CON') { // Contracting
+        financialWeight = 80;
+        technicalWeight = 20;
+      } else if (activityId === 'ACT_CONS') { // Consultancy
+        financialWeight = 30;
+        technicalWeight = 70;
+      } else if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+        financialWeight = 65;
+        technicalWeight = 35;
+      }
+      // For all other activities: use default 80, 20, 70
+    } else {
+      // Less than 25 million SAR
+      if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+        financialWeight = 70;
+        technicalWeight = 30;
+      } else if (activityId === 'ACT_CONS') { // Consultancy
+        financialWeight = 35;
+        technicalWeight = 65;
+      } else if (activityId === 'ACT_CON') { // Contracting
+        financialWeight = 85;
+        technicalWeight = 15;
+      }
+      // For all other activities: use default 80, 20, 70
+    }
+
+    // Update the form controls
+    const vendorEvaluationGroup = this.rfpForm.get('vendorEvaluationWeightage');
+    vendorEvaluationGroup?.get('financialEvaluationWeightage')?.setValue(financialWeight, { emitEvent: false });
+    vendorEvaluationGroup?.get('technicalEvaluationWeightage')?.setValue(technicalWeight, { emitEvent: false });
+    
+    // Update technical pass rate
+    this.rfpForm.get('TotTechEval')?.setValue(technicalPassRate, { emitEvent: false });
   }
 
 

@@ -1,244 +1,1683 @@
-/* ========== Card / Section ========== */
+// Existing utility styles from the beginning of your file
+// .create__form__section {
+// box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+// padding: 20px;
+// margin-bottom: 20px;
+// width: 100%;
+// border-top: 3px solid #41ad4f;
+// border-radius: 5px;
+// background-color: transparent;
+// }
+// ::ng-deep .ant-select-multiple .ant-select-selector {
+// min-height: 32px !important; /* same height as other inputs */
+// height: 32px !important;
+// padding: 0 8px !important;
+// display: flex;
+// align-items: center;
+// }
+
+// ::ng-deep .ant-select-multiple .ant-select-selection-overflow {
+// flex-wrap: nowrap !important; /* prevents tall wrapping */
+// }
+
+// ::ng-deep .ant-select-multiple .ant-select-selection-item {
+// margin: 0 4px 0 0 !important;
+// line-height: 24px !important;
+// }
+
+// ::ng-deep .cr-number-container {
+// display: flex;
+// flex-wrap: wrap;
+// align-items: center;
+// gap: 6px; /* spacing between fields */
+// }
+
+// ::ng-deep .cr-number-item {
+// display: flex;
+// align-items: center;
+// }
+
+
+// // toggle UI 
+
+// .toggle-field {
+// display: flex;
+// align-items: center;
+// justify-content: space-between;
+// }
+
+// .toggle-label {
+// font-weight: 500;
+// color: #333;
+// flex: 1;
+// margin-right: 10px;
+// white-space: normal;
+// }
+
+// ::ng-deep nz-switch {
+// transform: scale(0.9);
+// }
+
+// @media (max-width: 768px) {
+// .toggle-field {
+// flex-direction: row;
+// justify-content: space-between;
+// }
+// }
+
+
+// // .cr-number-container {
+// // display: flex;
+// // flex-direction: column; /* stack inputs vertically */
+// // gap: 8px;
+// // }
+
+// // .cr-number-item {
+// // display: flex;
+// // align-items: center;
+// // gap: 6px;
+// // }
+
+
 .create__form__section {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  border-top: 3px solid #41ad4f;
-  border-radius: 5px;
-  background-color: transparent;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+padding: 20px;
+margin-bottom: 20px;
+width: 100%;
+border-top: 3px solid #41ad4f;
+border-radius: 5px;
+background-color: transparent;
 }
 
-/* ========== Theme Tokens ========== */
-:root {
-  --primary-color: #0b6aa0;
-  --muted: #9aa6ad;
-  --surface: #ffffff;
-  --border: #e9eef2;
-  --card-shadow: 0 6px 18px rgba(12, 40, 60, 0.06);
+h6 {
+font-size: 1rem !important;
+}
+
+input {
+width: 100%;
+border: 1px solid #d9d9d9;
+height: 32px;
+padding: 9px;
+}
+
+input::selection {
+border-color: 1px solid #41ad4f;
+border: #41ad4f;
+padding: 9px;
+}
+
+.create_rfp_head {
+font-size: 18px;
+font-family: 'Roboto';
+font-weight: 600;
+}
+
+::ng-deep .ant-collapse-content {
+background: #FCFCFC !important;
+}
+
+::ng-deep .ant-collapse-header {
+background: #F1F1F1 !important;
+font-weight: 700;
+font-family: 'Roboto';
+}
+
+.boqbuttonDelete {
+// height: 26px;
+// width: 42px;
+color: red;
+border-color: red;
+}
+
+.boqbuttonEdit {
+// height: 26px;
+// width: 42px;
+color: #005c99;
+border-color: #005c99;
+}
+
+.addBtn {
+background: none !important;
+color: #005c99 !important;
+}
+
+.seperationLine {
+margin-top: 3%;
+background: #e9e9e9 !important;
+border: none;
+height: 2px;
+}
+.check{
+display: flex;
+justify-content: center;
+font-size: 17px;
+}
+
+.w-98 {
+width: 98%;
+}
+
+.posr-t-2 {
+position: relative;
+top: 2rem
+}
+
+/* ========== Card / Section ========== */
+.create__form__section {
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+padding: 20px;
+margin-bottom: 20px;
+width: 100%;
+border-top: 3px solid #41ad4f;
+border-radius: 5px;
+background-color: transparent;
 }
 
 /* ========== Attachments card ========== */
 .attachment-body {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--card-shadow);
-  padding: 18px;
-  margin: 12px 0 28px;   /* bottom space after the section */
+background: #ffffff;
+border: 1px solid #e9eef2;
+border-radius: 8px;
+box-shadow: 0 6px 18px rgba(12, 40, 60, 0.06);
+padding: 18px;
+margin: 12px 0 28px;
 }
 
-/* Row: label + select */
+/* ========== ROW 1: Select Form + Download button ========== */
 .attachment-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+flex-wrap: wrap;
+margin-bottom: 10px;
 }
-
-/* keep dropdown -> row2 spacing reasonable */
-.attachment-row.mt-3 { margin-top: 12px !important; }
 
 .field-label {
-  display: block;
-  font-size: 0.9rem;
-  color: #2b3b43;
-  margin-bottom: 8px;
-  font-weight: 600;
+display: block;
+font-size: 0.9rem;
+color: #2b3b43;
+margin-bottom: 8px;
+font-weight: 600;
 }
 
 .attachment-select {
-  width: 70%;
-  min-width: 220px;
+flex: 1 1 70%;
+min-width: 240px;
 }
+
 .attachment-select nz-select {
-  width: 100%;
-  display: block;
+width: 100%;
+display: block;
 }
 
-/* ========== Row 2: Upload + Download aligned ========== */
-.section {
-  display: flex;
-  align-items: center;          /* vertical align with button */
-  justify-content: flex-start;
-  gap: 14px;                    /* space between upload and button */
-}
-
-/* Upload area (left) */
-.upload-area {
-  flex: 1 1 auto;
-  max-width: 72%;
-  background: linear-gradient(180deg, #fbfdff 0%, #ffffff 100%);
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  padding: 12px 16px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  justify-content: center;
-}
-
-/* Upload trigger button */
-.upload-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #f5f5f5 !important;
-  border: 1px dashed #ccc;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
-  font-weight: 600;
-}
-.upload-btn:hover {
-  background: rgba(11, 106, 160, 0.06);
-  border-color: rgba(11, 106, 160, 0.18);
-}
-.upload-btn:active { transform: translateY(1px); }
-
-.helper {
-  display: block;
-  font-size: 0.82rem;
-  color: var(--muted);
-  margin-top: 6px;
-}
-
-/* Download button (right) */
+/* DOWNLOAD BUTTON aligned beside select */
 .attachment-actions {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;                    /* no offsets */
+flex: 0 0 auto;
+display: flex;
+align-items: flex-end;
+justify-content: flex-start;
+margin-top: 26px;
 }
 
 .download_button {
-  background-color: #005c99 !important;
-  color: #fff !important;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 92, 153, 0.2);
+background-color: #005c99 !important;
+color: #fff !important;
+font-weight: 500;
+border: none;
+border-radius: 6px;
+padding: 8px 16px;
+transition: all 0.2s ease-in-out;
+box-shadow: 0 2px 4px rgba(0, 92, 153, 0.2);
+display: inline-flex;
+align-items: center;
+gap: 8px;
+min-height: 38px;
 }
-.download_button:hover {
-  background-color: #004b80 !important;
-  box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
-  transform: translateY(-1px);
-}
-.download_button:active {
-  background-color: #003f6a !important;
-  box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
-  transform: translateY(1px);
-}
-.download_button span[nz-icon] { font-size: 16px; }
 
-/* ========== Custom uploaded files list (works with nzShowUploadList=false) ========== */
-.attachment-list-container { width: 100%; }
+.download_button:hover {
+background-color: #004b80 !important;
+box-shadow: 0 3px 6px rgba(0, 92, 153, 0.3);
+transform: translateY(-1px);
+}
+
+.download_button:active {
+background-color: #003f6a !important;
+box-shadow: 0 1px 3px rgba(0, 92, 153, 0.3);
+transform: translateY(1px);
+}
+
+.download_button span[nz-icon] {
+font-size: 16px;
+}
+
+/* ========== ROW 2: Upload section ========== */
+.section {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 14px;
+margin-top: 14px;
+}
+
+/* Upload area — light background and border hover effect */
+.upload-area {
+ position: relative;
+ flex: 1 1 auto;
+ width: 100%;
+ min-height: 160px;
+ background: #f1f1f1;
+ /* same as attachment header background */
+ border-color: #0b6aa0;
+ border: 2px dashed #0b6aa0;
+ border-radius: 8px;
+ /* neutral light background */
+ cursor: pointer;
+ text-align: center;
+ transition: all 0.25s ease;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+
+/* On hover — match attachment header grey and show subtle border */
+.upload-area:hover,
+.upload-area.dragover {
+ background: #e2e0e0;
+ /* same as attachment header background */
+ border-color: #e9eef2;
+ ;
+ /* blue accent on hover */
+ // box-shadow: 0 0 0 3px rgba(35, 35, 36, 0.05);
+}
+
+/* Hide the real input, make whole area clickable */
+.upload-input {
+display: none;
+}
+
+.upload-content {
+ pointer-events: none;
+ /* ensure clicks reach parent */
+}
+
+.upload-content [nz-icon] {
+font-size: 42px;
+color: #0b6aa0;
+margin-bottom: 10px;
+transition: color 0.2s ease;
+}
+
+/* On hover, icon gets slightly dimmer for contrast */
+.upload-area:hover [nz-icon] {
+color: #777;
+}
+
+.upload-message {
+font-size: 1rem;
+font-weight: 600;
+color: #333;
+}
+
+.helper {
+display: block;
+font-size: 0.82rem;
+color: #9aa6ad;
+margin-top: 6px;
+}
 
 .attachment-list {
-  list-style: none;
-  padding: 0;
-  margin: 6px 0 0;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fbfbfd;
+ margin-bottom: 2px;
+ margintop: 3px;
 }
-.attachment-list .list-group-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  gap: 10px;
-  transition: background 0.12s ease;
+
+/* Uploaded files list styling */
+.custom-uploaded-list {
+list-style: none;
+margin: 12px 0 0;
+padding: 0;
 }
-.attachment-list .list-group-item:last-child { border-bottom: none; }
-.attachment-list .list-group-item:hover { background: rgba(11, 106, 160, 0.03); }
+
+.uploaded-file-item {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ padding: 8px 12px;
+ border: 1px solid #e9eef2;
+ border-radius: 6px;
+ background-color: #fafafa;
+ margin-bottom: 6px;
+ /* small margin between uploaded files */
+ transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.uploaded-file-item:hover {
+background-color: #f5f8fb;
+box-shadow: 0 2px 6px rgba(11, 106, 160, 0.05);
+}
+
+.file-info {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.file-info [nz-icon] {
+color: #0b6aa0;
+font-size: 16px;
+}
 
 .file-name {
-  display: inline-block;
-  font-size: 0.92rem;
-  color: #22303a;
-  font-weight: 500;
-  word-break: break-all;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+font-size: 0.92rem;
+color: #333;
+font-weight: 500;
+max-width: 90%;
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
 }
 
-/* small action buttons on list items */
-.item-actions {
-  display: inline-flex;
-  gap: 6px;
-}
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  min-width: 30px;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: var(--primary-color);
-  transition: background 0.12s ease, color 0.12s ease, transform 0.06s ease;
-}
-.action-btn:hover {
-  background: rgba(11, 106, 160, 0.06);
-  color: #074c6b;
-}
-.action-btn.text-danger { color: #d23f3f; }
-.action-btn.text-danger:hover {
-  background: rgba(210, 63, 63, 0.06);
-  color: #a02828;
+/* Delete icon inside each file */
+.delete-icon {
+color: #d9534f;
+font-size: 16px;
+cursor: pointer;
+padding: 4px;
+border-radius: 4px;
+transition: background 0.15s ease, color 0.15s ease;
 }
 
-.list-group-item.text-muted {
-  color: var(--muted);
-  font-style: italic;
-  text-align: center;
+.delete-icon:hover {
+color: #b52b27;
+background: rgba(217, 83, 79, 0.08);
 }
 
-/* ========== Responsive ========== */
-@media (max-width: 880px) {
-  .attachment-row,
-  .section {
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-  .attachment-select,
-  .upload-area {
-    width: 100% !important;
-    max-width: 100%;
-  }
-  .file-name { white-space: normal; }
+//work location
+/* Outer box */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selector {
+  height: 32px !important;        /* changed from 24px */
+  min-height: 32px !important;    /* changed from 24px */
+  padding: 0 6px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-/* ========== Misc (kept from your form styles) ========== */
-h6 { font-size: 1rem !important; }
-input {
+/* Overflow tag container */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selection-overflow {
+  height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Individual selected tag */
+:host ::ng-deep 
+.ant-select.ant-select-multiple 
+.ant-select-selection-item {
+  height: 16px !important;
+  line-height: 16px !important;
+  padding: 0 3px !important;
+  font-size: 11px !important;
+}
+
+/* Placeholder alignment */
+:host ::ng-deep 
+.ant-select.ant-select-multiple 
+.ant-select-selection-placeholder {
+  line-height: 22px !important;
+  font-size: 14px !important;
+}
+
+
+
+// toggle design
+.toggle-row {
+ display: flex;
+ justify-content: space-between;
+ /* pushes toggle to right */
+ align-items: center;
+}
+
+.toggle-label {
+ margin-right: 10px;
+ font-weight: 500;
+ color: #333;
+ font-size: 14px;
+}
+
+.info-box {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border: 1px solid #d9d9d9;
+ background: #fafafa;
+ padding: 12px 16px;
+ border-radius: 6px;
+ transition: all 0.2s ease;
+ box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.info-box:hover {
+ border-color: #0b6aa0;
+ background: #f5f9fc;
+ box-shadow: 0 2px 4px rgba(11, 106, 160, 0.08);
+}
+
+// /* toggle design */
+// .toggle-row {
+//  display: flex;
+//  justify-content: space-between;
+//  align-items: center;
+// }
+
+// .toggle-label {
+//  margin-right: 10px;
+// }
+
+// /* updated info-box to match table styling */
+// .info-box {
+//  display: flex;
+//  justify-content: space-between;
+//  align-items: center;
+
+//  border: 1px solid #d9d9d9;   /* same light border as table */
+//  background: #fafafa;      /* soft light gray like table rows */
+
+//  padding: 10px 14px;
+//  border-radius: 6px;      /* same rounded corner style */
+ 
+// }
+
+//standards section label
+.tech-info-row {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 12px;
+ padding: 10px 12px;
+ border: 1px solid #d0e6eb;    // subtle cyan border like screenshot
+ background: #f6feff;       // very light cyan background
+ border-radius: 6px;
+ margin-bottom: 12px;
+}
+
+/* left side message style */
+.tech-info-text {
+ color: #0b6aa0;
+ font-size: 14px;
+ line-height: 1.3;
+ flex: 1 1 auto;
+ padding-right: 12px;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+
+/* right aligned info button */
+/* make add button a square and vertically aligned with the input */
+.tech-add-btn {
+ width: 60px;       /* matches typical input height */
+ height: 38px;
+ padding: 0;
+ border-radius: 6px;    /* square with slight rounding */
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ box-sizing: border-box;
+}
+
+/* ensure the input next to the button doesn't overflow the row */
+.form-row .flex-grow-1,
+.d-flex .flex-grow-1 {
+ min-width: 0; /* allow proper shrinking inside flex container */
+}
+
+/* optional: small responsive tweak so button stacks under input on very small screens */
+@media (max-width: 480px) {
+ .d-flex.align-items-start {
+  flex-direction: column;
+  gap: 8px;
+ }
+ .tech-add-btn {
   width: 100%;
-  border: 1px solid #d9d9d9;
-  height: 32px;
-  padding: 9px;
+  height: 38px;
+ }
+}
+
+.tech-info-btn {
+ flex: 0 0 auto;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ width: 36px;
+ height: 36px;
+ border-radius: 8px;
+ background: #ffffff;
+ border: 1px solid rgba(11,106,160,0.12);
+ color: #0b6aa0;
+ padding: 0;
+}
+
+/* hover / focus */
+.tech-info-btn:hover,
+.tech-info-btn:focus {
+ background: #eef7fc;
+ border-color: #0b6aa0;
+ color: #064e6b;
+}
+/* ensure the description wraps and is vertically aligned */
+.tech-key-criteria {
+ display: block;
+ white-space: normal;
+ word-break: break-word;
+ max-height: 4.5em;    /* optional limit */
+ overflow: hidden;
+}
+
+/* pass/fail pills */
+.pass-pill, .fail-pill {
+ display: inline-block;
+ padding: 4px 10px;
+ border-radius: 14px;
+ font-weight: 600;
+ font-size: 13px;
+}
+
+.pass-pill {
+ background: #e6f7ff;
+ color: #0b6aa0;
+ border: 1px solid rgba(11,106,160,0.12);
+}
+
+.fail-pill {
+ background: #fff1f0;
+ color: #d9534f;
+ border: 1px solid rgba(217,83,79,0.08);
+}
+
+/* placeholder dash */
+.pass-fail-placeholder {
+ color: #9aa6ad;
+}
+
+/* action icon spacing */
+.action-btn {
+ min-width: 36px;
+ padding: 4px 6px;
+}
+// toggle design
+.toggle-row {
+ display: flex;
+ justify-content: space-between;
+ /* pushes toggle to right */
+ align-items: center;
+}
+
+.toggle-label {
+ margin-right: 10px;
+ /* optional */
+}
+
+.info-box {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+
+ // border: 1px solid #0b6aa0;
+ // background: rgba(11, 106, 160, 0.05); /* lighter shade of border color */
+ border: 1px solid #6c757d;
+ /* dark gray */
+ background: #f2f2f2;
+ /* light gray */
+
+ padding: 10px 14px;
+ border-radius: 6px;
+}
+/* ================================================= */
+/* TECHNICAL INFO ROW STYLES (MODIFIED FOR RIGHT ALIGNMENT) */
+/* ================================================= */
+
+.tech-info-row {
+ display: flex;
+ align-items: center;
+ padding: 10px 12px;
+ border: 1px solid #d0e6eb;
+ background: #f6feff;
+ border-radius: 6px;
+ position: relative;
+}
+
+.tech-info-text-with-icon {
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ flex: 1;
+ position: relative;
+}
+
+/* wrapper that controls hover */
+.tooltip-wrapper {
+ position: relative;
+ display: inline-block;
+}
+
+/* icon styling */
+.trigger-icon {
+ cursor: pointer;
+ font-size: 18px;
+ color: #0d877e;
+}
+
+/* tooltip hidden by default */
+.custom-tooltip {
+ position: absolute;
+ top: 28px;
+ left: 0;
+ z-index: 20;
+ display: none;
+
+ background: #ffffff;
+ padding: 12px 14px;
+ border: 1px solid #c2e7f3;
+ border-radius: 6px;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+ width: 280px;
+}
+
+/* SHOW tooltip when hovering icon */
+.tooltip-wrapper:hover .custom-tooltip {
+ display: block;
+}
+
+/* arrow */
+.custom-tooltip::after {
+ content: "";
+ position: absolute;
+ top: -6px;
+ left: 14px;
+ border-width: 6px;
+ border-style: solid;
+ border-color: transparent transparent #ffffff transparent;
+}
+
+.tooltip-list {
+ margin: 0;
+ padding-left: 18px;
+
+ li {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  color: #333;
+ }
+}
+
+.btn-add {
+ margin-top: -2px;    /* pushes it slightly upward */
+ background-color: #0b6aa0 !important;
+ color: #ffffff !important;
+ border: 1px solid #0b6aa0 !important;
+ font-weight: 500;
+ min-width: 130px;
+ height: 38px;
+}
+
+.btn-add:hover {
+ background-color: #0a5b87 !important;
+ border-color: #0a5b87 !important;
+}
+
+.btn-add[disabled] {
+ background-color: #f5f5f5 !important;
+ color: #bfbfbf !important;
+ border-color: #d9d9d9 !important;
+ cursor: not-allowed !important;
+}
+
+
+ .attachment-row,
+ .section {
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+ }
+
+ .attachment-select,
+ .upload-area {
+  width: 100% !important;
+  max-width: 100%;
+ }
+
+ .attachment-actions {
+  margin-top: 0;
+  justify-content: flex-start;
+ }
+
+ .upload-area {
+  min-height: 140px;
+ }
+
+
+/* ========== Misc (form styling) ========== */
+h6 {
+font-size: 1rem !important;
+}
+
+input {
+width: 100%;
+border: 1px solid #d9d9d9;
+height: 32px;
+padding: 9px;
 }
 input::selection {
-  border-color: 1px solid #41ad4f;
-  border: #41ad4f;
-  padding: 9px;
+background: rgba(65, 173, 79, 0.12);
 }
-.create_rfp_head { font-size: 18px; font-family: 'Roboto'; font-weight: 600; }
-::ng-deep .ant-collapse-content { background: #FCFCFC !important; }
-::ng-deep .ant-collapse-header { background: #F1F1F1 !important; font-weight: 700; font-family: 'Roboto'; }
-.boqbuttonDelete { color: red; border-color: red; }
-.boqbuttonEdit { color: #005c99; border-color: #005c99; }
-.addBtn { background: none !important; color: #005c99 !important; }
-.seperationLine { margin-top: 3%; background: #e9e9e9 !important; border: none; height: 2px; }
-.check { display: flex; justify-content: center; font-size: 17px; }
-.w-98 { width: 98%; }
-.posr-t-2 { position: relative; top: 2rem }
+
+.create_rfp_head {
+font-size: 18px;
+font-family: 'Roboto';
+font-weight: 600;
+}
+
+::ng-deep .ant-collapse-content {
+background: #fcfcfc !important;
+}
+
+::ng-deep .ant-collapse-header {
+background: #f1f1f1 !important;
+font-weight: 700;
+font-family: 'Roboto';
+}
+
+// .cr-number-container {
+//  display: flex;
+//  align-items: center;
+//  gap: 10px;
+//  flex-wrap: wrap;
+// }
+
+// .cr-number-item {
+//  display: flex;
+//  align-items: center;
+//  gap: 6px;
+// }
+
+// .cr-add-btn {
+//  display: flex;
+//  align-items: center;
+//  justify-content: center;
+//  height: 32px;
+// }
+/* CR number layout */
+.cr-number-container {
+display: flex;
+align-items: center;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.cr-number-item {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+/* Match input sizing and spacing */
+.cr-input {
+width: 150px;
+min-width: 120px;
+}
+
+/* Make circle buttons visually consistent and visible at zooms */
+.cr-minus-btn,
+.cr-add-btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 36px;
+height: 36px;
+padding: 0;
+border-radius: 50%;
+box-sizing: border-box;
+}
+
+/* dashed + button slightly bigger / more visible */
+.cr-add-btn {
+width: 40px;
+height: 40px;
+}
+
+/* ensure icon has visible size */
+.cr-minus-btn i[nz-icon],
+.cr-add-btn i[nz-icon] {
+font-size: 14px;
+line-height: 1;
+}
+
+
+/* optional: add a small responsive rule if UI compresses at low zoom */
+@media (max-width: 900px) {
+ .cr-input {
+  width: 130px;
+ }
+
+ .cr-minus-btn,
+ .cr-add-btn {
+  width: 34px;
+  height: 34px;
+ }
+}
+
+.btn-Review {
+ background-color: #ffffff !important;
+ color: #0b6aa0 !important;
+ /* Text color */
+ border: 1px solid #0b6aa0 !important;
+ font-weight: 500;
+
+ /* Keep same height as primary buttons */
+ min-width: 130px;
+ height: 38px;
+ border-radius: 3px;
+ margin-bottom: 3px;
+}
+
+.btn-Review:hover {
+background-color: #eef7fc !important;
+color: #0a5b87 !important;
+border-color: #0a5b87 !important;
+}
+
+// draft button design 
+.btn-save-draft {
+ background-color: #ffffff !important;
+ color: #0b6aa0 !important;
+ /* Text color */
+ border: 1px solid #0b6aa0 !important;
+ font-weight: 500;
+
+ /* Keep same height as primary buttons */
+ min-width: 130px;
+ height: 38px;
+}
+
+/* Hover effect */
+.btn-save-draft:hover {
+background-color: #eef7fc !important;
+color: #0a5b87 !important;
+border-color: #0a5b87 !important;
+}
+
+/* Disabled state */
+.btn-save-draft[disabled] {
+background-color: #f5f5f5 !important;
+color: #bfbfbf !important;
+border-color: #d9d9d9 !important;
+cursor: not-allowed !important;
+}
+
+// save and continue 
+
+.btn-save-continue {
+ background-color: #0b6aa0 !important;
+ /* Blue background */
+ color: #ffffff !important;
+ /* White text */
+ border: 1px solid #0b6aa0 !important;
+ font-weight: 500;
+
+ /* Matching size */
+ min-width: 130px;
+ height: 38px;
+}
+
+/* Hover effect */
+.btn-save-continue:hover {
+ background-color: #0a5b87 !important;
+ /* Darker blue */
+ border-color: #0a5b87 !important;
+}
+
+/* Disabled state */
+.btn-save-continue[disabled] {
+background-color: #f5f5f5 !important;
+color: #bfbfbf !important;
+border-color: #d9d9d9 !important;
+cursor: not-allowed !important;
+}
+
+
+// Technical Committee member
+
+.table {
+width: 100%;
+border-collapse: collapse;
+background: #fff;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table th,
+.table td {
+padding: 10px 12px;
+text-align: left;
+border: 1px solid #e8e8e8;
+font-size: 14px;
+}
+
+.table th {
+background-color: #f5f5f5;
+font-weight: 600;
+color: #333;
+}
+
+.table input[nz-input] {
+width: 100%;
+border-radius: 4px;
+height: 34px;
+font-size: 14px;
+}
+
+button[nz-button] {
+font-size: 13px;
+padding: 2px 10px;
+}
+
+button[nzType="primary"] {
+margin-top: 10px;
+}
+
+.table tbody tr:nth-child(even) {
+background-color: #fafafa;
+}
+
+.table tbody tr:hover {
+background-color: #f0f7ff;
+}
+
+.mt-2 {
+margin-top: 10px;
+}
+
+.cancellation-upload {
+display: flex;
+flex-direction: column;
+}
+
+.upload-wrapper {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.cancel-upload-box {
+flex: 1;
+}
+
+
+/* Align upload area + trash button */
+/* ========== global styles (styles.scss) ========== */
+
+/* wrapper */
+.upload-row {
+display: flex;
+align-items: center;
+gap: 12px;
+width: 100%;
+position: relative;
+}
+
+/* outer, input-like box */
+.upload-inline-box {
+ flex: 1;
+ position: relative;
+ /* important - for absolute content inside */
+ height: 44px !important;
+ /* match other inputs; tweak if needed */
+ border: 1px solid #d9d9d9 !important;
+ border-radius: 6px;
+ background: #fff !important;
+ padding: 0 !important;
+ box-sizing: border-box;
+ overflow: hidden;
+ min-width: 220px;
+}
+
+/* Force NG-Zorro internal elements to be invisible and occupy full area */
+.upload-inline-box,
+.upload-inline-box .ant-upload,
+.upload-inline-box .ant-upload-drag,
+.upload-inline-box .ant-upload-drag-container {
+width: 100% !important;
+height: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+}
+
+/* Remove dashed inner pseudo-elements or dotted borders */
+.upload-inline-box .ant-upload-drag-container::before,
+.upload-inline-box .ant-upload-drag-container::after {
+display: none !important;
+}
+
+/* Hide default internal icon/text */
+.upload-inline-box .ant-upload-drag-icon,
+.upload-inline-box .ant-upload-text,
+.upload-inline-box p,
+.upload-inline-box .ant-upload-drag-container>* {
+ display: none !important;
+}
+
+/* Our custom content absolutely placed inside the box */
+.upload-inline-content {
+ position: absolute;
+ left: 12px;
+ /* padding from left inside the box */
+ right: 56px;
+ /* leave room for trash button at right */
+ top: 0;
+ bottom: 0;
+ display: flex;
+ align-items: center;
+ /* vertical center */
+ gap: 10px;
+ pointer-events: auto;
+ /* allow clicks */
+ cursor: pointer;
+ z-index: 5;
+}
+
+/* Icon & text styling */
+.upload-inline-icon {
+font-size: 18px;
+color: #0b6aa0;
+line-height: 1;
+}
+
+.upload-inline-text {
+font-size: 14px;
+color: #333;
+font-weight: 500;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/* Trash button (right aligned) */
+.trash-btn {
+border: 1px solid #d9534f;
+color: #d9534f;
+width: 42px;
+height: 42px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #fff;
+border-radius: 50%;
+box-sizing: border-box;
+}
+
+.trash-btn:hover {
+background: rgba(217, 83, 79, 0.06);
+border-color: #b52b27;
+color: #b52b27;
+}
+
+/* small responsive tweak if the container is narrow */
+@media (max-width: 560px) {
+ .upload-inline-content {
+  right: 48px;
+  left: 8px;
+ }
+
+ .upload-inline-text {
+  font-size: 13px;
+ }
+
+ .upload-inline-box {
+  height: 40px !important;
+ }
+}
+
+
+.btn-review-text {
+ background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%) !important;
+ color: #ffffff !important;
+ border: none !important;
+ font-weight: 500;
+ min-width: 180px;
+ height: 38px;
+ border-radius: 6px;
+ box-shadow: 0 2px 6px rgba(11, 106, 160, 0.25);
+ transition: all 0.3s ease;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+}
+
+.btn-review-text:hover {
+ background: linear-gradient(135deg, #005c99 0%, #004b80 100%) !important;
+ box-shadow: 0 4px 10px rgba(11, 106, 160, 0.35);
+ transform: translateY(-2px);
+}
+
+.btn-review-text:active {
+ transform: translateY(0);
+ box-shadow: 0 2px 4px rgba(11, 106, 160, 0.2);
+}
+
+.btn-review-text span[nz-icon] {
+ font-size: 16px;
+}
+
+.enhanced-textarea {
+ border: 1px solid #d9d9d9 !important;
+ border-radius: 6px !important;
+ padding: 12px !important;
+ font-size: 14px !important;
+ line-height: 1.6 !important;
+ transition: all 0.3s ease !important;
+ background-color: #fafafa !important;
+ resize: vertical !important;
+}
+
+.enhanced-textarea:hover {
+ border-color: #0b6aa0 !important;
+ background-color: #ffffff !important;
+}
+
+.enhanced-textarea:focus {
+ border-color: #0b6aa0 !important;
+ box-shadow: 0 0 0 2px rgba(11, 106, 160, 0.1) !important;
+ background-color: #ffffff !important;
+ outline: none !important;
+}
+
+/* Enhanced dropdown styling - keeping original height */
+::ng-deep .ant-select-dropdown {
+ border-radius: 6px !important;
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+::ng-deep .ant-select-item {
+ transition: all 0.2s ease !important;
+}
+
+::ng-deep .ant-select-item-option:hover {
+ background-color: #f5f9fc !important;
+ color: #0b6aa0 !important;
+}
+
+::ng-deep .ant-select-item-option-selected {
+ background-color: #e6f4ff !important;
+ color: #0b6aa0 !important;
+ font-weight: 500 !important;
+}
+
+::ng-deep .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+ background-color: #f5f9fc !important;
+}
+
+/* Weight Table Styling */
+.weight-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin-top: 8px;
+ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+ border-radius: 6px;
+ overflow: hidden;
+}
+
+.weight-table thead {
+ background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%);
+}
+
+.weight-table thead th {
+ color: #ffffff;
+ font-weight: 600;
+ font-size: 14px;
+ padding: 14px 16px;
+ text-align: center;
+ border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.weight-table thead th:last-child {
+ border-right: none;
+}
+
+.weight-table tbody tr {
+ background: #ffffff;
+}
+
+.weight-table tbody td {
+ padding: 12px 16px;
+ text-align: center;
+ border: 1px solid #e8e8e8;
+}
+
+.weight-table tbody td input[nz-input] {
+ text-align: center;
+ font-weight: 500;
+ font-size: 14px;
+}
+
+/* container for action column */
+.action-cell {
+ /* Flex properties for Centering and Gap (Kept for alignment) */
+ display: flex;
+ align-items: center; /* Center buttons vertically */
+ justify-content: center; /* Center buttons horizontally */
+ gap: 8px; /* Adds space between buttons */
+ 
+ /* Retain existing padding */
+ padding: 8px 6px;
+ 
+ /* Prevent wrapping */
+ white-space: nowrap;
+ 
+
+ min-height: 51px; /* 35px (button height) + 8px (top padding) + 8px (bottom padding) */
+}
+
+/* general action button */
+.action-btn {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 6px;
+ min-width: 36px;
+ 
+ border-radius: 6px;
+ transition: all 0.12s ease;
+}
+
+/* make expand button bigger so it looks prominent */
+.expand-btn {
+ min-width: 35px;
+ width: 35px;
+ height: 35px;
+ border-radius: 6px;
+ font-size: 18px;
+}
+.expand-btn i {
+ font-size: 12px; /* larger icon */
+}
+
+/* disabled-looking state when no sub-items */
+.action-btn.disabled,
+.action-btn.disabled:hover {
+ opacity: 0.45;
+ cursor: not-allowed;
+ pointer-events: none;
+}
+
+/* style delete / edit */
+.delete-btn {
+ color: #d9534f;
+ border-color: rgba(217,83,79,0.12);
+ background: #fff;
+}
+.delete-btn:hover { background: rgba(217,83,79,0.04); }
+
+.edit-btn {
+ color: #0b6aa0;
+ border-color: rgba(11,106,160,0.12);
+ background: #fff;
+}
+.edit-btn:hover { background: rgba(11,106,160,0.04); }
+.upload-row {
+ margin-top: 0 !important;
+ align-items: center; // ensures button + upload are perfectly aligned
+}
+:host ::ng-deep nz-form-label {
+ margin-bottom: 0 !important;
+ padding-bottom: 0 !important;
+}
+/* --- CSS for Work Execution Location (nz-select) --- */
+
+// .compact-multi-select {
+//  width: 100%;
+//  display: block;
+// }
+
+// .compact-multi-select ::ng-deep .ant-select-selector {
+//  /* 1. Outer Container: Force the overall height */
+//  height: 36px !important; 
+//  min-height: 36px !important;
+//  /* 2. Padding adjustment (must be high specificity) */
+//  padding: 0 11px !important;
+//  display: flex !important;
+//  align-items: center !important; /* Vertically center everything inside */
+// }
+
+// /* 3. CRITICAL: Target the internal container holding the tags (ant-select-selection-overflow) */
+// .compact-multi-select ::ng-deep .ant-select-selection-overflow {
+//  /* Must have height equal to (control height - outer vertical padding) to fit tags/input */
+//  height: 34px !important; /* 36px control height - 2px vertical offset/border */
+//  display: flex !important;
+//  align-items: center !important; 
+// }
+
+// /* 4. Ensure internal tags are compact (if used) */
+// .compact-multi-select ::ng-deep .ant-select-selection-item {
+//  height: 24px !important; /* Keep tags small and uniform */
+//  line-height: 22px !important; /* Vertically center text in tag */
+//  margin-top: 5px !important; /* CRITICAL: Adjust vertical alignment if needed */
+//  margin-bottom: 5px !important; /* CRITICAL: Adjust vertical alignment if needed */
+// }
+
+// /* 5. Ensure the search input for typing is aligned */
+// .compact-multi-select ::ng-deep .ant-select-selection-search-input {
+//  height: 22px !important;
+//  margin-top: 5px !important; /* Match the tag vertical alignment */
+// }
+
+// /* 6. Ensure placeholder text aligns vertically */
+// .compact-multi-select ::ng-deep .ant-select-selection-placeholder {
+//  line-height: 34px !important; 
+// }
+
+
+/* --- CSS for Project Duration (nz-input-number) --- */
+
+/* Target the main input-number container to match height */
+.col-4 nz-input-number .ant-input-number {
+  height: 36px !important; 
+  line-height: 36px !important;
+}
+
+/* Target the actual inner input field for the number component */
+.col-4 nz-input-number .ant-input-number-input {
+  height: 34px !important; 
+  line-height: 34px !important;
+}
+//emergency documents upload
+.upload-inline-content-emergency {
+ position: absolute;
+ left: 12px;
+ /* padding from left inside the box */
+ right: 56px;
+ /* leave room for trash button at right */
+ top: 0;
+ bottom: 0;
+ display: flex;
+ align-items: center;
+ /* vertical center */
+ gap: 5px;
+ pointer-events: auto;
+ /* allow clicks */
+ cursor: pointer;
+ z-index: 5;
+}
+
+/* Icon & text styling */
+.upload-inline-icon-emergency {
+font-size: 16px;
+color: #0b6aa0;
+line-height: 1;
+}
+
+.upload-inline-text-emergency {
+font-size: 15px;
+color: #333;
+font-weight:500;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/* Trash button (right aligned) */
+.trash-btn-emergency {
+border: 1px solid #d9534f;
+color: #d9534f;
+width: 30px;
+height: 30px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #fff;
+border-radius: 50%;
+box-sizing: border-box;
+}
+
+.trash-btn-emergency :hover{
+background: rgba(217, 83, 79, 0.06);
+border-color: #b52b27;
+color: #b52b27;
+}
+.emergency{
+ border: 1px solid #d9d9d9;
+}
+.label-emergency{
+  border: 1px solid #d9d9d9;
+}
+
+/* outer, input-like box */
+.upload-inline-box-emergency{
+ flex: 1;
+ position: relative;
+ /* important - for absolute content inside */
+ height: 20px !important;
+ /* match other inputs; tweak if needed */
+ border: 1px solid #d9d9d9 !important;
+ border-radius: 6px;
+ background: #fff !important;
+ padding: 0 !important;
+ box-sizing: border-box;
+ overflow: hidden;
+ min-width: 220px;
+}
+
+/* Force NG-Zorro internal elements to be invisible and occupy full area */
+.upload-inline-box-emergency,
+.upload-inline-box-emergency .ant-upload,
+.upload-inline-box-emergency .ant-upload-drag,
+.upload-inline-box-emergency .ant-upload-drag-container {
+width: 100% !important;
+height: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+}
+
+/* Remove dashed inner pseudo-elements or dotted borders */
+.upload-inline-box-emergency .ant-upload-drag-container::before,
+.upload-inline-box-emergency .ant-upload-drag-container::after {
+display: none !important;
+}
+
+/* Hide default internal icon/text */
+.upload-inline-box-emergency .ant-upload-drag-icon,
+.upload-inline-box-emergency .ant-upload-text,
+.upload-inline-box-emergency p,
+.upload-inline-box-emergency .ant-upload-drag-container>* {
+ display: none !important;
+}
+.actions-eval {
+  display: flex;
+  align-items: center; /* Centers items vertically */
+  justify-content: center; /* CRITICAL: Centers items horizontally */
+  gap: 3px;
+}
+
+
+/* ──────────────────────────────
+   CUSTOM STEPPER LINES
+──────────────────────────────── */
+
+.stepper-wrapper {
+  position: relative;
+}
+
+/* Grey full line (LTR default) */
+.stepper-line {
+  position: absolute;
+  width: 890px;
+  top: 35px;
+  left: 90px; /* LTR */
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 1;
+}
+
+/* Blue progress line (LTR default) */
+.stepper-progress {
+  position: absolute;
+  top: 35px;
+  left: 90px; /* LTR */
+  height: 2px;
+  background-color: #1677ff;
+  z-index: 2;
+  transition: width 0.3s ease;
+}
+
+
+
+
+/* ──────────────────────────────
+   RTL (Arabic) SUPPORT
+──────────────────────────────── */
+
+:host-context([dir="rtl"]) .stepper-line {
+  left: auto !important;
+  right: 90px !important; /* RTL */
+}
+
+:host-context([dir="rtl"]) .stepper-progress {
+  left: auto !important;
+  right: 90px !important; /* RTL */
+}
+
+/* Steps layout in RTL */
+:host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
+  text-align: center !important;
+  direction: rtl !important;
+}
+
+/* Make circles layout RTL */
+:host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
+  flex-direction: row-reverse !important;
+}
+
+
+/* ──────────────────────────────
+   STEPPER CARD
+──────────────────────────────── */
+
+.stepper-card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-top: -10px;
+  justify-content:center;
+}
+
+
+/* ──────────────────────────────
+   NG-ZORRO – REMOVE DEFAULT LINES
+──────────────────────────────── */
+
+:host ::ng-deep .ant-steps-item-tail,
+:host ::ng-deep .ant-steps-item-tail::after,
+:host ::ng-deep .ant-steps-item::after {
+  display: none !important;
+}
+
+/* Step title */
+:host ::ng-deep .ant-steps-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Active circle */
+:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+  background-color: #005bbd !important;
+  border-color: #005bbd !important;
+  color: #fff !important;
+}
+
+/* Circles above line */
+:host ::ng-deep .ant-steps-item-icon {
+  position: relative;
+  z-index: 3 !important;
+}
+
+:host ::ng-deep .ant-steps {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fixed spacing between circles */
+.simple-stepper .ant-steps-item {
+  width: 223.5px !important;
+  flex: 0 0 223.5px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center;
+  align-content:flex-start;
+  justify-content:flex-start;
+}
+
+/* Circle size */
+.simple-stepper .ant-steps-item .ant-steps-item-icon {
+  height: 28px !important;
+  width: 28px !important;
+  line-height: 28px !important;
+}
+
+/* Remove default connector line */
+:host ::ng-deep .ant-steps-item-title::after {
+  display: none !important;
+  border: none !important;
+  background: transparent !important;
+  content: none !important;
+}
+
+
+/* ──────────────────────────────
+   RESPONSIVE
+──────────────────────────────── */
+
+@media (max-width: 900px) {
+  .simple-stepper .ant-steps-item {
+    min-width: 90px !important;
+  }
+  .simple-stepper .ant-steps-item .ant-steps-item-title {
+    font-size: 12px;
+  }
+}
+.stepper-center{
+  border:1px solid #0000
+}
+
+:host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  align-items: center !important;
+}
+:host ::ng-deep .ant-steps-item-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+//sow label 
+.bold-label {
+  font-weight: 600 !important; 
+  font-weight: 600 !important;   
+  font-size: 18px;               
+  color: #333;  
+}

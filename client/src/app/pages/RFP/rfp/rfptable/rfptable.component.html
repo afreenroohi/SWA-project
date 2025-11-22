@@ -1,15 +1,14 @@
-<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="5"
   [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
   [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
   <thead>
     <tr>
-      <th *ngFor="let column of listOfColumn; index as i" [nzSortFn]="column.sortFn" [nzSortDirections]="column.sortDirections"
-        [nzCustomFilter]="column.title === 'Project Name'"
+      <th *ngFor="let column of listOfColumn; index as i" [nzSortFn]="column.sortFn"
+        [nzSortDirections]="column.sortDirections" [nzCustomFilter]="column.title === 'Project Name'"
         [nzFilterMultiple]="column.filterMultiple"
         [nzFilters]="cs.userLanguage === 'en' ? column.listOfFilter : column.listOfFilterAr"
-        [nzFilterFn]="column.filterFn"
-        [ngStyle]="{'width': i===listOfColumn.length-1 ? '19%' : '' }">
+        [nzFilterFn]="column.filterFn" [ngStyle]="{'width': i===listOfColumn.length-1 ? '19%' : '' }">
         {{ cs.userLanguage === 'en'? column.title : column.titleAr }}
         <nz-filter-trigger *ngIf="column.title === 'Project Name' " [(nzVisible)]="visible"
           [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
@@ -34,18 +33,18 @@
 
       <!--applicable for manager dashboad-->
       <td *ngIf="Action === 'MG'">{{ data.DeptText }}</td>
-      <td *ngIf="Action === 'MG'">{{ cs.userLanguage === 'en' ? 
-      data.WfPendingDpt : data.WfPendingDptAr }}</td>
-      <td *ngIf="Action === 'MG' || Action === 'reopen' || Action === 'edit'"
-      >{{ cs.userLanguage === 'en' ? data.WfPendUsrEn : data.WfPendUsrAr }}</td>
+      <td *ngIf="Action === 'MG'">{{ cs.userLanguage === 'en' ?
+        data.WfPendingDpt : data.WfPendingDptAr }}</td>
+      <td *ngIf="Action === 'MG' || Action === 'reopen' || Action === 'edit'">{{ cs.userLanguage === 'en' ?
+        data.WfPendUsrEn : data.WfPendUsrAr }}</td>
       <!--end of columns for manager dashboad-->
 
 
       <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td>
-      <td [ngStyle]="{
+      <!-- <td [ngStyle]="{
         color: data.SlaInd === 'N' ? 'red' : 'green'
-      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td>
-      
+      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td> -->
+
       <td style="padding: 0%; padding-inline: 0.5%;">
         <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 0%;"
           (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
@@ -92,6 +91,12 @@
           <span nz-icon nzType="diff"></span>
         </button> -->
       </td>
+
+      <!-- <td>
+        <nz-switch [(ngModel)]="data.isReAnnounced" (ngModelChange)="onReAnnouncedChange(data)">
+        </nz-switch>
+      </td> -->
+
     </tr>
   </tbody>
 </nz-table>
