@@ -192,6 +192,12 @@ export class CreateRFPComponent implements OnInit {
   showDirectPurchaseField: boolean = false;
   showLimitedField: boolean = false;
   isPrivateSelected: boolean = false;
+  selectedBundleIndex: number | null = null;
+
+  workforceRows: any[] = [{}];
+  materialsRows: any[] = [{}];
+  equipmentRows: any[] = [{}];
+  serviceRows: any[] = [{}];
 
   boqListData: any;
   boqList?: FormArray;
@@ -933,6 +939,10 @@ toggleExpand(index: number): void {
     return this.rfpForm.get('evalCriteriaItems') as FormArray;
   }
 
+  get competitionFragmentationItems(): FormArray {
+    return this.rfpForm.get('competitionFragmentationItems') as FormArray;
+  }
+
   committeeMembers = [
     { role: 'Project Director', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
@@ -1032,6 +1042,81 @@ toggleExpand(index: number): void {
     });
   }
 
+  createCompetitionFragmentationRow(): FormGroup {
+    return this.fb.group({
+      package: ['', Validators.required],
+      description: ['', Validators.required],
+      classificationField: ['', Validators.required]
+    });
+  }
+
+  addCompetitionFragmentationItem(index: number): void {
+    this.competitionFragmentationItems.insert(index + 1, this.createCompetitionFragmentationRow());
+  }
+
+  deleteCompetitionFragmentationItem(index: number): void {
+    if (this.competitionFragmentationItems.length > 1) {
+      this.competitionFragmentationItems.removeAt(index);
+    }
+  }
+
+  onCompetitionFragmentationChange(value: boolean): void {
+    const noOfYearsControl = this.rfpForm.get('noOfYears');
+    if (value) {
+      noOfYearsControl?.setValidators([Validators.required]);
+      this.selectedBundleIndex = 0;
+    } else {
+      noOfYearsControl?.clearValidators();
+      noOfYearsControl?.setValue('');
+      this.selectedBundleIndex = null;
+    }
+    noOfYearsControl?.updateValueAndValidity();
+  }
+
+  selectBundle(index: number): void {
+    this.selectedBundleIndex = index;
+  }
+
+  addWorkforceRow(index: number): void {
+    this.workforceRows.splice(index + 1, 0, {});
+  }
+
+  deleteWorkforceRow(index: number): void {
+    if (this.workforceRows.length > 1) {
+      this.workforceRows.splice(index, 1);
+    }
+  }
+
+  addMaterialsRow(index: number): void {
+    this.materialsRows.splice(index + 1, 0, {});
+  }
+
+  deleteMaterialsRow(index: number): void {
+    if (this.materialsRows.length > 1) {
+      this.materialsRows.splice(index, 1);
+    }
+  }
+
+  addEquipmentRow(index: number): void {
+    this.equipmentRows.splice(index + 1, 0, {});
+  }
+
+  deleteEquipmentRow(index: number): void {
+    if (this.equipmentRows.length > 1) {
+      this.equipmentRows.splice(index, 1);
+    }
+  }
+
+  addServiceRow(index: number): void {
+    this.serviceRows.splice(index + 1, 0, {});
+  }
+
+  deleteServiceRow(index: number): void {
+    if (this.serviceRows.length > 1) {
+      this.serviceRows.splice(index, 1);
+    }
+  }
+
   toggleSubCriteriaView(index: number) {
     const item = this.evalCriteriaItems.at(index);
     const currentValue = item.get('showSubCriteria')?.value;
@@ -1129,6 +1214,9 @@ toggleExpand(index: number): void {
       materialItems: this.fb.array([this.createMaterialRow()]),
       equipmentItems: this.fb.array([this.createEquipmentRow()]),
       evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
+      competitionFragmentation: [false],
+      noOfYears: [''],
+      competitionFragmentationItems: this.fb.array([this.createCompetitionFragmentationRow()]),
 
       // scope of work
       MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),

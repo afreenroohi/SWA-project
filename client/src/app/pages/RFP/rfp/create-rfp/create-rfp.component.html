@@ -2041,9 +2041,337 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Bill of Quantity---- -->
-      <nz-collapse *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
+      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" nzHeader="Bill of Quantity">
+
+          <!-- Competition Fragmentation Toggle -->
+          <div class="col-12 my-3">
+            <div class="toggle-row info-box boq-toggle">
+              <label class="toggle-label boq-label">
+                <i nz-icon nzType="appstore" nzTheme="outline" style="margin-right: 8px; color: #1f4e79;"></i>
+                Competition Fragmentation
+              </label>
+              <nz-switch formControlName="competitionFragmentation" (ngModelChange)="onCompetitionFragmentationChange($event)"></nz-switch>
+            </div>
+          </div>
+
+          <!-- No of Years Dropdown -->
+          <div class="col-4 my-1">
+            <nz-form-label nzRequired for="noOfYears" class="boq-field-label">No of Years</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear>
+                <nz-option nzValue="1" nzLabel="One or less than one year"></nz-option>
+                <nz-option nzValue="2" nzLabel="Two years"></nz-option>
+                <nz-option nzValue="3" nzLabel="Three years"></nz-option>
+                <nz-option nzValue="4" nzLabel="Four years"></nz-option>
+                <nz-option nzValue="5" nzLabel="Five years"></nz-option>
+              </nz-select>
+              <small *ngIf="rfpForm.controls.noOfYears.touched && rfpForm.controls.noOfYears.hasError('required')" 
+                style="margin-top: 8px; color: red">
+                {{ "RFP.FieldIsRequired" | translate }}
+              </small>
+            </nz-form-control>
+          </div>
+
+          <!-- Competition Fragmentation Table -->
+          <div class="col-12 my-3" *ngIf="rfpForm.get('competitionFragmentation')?.value">
+            <nz-form-label nzRequired class="boq-section-title">
+              <i nz-icon nzType="table" nzTheme="outline" style="margin-right: 8px;"></i>
+              Competition Fragmentation Details
+            </nz-form-label>
+
+            <table class="table table-bordered boq-table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Package</th>
+                  <th>Description</th>
+                  <th>Classification Field</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="competitionFragmentationItems">
+                <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
+                  <td>{{ i + 1 }}</td>
+                  <td><input nz-input formControlName="package" placeholder="Enter package" /></td>
+                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description"></textarea></td>
+                  <td><input nz-input formControlName="classificationField" placeholder="Enter classification" /></td>
+                  <td class="text-center">
+                    <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" 
+                        (click)="addCompetitionFragmentationItem(i)"></i>
+                      <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" 
+                        *ngIf="competitionFragmentationItems.length > 1" 
+                        (click)="deleteCompetitionFragmentationItem(i)"></i>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bundle Buttons (Horizontal) -->
+          <div class="col-12 my-3" *ngIf="rfpForm.get('competitionFragmentation')?.value && competitionFragmentationItems.length > 0">
+            <h5 class="boq-bundle-title">
+              <i nz-icon nzType="folder-open" nzTheme="outline" style="margin-right: 8px;"></i>
+              The Bundle
+            </h5>
+            <div class="d-flex gap-2 flex-wrap">
+              <button *ngFor="let bundle of competitionFragmentationItems.controls; let bundleIndex = index" 
+                nz-button 
+                [nzType]="selectedBundleIndex === bundleIndex ? 'primary' : 'default'"
+                (click)="selectBundle(bundleIndex)">
+                {{ bundle.get('package')?.value || 'Package ' + (bundleIndex + 1) }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Single Slider Section for Selected Bundle -->
+          <div class="col-12 my-4" *ngIf="rfpForm.get('competitionFragmentation')?.value && selectedBundleIndex !== null">
+            <h5 class="boq-quantity-title">
+              <i nz-icon nzType="database" nzTheme="outline" style="margin-right: 8px;"></i>
+              Quantity Tables
+            </h5>
+            <nz-collapse [nzExpandIconPosition]="'right'">
+              <!-- Workforce - General Model -->
+              <nz-collapse-panel nzHeader="Workforce - General Model">
+                <div class="d-flex justify-content-end gap-2 mb-3">
+                  <button nz-button nzType="default">
+                    <i nz-icon nzType="import" nzTheme="outline"></i>
+                    Import
+                  </button>
+                  <button nz-button nzType="default">
+                    <i nz-icon nzType="export" nzTheme="outline"></i>
+                    Export
+                  </button>
+                </div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr style="background-color: #1f4e79; color: white;">
+                      <th rowspan="2">Job Title</th>
+                      <th rowspan="2">Item description</th>
+                      <th rowspan="2">Least eligible for admission</th>
+                      <th rowspan="2">Minimum years of experience</th>
+                      <th colspan="3">First Year</th>
+                      <th colspan="3">Second Year</th>
+                      <th colspan="3">Third Year</th>
+                      <th colspan="3">Fourth Year</th>
+                      <th colspan="3">Fifth Year</th>
+                      <th rowspan="2">Action</th>
+                    </tr>
+                    <tr style="background-color: #1f4e79; color: white;">
+                      <th>No.</th>
+                      <th>Expected basic working hours</th>
+                      <th>Expected number of overtime hours</th>
+                      <th>No.</th>
+                      <th>Expected basic working hours</th>
+                      <th>Expected number of overtime hours</th>
+                      <th>No.</th>
+                      <th>Expected basic working hours</th>
+                      <th>Expected number of overtime hours</th>
+                      <th>No.</th>
+                      <th>Expected basic working hours</th>
+                      <th>Expected number of overtime hours</th>
+                      <th>No.</th>
+                      <th>Expected basic working hours</th>
+                      <th>Expected number of overtime hours</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of workforceRows; let i = index">
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td class="text-center">
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addWorkforceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="workforceRows.length > 1" (click)="deleteWorkforceRow(i)" style="cursor: pointer;"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </nz-collapse-panel>
+
+              <!-- Materials - General Model -->
+              <nz-collapse-panel nzHeader="Materials - General Model">
+                <div class="d-flex justify-content-end gap-2 mb-3">
+                  <button nz-button nzType="default">
+                    <i nz-icon nzType="import" nzTheme="outline"></i>
+                    Import
+                  </button>
+                  <button nz-button nzType="default">
+                    <i nz-icon nzType="export" nzTheme="outline"></i>
+                    Export
+                  </button>
+                </div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr style="background-color: #1f4e79; color: white;">
+                      <th>Serial Number</th>
+                      <th>First Year Quantity</th>
+                      <th>Second Year Quantity</th>
+                      <th>Third Year Quantity</th>
+                      <th>Fourth Year Quantity</th>
+                      <th>Attachments</th>
+                      <th>Structural Code</th>
+                      <th>Product from Mandatory List</th>
+                      <th>Specifications</th>
+                      <th>Item Description</th>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                      <th>Unit of Measurement</th>
+                      <th>Category</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of materialsRows; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input placeholder="No attachments" /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input placeholder="no" /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td class="text-center">
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addMaterialsRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="materialsRows.length > 1" (click)="deleteMaterialsRow(i)" style="cursor: pointer;"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </nz-collapse-panel>
+
+                <!-- Equipment and Devices - General Model -->
+                <nz-collapse-panel nzHeader="Equipment and Devices - General Model">
+                  <div class="d-flex justify-content-end gap-2 mb-3">
+                    <button nz-button nzType="default">
+                      <i nz-icon nzType="import" nzTheme="outline"></i>
+                      Import
+                    </button>
+                    <button nz-button nzType="default">
+                      <i nz-icon nzType="export" nzTheme="outline"></i>
+                      Export
+                    </button>
+                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr style="background-color: #1f4e79; color: white;">
+                        <th>Serial Number</th>
+                        <th>First Year Quantity</th>
+                        <th>Second Year Quantity</th>
+                        <th>Third Year Quantity</th>
+                        <th>Fourth Year Quantity</th>
+                        <th>Attachments</th>
+                        <th>Structural Code</th>
+                        <th>Product from Mandatory List</th>
+                        <th>Specifications</th>
+                        <th>Item Description</th>
+                        <th>Unit of Measurement</th>
+                        <th>Item</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of equipmentRows; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input placeholder="No attachments" /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input placeholder="no" /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td class="text-center">
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addEquipmentRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="equipmentRows.length > 1" (click)="deleteEquipmentRow(i)" style="cursor: pointer;"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </nz-collapse-panel>
+
+                <!-- Service and Output - General Model -->
+                <nz-collapse-panel nzHeader="Service and Output - General Model">
+                  <div class="d-flex justify-content-end gap-2 mb-3">
+                    <button nz-button nzType="default">
+                      <i nz-icon nzType="import" nzTheme="outline"></i>
+                      Import
+                    </button>
+                    <button nz-button nzType="default">
+                      <i nz-icon nzType="export" nzTheme="outline"></i>
+                      Export
+                    </button>
+                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr style="background-color: #1f4e79; color: white;">
+                        <th>Serial Number</th>
+                        <th>First Year Quantity</th>
+                        <th>Second Year Quantity</th>
+                        <th>Third Year Quantity</th>
+                        <th>Fourth Year Quantity</th>
+                        <th>Attachments</th>
+                        <th>Specifications</th>
+                        <th>Item Description</th>
+                        <th>Unit of Measurement</th>
+                        <th>Item</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of serviceRows; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input placeholder="No attachments" /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td class="text-center">
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addServiceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="serviceRows.length > 1" (click)="deleteServiceRow(i)" style="cursor: pointer;"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
 
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
