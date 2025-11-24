@@ -1038,27 +1038,46 @@ color: #ffffff !important;
   border-color: #cccccc !important;
 }
 
-/* RTL Stepper Fixes */
-:host ::ng-deep .ant-steps[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail {
+/* RTL Stepper Fixes - Line starts after first step, not before */
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:first-child .ant-steps-item-tail {
+  display: none !important;
+}
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:not(:first-child) .ant-steps-item-tail {
   left: 0 !important;
   right: 50% !important;
   transform: translateX(50%) !important;
+  display: block !important;
 }
 
-:host ::ng-deep .ant-steps[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail::after {
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:not(:first-child) .ant-steps-item-tail::after {
   left: auto !important;
   right: 0 !important;
   width: 100% !important;
   border-top: 1px solid #cccccc !important;
+  content: '' !important;
+  display: block !important;
 }
 
-:host ::ng-deep .ant-steps[dir="rtl"] .ant-steps-item-title {
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-title {
   text-align: center !important;
 }
 
-:host ::ng-deep .ant-steps[dir="rtl"] .ant-steps-item-content {
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
   text-align: center !important;
   margin: 0 !important;
+}
+
+/* Force RTL stepper line visibility */
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-horizontal .ant-steps-item:not(:first-child)::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 14px !important;
+  right: 50% !important;
+  left: 0 !important;
+  height: 1px !important;
+  background: #cccccc !important;
+  z-index: 1 !important;
 }
 
 
