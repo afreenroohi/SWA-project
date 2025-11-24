@@ -106,35 +106,35 @@
       <div class="stepper-card mt-4">
         <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
 
-          <nz-step nzTitle="Basic Information" (click)="goto(0)" 
+          <nz-step [nzTitle]="'RFP.Basic Information'|translate" (click)="goto(0)" 
                    [ngClass]="{'step-disabled': false}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': basicInfoValid, 'invalid': !basicInfoValid}"></span>
             </ng-template>
           </nz-step>
           
-          <nz-step nzTitle="Scope of Work" (click)="goto(1)" 
+          <nz-step [nzTitle]="'RFP.Scope of Work'|translate" (click)="goto(1)" 
                    [ngClass]="{'step-disabled': !basicInfoValid}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid}"></span>
             </ng-template>
           </nz-step>
           
-          <nz-step nzTitle="Standards" (click)="goto(2)" 
+          <nz-step [nzTitle]="'RFP.Standards'|translate" (click)="goto(2)" 
                    [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
             </ng-template>
           </nz-step>
           
-          <nz-step nzTitle="Bill of Quantity" (click)="goto(3)" 
+          <nz-step [nzTitle]="'RFP.Bill of Quantity'|translate" (click)="goto(3)" 
                    [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid}"></span>
             </ng-template>
           </nz-step>
           
-          <nz-step nzTitle="Attachments" (click)="goto(4)" 
+          <nz-step [nzTitle]="'RFP.Attachments'|translate" (click)="goto(4)" 
                    [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
           </nz-step>
 
