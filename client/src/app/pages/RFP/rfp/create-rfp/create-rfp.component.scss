@@ -1038,25 +1038,29 @@ color: #ffffff !important;
   border-color: #cccccc !important;
 }
 
-/* RTL Stepper Fixes - Line starts after first step, not before */
-:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:first-child .ant-steps-item-tail {
+/* RTL Stepper Fixes */
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail {
+  display: block !important;
+  position: absolute !important;
+  top: 14px !important;
+  left: 60% !important;
+  right: 50px !important;
+  width: calc(100% - 14px) !important;
+  height: 1px !important;
+  background: #f0f0f0 !important;
+}
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
+  background: #1890ff !important;
+}
+
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail::after {
   display: none !important;
 }
 
-:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:not(:first-child) .ant-steps-item-tail {
-  left: 0 !important;
-  right: 50% !important;
-  transform: translateX(50%) !important;
-  display: block !important;
-}
-
-:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:not(:first-child) .ant-steps-item-tail::after {
-  left: auto !important;
-  right: 0 !important;
-  width: 100% !important;
-  border-top: 1px solid #cccccc !important;
-  content: '' !important;
-  display: block !important;
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:last-child .ant-steps-item-tail {
+  display: none !important;
 }
 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-title {
@@ -1066,18 +1070,6 @@ color: #ffffff !important;
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
   text-align: center !important;
   margin: 0 !important;
-}
-
-/* Force RTL stepper line visibility */
-:host-context([dir="rtl"]) ::ng-deep .ant-steps-horizontal .ant-steps-item:not(:first-child)::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 14px !important;
-  right: 50% !important;
-  left: 0 !important;
-  height: 1px !important;
-  background: #cccccc !important;
-  z-index: 1 !important;
 }
 
 
@@ -2538,18 +2530,23 @@ display: none !important;
 
 /* Normal input height */
 .equal-height {
-  height: 36px !important;
-  line-height: 36px !important;
+  height: 50px !important;
+  line-height: 30px !important;
 }
 
 /* NG-Zorro number input height */
 :host ::ng-deep .equal-height-input-number .ant-input-number {
-  height: 36px !important;
+  height: 38px !important;
 }
 
 :host ::ng-deep .equal-height-input-number .ant-input-number-input {
-  height: 34px !important;
-  line-height: 34px !important;
+  height: 38px !important;
+  line-height: 38px !important;
   display: flex;
   align-items: center;
+}
+/* Center the placeholder text */
+:host ::ng-deep .equal-height-input-number .ant-input-number-input::placeholder {
+  //padding-bottom: 6px !important;  /* moves placeholder up visually */
+  display: inline-block;    
 }
