@@ -1080,8 +1080,12 @@ toggleExpand(index: number): void {
       this.selectedBundleIndex = 0;
     } else {
       noOfYearsControl?.clearValidators();
-      noOfYearsControl?.setValue('');
       this.selectedBundleIndex = null;
+      
+      // Keep only 1 row when toggle is disabled
+      while (this.competitionFragmentationItems.length > 1) {
+        this.competitionFragmentationItems.removeAt(this.competitionFragmentationItems.length - 1);
+      }
     }
     noOfYearsControl?.updateValueAndValidity();
   }

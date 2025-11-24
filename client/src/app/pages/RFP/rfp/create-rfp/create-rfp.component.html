@@ -1788,7 +1788,7 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse   [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
 
@@ -2133,7 +2133,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2166,7 +2166,7 @@
           </div>
 
           <!-- Competition Fragmentation Table -->
-          <div class="col-12 my-3" *ngIf="rfpForm.get('competitionFragmentation')?.value">
+          <div class="col-12 my-3">
             <nz-form-label nzRequired class="boq-section-title">
               <i nz-icon nzType="table" nzTheme="outline" style="margin-right: 8px;"></i>
               Competition Fragmentation Details
@@ -2179,7 +2179,7 @@
                   <th>Package</th>
                   <th>Description</th>
                   <th>Classification Field</th>
-                  <th>Action</th>
+                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value">Action</th>
                 </tr>
               </thead>
               <tbody formArrayName="competitionFragmentationItems">
@@ -2188,7 +2188,7 @@
                   <td><input nz-input formControlName="package" placeholder="Enter package" /></td>
                   <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description"></textarea></td>
                   <td><input nz-input formControlName="classificationField" placeholder="Enter classification" /></td>
-                  <td class="text-center">
+                  <td class="text-center" *ngIf="rfpForm.get('competitionFragmentation')?.value">
                     <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
                       <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" 
                         (click)="addCompetitionFragmentationItem(i)"></i>
@@ -2203,7 +2203,7 @@
           </div>
 
           <!-- Bundle Buttons (Horizontal) -->
-          <div class="col-12 my-3" *ngIf="rfpForm.get('competitionFragmentation')?.value && competitionFragmentationItems.length > 0">
+          <div class="col-12 my-3">
             <h5 class="boq-bundle-title">
               <i nz-icon nzType="folder-open" nzTheme="outline" style="margin-right: 8px;"></i>
               The Bundle
@@ -2219,7 +2219,7 @@
           </div>
 
           <!-- Single Slider Section for Selected Bundle -->
-          <div class="col-12 my-4" *ngIf="rfpForm.get('competitionFragmentation')?.value && selectedBundleIndex !== null">
+          <div class="col-12 my-4">
             <h5 class="boq-quantity-title">
               <i nz-icon nzType="database" nzTheme="outline" style="margin-right: 8px;"></i>
               Quantity Tables
@@ -2238,6 +2238,7 @@
                     Export
                   </button>
                 </div>
+                <div style="overflow-x: auto;">
                 <table class="table table-bordered">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
@@ -2284,6 +2285,7 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
               </nz-collapse-panel>
 
               <!-- Materials - General Model -->
