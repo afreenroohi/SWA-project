@@ -103,33 +103,45 @@
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
       <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
-      <div class="stepper-card mt-4 stepper-wrapper">
-       
-        <!-- Background grey full line --> <div class="stepper-line"></div>
-         <!-- Blue progress line (dynamic width set in TS) --> <div class="stepper-progress" [style.width.px]="progressPx"></div>
-          <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
-             <!-- Step 1 --> <nz-step (click)="goto(0)" [ngClass]="{'step-disabled': false}">
-              <ng-template nzStepTitle> {{ 'RFP.BasicInformation' | translate }} </ng-template>
-               <ng-template #nzIcon> <span class="validation-indicator" [ngClass]="{ 'valid': basicInfoValid, 'invalid': !basicInfoValid }">
-               </span> </ng-template> </nz-step>
-               <!-- Step 2 -->
-                <nz-step (click)="goto(1)" [ngClass]="{'step-disabled': !basicInfoValid}">
-                  <ng-template nzStepTitle> {{ 'RFP.ScopeOfWork' | translate }} </ng-template>
-                   <ng-template #nzIcon> <span class="validation-indicator" [ngClass]="{ 'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid }">
-                   </span> </ng-template> </nz-step>
-                   <!-- Step 3 -->
-                    <nz-step (click)="goto(2)" [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
-                      <ng-template nzStepTitle> {{ 'RFP.Standards' | translate }} </ng-template>
-                      <ng-template #nzIcon> <span class="validation-indicator" [ngClass]="{ 'valid': standardsValid, 'invalid': !standardsValid }">
- 
-                      </span> </ng-template> </nz-step> <!-- Step 4 --> <nz-step (click)="goto(3)" [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
-                        <ng-template nzStepTitle> {{ 'RFP.BillOfQuantity' | translate }} </ng-template>
-                        <ng-template #nzIcon> <span class="validation-indicator" [ngClass]="{ 'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid }"></span>
-                         </ng-template> </nz-step>
-                          <!-- Step 5 --> <nz-step (click)="goto(4)" [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
-                            <ng-template nzStepTitle> {{ 'RFP.Attachments' | translate }} </ng-template> </nz-step> </nz-steps>
-                           
-                           </div>
+      <div class="stepper-card mt-4">
+        <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
+
+          <nz-step nzTitle="Basic Information" (click)="goto(0)" 
+                   [ngClass]="{'step-disabled': false}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': basicInfoValid, 'invalid': !basicInfoValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Scope of Work" (click)="goto(1)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Standards" (click)="goto(2)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Bill of Quantity" (click)="goto(3)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
+            <ng-template #nzIcon>
+              <span class="validation-indicator" [ngClass]="{'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid}"></span>
+            </ng-template>
+          </nz-step>
+          
+          <nz-step nzTitle="Attachments" (click)="goto(4)" 
+                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
+          </nz-step>
+
+        </nz-steps>
+      </div>
+
+
 
 
       <!-- * Create RFP -->
@@ -1477,7 +1489,7 @@
                 <nz-form-label nzRequired for="ProjJust">
                   {{ "RFP.Work program" | translate }}</nz-form-label>
               </div>
-              <nz-form-control nzHasFeedback>
+              <nz-form-control >
                 <textarea rows="4" nz-input formControlName="ProjJust" class="enhanced-textarea"></textarea>
 
                 <small *ngIf="

@@ -247,6 +247,7 @@ export class CreateRFPComponent implements OnInit {
   step3 = true;
 
   step4 = true;
+  progressPercent = 0;
 
   invalidFileSize = false;
   invalidFileType = false;

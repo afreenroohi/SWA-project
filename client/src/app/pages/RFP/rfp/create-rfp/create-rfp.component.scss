@@ -795,276 +795,276 @@ background: rgba(217, 83, 79, 0.08);
 ──────────────────────────────── */
  
  
-.stepper-wrapper {
-  position: relative;
-}
- 
-/* Grey full line (LTR default) */
-.stepper-line {
-  position: absolute;
-  width: 890px;
-  top: 35px;
-  left: 90px; /* LTR */
-  height: 2px;
-  background-color: #e0e0e0;
-  z-index: 1;
-}
- 
-/* Blue progress line (LTR default) */
-.stepper-progress {
-  position: absolute;
-  top: 35px;
-  left: 90px; /* LTR */
-  height: 2px;
-  background-color: #1677ff;
-  z-index: 2;
-  transition: width 0.3s ease;
-}
- 
- 
- 
- 
-/* ──────────────────────────────
-   RTL (Arabic) SUPPORT
-──────────────────────────────── */
- 
-:host-context([dir="rtl"]) .stepper-line {
-  left: auto !important;
-  right: 90px !important; /* RTL */
-}
- 
-:host-context([dir="rtl"]) .stepper-progress {
-  left: auto !important;
-  right: 90px !important; /* RTL */
-}
- 
-/* Steps layout in RTL */
-:host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
-  text-align: center !important;
-  direction: rtl !important;
-}
- 
-/* Make circles layout RTL */
-:host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
-  flex-direction: row-reverse !important;
-}
- 
- 
-/* ──────────────────────────────
-   STEPPER CARD
-──────────────────────────────── */
- 
-.stepper-card {
-  width: 100%;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 18px 22px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px;
-  justify-content:center;
- 
-}
- 
- 
-/* ──────────────────────────────
-   NG-ZORRO – REMOVE DEFAULT LINES
-──────────────────────────────── */
- 
-:host ::ng-deep .ant-steps-item-tail,
-:host ::ng-deep .ant-steps-item-tail::after,
-:host ::ng-deep .ant-steps-item::after {
-  display: none !important;
-}
- 
-/* Step title */
-:host ::ng-deep .ant-steps-item-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #444;
-}
- 
-/* Active circle */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-  background-color: #005bbd !important;
-  border-color: #005bbd !important;
-  color: #fff !important;
-}
- 
-/* Circles above line */
-:host ::ng-deep .ant-steps-item-icon {
-  position: relative;
-  z-index: 3 !important;
-}
- 
-:host ::ng-deep .ant-steps {
-  position: relative;
-  z-index: 2;
-}
- 
-/* Fixed spacing between circles */
-.simple-stepper .ant-steps-item {
-  width: 223.5px !important;
-  flex: 0 0 223.5px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  text-align: center;
-  align-content:flex-start;
-  justify-content:flex-start;
-}
- 
-/* Circle size */
-.simple-stepper .ant-steps-item .ant-steps-item-icon {
-  height: 28px !important;
-  width: 28px !important;
-  line-height: 28px !important;
-}
- 
-/* Remove default connector line */
-:host ::ng-deep .ant-steps-item-title::after {
-  display: none !important;
-  border: none !important;
-  background: transparent !important;
-  content: none !important;
-}
- 
- 
-/* ──────────────────────────────
-   RESPONSIVE
-──────────────────────────────── */
- 
-@media (max-width: 900px) {
-  .simple-stepper .ant-steps-item {
-    min-width: 90px !important;
-  }
-  .simple-stepper .ant-steps-item .ant-steps-item-title {
-    font-size: 12px;
-  }
-}
-.stepper-center{
-  border:1px solid #0000
-}
- 
-:host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
-  display: flex !important;
-  justify-content: center !important;
-  width: 100% !important;
-  align-items: center !important;
-}
-:host ::ng-deep .ant-steps-item-container {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Step number and name styling */
-.step-number {
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #005bbd !important;
-  text-align: center !important;
-  margin-bottom: 2px !important;
-}
-
-.step-name {
-  font-size: 11px !important;
-  font-weight: 400 !important;
-  color: #666 !important;
-  text-align: center !important;
-  line-height: 1.2 !important;
-  white-space: nowrap;
-}
-
-/* Active step styling */
-:host ::ng-deep .ant-steps-item-active .step-number {
-  color: #005bbd !important;
-}
-
-:host ::ng-deep .ant-steps-item-active .step-name {
-  color: #005bbd !important;
-  font-weight: 500 !important;
-}
-
-/* Step description positioning */
-:host ::ng-deep .ant-steps-item-description {
-  margin-top: 8px !important;
-  text-align: center !important;
-}
- 
- 
-//  .stepper-card {
-// width: 100%;
-// background: #fff;
-// border: 1px solid #e5e5e5;
-// border-radius: 8px;
-// padding: 18px 22px;
-// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-//   margin-top: -10px; /* Example adjustment to move it up */
+// .stepper-wrapper {
+//   position: relative;
 // }
  
-// /* Keep NG-Zorro default stepper clean */
-// .simple-stepper {
-// width: 100%;
+// /* Grey full line (LTR default) */
+// .stepper-line {
+//   position: absolute;
+//   width: 890px;
+//   top: 35px;
+//   left: 90px; /* LTR */
+//   height: 2px;
+//   background-color: #e0e0e0;
+//   z-index: 1;
 // }
  
-// /* Style titles lightly */
+// /* Blue progress line (LTR default) */
+// .stepper-progress {
+//   position: absolute;
+//   top: 35px;
+//   left: 90px; /* LTR */
+//   height: 2px;
+//   background-color: #1677ff;
+//   z-index: 2;
+//   transition: width 0.3s ease;
+// }
+ 
+ 
+ 
+ 
+// /* ──────────────────────────────
+//    RTL (Arabic) SUPPORT
+// ──────────────────────────────── */
+ 
+// :host-context([dir="rtl"]) .stepper-line {
+//   left: auto !important;
+//   right: 90px !important; /* RTL */
+// }
+ 
+// :host-context([dir="rtl"]) .stepper-progress {
+//   left: auto !important;
+//   right: 90px !important; /* RTL */
+// }
+ 
+// /* Steps layout in RTL */
+// :host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
+//   text-align: center !important;
+//   direction: rtl !important;
+// }
+ 
+// /* Make circles layout RTL */
+// :host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
+//   flex-direction: row-reverse !important;
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    STEPPER CARD
+// ──────────────────────────────── */
+ 
+// .stepper-card {
+//   width: 100%;
+//   background: #fff;
+//   border: 1px solid #e5e5e5;
+//   border-radius: 8px;
+//   padding: 18px 22px;
+//   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px;
+//   justify-content:center;
+ 
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    NG-ZORRO – REMOVE DEFAULT LINES
+// ──────────────────────────────── */
+ 
+// :host ::ng-deep .ant-steps-item-tail,
+// :host ::ng-deep .ant-steps-item-tail::after,
+// :host ::ng-deep .ant-steps-item::after {
+//   display: none !important;
+// }
+ 
+// /* Step title */
 // :host ::ng-deep .ant-steps-item-title {
-// font-size: 14px;
-// font-weight: 500;
-// color: #444;
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #444;
 // }
  
-// /* Clean, not heavy circle */
-// :host ::ng-deep .ant-steps-item-icon {
-// width: 28px;
-// height: 28px;
-// border-radius: 50%;
-//   /* FIX: Ensure content (number) is centered */
-//   display: flex;
-//   align-items: center;      /* Vertically center */
-//   justify-content: center;  /* Horizontally center */
-// }
- 
-// /* Active step highlight */
+// /* Active circle */
 // :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-// background-color: #a4bd00 !important;
-// border-color: #005bbd !important;
-// color: #ffffff !important;
+//   background-color: #005bbd !important;
+//   border-color: #005bbd !important;
+//   color: #fff !important;
 // }
  
-// /* Default connecting lines */
-// :host ::ng-deep .ant-steps-item-tail::after {
-//   border-color: #cccccc !important;
+// /* Circles above line */
+// :host ::ng-deep .ant-steps-item-icon {
+//   position: relative;
+//   z-index: 3 !important;
+// }
+ 
+// :host ::ng-deep .ant-steps {
+//   position: relative;
+//   z-index: 2;
+// }
+ 
+// /* Fixed spacing between circles */
+// .simple-stepper .ant-steps-item {
+//   width: 223.5px !important;
+//   flex: 0 0 223.5px !important;
+//   padding: 0 !important;
+//   margin: 0 !important;
+//   text-align: center;
+//   align-content:flex-start;
+//   justify-content:flex-start;
+// }
+ 
+// /* Circle size */
+// .simple-stepper .ant-steps-item .ant-steps-item-icon {
+//   height: 28px !important;
+//   width: 28px !important;
+//   line-height: 28px !important;
+// }
+ 
+// /* Remove default connector line */
+// :host ::ng-deep .ant-steps-item-title::after {
+//   display: none !important;
+//   border: none !important;
+//   background: transparent !important;
+//   content: none !important;
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    RESPONSIVE
+// ──────────────────────────────── */
+ 
+// @media (max-width: 900px) {
+//   .simple-stepper .ant-steps-item {
+//     min-width: 90px !important;
+//   }
+//   .simple-stepper .ant-steps-item .ant-steps-item-title {
+//     font-size: 12px;
+//   }
+// }
+// .stepper-center{
+//   border:1px solid #0000
+// }
+ 
+// :host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
+//   display: flex !important;
+//   justify-content: center !important;
+//   width: 100% !important;
+//   align-items: center !important;
+// }
+// :host ::ng-deep .ant-steps-item-container {
+//   display: flex !important;
+//   flex-direction: column !important;
+//   align-items: center !important;
+//   justify-content: center !important;
 // }
 
-// /* Arabic RTL Stepper */
-// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item {
-//   text-align: right !important;
+// /* Step number and name styling */
+// .step-number {
+//   font-size: 14px !important;
+//   font-weight: 600 !important;
+//   color: #005bbd !important;
+//   text-align: center !important;
+//   margin-bottom: 2px !important;
 // }
 
-// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail {
-//   left: 50% !important;
-//   right: auto !important;
+// .step-name {
+//   font-size: 11px !important;
+//   font-weight: 400 !important;
+//   color: #666 !important;
+//   text-align: center !important;
+//   line-height: 1.2 !important;
+//   white-space: nowrap;
 // }
 
-// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail::after {
-//   left: 0 !important;
-//   right: auto !important;
-//   border-left: 1px solid #cccccc !important;
-//   border-right: none !important;
+// /* Active step styling */
+// :host ::ng-deep .ant-steps-item-active .step-number {
+//   color: #005bbd !important;
 // }
 
-// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-title {
-//   text-align: right !important;
-//   font-size: 13px !important;
+// :host ::ng-deep .ant-steps-item-active .step-name {
+//   color: #005bbd !important;
+//   font-weight: 500 !important;
 // }
 
-// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-content {
-//   text-align: right !important;
-//   margin-right: 48px !important;
-//   margin-left: 0 !important;
+// /* Step description positioning */
+// :host ::ng-deep .ant-steps-item-description {
+//   margin-top: 8px !important;
+//   text-align: center !important;
 // }
+ 
+ 
+ .stepper-card {
+width: 100%;
+background: #fff;
+border: 1px solid #e5e5e5;
+border-radius: 8px;
+padding: 18px 22px;
+box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-top: -10px; /* Example adjustment to move it up */
+}
+ 
+/* Keep NG-Zorro default stepper clean */
+.simple-stepper {
+width: 100%;
+}
+ 
+/* Style titles lightly */
+:host ::ng-deep .ant-steps-item-title {
+font-size: 14px;
+font-weight: 500;
+color: #444;
+}
+ 
+/* Clean, not heavy circle */
+:host ::ng-deep .ant-steps-item-icon {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+  /* FIX: Ensure content (number) is centered */
+  display: flex;
+  align-items: center;      /* Vertically center */
+  justify-content: center;  /* Horizontally center */
+}
+ 
+/* Active step highlight */
+:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+background-color: #a4bd00 !important;
+border-color: #005bbd !important;
+color: #ffffff !important;
+}
+ 
+/* Default connecting lines */
+:host ::ng-deep .ant-steps-item-tail::after {
+  border-color: #cccccc !important;
+}
+
+/* Arabic RTL Stepper */
+:host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item {
+  text-align: right !important;
+}
+
+:host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail {
+  left: 50% !important;
+  right: auto !important;
+}
+
+:host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail::after {
+  left: 0 !important;
+  right: auto !important;
+  border-left: 1px solid #cccccc !important;
+  border-right: none !important;
+}
+
+:host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-title {
+  text-align: right !important;
+  font-size: 13px !important;
+}
+
+:host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-content {
+  text-align: right !important;
+  margin-right: 48px !important;
+  margin-left: 0 !important;
+}
 
 
 /* ========== Responsive ========== */
@@ -2312,6 +2312,28 @@ color: #b52b27;
   height: 34px !important;
   line-height: 34px !important;
 }
+
+/* Subcriteria drawer - make Si no and Weightage boxes same width */
+::ng-deep .ant-drawer-body .col-5 {
+  width: 41.66666667% !important;
+  flex: 0 0 41.66666667% !important;
+  height: 20px;
+}
+:host ::ng-deep .ant-input-number {
+  height: 32px !important;     /* reduce container height */
+  line-height: 32px !important;
+  border-radius: 6px !important;
+}
+
+:host ::ng-deep .ant-input-number-input {
+  height: 32px !important;     /* reduce input field height */
+  line-height: 32px !important;
+  padding: 0 8px !important;   /* adjust internal padding */
+}
+
+:host ::ng-deep .ant-input-number-handler-wrap {
+  height: 100% !important;     /* reduce spinner height */
+}
 //emergency documents upload
 .upload-inline-content-emergency {
  position: absolute;
@@ -2456,4 +2478,14 @@ display: none !important;
 .ant-select-selection-placeholder {
   line-height: 22px !important;
   font-size: 14px !important;
+}
+
+/* Stepper circle color - green */
+::ng-deep .ant-steps-item-icon {
+  background-color: #52c41a !important;
+  border-color: #52c41a !important;
+}
+
+::ng-deep .ant-steps-item-icon .ant-steps-icon {
+  color: white !important;
 }
