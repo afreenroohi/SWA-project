@@ -120,7 +120,7 @@
             </ng-template>
           </nz-step>
           
-          <nz-step nzTitle="Standards" (click)="goto(2)" 
+          <nz-step nzTitle="Technical Evaluation Criteria" (click)="goto(2)" 
                    [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
