@@ -2133,7 +2133,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse  *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
