@@ -338,7 +338,7 @@ export class CreateRFPComponent implements OnInit {
   }
 
   get standardsValid(): boolean {
-    return this.TechReqListData.length > 0 && this.EvalListData.length > 0;
+    return this.TechReqListData.length > 0 && this.evalCriteriaItems.length > 0;
   }
 
   get billOfQuantityValid(): boolean {
@@ -636,7 +636,17 @@ export class CreateRFPComponent implements OnInit {
     }
     console.log(this.subCriterias);
   }
-
+deleteCriteria(index: number) {
+  this.modal.confirm({
+    nzTitle: 'Are you sure you want to delete this criteria?',
+    nzOkText: 'Yes',
+    nzOkType: 'primary',
+    nzOnOk: () => {
+      this.evalCriteriaItems.removeAt(index);
+    },
+    nzCancelText: 'No'
+  });
+}
   deleteSubCriteria(index: number) {
     this.subCriterias.removeAt(index);
     this.subCriterias.controls.slice(index).forEach((subCriteria, i) => {
@@ -2524,29 +2534,41 @@ saveEditTechReq() {
       this.editEval(index);
     }
   }
+getTotalWeightage(): number {
+  return this.evalCriteriaItems.controls
+    .map(ctrl => Number(ctrl.get('Percentage')?.value || 0))
+    .reduce((acc, v) => acc + v, 0);
+}
+openSubCriteriaForRow(index: number) {
+  const total = this.getTotalWeightage();
 
-  openSubCriteriaForRow(index: number) {
-    const item = this.evalCriteriaItems.at(index);
-    // const subCriFlg = item.get('SubCriFlg')?.value;
-    const subCriFlg = "X";
-    
-    if (subCriFlg === 'X') {
-      this.evalEditIndex = index;
-      const percentage = item.get('Percentage')?.value || 100;
-      
-      this.rfpForm.controls.EvalCriteria.patchValue({
-        Percentage: percentage,
-        ItemNo: (index + 1).toString()
-      });
-      
-      this.subCriterias.clear();
-      this.subCriterias.push(this.initialSubCriteria);
-      this.isSubCriteria = true;
-    } else {
-      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
-    }
+  // If total > 100 -> block and show message
+  if (total > 100) {
+    this.cs.createMessage('error', `Total Weightage exceeds 100 (current: ${total}). Please adjust values.`);
+    this.isSubCriteria = false;
+    this.subCriterias.clear();
+    return;
   }
 
+  const item = this.evalCriteriaItems.at(index);
+  const subCriFlg = "X"; // your existing logic
+
+  if (subCriFlg === 'X') {
+    this.evalEditIndex = index;
+    const percentage = Number(item.get('Percentage')?.value || 0);
+
+    this.rfpForm.controls.EvalCriteria.patchValue({
+      Percentage: percentage,
+      ItemNo: (index + 1).toString()
+    });
+
+    this.subCriterias.clear();
+    this.subCriterias.push(this.initialSubCriteria);
+    this.isSubCriteria = true;
+  } else {
+    this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
+  }
+}
   // edit evaluation criteria from group
   editEval(index: number) {
     this.evalEditIndex = index;

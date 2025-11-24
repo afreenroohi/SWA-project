@@ -329,7 +329,7 @@ margin-top: 6px;
 
 .attachment-list {
   margin-bottom: 2px;
-  margin-top: 3px;
+  margintop: 3px;
 }
 
 /* Uploaded files list styling */
@@ -724,72 +724,72 @@ background: rgba(217, 83, 79, 0.08);
     color: #333;
   }
 }
-// /* Stepper Card Styles */
-.stepper-card {
-width: 100%;
-background: #fff;
-border: 1px solid #e5e5e5;
-border-radius: 8px;
-padding: 18px 22px;
-box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px; /* Example adjustment to move it up */
-}
+// // /* Stepper Card Styles */
+// .stepper-card {
+// width: 100%;
+// background: #fff;
+// border: 1px solid #e5e5e5;
+// border-radius: 8px;
+// padding: 18px 22px;
+// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px; /* Example adjustment to move it up */
+// }
  
-/* Keep NG-Zorro default stepper clean */
-.simple-stepper {
-width: 100%;
-}
+// /* Keep NG-Zorro default stepper clean */
+// .simple-stepper {
+// width: 100%;
+// }
  
-/* Style titles lightly */
-:host ::ng-deep .ant-steps-item-title {
-font-size: 14px;
-font-weight: 500;
-color: #444;
-}
+// /* Style titles lightly */
+// :host ::ng-deep .ant-steps-item-title {
+// font-size: 14px;
+// font-weight: 500;
+// color: #444;
+// }
  
-/* Clean, not heavy circle */
-:host ::ng-deep .ant-steps-item-icon {
-width: 28px;
-height: 28px;
-border-radius: 50%;
-  /* FIX: Ensure content (number) is centered */
-  display: flex;
-  align-items: center;      /* Vertically center */
-  justify-content: center;  /* Horizontally center */
-}
+// /* Clean, not heavy circle */
+// :host ::ng-deep .ant-steps-item-icon {
+// width: 28px;
+// height: 28px;
+// border-radius: 50%;
+//   /* FIX: Ensure content (number) is centered */
+//   display: flex;
+//   align-items: center;      /* Vertically center */
+//   justify-content: center;  /* Horizontally center */
+// }
  
-/* Active step highlight */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-background-color: #005bbd !important;
-border-color: #005bbd !important;
-color: #fff !important;
-}
+// /* Active step highlight */
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+// background-color: #005bbd !important;
+// border-color: #005bbd !important;
+// color: #fff !important;
+// }
  
-/* Make connecting line subtle, NOT overridden */
-:host ::ng-deep .ant-steps-item-tail::after {
-border-color: #cccccc !important;
-}
-.btn-add {
-  margin-top: -2px;        /* pushes it slightly upward */
-  background-color: #0b6aa0 !important;
-  color: #ffffff !important;
-  border: 1px solid #0b6aa0 !important;
-  font-weight: 500;
-  min-width: 130px;
-  height: 38px;
-}
+// /* Make connecting line subtle, NOT overridden */
+// :host ::ng-deep .ant-steps-item-tail::after {
+// border-color: #cccccc !important;
+// }
+// .btn-add {
+//   margin-top: -2px;        /* pushes it slightly upward */
+//   background-color: #0b6aa0 !important;
+//   color: #ffffff !important;
+//   border: 1px solid #0b6aa0 !important;
+//   font-weight: 500;
+//   min-width: 130px;
+//   height: 38px;
+// }
  
-.btn-add:hover {
-  background-color: #0a5b87 !important;
-  border-color: #0a5b87 !important;
-}
+// .btn-add:hover {
+//   background-color: #0a5b87 !important;
+//   border-color: #0a5b87 !important;
+// }
  
-.btn-add[disabled] {
-  background-color: #f5f5f5 !important;
-  color: #bfbfbf !important;
-  border-color: #d9d9d9 !important;
-  cursor: not-allowed !important;
-}
+// .btn-add[disabled] {
+//   background-color: #f5f5f5 !important;
+//   color: #bfbfbf !important;
+//   border-color: #d9d9d9 !important;
+//   cursor: not-allowed !important;
+// }
  
  .stepper-card {
 width: 100%;
@@ -828,7 +828,7 @@ border-radius: 50%;
 :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
 background-color: #005bbd !important;
 border-color: #005bbd !important;
-color: #fff !important;
+color: #ffffff !important;
 }
  
 /* Make connecting line subtle, NOT overridden */
@@ -1436,3 +1436,261 @@ color: #b52b27;
   background: #fff;
 }
 .edit-btn:hover { background: rgba(11,106,160,0.04); }
+
+/* ========== SUBCRITERIA DRAWER STYLES ========== */
+
+/* Drawer title styling */
+.drawer-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%);
+  color: white;
+  border-radius: 6px;
+  margin: -16px -16px 0 -16px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(11, 106, 160, 0.15);
+}
+
+.drawer-title div {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Subcriteria form container */
+::ng-deep .ant-drawer-body {
+  padding: 24px !important;
+  background: linear-gradient(145deg, #f8fbff 0%, #ffffff 100%) !important;
+}
+
+/* Subcriteria form row styling */
+.subcriteria-form-row {
+  background: #ffffff;
+  border: 1px solid #e6f0ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(11, 106, 160, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.subcriteria-form-row:hover {
+  border-color: #0b6aa0;
+  box-shadow: 0 6px 20px rgba(11, 106, 160, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Form labels in subcriteria */
+::ng-deep .ant-drawer-body .ant-form-item-label > label {
+  color: #1f4e79 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+}
+
+/* Input styling in subcriteria */
+::ng-deep .ant-drawer-body input[nz-input],
+::ng-deep .ant-drawer-body .ant-input-number,
+::ng-deep .ant-drawer-body textarea {
+  border: 2px solid #e6f0ff !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  background: #fafcff !important;
+}
+
+::ng-deep .ant-drawer-body input[nz-input]:focus,
+::ng-deep .ant-drawer-body .ant-input-number:focus,
+::ng-deep .ant-drawer-body textarea:focus,
+::ng-deep .ant-drawer-body .ant-input-number-focused {
+  border-color: #0b6aa0 !important;
+  box-shadow: 0 0 0 3px rgba(11, 106, 160, 0.1) !important;
+  background: #ffffff !important;
+}
+
+/* Subcriteria action buttons */
+.subcriteria-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e6f0ff;
+}
+
+.subcriteria-add-btn {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%) !important;
+  border: none !important;
+  color: white !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-add-btn:hover {
+  background: linear-gradient(135deg, #389e0d 0%, #237804 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(82, 196, 26, 0.4) !important;
+}
+
+.subcriteria-delete-btn {
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%) !important;
+  border: none !important;
+  color: white !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-delete-btn:hover {
+  background: linear-gradient(135deg, #cf1322 0%, #a8071a 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(255, 77, 79, 0.4) !important;
+}
+
+/* Subcriteria footer styling */
+::ng-deep .ant-drawer-footer {
+  background: linear-gradient(145deg, #f8fbff 0%, #ffffff 100%) !important;
+  border-top: 1px solid #e6f0ff !important;
+  padding: 20px 24px !important;
+}
+
+.subcriteria-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.subcriteria-cancel-btn {
+  background: #ffffff !important;
+  color: #0b6aa0 !important;
+  border: 2px solid #0b6aa0 !important;
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-cancel-btn:hover {
+  background: #f0f7ff !important;
+  color: #005c99 !important;
+  border-color: #005c99 !important;
+  transform: translateY(-1px) !important;
+}
+
+.subcriteria-save-btn {
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%) !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(11, 106, 160, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-save-btn:hover {
+  background: linear-gradient(135deg, #005c99 0%, #004b80 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(11, 106, 160, 0.4) !important;
+}
+
+.subcriteria-save-btn:disabled {
+  background: #f5f5f5 !important;
+  color: #bfbfbf !important;
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Error message styling in subcriteria */
+::ng-deep .ant-drawer-body small {
+  color: #ff4d4f !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  margin-top: 4px !important;
+  display: block !important;
+}
+
+/* Subcriteria form item spacing */
+::ng-deep .ant-drawer-body .ant-form-item {
+  margin-bottom: 16px !important;
+}
+
+/* Serial number field styling */
+.subcriteria-serial {
+  background: #e6f0ff !important;
+  border-color: #91caff !important;
+  color: #1f4e79 !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+/* Percentage input styling */
+::ng-deep .ant-drawer-body .ant-input-number {
+  width: 100% !important;
+}
+
+::ng-deep .ant-drawer-body .ant-input-number-input {
+  text-align: center !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+}
+
+/* Description textarea styling */
+::ng-deep .ant-drawer-body textarea {
+  resize: vertical !important;
+  min-height: 60px !important;
+  line-height: 1.5 !important;
+}
+
+/* Responsive adjustments for subcriteria */
+@media (max-width: 768px) {
+  ::ng-deep .ant-drawer-body {
+    padding: 16px !important;
+  }
+  
+  .subcriteria-form-row {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .drawer-title {
+    margin: -16px -16px 0 -16px;
+    padding: 12px 16px;
+  }
+  
+  .drawer-title div {
+    font-size: 14px;
+  }
+}
+
+/* Animation for subcriteria items */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.subcriteria-form-row {
+  animation: slideInUp 0.3s ease-out;
+}
