@@ -120,7 +120,7 @@
             </ng-template>
           </nz-step>
           
-          <nz-step [nzTitle]="'RFP.Standards'|translate" (click)="goto(2)" 
+          <nz-step [nzTitle]="'RFP.Technical Evaluation Criteria'|translate" (click)="goto(2)" 
                    [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
             <ng-template #nzIcon>
               <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
@@ -1788,7 +1788,7 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse  *ngIf="showStandards" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse   [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
 
@@ -2133,7 +2133,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2965,7 +2965,7 @@
               <nz-form-label nzRequired for="SubItemNo">{{
                 "RFP.slNo" | translate
                 }}</nz-form-label>
-              <input nz-input formControlName="SubItemNo" />
+              <input class="equal-height" nz-input formControlName="SubItemNo" />
               <small *ngIf="
                   subCriteria.get('SubItemNo')?.touched &&
                   subCriteria.get('SubItemNo')?.invalid
@@ -2977,7 +2977,7 @@
               <nz-form-label nzRequired for="Percentage">{{
                 "RFP.Weightage" | translate
                 }}</nz-form-label>
-              <nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="
+              <nz-input-number class="equal-height" style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="
                   isSubCriteria
                     ? rfpForm?.controls?.EvalCriteria?.get('Percentage')
                         ?.value ?? 100
