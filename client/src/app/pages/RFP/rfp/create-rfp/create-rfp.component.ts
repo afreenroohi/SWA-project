@@ -1051,7 +1051,7 @@ toggleExpand(index: number): void {
       SubCriFlg: ['y', Validators.required],
       Descr: ['', Validators.required],
       subCriteriaList: [[]],
-      showSubCriteria: [false]
+      showSubCriteria: [true]
     });
   }
 
@@ -2639,7 +2639,7 @@ get progressWidth(): number {
       this.subCriterias.push(this.initialSubCriteria);
       return;
     }
-    
+   
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
     if (cond === 'sub') {
@@ -2657,8 +2657,10 @@ get progressWidth(): number {
             ...subCriteria,
             Percentage: subCriteria.Percentage.toString(),
             ItemNo: data.ItemNo,
-            SubItemNo: (index + 1).toString()
+            SubItemNo: (index + 1).toString(),
+           
           };
+          
         })
       }
     }
@@ -2696,6 +2698,8 @@ get progressWidth(): number {
     ...item,
     ItemNo: (index + 1).toString()
   }));
+
+  
  
   this.srNoTechReq = this.TechReqListData.length + 1;
  
@@ -3009,6 +3013,7 @@ openSubCriteriaForRow(index: number) {
     ]);
     this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
     this.isSubCriteriaEdit = false;
+
   }
 
   // add manpower from group
