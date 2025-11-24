@@ -3549,8 +3549,6 @@ openSubCriteriaForRow(index: number) {
 
     }
 
-
-
     if (this.TechReqListData.length) {
       this.rfpForm.controls['TechReq'].get('Descr')?.removeValidators([
         Validators.required,

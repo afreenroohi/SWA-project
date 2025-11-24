@@ -994,13 +994,21 @@ background: rgba(217, 83, 79, 0.08);
  
  
  .stepper-card {
-width: 100%;
-background: #fff;
-border: 1px solid #e5e5e5;
-border-radius: 8px;
-padding: 18px 22px;
-box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px; /* Example adjustment to move it up */
+// width: 100%;
+// background: #fff;
+// border: 1px solid #e5e5e5;
+// border-radius: 8px;
+// padding: 18px 22px;
+// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px; /* Example adjustment to move it up */
+//added by essaki
+   width: 100%;
+    background: #EDEDED;
+    border: 2px solid #000066;
+    border-radius: 0px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    margin-top: -10px;
 }
  
 /* Keep NG-Zorro default stepper clean */
@@ -1115,9 +1123,11 @@ background: #fcfcfc !important;
 }
 
 ::ng-deep .ant-collapse-header {
-background: #f1f1f1 !important;
-font-weight: 700;
+//background: #f1f1f1 !important;
+background: #005c99 !important;
+font-weight: 500;
 font-family: 'Roboto';
+color: white !important
 }
 
 // .cr-number-container {
