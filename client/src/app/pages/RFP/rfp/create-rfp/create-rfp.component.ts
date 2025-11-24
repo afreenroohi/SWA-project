@@ -193,6 +193,7 @@ export class CreateRFPComponent implements OnInit {
   showLimitedField: boolean = false;
   isPrivateSelected: boolean = false;
   selectedBundleIndex: number | null = null;
+  selectedYears: number = 1;
 
   workforceRows: any[] = [{}];
   materialsRows: any[] = [{}];
@@ -1073,6 +1074,14 @@ toggleExpand(index: number): void {
     noOfYearsControl?.updateValueAndValidity();
   }
 
+  onYearsChange(value: string): void {
+    this.selectedYears = parseInt(value) || 1;
+  }
+
+  getYearsArray(): number[] {
+    return Array.from({ length: this.selectedYears }, (_, i) => i + 1);
+  }
+
   selectBundle(index: number): void {
     this.selectedBundleIndex = index;
   }
@@ -1215,7 +1224,7 @@ toggleExpand(index: number): void {
       equipmentItems: this.fb.array([this.createEquipmentRow()]),
       evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
       competitionFragmentation: [false],
-      noOfYears: [''],
+      noOfYears: ['1'],
       competitionFragmentationItems: this.fb.array([this.createCompetitionFragmentationRow()]),
 
       // scope of work
@@ -1423,11 +1432,69 @@ toggleExpand(index: number): void {
     return false; // stop auto upload
   };
 
-  /** remove file when ✖ is clicked */
+  handleImportFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
+    const isAllowed = allowed.includes(ext);
+    const isLt10M = file.size / 1024 / 1024 <= 10;
+
+    if (!isAllowed) {
+      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      input.value = '';
+      return;
+    }
+    if (!isLt10M) {
+      this.cs.createMessage('error', 'File must be 10MB or smaller.');
+      input.value = '';
+      return;
+    }
+
+    const nzFile: NzUploadFile = {
+      uid: Date.now().toString(),
+      name: file.name,
+      status: 'done',
+      size: file.size,
+      type: file.type,
+      originFileObj: file as any
+    };
+
+    this.fileList = [...this.fileList, nzFile];
+    this.cs.createMessage('success', `File "${file.name}" added successfully.`);
+    input.value = '';
+  }
+
+  downloadTemplate(section: 'workforce' | 'materials' | 'equipment' | 'service'): void {
+    const templates = {
+      workforce: { path: 'assets/general-model/workforce.xlsx', filename: 'workforce.xlsx' },
+      materials: { path: 'assets/general-model/material.xlsx', filename: 'material.xlsx' },
+      equipment: { path: 'assets/general-model/equipment and devices.xlsx', filename: 'equipment and devices.xlsx' },
+      service: { path: 'assets/general-model/services and outputs.xlsx', filename: 'services and outputs.xlsx' }
+    };
+
+    const template = templates[section];
+    const url = encodeURI(template.path);
+
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        saveAs(blob, template.filename);
+        this.cs.createMessage('success', 'Downloaded successfully.');
+      },
+      error: (err) => {
+        console.error('Download failed:', err);
+        this.cs.createMessage('error', 'Unable to download the template.');
+      }
+    });
+  }
+
   handleRemove = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.filter(f => f.uid !== file.uid);
-    return true; // allow remove
+    return true;
   };
+  
   removeFile(file: NzUploadFile): void {
     this.fileList = this.fileList.filter(f => f.uid !== file.uid);
   }

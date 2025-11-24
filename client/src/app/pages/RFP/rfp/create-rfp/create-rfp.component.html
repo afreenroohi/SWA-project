@@ -2060,7 +2060,7 @@
           <div class="col-4 my-1">
             <nz-form-label nzRequired for="noOfYears" class="boq-field-label">No of Years</nz-form-label>
             <nz-form-control>
-              <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear>
+              <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear (ngModelChange)="onYearsChange($event)">
                 <nz-option nzValue="1" nzLabel="One or less than one year"></nz-option>
                 <nz-option nzValue="2" nzLabel="Two years"></nz-option>
                 <nz-option nzValue="3" nzLabel="Three years"></nz-option>
@@ -2136,12 +2136,13 @@
             <nz-collapse [nzExpandIconPosition]="'right'">
               <!-- Workforce - General Model -->
               <nz-collapse-panel nzHeader="Workforce - General Model">
+                <input #workforceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
-                  <button nz-button nzType="default">
+                  <button nz-button nzType="default" (click)="workforceFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
                     Import
                   </button>
-                  <button nz-button nzType="default">
+                  <button nz-button nzType="default" (click)="downloadTemplate('workforce')">
                     <i nz-icon nzType="export" nzTheme="outline"></i>
                     Export
                   </button>
@@ -2149,56 +2150,42 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
+                      <th rowspan="2">Serial Number</th>
                       <th rowspan="2">Job Title</th>
                       <th rowspan="2">Item description</th>
                       <th rowspan="2">Least eligible for admission</th>
                       <th rowspan="2">Minimum years of experience</th>
-                      <th colspan="3">First Year</th>
-                      <th colspan="3">Second Year</th>
-                      <th colspan="3">Third Year</th>
-                      <th colspan="3">Fourth Year</th>
-                      <th colspan="3">Fifth Year</th>
+                      <th *ngIf="selectedYears === 1" rowspan="2">Quantity</th>
+                      <ng-container *ngIf="selectedYears > 1">
+                        <th [attr.colspan]="3" *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year</th>
+                      </ng-container>
                       <th rowspan="2">Action</th>
                     </tr>
-                    <tr style="background-color: #1f4e79; color: white;">
-                      <th>No.</th>
-                      <th>Expected basic working hours</th>
-                      <th>Expected number of overtime hours</th>
-                      <th>No.</th>
-                      <th>Expected basic working hours</th>
-                      <th>Expected number of overtime hours</th>
-                      <th>No.</th>
-                      <th>Expected basic working hours</th>
-                      <th>Expected number of overtime hours</th>
-                      <th>No.</th>
-                      <th>Expected basic working hours</th>
-                      <th>Expected number of overtime hours</th>
-                      <th>No.</th>
-                      <th>Expected basic working hours</th>
-                      <th>Expected number of overtime hours</th>
+                    <tr style="background-color: #1f4e79; color: white;" *ngIf="selectedYears > 1">
+                      <ng-container *ngFor="let year of getYearsArray()">
+                        <th>No.</th>
+                        <th>Expected basic working hours</th>
+                        <th>Expected number of overtime hours</th>
+                      </ng-container>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of workforceRows; let i = index">
+                      <td>{{ i + 1 }}</td>
                       <td><input nz-input /></td>
                       <td><input nz-input /></td>
                       <td><input nz-input /></td>
                       <td><input nz-input /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
+                      <ng-container *ngIf="selectedYears === 1">
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                      </ng-container>
+                      <ng-container *ngIf="selectedYears > 1">
+                        <ng-container *ngFor="let year of getYearsArray()">
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
+                      </ng-container>
                       <td class="text-center">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addWorkforceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
                         <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="workforceRows.length > 1" (click)="deleteWorkforceRow(i)" style="cursor: pointer;"></i>
@@ -2210,12 +2197,13 @@
 
               <!-- Materials - General Model -->
               <nz-collapse-panel nzHeader="Materials - General Model">
+                <input #materialsFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
-                  <button nz-button nzType="default">
+                  <button nz-button nzType="default" (click)="materialsFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
                     Import
                   </button>
-                  <button nz-button nzType="default">
+                  <button nz-button nzType="default" (click)="downloadTemplate('materials')">
                     <i nz-icon nzType="export" nzTheme="outline"></i>
                     Export
                   </button>
@@ -2224,38 +2212,36 @@
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
                       <th>Serial Number</th>
-                      <th>First Year Quantity</th>
-                      <th>Second Year Quantity</th>
-                      <th>Third Year Quantity</th>
-                      <th>Fourth Year Quantity</th>
-                      <th>Attachments</th>
-                      <th>Structural Code</th>
-                      <th>Product from Mandatory List</th>
-                      <th>Specifications</th>
-                      <th>Item Description</th>
-                      <th>Item</th>
-                      <th>Quantity</th>
-                      <th>Unit of Measurement</th>
                       <th>Category</th>
+                      <th>Item</th>
+                      <th>Unit of Measurement</th>
+                      <th>Item Description</th>
+                      <th>Specifications</th>
+                      <th>Product from Mandatory List</th>
+                      <th>Structural Code</th>
+                      <th *ngIf="selectedYears === 1">Quantity</th>
+                      <ng-container *ngIf="selectedYears > 1">
+                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                      </ng-container>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of materialsRows; let i = index">
                       <td>{{ i + 1 }}</td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input placeholder="No attachments" /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
+                      <td><input nz-input /></td>
                       <td><input nz-input /></td>
                       <td><input nz-input placeholder="no" /></td>
                       <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input type="number" placeholder="0" /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
+                      <ng-container *ngIf="selectedYears === 1">
+                        <td><input nz-input type="number" placeholder="0" /></td>
+                      </ng-container>
+                      <ng-container *ngIf="selectedYears > 1">
+                        <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
+                      </ng-container>
                       <td class="text-center">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addMaterialsRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
                         <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="materialsRows.length > 1" (click)="deleteMaterialsRow(i)" style="cursor: pointer;"></i>
@@ -2267,12 +2253,13 @@
 
                 <!-- Equipment and Devices - General Model -->
                 <nz-collapse-panel nzHeader="Equipment and Devices - General Model">
+                  <input #equipmentFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                   <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button nz-button nzType="default">
+                    <button nz-button nzType="default" (click)="equipmentFileInput.click()">
                       <i nz-icon nzType="import" nzTheme="outline"></i>
                       Import
                     </button>
-                    <button nz-button nzType="default">
+                    <button nz-button nzType="default" (click)="downloadTemplate('equipment')">
                       <i nz-icon nzType="export" nzTheme="outline"></i>
                       Export
                     </button>
@@ -2281,36 +2268,38 @@
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
                         <th>Serial Number</th>
-                        <th>First Year Quantity</th>
-                        <th>Second Year Quantity</th>
-                        <th>Third Year Quantity</th>
-                        <th>Fourth Year Quantity</th>
-                        <th>Attachments</th>
-                        <th>Structural Code</th>
-                        <th>Product from Mandatory List</th>
-                        <th>Specifications</th>
-                        <th>Item Description</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item</th>
                         <th>Category</th>
+                        <th>Item</th>
+                        <th>Unit of Measurement</th>
+                        <th>Item Description</th>
+                        <th>Specifications</th>
+                        <th>Product from Mandatory List</th>
+                        <th>Structural Code</th>
+                        <th>Attachments</th>
+                        <th *ngIf="selectedYears === 1">Quantity</th>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                        </ng-container>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let row of equipmentRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input placeholder="No attachments" /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
                         <td><input nz-input /></td>
                         <td><input nz-input placeholder="no" /></td>
                         <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
+                        <td><input nz-input placeholder="No attachments" /></td>
+                        <ng-container *ngIf="selectedYears === 1">
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
                         <td class="text-center">
                           <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addEquipmentRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
                           <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="equipmentRows.length > 1" (click)="deleteEquipmentRow(i)" style="cursor: pointer;"></i>
@@ -2322,12 +2311,13 @@
 
                 <!-- Service and Output - General Model -->
                 <nz-collapse-panel nzHeader="Service and Output - General Model">
+                  <input #serviceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                   <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button nz-button nzType="default">
+                    <button nz-button nzType="default" (click)="serviceFileInput.click()">
                       <i nz-icon nzType="import" nzTheme="outline"></i>
                       Import
                     </button>
-                    <button nz-button nzType="default">
+                    <button nz-button nzType="default" (click)="downloadTemplate('service')">
                       <i nz-icon nzType="export" nzTheme="outline"></i>
                       Export
                     </button>
@@ -2336,32 +2326,34 @@
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
                         <th>Serial Number</th>
-                        <th>First Year Quantity</th>
-                        <th>Second Year Quantity</th>
-                        <th>Third Year Quantity</th>
-                        <th>Fourth Year Quantity</th>
-                        <th>Attachments</th>
-                        <th>Specifications</th>
-                        <th>Item Description</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item</th>
                         <th>Category</th>
+                        <th>Item</th>
+                        <th>Unit of Measurement</th>
+                        <th>Item Description</th>
+                        <th>Specifications</th>
+                        <th>Attachments</th>
+                        <th *ngIf="selectedYears === 1">Quantity</th>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                        </ng-container>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let row of serviceRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                        <td><input nz-input type="number" placeholder="0" /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
                         <td><input nz-input placeholder="No attachments" /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
+                        <ng-container *ngIf="selectedYears === 1">
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
                         <td class="text-center">
                           <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addServiceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
                           <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="serviceRows.length > 1" (click)="deleteServiceRow(i)" style="cursor: pointer;"></i>
