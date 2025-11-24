@@ -790,51 +790,281 @@ background: rgba(217, 83, 79, 0.08);
 //   border-color: #d9d9d9 !important;
 //   cursor: not-allowed !important;
 // }
+/* ──────────────────────────────
+   CUSTOM STEPPER LINES
+──────────────────────────────── */
  
- .stepper-card {
-width: 100%;
-background: #fff;
-border: 1px solid #e5e5e5;
-border-radius: 8px;
-padding: 18px 22px;
-box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px; /* Example adjustment to move it up */
+ 
+.stepper-wrapper {
+  position: relative;
 }
  
-/* Keep NG-Zorro default stepper clean */
-.simple-stepper {
-width: 100%;
+/* Grey full line (LTR default) */
+.stepper-line {
+  position: absolute;
+  width: 890px;
+  top: 35px;
+  left: 90px; /* LTR */
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 1;
 }
  
-/* Style titles lightly */
+/* Blue progress line (LTR default) */
+.stepper-progress {
+  position: absolute;
+  top: 35px;
+  left: 90px; /* LTR */
+  height: 2px;
+  background-color: #1677ff;
+  z-index: 2;
+  transition: width 0.3s ease;
+}
+ 
+ 
+ 
+ 
+/* ──────────────────────────────
+   RTL (Arabic) SUPPORT
+──────────────────────────────── */
+ 
+:host-context([dir="rtl"]) .stepper-line {
+  left: auto !important;
+  right: 90px !important; /* RTL */
+}
+ 
+:host-context([dir="rtl"]) .stepper-progress {
+  left: auto !important;
+  right: 90px !important; /* RTL */
+}
+ 
+/* Steps layout in RTL */
+:host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
+  text-align: center !important;
+  direction: rtl !important;
+}
+ 
+/* Make circles layout RTL */
+:host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
+  flex-direction: row-reverse !important;
+}
+ 
+ 
+/* ──────────────────────────────
+   STEPPER CARD
+──────────────────────────────── */
+ 
+.stepper-card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-top: -10px;
+  justify-content:center;
+ 
+}
+ 
+ 
+/* ──────────────────────────────
+   NG-ZORRO – REMOVE DEFAULT LINES
+──────────────────────────────── */
+ 
+:host ::ng-deep .ant-steps-item-tail,
+:host ::ng-deep .ant-steps-item-tail::after,
+:host ::ng-deep .ant-steps-item::after {
+  display: none !important;
+}
+ 
+/* Step title */
 :host ::ng-deep .ant-steps-item-title {
-font-size: 14px;
-font-weight: 500;
-color: #444;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
 }
  
-/* Clean, not heavy circle */
-:host ::ng-deep .ant-steps-item-icon {
-width: 28px;
-height: 28px;
-border-radius: 50%;
-  /* FIX: Ensure content (number) is centered */
-  display: flex;
-  align-items: center;      /* Vertically center */
-  justify-content: center;  /* Horizontally center */
-}
- 
-/* Active step highlight */
+/* Active circle */
 :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-background-color: #005bbd !important;
-border-color: #005bbd !important;
-color: #ffffff !important;
+  background-color: #005bbd !important;
+  border-color: #005bbd !important;
+  color: #fff !important;
 }
  
-/* Make connecting line subtle, NOT overridden */
-:host ::ng-deep .ant-steps-item-tail::after {
-border-color: #cccccc !important;
+/* Circles above line */
+:host ::ng-deep .ant-steps-item-icon {
+  position: relative;
+  z-index: 3 !important;
 }
+ 
+:host ::ng-deep .ant-steps {
+  position: relative;
+  z-index: 2;
+}
+ 
+/* Fixed spacing between circles */
+.simple-stepper .ant-steps-item {
+  width: 223.5px !important;
+  flex: 0 0 223.5px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center;
+  align-content:flex-start;
+  justify-content:flex-start;
+}
+ 
+/* Circle size */
+.simple-stepper .ant-steps-item .ant-steps-item-icon {
+  height: 28px !important;
+  width: 28px !important;
+  line-height: 28px !important;
+}
+ 
+/* Remove default connector line */
+:host ::ng-deep .ant-steps-item-title::after {
+  display: none !important;
+  border: none !important;
+  background: transparent !important;
+  content: none !important;
+}
+ 
+ 
+/* ──────────────────────────────
+   RESPONSIVE
+──────────────────────────────── */
+ 
+@media (max-width: 900px) {
+  .simple-stepper .ant-steps-item {
+    min-width: 90px !important;
+  }
+  .simple-stepper .ant-steps-item .ant-steps-item-title {
+    font-size: 12px;
+  }
+}
+.stepper-center{
+  border:1px solid #0000
+}
+ 
+:host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  align-items: center !important;
+}
+:host ::ng-deep .ant-steps-item-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Step number and name styling */
+.step-number {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #005bbd !important;
+  text-align: center !important;
+  margin-bottom: 2px !important;
+}
+
+.step-name {
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  color: #666 !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+}
+
+/* Active step styling */
+:host ::ng-deep .ant-steps-item-active .step-number {
+  color: #005bbd !important;
+}
+
+:host ::ng-deep .ant-steps-item-active .step-name {
+  color: #005bbd !important;
+  font-weight: 500 !important;
+}
+
+/* Step description positioning */
+:host ::ng-deep .ant-steps-item-description {
+  margin-top: 8px !important;
+  text-align: center !important;
+}
+ 
+ 
+//  .stepper-card {
+// width: 100%;
+// background: #fff;
+// border: 1px solid #e5e5e5;
+// border-radius: 8px;
+// padding: 18px 22px;
+// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px; /* Example adjustment to move it up */
+// }
+ 
+// /* Keep NG-Zorro default stepper clean */
+// .simple-stepper {
+// width: 100%;
+// }
+ 
+// /* Style titles lightly */
+// :host ::ng-deep .ant-steps-item-title {
+// font-size: 14px;
+// font-weight: 500;
+// color: #444;
+// }
+ 
+// /* Clean, not heavy circle */
+// :host ::ng-deep .ant-steps-item-icon {
+// width: 28px;
+// height: 28px;
+// border-radius: 50%;
+//   /* FIX: Ensure content (number) is centered */
+//   display: flex;
+//   align-items: center;      /* Vertically center */
+//   justify-content: center;  /* Horizontally center */
+// }
+ 
+// /* Active step highlight */
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+// background-color: #a4bd00 !important;
+// border-color: #005bbd !important;
+// color: #ffffff !important;
+// }
+ 
+// /* Default connecting lines */
+// :host ::ng-deep .ant-steps-item-tail::after {
+//   border-color: #cccccc !important;
+// }
+
+// /* Arabic RTL Stepper */
+// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item {
+//   text-align: right !important;
+// }
+
+// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail {
+//   left: 50% !important;
+//   right: auto !important;
+// }
+
+// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item:not(:last-child) .ant-steps-item-tail::after {
+//   left: 0 !important;
+//   right: auto !important;
+//   border-left: 1px solid #cccccc !important;
+//   border-right: none !important;
+// }
+
+// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-title {
+//   text-align: right !important;
+//   font-size: 13px !important;
+// }
+
+// :host ::ng-deep .simple-stepper[dir="rtl"] .ant-steps-item-content {
+//   text-align: right !important;
+//   margin-right: 48px !important;
+//   margin-left: 0 !important;
+// }
 
 
 /* ========== Responsive ========== */
@@ -1437,6 +1667,382 @@ color: #b52b27;
 }
 .edit-btn:hover { background: rgba(11,106,160,0.04); }
 
+/* ========== Bill of Quantity Section Styling ========== */
+/* Header same as Basic Information - no custom styling needed */
+
+.boq-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%) !important;
+  border: 2px solid #1f4e79 !important;
+  padding: 14px 18px !important;
+  box-shadow: 0 2px 8px rgba(31, 78, 121, 0.12) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: #0d3a5c !important;
+    box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.boq-label {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
+}
+
+.boq-field-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 8px !important;
+}
+
+.boq-section-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px !important;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #1f4e79;
+}
+
+.boq-table {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+
+  thead tr {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+  }
+
+  thead th {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 12px 10px !important;
+    text-align: center !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  tbody tr {
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f5ff !important;
+    }
+  }
+
+  tbody td {
+    padding: 10px 8px !important;
+    font-size: 13px !important;
+    vertical-align: middle !important;
+  }
+}
+
+.boq-bundle-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+.boq-quantity-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+/* Bundle buttons styling */
+.d-flex.gap-2.flex-wrap button[nz-button] {
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+
+  &[nzType="primary"] {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    border-color: #1f4e79 !important;
+    color: #ffffff !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(31, 78, 121, 0.25) !important;
+    }
+  }
+
+  &[nzType="default"] {
+    background: #ffffff !important;
+    border: 1px solid #1f4e79 !important;
+    color: #1f4e79 !important;
+
+    &:hover {
+      background: #f0f5ff !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Quantity tables collapse panels */
+::ng-deep .boq-quantity-title + nz-collapse {
+  .ant-collapse-item {
+    border: 1px solid #d9e2ec !important;
+    border-radius: 6px !important;
+    margin-bottom: 12px !important;
+    overflow: hidden;
+  }
+
+  .ant-collapse-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    color: #1f4e79 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+    }
+  }
+
+  .ant-collapse-content {
+    background: #ffffff !important;
+  }
+
+  table {
+    margin: 0 !important;
+    
+    thead tr {
+      background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    }
+
+    thead th {
+      color: #000000 !important;
+      font-weight: 600 !important;
+      font-size: 12px !important;
+      padding: 10px 8px !important;
+      text-align: center !important;
+    }
+
+    tbody td {
+      padding: 8px 6px !important;
+      font-size: 13px !important;
+    }
+
+    input[nz-input] {
+      border-radius: 4px !important;
+      border: 1px solid #d9d9d9 !important;
+      transition: all 0.2s ease !important;
+
+      &:focus {
+        border-color: #1f4e79 !important;
+        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.1) !important;
+      }
+    }
+  }
+}
+
+/* ========== Bill of Quantity Section Styling ========== */
+/* Header same as Basic Information - no custom styling needed */
+
+.boq-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%) !important;
+  border: 2px solid #1f4e79 !important;
+  padding: 14px 18px !important;
+  box-shadow: 0 2px 8px rgba(31, 78, 121, 0.12) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: #0d3a5c !important;
+    box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.boq-label {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
+}
+
+.boq-field-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 8px !important;
+}
+
+.boq-section-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px !important;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #1f4e79;
+}
+
+.boq-table {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+
+  thead tr {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+  }
+
+  thead th {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 12px 10px !important;
+    text-align: center !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  tbody tr {
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f5ff !important;
+    }
+  }
+
+  tbody td {
+    padding: 10px 8px !important;
+    font-size: 13px !important;
+    vertical-align: middle !important;
+  }
+}
+
+.boq-bundle-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+.boq-quantity-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+/* Bundle buttons styling */
+.d-flex.gap-2.flex-wrap button[nz-button] {
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+
+  &[nzType="primary"] {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    border-color: #1f4e79 !important;
+    color: #ffffff !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(31, 78, 121, 0.25) !important;
+    }
+  }
+
+  &[nzType="default"] {
+    background: #ffffff !important;
+    border: 1px solid #1f4e79 !important;
+    color: #1f4e79 !important;
+
+    &:hover {
+      background: #f0f5ff !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Quantity tables collapse panels */
+::ng-deep .boq-quantity-title + nz-collapse {
+  .ant-collapse-item {
+    border: 1px solid #d9e2ec !important;
+    border-radius: 6px !important;
+    margin-bottom: 12px !important;
+    overflow: hidden;
+  }
+
+  .ant-collapse-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    color: #1f4e79 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+    }
+  }
+
+  .ant-collapse-content {
+    background: #ffffff !important;
+  }
+
+  table {
+    margin: 0 !important;
+    
+    thead tr {
+      background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    }
+
+    thead th {
+      color: #000000 !important;
+      font-weight: 600 !important;
+      font-size: 12px !important;
+      padding: 10px 8px !important;
+      text-align: center !important;
+    }
+
+    tbody td {
+      padding: 8px 6px !important;
+      font-size: 13px !important;
+    }
+
+    input[nz-input] {
+      border-radius: 4px !important;
+      border: 1px solid #d9d9d9 !important;
+      transition: all 0.2s ease !important;
+
+      &:focus {
+        border-color: #1f4e79 !important;
+        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.1) !important;
+      }
+    }
+  }
+}
+
 /* ========== SUBCRITERIA DRAWER STYLES ========== */
 
 /* Drawer title styling */
@@ -1693,4 +2299,161 @@ color: #b52b27;
 
 .subcriteria-form-row {
   animation: slideInUp 0.3s ease-out;
+}
+
+/* Target the main input-number container to match height */
+.col-4 nz-input-number .ant-input-number {
+  height: 36px !important;
+  line-height: 36px !important;
+}
+ 
+/* Target the actual inner input field for the number component */
+.col-4 nz-input-number .ant-input-number-input {
+  height: 34px !important;
+  line-height: 34px !important;
+}
+//emergency documents upload
+.upload-inline-content-emergency {
+ position: absolute;
+ left: 12px;
+ /* padding from left inside the box */
+ right: 56px;
+ /* leave room for trash button at right */
+ top: 0;
+ bottom: 0;
+ display: flex;
+ align-items: center;
+ /* vertical center */
+ gap: 5px;
+ pointer-events: auto;
+ /* allow clicks */
+ cursor: pointer;
+ z-index: 5;
+}
+ 
+/* Icon & text styling */
+.upload-inline-icon-emergency {
+font-size: 16px;
+color: #0b6aa0;
+line-height: 1;
+}
+ 
+.upload-inline-text-emergency {
+font-size: 15px;
+color: #333;
+font-weight:500;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+ 
+/* Trash button (right aligned) */
+.trash-btn-emergency {
+border: 1px solid #d9534f;
+color: #d9534f;
+width: 30px;
+height: 30px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #fff;
+border-radius: 50%;
+box-sizing: border-box;
+}
+ 
+.trash-btn-emergency :hover{
+background: rgba(217, 83, 79, 0.06);
+border-color: #b52b27;
+color: #b52b27;
+}
+.emergency{
+ border: 1px solid #d9d9d9;
+}
+.label-emergency{
+  border: 1px solid #d9d9d9;
+}
+ 
+/* outer, input-like box */
+.upload-inline-box-emergency{
+ flex: 1;
+ position: relative;
+ /* important - for absolute content inside */
+ height: 20px !important;
+ /* match other inputs; tweak if needed */
+ border: 1px solid #d9d9d9 !important;
+ border-radius: 6px;
+ background: #fff !important;
+ padding: 0 !important;
+ box-sizing: border-box;
+ overflow: hidden;
+ min-width: 220px;
+}
+ 
+/* Force NG-Zorro internal elements to be invisible and occupy full area */
+.upload-inline-box-emergency,
+.upload-inline-box-emergency .ant-upload,
+.upload-inline-box-emergency .ant-upload-drag,
+.upload-inline-box-emergency .ant-upload-drag-container {
+width: 100% !important;
+height: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+}
+ 
+/* Remove dashed inner pseudo-elements or dotted borders */
+.upload-inline-box-emergency .ant-upload-drag-container::before,
+.upload-inline-box-emergency .ant-upload-drag-container::after {
+display: none !important;
+}
+ 
+/* Hide default internal icon/text */
+.upload-inline-box-emergency .ant-upload-drag-icon,
+.upload-inline-box-emergency .ant-upload-text,
+.upload-inline-box-emergency p,
+.upload-inline-box-emergency .ant-upload-drag-container>* {
+ display: none !important;
+}
+.actions-eval {
+  display: flex;
+  align-items: center; /* Centers items vertically */
+  justify-content: center; /* CRITICAL: Centers items horizontally */
+  gap: 3px;
+}
+ 
+//work location
+/* Outer box */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selector {
+  height: 32px !important;        /* changed from 24px */
+  min-height: 32px !important;    /* changed from 24px */
+  padding: 0 6px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+ 
+/* Overflow tag container */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selection-overflow {
+  height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+ 
+/* Individual selected tag */
+:host ::ng-deep
+.ant-select.ant-select-multiple
+.ant-select-selection-item {
+  height: 16px !important;
+  line-height: 16px !important;
+  padding: 0 3px !important;
+  font-size: 11px !important;
+}
+ 
+/* Placeholder alignment */
+:host ::ng-deep
+.ant-select.ant-select-multiple
+.ant-select-selection-placeholder {
+  line-height: 22px !important;
+  font-size: 14px !important;
 }
