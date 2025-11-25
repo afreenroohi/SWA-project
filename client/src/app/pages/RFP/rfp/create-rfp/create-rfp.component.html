@@ -2160,7 +2160,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="billOfQuantity"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2202,19 +2202,23 @@
             <table class="table table-bordered boq-table">
               <thead>
                 <tr>
-                  <th>S.No</th>
-                  <th>Package</th>
-                  <th>Description</th>
-                  <th>Classification Field</th>
-                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value">Action</th>
+                  <th style="width: 60px;">S.No</th>
+                  <th style="width: 150px;">Package</th>
+                  <th style="width: 250px;">Description</th>
+                  <th style="width: 200px;">Classification Field</th>
+                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">Action</th>
                 </tr>
               </thead>
               <tbody formArrayName="competitionFragmentationItems">
                 <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
                   <td>{{ i + 1 }}</td>
-                  <td><input nz-input formControlName="package" placeholder="Enter package" /></td>
-                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description"></textarea></td>
-                  <td><input nz-input formControlName="classificationField" placeholder="Enter classification" /></td>
+                  <td><input nz-input formControlName="package" placeholder="Enter package" style="width: 100%;" /></td>
+                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description" style="width: 100%;"></textarea></td>
+                  <td>
+                    <nz-select formControlName="classificationField" style="width: 100%;" nzPlaceHolder="Classification">
+                      <nz-option *ngFor="let type of classificationTypes" [nzValue]="type.id" [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
+                    </nz-select>
+                  </td>
                   <td class="text-center" *ngIf="rfpForm.get('competitionFragmentation')?.value">
                     <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
                       <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" 

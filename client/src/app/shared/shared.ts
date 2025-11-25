@@ -502,6 +502,54 @@ export const competitionTypes: any = [
   },
 ];
 
+export const classificationTypes: any = [
+  {
+    id: '0',
+    value: 'Choose',
+    valueAr: 'اختر',
+  },
+  {
+    id: '1',
+    value: 'Construction and Building Sector',
+    valueAr: 'قطاع التشييد والبناء',
+  },
+  {
+    id: '2',
+    value: 'Telecommunication and Information Technology Sector',
+    valueAr: 'قطاع الاتصالات وتقنية المعلومات',
+  },
+  {
+    id: '3',
+    value: 'Operation, Maintenance, and Services Sector',
+    valueAr: 'قطاع التشغيل والصيانة والخدمات',
+  },
+  {
+    id: '4',
+    value: 'Real Estate Development Sector',
+    valueAr: 'قطاع التطوير العقاري',
+  },
+  {
+    id: '5',
+    value: 'Nutrition and Catering Sector',
+    valueAr: 'قطاع التغذية والإعاشة',
+  },
+  {
+    id: '6',
+    value: 'Exhibition and Conference Management',
+    valueAr: 'إدارة المعارض والمؤتمرات',
+  },
+  {
+    id: '7',
+    value: 'Consulting Firms and Engineering Offices Sector',
+    valueAr: 'قطاع الشركات والمكاتب الاستشارية الهندسية',
+  },
+  {
+    id: '8',
+    value: 'Not Required',
+    valueAr: 'غير مطلوب',
+  },
+];
+
 export const sopData: any = [
   {
     id: 'Labor',

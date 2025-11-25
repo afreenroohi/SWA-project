@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, sopData } from 'src/app/shared/shared';
+import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, classificationTypes, sopData } from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -231,6 +231,7 @@ export class CreateRFPComponent implements OnInit {
   durationTypes = durationTypes;
   contractTypes = contractTypes;
   competitionTypes = competitionTypes;
+  classificationTypes = classificationTypes;
   activityList = activities;
   sopData = sopData;
   filteredSubactivities: any[] = [];
