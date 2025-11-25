@@ -1059,7 +1059,7 @@ color: #ffffff !important;
 }
 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
-  background: #1890ff !important;
+  background: #005bbd !important;
 }
 
 
@@ -2561,33 +2561,34 @@ display: none !important;
   display: inline-block;    
 }
 
-/* Bill of Quantity table input fields - consistent width */
-.boq-quantity-title + nz-collapse table input[nz-input] {
-  width: 100% !important;
-  min-width: 80px !important;
-  border-radius: 4px !important;
-  height: 32px !important;
-  padding: 4px 8px !important;
-  box-sizing: border-box !important;
+.add-criteria-btn {
+  background-color: #0C5FA8 !important; /* updated blue color */
+  border: none !important;
+  color: #ffffff !important; /* pure white text like image */
+  border-radius: 3px !important;
+  padding: 6px 16px !important;
+ 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+ 
+  transition: background 0.2s;
 }
-
-/* Ensure all input fields in BOQ tables have same width */
-::ng-deep .boq-quantity-title + nz-collapse table tbody td input[nz-input] {
-  width: 100% !important;
-  min-width: 80px !important;
-  border-radius: 4px !important;
-  height: 32px !important;
-  padding: 4px 8px !important;
-  box-sizing: border-box !important;
+ 
+.add-criteria-btn:hover:not([disabled]) {
+  background-color: #0A4F8C !important; /* darker hover */
+  color: #ffffff !important;
 }
+ 
+.add-criteria-btn[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+ 
 
-/* Fix for number type inputs in BOQ tables */
-::ng-deep .boq-quantity-title + nz-collapse table tbody td input[type="number"] {
-  width: 100% !important;
-  min-width: 80px !important;
-  border-radius: 4px !important;
-  height: 32px !important;
-  padding: 4px 8px !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
+.bold-label {
+  font-weight: 600 !important;
+  font-weight: 600 !important;  
+  font-size: 18px;              
+  color: #333;  
 }

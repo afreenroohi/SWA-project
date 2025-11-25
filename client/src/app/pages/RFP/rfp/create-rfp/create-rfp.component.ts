@@ -61,6 +61,7 @@ export class CreateRFPComponent implements OnInit {
   attachmentsCollapseActive = false;
 
   // Collapse panel visibility
+  showBasicInfo = true;
   showScopeOfWork = false;
   showStandards = false;
   showBillOfQuantity = false;
@@ -358,6 +359,7 @@ export class CreateRFPComponent implements OnInit {
   goto(stepIndex: number): void {
     if (!this.canNavigateToStep(stepIndex)) return;
     this.step = stepIndex;
+    this.showCorrectSection(stepIndex);
     this.activateCollapse(this.getCollapseSection(stepIndex));
   }
 
@@ -372,6 +374,42 @@ export class CreateRFPComponent implements OnInit {
     this.standardsActive = section === 'standards';
     this.billOfQuantityActive = section === 'billOfQuantity';
     this.attachmentsCollapseActive = section === 'attachments';
+    
+    // Scroll to the section after a brief delay to ensure DOM is updated
+    setTimeout(() => {
+      const element = document.getElementById(section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
+  private showCorrectSection(stepIndex: number): void {
+    // Reset all sections
+    this.showBasicInfo = false;
+    this.showScopeOfWork = false;
+    this.showStandards = false;
+    this.showBillOfQuantity = false;
+    this.showAttachments = false;
+
+    // Show the correct section based on step
+    switch (stepIndex) {
+      case 0:
+        this.showBasicInfo = true;
+        break;
+      case 1:
+        this.showScopeOfWork = true;
+        break;
+      case 2:
+        this.showStandards = true;
+        break;
+      case 3:
+        this.showBillOfQuantity = true;
+        break;
+      case 4:
+        this.showAttachments = true;
+        break;
+    }
   }
 
   canNavigateToStep(stepIndex: number): boolean {
@@ -395,6 +433,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 1;
       this.activateCollapse('scopeOfWork');
       this.showScopeOfWork = true;
+      this.showBasicInfo = false;
     }
   }
 
@@ -403,6 +442,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 2;
       this.activateCollapse('standards');
       this.showStandards = true;
+      this.showScopeOfWork = false;
     }
   }
 
@@ -411,6 +451,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 3;
       this.activateCollapse('billOfQuantity');
       this.showBillOfQuantity = true;
+       this.showStandards = false;
     }
   }
 
@@ -419,6 +460,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 4;
       this.activateCollapse('attachments');
       this.showAttachments = true;
+      this.showBillOfQuantity = false;
     }
   }
 //   get attachmentsValid(): boolean {

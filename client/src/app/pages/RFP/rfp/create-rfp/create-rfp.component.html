@@ -74,8 +74,8 @@
             (click)="deleteSubCriteria(index)" nzShape="circle">
             <span nz-icon nzType="delete"></span>
           </button>
-          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="addBtn mt-3"
-            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" nzShape="circle">
+          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn mt-3"
+            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" >
             <span nz-icon nzType="plus"></span>
           </button>
         </ng-container>
@@ -145,7 +145,7 @@
 
 
       <!-- * Create RFP -->
-      <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100">
+      <nz-collapse id="basicInfo" *ngIf=showBasicInfo [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100">
         <nz-collapse-panel [nzActive]="basicInfoActive" nzHeader="{{ 'RFP.Basic Information' | translate }}">
           <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
           <div class="row w-100 my-2">
@@ -1406,7 +1406,7 @@
       </nz-collapse>
 
       <!-- Scope of Work *ngIf="showScopeOfWork"-->
-      <nz-collapse *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="scopeOfWork" *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="scopeOfWorkActive" nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
 
@@ -1471,7 +1471,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">
+                <nz-form-label class="bold-label" nzRequired for="SOP">
                   {{ "RFP.Definition of competition" | translate }}</nz-form-label>
               </div>
               <nz-form-control>
@@ -1486,7 +1486,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="ProjJust">
+                <nz-form-label class="bold-label" nzRequired for="ProjJust">
                   {{ "RFP.Work program" | translate }}</nz-form-label>
               </div>
               <nz-form-control >
@@ -1514,7 +1514,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">
+                <nz-form-label class="bold-label" nzRequired for="SOP">
                   {{ "RFP.Place of execution of works and services" | translate }}</nz-form-label>
               </div>
               <nz-form-control>
@@ -1528,7 +1528,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">
+                <nz-form-label class="bold-label" nzRequired for="SOP">
                   {{ "RFP.How to carry out work and services" | translate }}</nz-form-label>
               </div>
               <nz-form-control>
@@ -1542,7 +1542,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">
+                <nz-form-label class="bold-label" nzRequired for="SOP">
                   {{ "RFP.SCOPE OF WORK" | translate }}</nz-form-label>
               </div>
               <nz-form-control>
@@ -1555,7 +1555,7 @@
             </div>
             <!--Tech Document-->
             <div class="col-md-12 col-12 my-1">
-  <nz-form-label nzRequired for="technicalDocs">
+  <nz-form-label class="bold-label" nzRequired for="technicalDocs">
     {{ "RFP.Technical Documents" | translate }}
   </nz-form-label>
  
@@ -1603,7 +1603,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">{{ "RFP.Labor" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Labor" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertLaborText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1648,7 +1648,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">{{ "RFP.Materials" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Materials" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertMaterialsText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1694,7 +1694,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">{{ "RFP.Equipment" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Equipment" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertEquipmentText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1740,7 +1740,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertQualityText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1758,7 +1758,7 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertSafetyText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1788,8 +1788,8 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-        <nz-collapse-panel [nzActive]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
+      <nz-collapse id="standards" *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+        <nz-collapse-panel [(nzActive)]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
 
             <div class="tech-info-text-with-icon">
@@ -2133,7 +2133,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2479,7 +2479,7 @@
 
 
       <!-- Attachments *ngIf="showAttachments" -->
-      <nz-collapse *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="attachments" *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="attachmentsCollapseActive" [nzHeader]="'RFP.Attachments'|translate">
           <div class="attachment-body">
 
@@ -3020,8 +3020,8 @@
             (click)="deleteSubCriteria(index)" nzShape="circle">
             <span nz-icon nzType="delete"></span>
           </button>
-          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="addBtn mt-3"
-            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" nzShape="circle">
+          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn mt-3"
+            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" >
             <span nz-icon nzType="plus"></span>
           </button>
         </ng-container>
