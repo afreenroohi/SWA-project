@@ -33,6 +33,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/.htaccess",
+              "src/_redirects", 
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
