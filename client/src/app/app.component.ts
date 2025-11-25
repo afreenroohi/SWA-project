@@ -160,9 +160,6 @@ export class AppComponent {
     else {
       this.spinner.hide()
     }
-
-    this.router.navigate(['/']);  
-
   }
 
   ngOnDestroy(): void {

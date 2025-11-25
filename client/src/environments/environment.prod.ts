@@ -10,7 +10,7 @@ export const environment = {
   token: '',
   downloadUrl: '',
   filenetUrl: '', //
-  testlogin: false,
+  testlogin: true,
   sapCreateSesArUrl: '',
   sapCreateSesUrl:'',
 
