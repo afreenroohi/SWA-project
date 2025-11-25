@@ -104,41 +104,61 @@
     <div class="p-2" *ngIf="step1">
       <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
       <div class="stepper-card mt-4">
-        <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
-
-          <nz-step [nzTitle]="'RFP.Basic Information'|translate" (click)="goto(0)" 
-                   [ngClass]="{'step-disabled': false}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': basicInfoValid, 'invalid': !basicInfoValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Scope of Work'|translate" (click)="goto(1)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Technical Evaluation Criteria'|translate" (click)="goto(2)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Bill of Quantity'|translate" (click)="goto(3)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Attachments'|translate" (click)="goto(4)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
-          </nz-step>
-
-        </nz-steps>
+        <div class="custom-stepper">
+          <div class="stepper-container">
+            <!-- Step 1 -->
+            <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
+              <div class="step-circle">
+                <span class="step-number">1</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
+            </div>
+            
+            <!-- Line 1 -->
+            <div class="step-line" [class.completed]="step > 0"></div>
+            
+            <!-- Step 2 -->
+            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" [class.disabled]="!basicInfoValid" (click)="goto(1)">
+              <div class="step-circle">
+                <span class="step-number">2</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
+            </div>
+            
+            <!-- Line 2 -->
+            <div class="step-line" [class.completed]="step > 1"></div>
+            
+            <!-- Step 3 -->
+            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" [class.disabled]="!basicInfoValid || !scopeOfWorkValid" (click)="goto(2)">
+              <div class="step-circle">
+                <span class="step-number">3</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
+            </div>
+            
+            <!-- Line 3 -->
+            <div class="step-line" [class.completed]="step > 2"></div>
+            
+            <!-- Step 4 -->
+            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" [class.disabled]="!basicInfoValid || !scopeOfWorkValid || !standardsValid" (click)="goto(3)">
+              <div class="step-circle">
+                <span class="step-number">4</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
+            </div>
+            
+            <!-- Line 4 -->
+            <div class="step-line" [class.completed]="step > 3"></div>
+            
+            <!-- Step 5 -->
+            <div class="step-item" [class.active]="step === 4" [class.disabled]="!basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid" (click)="goto(4)">
+              <div class="step-circle">
+                <span class="step-number">5</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
 

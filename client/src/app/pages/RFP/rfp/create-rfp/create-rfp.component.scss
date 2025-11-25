@@ -993,7 +993,7 @@ background: rgba(217, 83, 79, 0.08);
 // }
  
  
- .stepper-card {
+  .stepper-card {
 // width: 100%;
 // background: #fff;
 // border: 1px solid #e5e5e5;
@@ -1016,6 +1016,89 @@ background: rgba(217, 83, 79, 0.08);
 width: 100%;
 }
  
+/* Custom Stepper Styles */
+.custom-stepper {
+  width: 100%;
+  padding: 20px 0;
+}
+ 
+.stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+ 
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+ 
+.step-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+ 
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 2px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s;
+}
+ 
+.step-item.active .step-circle {
+  background-color: #005bbd;
+  border-color: #005bbd;
+  color: white;
+}
+ 
+.step-item.completed .step-circle {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: white;
+}
+ 
+.step-number {
+  font-size: 14px;
+  font-weight: 600;
+}
+ 
+.step-title {
+  font-size: 12px;
+  text-align: center;
+  max-width: 120px;
+  line-height: 1.2;
+  color: #666;
+}
+ 
+.step-item.active .step-title {
+  color: #005bbd;
+  font-weight: 500;
+}
+ 
+.step-line {
+  flex: 1;
+  height: 2px;
+  background-color: #000000;
+  margin: 0 10px;
+  margin-bottom: 24px;
+}
+ 
+.step-line.completed {
+  background-color: #005bbd;
+}
+ 
+ 
+ 
 /* Style titles lightly */
 :host ::ng-deep .ant-steps-item-title {
 font-size: 14px;
@@ -1035,17 +1118,21 @@ border-radius: 50%;
 }
  
 /* Active step highlight */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-background-color: #005bbd !important;
-border-color: #005bbd !important;
-color: #ffffff !important;
-}
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+//   background-color: #005bbd !important;
+//   border-color: #005bbd !important;
+//   color: #ffffff !important;
+// }
  
-/* Default connecting lines */
-:host ::ng-deep .ant-steps-item-tail::after {
-  border-color: #cccccc !important;
-}
-
+// /* Simple stepper line styling */
+// :host ::ng-deep .ant-steps-horizontal .ant-steps-item-tail > i {
+//   background-color: #000000 !important;
+// }
+ 
+// :host ::ng-deep .ant-steps-horizontal .ant-steps-item-finish .ant-steps-item-tail > i {
+//   background-color: #005bbd !important;
+// }
+ 
 /* RTL Stepper Fixes */
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail {
   display: block !important;
@@ -1054,54 +1141,54 @@ color: #ffffff !important;
   left: 60% !important;
   right: 50px !important;
   width: calc(100% - 14px) !important;
-  height: 1px !important;
-  background: #f0f0f0 !important;
+  height: 2px !important;
+  background: #000000 !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
-  background: #005bbd !important;
+  background: #1890ff !important;
 }
-
-
+ 
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail::after {
   display: none !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item:last-child .ant-steps-item-tail {
   display: none !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-title {
   text-align: center !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
   text-align: center !important;
   margin: 0 !important;
 }
-
-
+ 
+ 
 /* ========== Responsive ========== */
 @media (max-width: 880px) {
-
+ 
   .attachment-row,
   .section {
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
-
+ 
   .attachment-select,
   .upload-area {
     width: 100% !important;
     max-width: 100%;
   }
-
+ 
   .attachment-actions {
     margin-top: 0;
     justify-content: flex-start;
   }
-
+ 
   .upload-area {
     min-height: 140px;
   }
