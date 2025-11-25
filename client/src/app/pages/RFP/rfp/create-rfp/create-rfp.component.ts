@@ -192,6 +192,7 @@ export class CreateRFPComponent implements OnInit {
   showEditConsult: boolean = false;
   showDirectPurchaseField: boolean = false;
   showLimitedField: boolean = false;
+  showErrorField: boolean = false;
   isPrivateSelected: boolean = false;
   selectedBundleIndex: number | null = null;
   selectedYears: number = 1;
@@ -338,6 +339,12 @@ export class CreateRFPComponent implements OnInit {
     });
   }
 
+  // Track if user has explicitly saved and continued from each step
+  private basicInfoSaved = false;
+  private scopeOfWorkSaved = false;
+  private standardsSaved = false;
+  private billOfQuantitySaved = false;
+
   get scopeOfWorkValid(): boolean {
     if (!this.rfpForm) return false;
     const requiredFields = ['definationCompetition', 'ProjJust', 'SOP', 'labor', 'materials', 'equipment', 'qualitySpecifications', 'safetySpecifications'];
@@ -357,7 +364,10 @@ export class CreateRFPComponent implements OnInit {
 
   // Navigation methods
   goto(stepIndex: number): void {
-    if (!this.canNavigateToStep(stepIndex)) return;
+    if (!this.canNavigateToStep(stepIndex)) {
+      this.showError();
+      return;
+    }
     this.step = stepIndex;
     this.showCorrectSection(stepIndex);
     this.activateCollapse(this.getCollapseSection(stepIndex));
@@ -415,10 +425,10 @@ export class CreateRFPComponent implements OnInit {
   canNavigateToStep(stepIndex: number): boolean {
     switch (stepIndex) {
       case 0: return true;
-      case 1: return this.basicInfoValid;
-      case 2: return this.basicInfoValid && this.scopeOfWorkValid;
-      case 3: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid;
-      case 4: return this.basicInfoValid && this.scopeOfWorkValid && this.standardsValid && this.billOfQuantityValid;
+      case 1: return this.basicInfoValid && this.basicInfoSaved;
+      case 2: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved;
+      case 3: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved && this.standardsValid && this.standardsSaved;
+      case 4: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved && this.standardsValid && this.standardsSaved && this.billOfQuantityValid && this.billOfQuantitySaved;
       default: return false;
     }
   }
@@ -430,6 +440,7 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinue(): void {
     if (this.basicInfoValid) {
+      this.basicInfoSaved = true;
       this.step = 1;
       this.activateCollapse('scopeOfWork');
       this.showScopeOfWork = true;
@@ -439,6 +450,7 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinueScope(): void {
     if (this.scopeOfWorkValid) {
+      this.scopeOfWorkSaved = true;
       this.step = 2;
       this.activateCollapse('standards');
       this.showStandards = true;
@@ -448,6 +460,7 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinueStandards(): void {
     if (this.standardsValid) {
+      this.standardsSaved = true;
       this.step = 3;
       this.activateCollapse('billOfQuantity');
       this.showBillOfQuantity = true;
@@ -457,6 +470,7 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinueBOQ(): void {
     if (this.billOfQuantityValid) {
+      this.billOfQuantitySaved = true;
       this.step = 4;
       this.activateCollapse('attachments');
       this.showAttachments = true;
@@ -725,6 +739,7 @@ deleteCriteria(index: number) {
     // Reset both flags initially
     this.showDirectPurchaseField = false;
     this.showLimitedField = false;
+    this.showErrorField = false;
     this.showInvite = false;
     // Clear previous validators
     this.rfpForm.get('directPurchaseType')?.clearValidators();
@@ -1740,6 +1755,7 @@ get progressWidth(): number {
 
     this.showDirectPurchaseField = directSelected && costVal > this.DIRECT_COST_THRESHOLD;
     this.showLimitedField = limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
+    this.showErrorField= limitedSelected && costVal <= this.DIRECT_COST_THRESHOLD2;
 
     // Clear values when panels are hidden
     if (!this.showDirectPurchaseField) {

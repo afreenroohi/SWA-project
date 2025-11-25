@@ -109,7 +109,8 @@
             <!-- Step 1 -->
             <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
               <div class="step-circle">
-                <span class="step-number">1</span>
+                <span class="step-number" *ngIf="step <= 0">1</span>
+                <i nz-icon nzType="check" *ngIf="step > 0"></i>
               </div>
               <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
             </div>
@@ -118,9 +119,10 @@
             <div class="step-line" [class.completed]="step > 0"></div>
             
             <!-- Step 2 -->
-            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" [class.disabled]="!basicInfoValid" (click)="goto(1)">
+            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" [class.disabled]="!canNavigateToStep(1)" (click)="goto(1)">
               <div class="step-circle">
-                <span class="step-number">2</span>
+                <span class="step-number" *ngIf="step <= 1">2</span>
+                <i nz-icon nzType="check" *ngIf="step > 1"></i>
               </div>
               <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
             </div>
@@ -129,9 +131,10 @@
             <div class="step-line" [class.completed]="step > 1"></div>
             
             <!-- Step 3 -->
-            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" [class.disabled]="!basicInfoValid || !scopeOfWorkValid" (click)="goto(2)">
+            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" [class.disabled]="!canNavigateToStep(2)" (click)="goto(2)">
               <div class="step-circle">
-                <span class="step-number">3</span>
+                <span class="step-number" *ngIf="step <= 2">3</span>
+                <i nz-icon nzType="check" *ngIf="step > 2"></i>
               </div>
               <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
             </div>
@@ -140,9 +143,10 @@
             <div class="step-line" [class.completed]="step > 2"></div>
             
             <!-- Step 4 -->
-            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" [class.disabled]="!basicInfoValid || !scopeOfWorkValid || !standardsValid" (click)="goto(3)">
+            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" [class.disabled]="!canNavigateToStep(3)" (click)="goto(3)">
               <div class="step-circle">
-                <span class="step-number">4</span>
+                <span class="step-number" *ngIf="step <= 3">4</span>
+                <i nz-icon nzType="check" *ngIf="step > 3"></i>
               </div>
               <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
             </div>
@@ -151,7 +155,7 @@
             <div class="step-line" [class.completed]="step > 3"></div>
             
             <!-- Step 5 -->
-            <div class="step-item" [class.active]="step === 4" [class.disabled]="!basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid" (click)="goto(4)">
+            <div class="step-item" [class.active]="step === 4" [class.disabled]="!canNavigateToStep(4)" (click)="goto(4)">
               <div class="step-circle">
                 <span class="step-number">5</span>
               </div>
@@ -244,6 +248,8 @@
               <small *ngIf="showDirectPurchaseField" style="margin-top: 8px; color: #1890ff">Estimated cost is more than
                 100K SAR</small>
               <small *ngIf="showLimitedField" style="margin-top: 8px; color: #1890ff">Estimated cost is more than 500K
+                SAR</small>
+                <small *ngIf="showErrorField" style="margin-top: 8px; color: #d71a05">Values Must not be Negative or Zero
                 SAR</small>
 
               <!-- Max Value Validation -->
@@ -1861,7 +1867,8 @@
                   <!-- Add button sits to the right of the input -->
                   <button nz-button nzSize="default" class="btn-add" [disabled]="rfpForm.controls.TechReq.invalid"
                     (click)="addTechReq('add')" title="Add">
-                    <i nz-icon nzType="plus"></i>
+                     <i nz-icon nzType="plus" nzTheme="outline" style="font-size: 20px;"></i>
+ 
                   </button>
                 </div>
  

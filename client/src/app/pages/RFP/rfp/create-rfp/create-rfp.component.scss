@@ -1046,8 +1046,9 @@ width: 100%;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #f0f0f0;
-  border: 2px solid #d9d9d9;
+  background-color: #005bbd;
+  border: 2px solid #005bbd;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1075,9 +1076,12 @@ width: 100%;
 .step-title {
   font-size: 12px;
   text-align: center;
-  max-width: 120px;
+  max-width: 150px;
   line-height: 1.2;
   color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
  
 .step-item.active .step-title {
@@ -1094,7 +1098,7 @@ width: 100%;
 }
  
 .step-line.completed {
-  background-color: #005bbd;
+  background-color: #52c41a;
 }
  
  
@@ -2695,4 +2699,20 @@ display: none !important;
   font-size: 14px !important;
   text-align: center !important;
   box-sizing: border-box !important;
+}
+.btn-add {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+ 
+.btn-add i[nz-icon] {
+  font-size: 18px !important;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
