@@ -1059,7 +1059,7 @@ color: #ffffff !important;
 }
 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
-  background: #1890ff !important;
+  background: #005bbd !important;
 }
 
 
@@ -2559,4 +2559,36 @@ display: none !important;
 :host ::ng-deep .equal-height-input-number .ant-input-number-input::placeholder {
   //padding-bottom: 6px !important;  /* moves placeholder up visually */
   display: inline-block;    
+}
+
+.add-criteria-btn {
+  background-color: #0C5FA8 !important; /* updated blue color */
+  border: none !important;
+  color: #ffffff !important; /* pure white text like image */
+  border-radius: 3px !important;
+  padding: 6px 16px !important;
+ 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+ 
+  transition: background 0.2s;
+}
+ 
+.add-criteria-btn:hover:not([disabled]) {
+  background-color: #0A4F8C !important; /* darker hover */
+  color: #ffffff !important;
+}
+ 
+.add-criteria-btn[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+ 
+
+.bold-label {
+  font-weight: 600 !important;
+  font-weight: 600 !important;  
+  font-size: 18px;              
+  color: #333;  
 }
