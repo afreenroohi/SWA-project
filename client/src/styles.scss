@@ -7,7 +7,31 @@
 .w-25 {
     width: 25%;
 }
-
+/* Apply consistent border-radius to all inputs */
+input, 
+textarea, 
+select,
+nz-input-group input,
+.ant-input,
+.ant-picker,
+.ant-select-selector {
+  border-radius: 8px !important;   /* change 8px to whatever you want */
+}
+ 
+/* For nz-select (important) */
+.ant-select-selector {
+  border-radius: 8px !important;
+}
+ 
+/* For nz-date-picker */
+.ant-picker {
+  border-radius: 8px !important;
+}
+ 
+/* For textareas */
+textarea {
+  border-radius: 8px !important;
+}
 .w-50 {
     width: 50%;
 }

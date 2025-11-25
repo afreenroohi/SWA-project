@@ -67,6 +67,8 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   noCOC = false;
   noCON = false;
 
+  
+
   rqter: any;
   appr: any;
   budalltr: any;
@@ -337,12 +339,21 @@ headerLeftWidth: string = this.expandedWidth + 'px';
    * @todo Make the changes according to the Process deployment. 
    * 
    */
-  
+private _enableTestLogon: boolean = true;
+
+get enableTestLogon(): boolean {
+  return this._enableTestLogon;
+}
+
+set enableTestLogon(value: boolean) {
+  this._enableTestLogon = value;
+}
   async getNavItem(userName: string) {
 
       this.isUserLoggedIn = true;
     this.dispname = userName.toUpperCase();
     this.ProxyUserId = userName.toUpperCase();
+    this.enableTestLogon = false;
 
     
     // console.log(userName,'userName==')
@@ -2832,15 +2843,15 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     }
   }
 
-  get enableTestLogon(): boolean {
-    return true
-    // if (environment.testlogin) {   // afreen
-    //   return true;
-    // } else if (this.ProxyUserId === "ADUAYJI") {
-    //   return true;
-    // }
-    // return false;
-  }
+  // get enableTestLogon(): boolean {
+  //   return true
+  //   // if (environment.testlogin) {   // afreen
+  //   //   return true;
+  //   // } else if (this.ProxyUserId === "ADUAYJI") {
+  //   //   return true;
+  //   // }
+  //   // return false;
+  // }
 
 }
 

@@ -328,8 +328,8 @@ margin-top: 6px;
 }
 
 .attachment-list {
- margin-bottom: 2px;
- margintop: 3px;
+  margin-bottom: 2px;
+  margin-top: 3px;
 }
 
 /* Uploaded files list styling */
@@ -711,29 +711,365 @@ background: rgba(217, 83, 79, 0.08);
   color: #333;
  }
 }
+// // /* Stepper Card Styles */
+// .stepper-card {
+// width: 100%;
+// background: #fff;
+// border: 1px solid #e5e5e5;
+// border-radius: 8px;
+// padding: 18px 22px;
+// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px; /* Example adjustment to move it up */
+// }
+ 
+// /* Keep NG-Zorro default stepper clean */
+// .simple-stepper {
+// width: 100%;
+// }
+ 
+// /* Style titles lightly */
+// :host ::ng-deep .ant-steps-item-title {
+// font-size: 14px;
+// font-weight: 500;
+// color: #444;
+// }
+ 
+// /* Clean, not heavy circle */
+// :host ::ng-deep .ant-steps-item-icon {
+// width: 28px;
+// height: 28px;
+// border-radius: 50%;
+//   /* FIX: Ensure content (number) is centered */
+//   display: flex;
+//   align-items: center;      /* Vertically center */
+//   justify-content: center;  /* Horizontally center */
+// }
+ 
+// /* Active step highlight */
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+// background-color: #005bbd !important;
+// border-color: #005bbd !important;
+// color: #fff !important;
+// }
+ 
+// /* Make connecting line subtle, NOT overridden */
+// :host ::ng-deep .ant-steps-item-tail::after {
+// border-color: #cccccc !important;
+// }
+// .btn-add {
+//   margin-top: -2px;        /* pushes it slightly upward */
+//   background-color: #0b6aa0 !important;
+//   color: #ffffff !important;
+//   border: 1px solid #0b6aa0 !important;
+//   font-weight: 500;
+//   min-width: 130px;
+//   height: 38px;
+// }
+ 
+// .btn-add:hover {
+//   background-color: #0a5b87 !important;
+//   border-color: #0a5b87 !important;
+// }
+ 
+// .btn-add[disabled] {
+//   background-color: #f5f5f5 !important;
+//   color: #bfbfbf !important;
+//   border-color: #d9d9d9 !important;
+//   cursor: not-allowed !important;
+// }
+/* ──────────────────────────────
+   CUSTOM STEPPER LINES
+──────────────────────────────── */
+ 
+ 
+// .stepper-wrapper {
+//   position: relative;
+// }
+ 
+// /* Grey full line (LTR default) */
+// .stepper-line {
+//   position: absolute;
+//   width: 890px;
+//   top: 35px;
+//   left: 90px; /* LTR */
+//   height: 2px;
+//   background-color: #e0e0e0;
+//   z-index: 1;
+// }
+ 
+// /* Blue progress line (LTR default) */
+// .stepper-progress {
+//   position: absolute;
+//   top: 35px;
+//   left: 90px; /* LTR */
+//   height: 2px;
+//   background-color: #1677ff;
+//   z-index: 2;
+//   transition: width 0.3s ease;
+// }
+ 
+ 
+ 
+ 
+// /* ──────────────────────────────
+//    RTL (Arabic) SUPPORT
+// ──────────────────────────────── */
+ 
+// :host-context([dir="rtl"]) .stepper-line {
+//   left: auto !important;
+//   right: 90px !important; /* RTL */
+// }
+ 
+// :host-context([dir="rtl"]) .stepper-progress {
+//   left: auto !important;
+//   right: 90px !important; /* RTL */
+// }
+ 
+// /* Steps layout in RTL */
+// :host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
+//   text-align: center !important;
+//   direction: rtl !important;
+// }
+ 
+// /* Make circles layout RTL */
+// :host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
+//   flex-direction: row-reverse !important;
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    STEPPER CARD
+// ──────────────────────────────── */
+ 
+// .stepper-card {
+//   width: 100%;
+//   background: #fff;
+//   border: 1px solid #e5e5e5;
+//   border-radius: 8px;
+//   padding: 18px 22px;
+//   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px;
+//   justify-content:center;
+ 
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    NG-ZORRO – REMOVE DEFAULT LINES
+// ──────────────────────────────── */
+ 
+// :host ::ng-deep .ant-steps-item-tail,
+// :host ::ng-deep .ant-steps-item-tail::after,
+// :host ::ng-deep .ant-steps-item::after {
+//   display: none !important;
+// }
+ 
+// /* Step title */
+// :host ::ng-deep .ant-steps-item-title {
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #444;
+// }
+ 
+// /* Active circle */
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+//   background-color: #005bbd !important;
+//   border-color: #005bbd !important;
+//   color: #fff !important;
+// }
+ 
+// /* Circles above line */
+// :host ::ng-deep .ant-steps-item-icon {
+//   position: relative;
+//   z-index: 3 !important;
+// }
+ 
+// :host ::ng-deep .ant-steps {
+//   position: relative;
+//   z-index: 2;
+// }
+ 
+// /* Fixed spacing between circles */
+// .simple-stepper .ant-steps-item {
+//   width: 223.5px !important;
+//   flex: 0 0 223.5px !important;
+//   padding: 0 !important;
+//   margin: 0 !important;
+//   text-align: center;
+//   align-content:flex-start;
+//   justify-content:flex-start;
+// }
+ 
+// /* Circle size */
+// .simple-stepper .ant-steps-item .ant-steps-item-icon {
+//   height: 28px !important;
+//   width: 28px !important;
+//   line-height: 28px !important;
+// }
+ 
+// /* Remove default connector line */
+// :host ::ng-deep .ant-steps-item-title::after {
+//   display: none !important;
+//   border: none !important;
+//   background: transparent !important;
+//   content: none !important;
+// }
+ 
+ 
+// /* ──────────────────────────────
+//    RESPONSIVE
+// ──────────────────────────────── */
+ 
+// @media (max-width: 900px) {
+//   .simple-stepper .ant-steps-item {
+//     min-width: 90px !important;
+//   }
+//   .simple-stepper .ant-steps-item .ant-steps-item-title {
+//     font-size: 12px;
+//   }
+// }
+// .stepper-center{
+//   border:1px solid #0000
+// }
+ 
+// :host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
+//   display: flex !important;
+//   justify-content: center !important;
+//   width: 100% !important;
+//   align-items: center !important;
+// }
+// :host ::ng-deep .ant-steps-item-container {
+//   display: flex !important;
+//   flex-direction: column !important;
+//   align-items: center !important;
+//   justify-content: center !important;
+// }
 
-.btn-add {
- margin-top: -2px;    /* pushes it slightly upward */
- background-color: #0b6aa0 !important;
- color: #ffffff !important;
- border: 1px solid #0b6aa0 !important;
- font-weight: 500;
- min-width: 130px;
- height: 38px;
+// /* Step number and name styling */
+// .step-number {
+//   font-size: 14px !important;
+//   font-weight: 600 !important;
+//   color: #005bbd !important;
+//   text-align: center !important;
+//   margin-bottom: 2px !important;
+// }
+
+// .step-name {
+//   font-size: 11px !important;
+//   font-weight: 400 !important;
+//   color: #666 !important;
+//   text-align: center !important;
+//   line-height: 1.2 !important;
+//   white-space: nowrap;
+// }
+
+// /* Active step styling */
+// :host ::ng-deep .ant-steps-item-active .step-number {
+//   color: #005bbd !important;
+// }
+
+// :host ::ng-deep .ant-steps-item-active .step-name {
+//   color: #005bbd !important;
+//   font-weight: 500 !important;
+// }
+
+// /* Step description positioning */
+// :host ::ng-deep .ant-steps-item-description {
+//   margin-top: 8px !important;
+//   text-align: center !important;
+// }
+ 
+ 
+ .stepper-card {
+// width: 100%;
+// background: #fff;
+// border: 1px solid #e5e5e5;
+// border-radius: 8px;
+// padding: 18px 22px;
+// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+//   margin-top: -10px; /* Example adjustment to move it up */
+//added by essaki
+   width: 100%;
+    background: #EDEDED;
+    border: 2px solid #000066;
+    border-radius: 0px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    margin-top: -10px;
+}
+ 
+/* Keep NG-Zorro default stepper clean */
+.simple-stepper {
+width: 100%;
+}
+ 
+/* Style titles lightly */
+:host ::ng-deep .ant-steps-item-title {
+font-size: 14px;
+font-weight: 500;
+color: #444;
+}
+ 
+/* Clean, not heavy circle */
+:host ::ng-deep .ant-steps-item-icon {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+  /* FIX: Ensure content (number) is centered */
+  display: flex;
+  align-items: center;      /* Vertically center */
+  justify-content: center;  /* Horizontally center */
+}
+ 
+/* Active step highlight */
+:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+background-color: #005bbd !important;
+border-color: #005bbd !important;
+color: #ffffff !important;
+}
+ 
+/* Default connecting lines */
+:host ::ng-deep .ant-steps-item-tail::after {
+  border-color: #cccccc !important;
 }
 
-.btn-add:hover {
- background-color: #0a5b87 !important;
- border-color: #0a5b87 !important;
+/* RTL Stepper Fixes */
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail {
+  display: block !important;
+  position: absolute !important;
+  top: 14px !important;
+  left: 60% !important;
+  right: 50px !important;
+  width: calc(100% - 14px) !important;
+  height: 1px !important;
+  background: #f0f0f0 !important;
 }
 
-.btn-add[disabled] {
- background-color: #f5f5f5 !important;
- color: #bfbfbf !important;
- border-color: #d9d9d9 !important;
- cursor: not-allowed !important;
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
+  background: #005bbd !important;
 }
 
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail::after {
+  display: none !important;
+}
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item:last-child .ant-steps-item-tail {
+  display: none !important;
+}
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-title {
+  text-align: center !important;
+}
+
+:host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+
+/* ========== Responsive ========== */
+@media (max-width: 880px) {
 
  .attachment-row,
  .section {
@@ -784,9 +1120,11 @@ background: #fcfcfc !important;
 }
 
 ::ng-deep .ant-collapse-header {
-background: #f1f1f1 !important;
-font-weight: 700;
+//background: #f1f1f1 !important;
+background: #005c99 !important;
+font-weight: 500;
 font-family: 'Roboto';
+color: white !important
 }
 
 // .cr-number-container {
@@ -802,11 +1140,11 @@ font-family: 'Roboto';
 //  gap: 6px;
 // }
 
-// .cr-add-btn {
-//  display: flex;
-//  align-items: center;
-//  justify-content: center;
-//  height: 32px;
+// .cr-add-btn { //
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   height: 32px;
 // }
 /* CR number layout */
 .cr-number-container {
@@ -1330,71 +1668,673 @@ color: #b52b27;
  background: #fff;
 }
 .edit-btn:hover { background: rgba(11,106,160,0.04); }
-.upload-row {
- margin-top: 0 !important;
- align-items: center; // ensures button + upload are perfectly aligned
+
+/* ========== Bill of Quantity Section Styling ========== */
+/* Header same as Basic Information - no custom styling needed */
+
+// .boq-toggle {
+//   background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%) !important;
+//   border: 2px solid #1f4e79 !important;
+//   padding: 14px 18px !important;
+//   box-shadow: 0 2px 8px rgba(31, 78, 121, 0.12) !important;
+//   transition: all 0.3s ease !important;
+
+//   &:hover {
+//     border-color: #0d3a5c !important;
+//     box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18) !important;
+//     transform: translateY(-1px);
+//   }
+// }
+
+// .boq-label {
+//   font-size: 15px !important;
+//   font-weight: 600 !important;
+//   color: #1f4e79 !important;
+//   display: flex;
+//   align-items: center;
+// }
+
+// .boq-field-label {
+//   font-size: 14px !important;
+//   font-weight: 600 !important;
+//   color: #2c3e50 !important;
+//   margin-bottom: 8px !important;
+// }
+
+// .boq-section-title {
+//   font-size: 15px !important;
+//   font-weight: 600 !important;
+//   color: #1f4e79 !important;
+//   display: flex;
+//   align-items: center;
+//   margin-bottom: 12px !important;
+//   padding-bottom: 8px;
+//   border-bottom: 2px solid #1f4e79;
+// }
+
+// .boq-table {
+//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+//   border-radius: 8px !important;
+//   overflow: hidden !important;
+
+//   thead tr {
+//     background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+//   }
+
+//   thead th {
+//     color: #000000 !important;
+//     font-weight: 600 !important;
+//     font-size: 13px !important;
+//     padding: 12px 10px !important;
+//     text-align: center !important;
+//     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+//   }
+
+//   tbody tr {
+//     transition: all 0.2s ease;
+
+//     &:hover {
+//       background-color: #f0f5ff !important;
+//     }
+//   }
+
+//   tbody td {
+//     padding: 10px 8px !important;
+//     font-size: 13px !important;
+//     vertical-align: middle !important;
+//   }
+// }
+
+// .boq-bundle-title {
+//   color: #1f4e79 !important;
+//   font-size: 16px !important;
+//   font-weight: 600 !important;
+//   margin-bottom: 15px !important;
+//   display: flex;
+//   align-items: center;
+//   padding: 10px 0;
+//   border-bottom: 2px solid #e0e6ed;
+// }
+
+// .boq-quantity-title {
+//   color: #1f4e79 !important;
+//   font-size: 16px !important;
+//   font-weight: 600 !important;
+//   margin-bottom: 15px !important;
+//   display: flex;
+//   align-items: center;
+//   padding: 10px 0;
+//   border-bottom: 2px solid #e0e6ed;
+// }
+
+// /* Bundle buttons styling */
+// .d-flex.gap-2.flex-wrap button[nz-button] {
+//   font-weight: 500 !important;
+//   border-radius: 6px !important;
+//   padding: 8px 16px !important;
+//   transition: all 0.3s ease !important;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+
+//   &[nzType="primary"] {
+//     background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+//     border-color: #1f4e79 !important;
+//     color: #ffffff !important;
+
+//     &:hover {
+//       transform: translateY(-2px);
+//       box-shadow: 0 4px 8px rgba(31, 78, 121, 0.25) !important;
+//     }
+//   }
+
+//   &[nzType="default"] {
+//     background: #ffffff !important;
+//     border: 1px solid #1f4e79 !important;
+//     color: #1f4e79 !important;
+
+//     &:hover {
+//       background: #f0f5ff !important;
+//       transform: translateY(-1px);
+//     }
+//   }
+// }
+
+// /* Quantity tables collapse panels */
+// ::ng-deep .boq-quantity-title + nz-collapse {
+//   .ant-collapse-item {
+//     border: 1px solid #d9e2ec !important;
+//     border-radius: 6px !important;
+//     margin-bottom: 12px !important;
+//     overflow: hidden;
+//   }
+
+//   .ant-collapse-header {
+//     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+//     color: #1f4e79 !important;
+//     font-weight: 600 !important;
+//     font-size: 14px !important;
+//     padding: 12px 16px !important;
+//     transition: all 0.2s ease !important;
+
+//     &:hover {
+//       background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+//     }
+//   }
+
+//   .ant-collapse-content {
+//     background: #ffffff !important;
+//   }
+
+//   table {
+//     margin: 0 !important;
+    
+//     thead tr {
+//       background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+//     }
+
+//     thead th {
+//       color: #000000 !important;
+//       font-weight: 600 !important;
+//       font-size: 12px !important;
+//       padding: 10px 8px !important;
+//       text-align: center !important;
+//     }
+
+//     tbody td {
+//       padding: 8px 6px !important;
+//       font-size: 13px !important;
+//     }
+
+//     input[nz-input] {
+//       border-radius: 4px !important;
+//       border: 1px solid #d9d9d9 !important;
+//       transition: all 0.2s ease !important;
+
+//       &:focus {
+//         border-color: #1f4e79 !important;
+//         box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.1) !important;
+//       }
+//     }
+//   }
+// }
+
+/* ========== Bill of Quantity Section Styling ========== */
+/* Header same as Basic Information - no custom styling needed */
+
+.boq-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%) !important;
+  border: 2px solid #1f4e79 !important;
+  padding: 14px 18px !important;
+  box-shadow: 0 2px 8px rgba(31, 78, 121, 0.12) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: #0d3a5c !important;
+    box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18) !important;
+    transform: translateY(-1px);
+  }
 }
-:host ::ng-deep nz-form-label {
- margin-bottom: 0 !important;
- padding-bottom: 0 !important;
+
+.boq-label {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
 }
-/* --- CSS for Work Execution Location (nz-select) --- */
 
-// .compact-multi-select {
-//  width: 100%;
-//  display: block;
-// }
+.boq-field-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 8px !important;
+}
 
-// .compact-multi-select ::ng-deep .ant-select-selector {
-//  /* 1. Outer Container: Force the overall height */
-//  height: 36px !important; 
-//  min-height: 36px !important;
-//  /* 2. Padding adjustment (must be high specificity) */
-//  padding: 0 11px !important;
-//  display: flex !important;
-//  align-items: center !important; /* Vertically center everything inside */
-// }
+.boq-section-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px !important;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #1f4e79;
+}
 
-// /* 3. CRITICAL: Target the internal container holding the tags (ant-select-selection-overflow) */
-// .compact-multi-select ::ng-deep .ant-select-selection-overflow {
-//  /* Must have height equal to (control height - outer vertical padding) to fit tags/input */
-//  height: 34px !important; /* 36px control height - 2px vertical offset/border */
-//  display: flex !important;
-//  align-items: center !important; 
-// }
+.boq-table {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
 
-// /* 4. Ensure internal tags are compact (if used) */
-// .compact-multi-select ::ng-deep .ant-select-selection-item {
-//  height: 24px !important; /* Keep tags small and uniform */
-//  line-height: 22px !important; /* Vertically center text in tag */
-//  margin-top: 5px !important; /* CRITICAL: Adjust vertical alignment if needed */
-//  margin-bottom: 5px !important; /* CRITICAL: Adjust vertical alignment if needed */
-// }
+  thead tr {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+  }
 
-// /* 5. Ensure the search input for typing is aligned */
-// .compact-multi-select ::ng-deep .ant-select-selection-search-input {
-//  height: 22px !important;
-//  margin-top: 5px !important; /* Match the tag vertical alignment */
-// }
+  thead th {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 12px 10px !important;
+    text-align: center !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
 
-// /* 6. Ensure placeholder text aligns vertically */
-// .compact-multi-select ::ng-deep .ant-select-selection-placeholder {
-//  line-height: 34px !important; 
-// }
+  tbody tr {
+    transition: all 0.2s ease;
 
+    &:hover {
+      background-color: #f0f5ff !important;
+    }
+  }
 
-/* --- CSS for Project Duration (nz-input-number) --- */
+  tbody td {
+    padding: 10px 8px !important;
+    font-size: 13px !important;
+    vertical-align: middle !important;
+  }
+}
+
+.boq-bundle-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+.boq-quantity-title {
+  color: #1f4e79 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+/* Bundle buttons styling */
+.d-flex.gap-2.flex-wrap button[nz-button] {
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+
+  &[nzType="primary"] {
+    background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    border-color: #1f4e79 !important;
+    color: #ffffff !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(31, 78, 121, 0.25) !important;
+    }
+  }
+
+  &[nzType="default"] {
+    background: #ffffff !important;
+    border: 1px solid #1f4e79 !important;
+    color: #1f4e79 !important;
+
+    &:hover {
+      background: #f0f5ff !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Quantity tables collapse panels */
+::ng-deep .boq-quantity-title    {
+  .ant-collapse-item {
+    border: 1px solid #d9e2ec !important;
+    border-radius: 6px !important;
+    margin-bottom: 12px !important;
+    overflow: hidden;
+  }
+
+  .ant-collapse-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    color: #1f4e79 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+    }
+  }
+
+  .ant-collapse-content {
+    background: #ffffff !important;
+  }
+
+  table {
+    margin: 0 !important;
+    
+    thead tr {
+      background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
+    }
+
+    thead th {
+      color: #000000 !important;
+      font-weight: 600 !important;
+      font-size: 12px !important;
+      padding: 10px 8px !important;
+      text-align: center !important;
+    }
+
+    tbody td {
+      padding: 8px 6px !important;
+      font-size: 13px !important;
+    }
+
+    input[nz-input] {
+      border-radius: 4px !important;
+      border: 1px solid #d9d9d9 !important;
+      transition: all 0.2s ease !important;
+
+      &:focus {
+        border-color: #1f4e79 !important;
+        box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.1) !important;
+      }
+    }
+  }
+}
+
+/* ========== SUBCRITERIA DRAWER STYLES ========== */
+
+/* Drawer title styling */
+.drawer-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%);
+  color: white;
+  border-radius: 6px;
+  margin: -16px -16px 0 -16px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(11, 106, 160, 0.15);
+}
+
+.drawer-title div {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Subcriteria form container */
+::ng-deep .ant-drawer-body {
+  padding: 24px !important;
+  background: linear-gradient(145deg, #f8fbff 0%, #ffffff 100%) !important;
+}
+
+/* Subcriteria form row styling */
+.subcriteria-form-row {
+  background: #ffffff;
+  border: 1px solid #e6f0ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(11, 106, 160, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.subcriteria-form-row:hover {
+  border-color: #0b6aa0;
+  box-shadow: 0 6px 20px rgba(11, 106, 160, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Form labels in subcriteria */
+::ng-deep .ant-drawer-body .ant-form-item-label > label {
+  color: #1f4e79 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+}
+
+/* Input styling in subcriteria */
+::ng-deep .ant-drawer-body input[nz-input],
+::ng-deep .ant-drawer-body .ant-input-number,
+::ng-deep .ant-drawer-body textarea {
+  border: 2px solid #e6f0ff !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  background: #fafcff !important;
+}
+
+::ng-deep .ant-drawer-body input[nz-input]:focus,
+::ng-deep .ant-drawer-body .ant-input-number:focus,
+::ng-deep .ant-drawer-body textarea:focus,
+::ng-deep .ant-drawer-body .ant-input-number-focused {
+  border-color: #0b6aa0 !important;
+  box-shadow: 0 0 0 3px rgba(11, 106, 160, 0.1) !important;
+  background: #ffffff !important;
+}
+
+/* Subcriteria action buttons */
+.subcriteria-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e6f0ff;
+}
+
+.subcriteria-add-btn {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%) !important;
+  border: none !important;
+  color: white !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-add-btn:hover {
+  background: linear-gradient(135deg, #389e0d 0%, #237804 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(82, 196, 26, 0.4) !important;
+}
+
+.subcriteria-delete-btn {
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%) !important;
+  border: none !important;
+  color: white !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-delete-btn:hover {
+  background: linear-gradient(135deg, #cf1322 0%, #a8071a 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(255, 77, 79, 0.4) !important;
+}
+
+/* Subcriteria footer styling */
+::ng-deep .ant-drawer-footer {
+  background: linear-gradient(145deg, #f8fbff 0%, #ffffff 100%) !important;
+  border-top: 1px solid #e6f0ff !important;
+  padding: 20px 24px !important;
+}
+
+.subcriteria-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.subcriteria-cancel-btn {
+  background: #ffffff !important;
+  color: #0b6aa0 !important;
+  border: 2px solid #0b6aa0 !important;
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-cancel-btn:hover {
+  background: #f0f7ff !important;
+  color: #005c99 !important;
+  border-color: #005c99 !important;
+  transform: translateY(-1px) !important;
+}
+
+.subcriteria-save-btn {
+  background: linear-gradient(135deg, #0b6aa0 0%, #005c99 100%) !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(11, 106, 160, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.subcriteria-save-btn:hover {
+  background: linear-gradient(135deg, #005c99 0%, #004b80 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(11, 106, 160, 0.4) !important;
+}
+
+.subcriteria-save-btn:disabled {
+  background: #f5f5f5 !important;
+  color: #bfbfbf !important;
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Error message styling in subcriteria */
+::ng-deep .ant-drawer-body small {
+  color: #ff4d4f !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  margin-top: 4px !important;
+  display: block !important;
+}
+
+/* Subcriteria form item spacing */
+::ng-deep .ant-drawer-body .ant-form-item {
+  margin-bottom: 16px !important;
+}
+
+/* Serial number field styling */
+.subcriteria-serial {
+  background: #e6f0ff !important;
+  border-color: #91caff !important;
+  color: #1f4e79 !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+/* Percentage input styling */
+::ng-deep .ant-drawer-body .ant-input-number {
+  width: 100% !important;
+}
+
+::ng-deep .ant-drawer-body .ant-input-number-input {
+  text-align: center !important;
+  font-weight: 600 !important;
+  color: #1f4e79 !important;
+}
+
+/* Description textarea styling */
+::ng-deep .ant-drawer-body textarea {
+  resize: vertical !important;
+  min-height: 60px !important;
+  line-height: 1.5 !important;
+}
+
+/* Responsive adjustments for subcriteria */
+@media (max-width: 768px) {
+  ::ng-deep .ant-drawer-body {
+    padding: 16px !important;
+  }
+  
+  .subcriteria-form-row {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .drawer-title {
+    margin: -16px -16px 0 -16px;
+    padding: 12px 16px;
+  }
+  
+  .drawer-title div {
+    font-size: 14px;
+  }
+}
+
+/* Animation for subcriteria items */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.subcriteria-form-row {
+  animation: slideInUp 0.3s ease-out;
+}
 
 /* Target the main input-number container to match height */
 .col-4 nz-input-number .ant-input-number {
-  height: 36px !important; 
+  height: 36px !important;
   line-height: 36px !important;
 }
-
+ 
 /* Target the actual inner input field for the number component */
 .col-4 nz-input-number .ant-input-number-input {
-  height: 34px !important; 
+  height: 34px !important;
   line-height: 34px !important;
+}
+
+/* Subcriteria drawer - make Si no and Weightage boxes same width */
+::ng-deep .ant-drawer-body .col-5 {
+  width: 41.66666667% !important;
+  flex: 0 0 41.66666667% !important;
+  height: 20px;
+}
+:host ::ng-deep .ant-input-number {
+  height: 32px !important;     /* reduce container height */
+  line-height: 32px !important;
+  border-radius: 6px !important;
+}
+
+:host ::ng-deep .ant-input-number-input {
+  height: 32px !important;     /* reduce input field height */
+  line-height: 32px !important;
+  padding: 0 8px !important;   /* adjust internal padding */
+}
+
+:host ::ng-deep .ant-input-number-handler-wrap {
+  height: 100% !important;     /* reduce spinner height */
 }
 //emergency documents upload
 .upload-inline-content-emergency {
@@ -1414,14 +2354,14 @@ color: #b52b27;
  cursor: pointer;
  z-index: 5;
 }
-
+ 
 /* Icon & text styling */
 .upload-inline-icon-emergency {
 font-size: 16px;
 color: #0b6aa0;
 line-height: 1;
 }
-
+ 
 .upload-inline-text-emergency {
 font-size: 15px;
 color: #333;
@@ -1430,7 +2370,7 @@ white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
 }
-
+ 
 /* Trash button (right aligned) */
 .trash-btn-emergency {
 border: 1px solid #d9534f;
@@ -1444,7 +2384,7 @@ background: #fff;
 border-radius: 50%;
 box-sizing: border-box;
 }
-
+ 
 .trash-btn-emergency :hover{
 background: rgba(217, 83, 79, 0.06);
 border-color: #b52b27;
@@ -1456,7 +2396,7 @@ color: #b52b27;
 .label-emergency{
   border: 1px solid #d9d9d9;
 }
-
+ 
 /* outer, input-like box */
 .upload-inline-box-emergency{
  flex: 1;
@@ -1472,7 +2412,7 @@ color: #b52b27;
  overflow: hidden;
  min-width: 220px;
 }
-
+ 
 /* Force NG-Zorro internal elements to be invisible and occupy full area */
 .upload-inline-box-emergency,
 .upload-inline-box-emergency .ant-upload,
@@ -1486,13 +2426,13 @@ background: transparent !important;
 border: none !important;
 box-shadow: none !important;
 }
-
+ 
 /* Remove dashed inner pseudo-elements or dotted borders */
 .upload-inline-box-emergency .ant-upload-drag-container::before,
 .upload-inline-box-emergency .ant-upload-drag-container::after {
 display: none !important;
 }
-
+ 
 /* Hide default internal icon/text */
 .upload-inline-box-emergency .ant-upload-drag-icon,
 .upload-inline-box-emergency .ant-upload-text,
@@ -1506,178 +2446,152 @@ display: none !important;
   justify-content: center; /* CRITICAL: Centers items horizontally */
   gap: 3px;
 }
-
-
-/* ──────────────────────────────
-   CUSTOM STEPPER LINES
-──────────────────────────────── */
-
-.stepper-wrapper {
-  position: relative;
+ 
+//work location
+/* Outer box */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selector {
+  height: 32px !important;        /* changed from 24px */
+  min-height: 32px !important;    /* changed from 24px */
+  padding: 0 6px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+ 
+/* Overflow tag container */
+:host ::ng-deep .ant-select.ant-select-multiple .ant-select-selection-overflow {
+  height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+ 
+/* Individual selected tag */
+:host ::ng-deep
+.ant-select.ant-select-multiple
+.ant-select-selection-item {
+  height: 16px !important;
+  line-height: 16px !important;
+  padding: 0 3px !important;
+  font-size: 11px !important;
+}
+ 
+/* Placeholder alignment */
+:host ::ng-deep
+.ant-select.ant-select-multiple
+.ant-select-selection-placeholder {
+  line-height: 22px !important;
+  font-size: 14px !important;
 }
 
-/* Grey full line (LTR default) */
-.stepper-line {
-  position: absolute;
-  width: 890px;
-  top: 35px;
-  left: 90px; /* LTR */
-  height: 2px;
-  background-color: #e0e0e0;
-  z-index: 1;
+/* Stepper circle colors - blue initially */
+::ng-deep .ant-steps-item-icon {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
 }
 
-/* Blue progress line (LTR default) */
-.stepper-progress {
-  position: absolute;
-  top: 35px;
-  left: 90px; /* LTR */
-  height: 2px;
-  background-color: #1677ff;
-  z-index: 2;
-  transition: width 0.3s ease;
+::ng-deep .ant-steps-item-icon .ant-steps-icon {
+  color: white !important;
 }
 
-
-
-
-/* ──────────────────────────────
-   RTL (Arabic) SUPPORT
-──────────────────────────────── */
-
-:host-context([dir="rtl"]) .stepper-line {
-  left: auto !important;
-  right: 90px !important; /* RTL */
+/* Hide validation indicator initially */
+::ng-deep .validation-indicator {
+  display: none !important;
 }
 
-:host-context([dir="rtl"]) .stepper-progress {
-  left: auto !important;
-  right: 90px !important; /* RTL */
+/* Green step when completed - using step finish state */
+::ng-deep .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #52c41a !important;
+  border-color: #52c41a !important;
 }
 
-/* Steps layout in RTL */
-:host-context([dir="rtl"]) .simple-stepper .ant-steps-item {
-  text-align: center !important;
-  direction: rtl !important;
+::ng-deep .ant-steps-item-finish .ant-steps-item-icon .ant-steps-icon {
+  color: white !important;
 }
 
-/* Make circles layout RTL */
-:host-context([dir="rtl"]) .ant-steps-horizontal .ant-steps-item-container {
-  flex-direction: row-reverse !important;
+/* Force green for completed steps */
+::ng-deep .simple-stepper .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #52c41a !important;
+  border-color: #52c41a !important;
 }
 
+/* Override any other states */
+::ng-deep .simple-stepper .ant-steps-item-process .ant-steps-item-icon {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
 
-/* ──────────────────────────────
-   STEPPER CARD
-──────────────────────────────── */
+::ng-deep .simple-stepper .ant-steps-item-wait .ant-steps-item-icon {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+/* Normal input height */
+.equal-height {
+  height: 50px !important;
+  line-height: 30px !important;
+}
+
+/* NG-Zorro number input height */
+:host ::ng-deep .equal-height-input-number .ant-input-number {
+  height: 38px !important;
+}
+
+:host ::ng-deep .equal-height-input-number .ant-input-number-input {
+  height: 38px !important;
+  line-height: 38px !important;
+  display: flex;
+  align-items: center;
+}
+/* Center the placeholder text */
+:host ::ng-deep .equal-height-input-number .ant-input-number-input::placeholder {
+  //padding-bottom: 6px !important;  /* moves placeholder up visually */
+  display: inline-block;    
+}
+
+.add-criteria-btn {
+  background-color: #0C5FA8 !important; /* updated blue color */
+  border: none !important;
+  color: #ffffff !important; /* pure white text like image */
+  border-radius: 3px !important;
+  padding: 6px 16px !important;
+ 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+ 
+  transition: background 0.2s;
+}
+ 
+.add-criteria-btn:hover:not([disabled]) {
+  background-color: #0A4F8C !important; /* darker hover */
+  color: #ffffff !important;
+}
+ 
+.add-criteria-btn[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+ 
+
+.bold-label {
+  font-weight: 600 !important;
+  font-weight: 600 !important;  
+  font-size: 18px;              
+  color: #333;  
+}}
 
 .stepper-card {
-  width: 100%;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 18px 22px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  margin-top: -10px;
-  justify-content:center;
-}
-
-
-/* ──────────────────────────────
-   NG-ZORRO – REMOVE DEFAULT LINES
-──────────────────────────────── */
-
-:host ::ng-deep .ant-steps-item-tail,
-:host ::ng-deep .ant-steps-item-tail::after,
-:host ::ng-deep .ant-steps-item::after {
-  display: none !important;
-}
-
-/* Step title */
-:host ::ng-deep .ant-steps-item-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #444;
-}
-
-/* Active circle */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-  background-color: #005bbd !important;
-  border-color: #005bbd !important;
-  color: #fff !important;
-}
-
-/* Circles above line */
-:host ::ng-deep .ant-steps-item-icon {
-  position: relative;
-  z-index: 3 !important;
-}
-
-:host ::ng-deep .ant-steps {
-  position: relative;
-  z-index: 2;
-}
-
-/* Fixed spacing between circles */
-.simple-stepper .ant-steps-item {
-  width: 223.5px !important;
-  flex: 0 0 223.5px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  text-align: center;
-  align-content:flex-start;
-  justify-content:flex-start;
-}
-
-/* Circle size */
-.simple-stepper .ant-steps-item .ant-steps-item-icon {
-  height: 28px !important;
-  width: 28px !important;
-  line-height: 28px !important;
-}
-
-/* Remove default connector line */
-:host ::ng-deep .ant-steps-item-title::after {
-  display: none !important;
-  border: none !important;
-  background: transparent !important;
-  content: none !important;
-}
-
-
-/* ──────────────────────────────
-   RESPONSIVE
-──────────────────────────────── */
-
-@media (max-width: 900px) {
-  .simple-stepper .ant-steps-item {
-    min-width: 90px !important;
+  ::ng-deep .ant-steps-item-container::after {
+    content: '';
+    height: 3px !important;
+    border-radius: 3px;
+    background: 
+      linear-gradient(to right,
+        black 0,               /* LEFT BLACK EDGE */
+        black 8px,
+        #1f4e79 8px,           /* your main line color */
+        #1f4e79 calc(100% - 8px),
+        black calc(100% - 8px), /* RIGHT BLACK EDGE */
+        black 100%
+      ) !important;
   }
-  .simple-stepper .ant-steps-item .ant-steps-item-title {
-    font-size: 12px;
-  }
-}
-.stepper-center{
-  border:1px solid #0000
-}
-
-:host ::ng-deep .ant-steps.ant-steps-horizontal.ant-steps-label-horizontal {
-  display: flex !important;
-  justify-content: center !important;
-  width: 100% !important;
-  align-items: center !important;
-}
-:host ::ng-deep .ant-steps-item-container {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-//sow label 
-.bold-label {
-  font-weight: 600 !important; 
-  font-weight: 600 !important;   
-  font-size: 18px;               
-  color: #333;  
 }

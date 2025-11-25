@@ -73,6 +73,7 @@ export class CreateRFPComponent implements OnInit {
   attachmentsCollapseActive = false;
 
   // Collapse panel visibility
+  showBasicInfo = true;
   showScopeOfWork = false;
   showStandards = false;
   showBillOfQuantity = false;
@@ -204,6 +205,13 @@ export class CreateRFPComponent implements OnInit {
   showDirectPurchaseField: boolean = false;
   showLimitedField: boolean = false;
   isPrivateSelected: boolean = false;
+  selectedBundleIndex: number | null = null;
+  selectedYears: number = 1;
+
+  workforceRows: any[] = [{}];
+  materialsRows: any[] = [{}];
+  equipmentRows: any[] = [{}];
+  serviceRows: any[] = [{}];
 
   boqListData: any;
   boqList?: FormArray;
@@ -252,6 +260,7 @@ export class CreateRFPComponent implements OnInit {
   step3 = true;
 
   step4 = true;
+  progressPercent = 0;
 
   invalidFileSize = false;
   invalidFileType = false;
@@ -276,6 +285,7 @@ export class CreateRFPComponent implements OnInit {
   procurementCheckListData: any = [];
 
   boqTabelList: any = [];
+ 
 
   managerSubId: string = '';
 
@@ -350,7 +360,7 @@ export class CreateRFPComponent implements OnInit {
   }
 
   get standardsValid(): boolean {
-    return this.TechReqListData.length > 0 && this.EvalListData.length > 0;
+    return this.TechReqListData.length > 0 && this.evalCriteriaItems.length > 0;
   }
 
   get billOfQuantityValid(): boolean {
@@ -361,6 +371,7 @@ export class CreateRFPComponent implements OnInit {
   goto(stepIndex: number): void {
     if (!this.canNavigateToStep(stepIndex)) return;
     this.step = stepIndex;
+    this.showCorrectSection(stepIndex);
     this.activateCollapse(this.getCollapseSection(stepIndex));
   }
 
@@ -375,6 +386,42 @@ export class CreateRFPComponent implements OnInit {
     this.standardsActive = section === 'standards';
     this.billOfQuantityActive = section === 'billOfQuantity';
     this.attachmentsCollapseActive = section === 'attachments';
+    
+    // Scroll to the section after a brief delay to ensure DOM is updated
+    setTimeout(() => {
+      const element = document.getElementById(section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
+  private showCorrectSection(stepIndex: number): void {
+    // Reset all sections
+    this.showBasicInfo = false;
+    this.showScopeOfWork = false;
+    this.showStandards = false;
+    this.showBillOfQuantity = false;
+    this.showAttachments = false;
+
+    // Show the correct section based on step
+    switch (stepIndex) {
+      case 0:
+        this.showBasicInfo = true;
+        break;
+      case 1:
+        this.showScopeOfWork = true;
+        break;
+      case 2:
+        this.showStandards = true;
+        break;
+      case 3:
+        this.showBillOfQuantity = true;
+        break;
+      case 4:
+        this.showAttachments = true;
+        break;
+    }
   }
 
   canNavigateToStep(stepIndex: number): boolean {
@@ -398,6 +445,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 1;
       this.activateCollapse('scopeOfWork');
       this.showScopeOfWork = true;
+      this.showBasicInfo = false;
     }
   }
 
@@ -406,6 +454,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 2;
       this.activateCollapse('standards');
       this.showStandards = true;
+      this.showScopeOfWork = false;
     }
   }
 
@@ -414,6 +463,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 3;
       this.activateCollapse('billOfQuantity');
       this.showBillOfQuantity = true;
+       this.showStandards = false;
     }
   }
 
@@ -422,6 +472,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 4;
       this.activateCollapse('attachments');
       this.showAttachments = true;
+      this.showBillOfQuantity = false;
     }
   }
 //   get attachmentsValid(): boolean {
@@ -648,7 +699,17 @@ export class CreateRFPComponent implements OnInit {
     }
     console.log(this.subCriterias);
   }
-
+deleteCriteria(index: number) {
+  this.modal.confirm({
+    nzTitle: 'Are you sure you want to delete this criteria?',
+    nzOkText: 'Yes',
+    nzOkType: 'primary',
+    nzOnOk: () => {
+      this.evalCriteriaItems.removeAt(index);
+    },
+    nzCancelText: 'No'
+  });
+}
   deleteSubCriteria(index: number) {
     this.subCriterias.removeAt(index);
     this.subCriterias.controls.slice(index).forEach((subCriteria, i) => {
@@ -945,6 +1006,10 @@ toggleExpand(index: number): void {
     return this.rfpForm.get('evalCriteriaItems') as FormArray;
   }
 
+  get competitionFragmentationItems(): FormArray {
+    return this.rfpForm.get('competitionFragmentationItems') as FormArray;
+  }
+
   committeeMembers = [
     { role: 'Project Director', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
@@ -1040,8 +1105,95 @@ toggleExpand(index: number): void {
       SubCriFlg: ['y', Validators.required],
       Descr: ['', Validators.required],
       subCriteriaList: [[]],
-      showSubCriteria: [false]
+      showSubCriteria: [true]
     });
+  }
+
+  createCompetitionFragmentationRow(): FormGroup {
+    return this.fb.group({
+      package: ['', Validators.required],
+      description: ['', Validators.required],
+      classificationField: ['', Validators.required]
+    });
+  }
+
+  addCompetitionFragmentationItem(index: number): void {
+    this.competitionFragmentationItems.insert(index + 1, this.createCompetitionFragmentationRow());
+  }
+
+  deleteCompetitionFragmentationItem(index: number): void {
+    if (this.competitionFragmentationItems.length > 1) {
+      this.competitionFragmentationItems.removeAt(index);
+    }
+  }
+
+  onCompetitionFragmentationChange(value: boolean): void {
+    const noOfYearsControl = this.rfpForm.get('noOfYears');
+    if (value) {
+      noOfYearsControl?.setValidators([Validators.required]);
+      this.selectedBundleIndex = 0;
+    } else {
+      noOfYearsControl?.clearValidators();
+      this.selectedBundleIndex = null;
+      
+      // Keep only 1 row when toggle is disabled
+      while (this.competitionFragmentationItems.length > 1) {
+        this.competitionFragmentationItems.removeAt(this.competitionFragmentationItems.length - 1);
+      }
+    }
+    noOfYearsControl?.updateValueAndValidity();
+  }
+
+  onYearsChange(value: string): void {
+    this.selectedYears = parseInt(value) || 1;
+  }
+
+  getYearsArray(): number[] {
+    return Array.from({ length: this.selectedYears }, (_, i) => i + 1);
+  }
+
+  selectBundle(index: number): void {
+    this.selectedBundleIndex = index;
+  }
+
+  addWorkforceRow(index: number): void {
+    this.workforceRows.splice(index + 1, 0, {});
+  }
+
+  deleteWorkforceRow(index: number): void {
+    if (this.workforceRows.length > 1) {
+      this.workforceRows.splice(index, 1);
+    }
+  }
+
+  addMaterialsRow(index: number): void {
+    this.materialsRows.splice(index + 1, 0, {});
+  }
+
+  deleteMaterialsRow(index: number): void {
+    if (this.materialsRows.length > 1) {
+      this.materialsRows.splice(index, 1);
+    }
+  }
+
+  addEquipmentRow(index: number): void {
+    this.equipmentRows.splice(index + 1, 0, {});
+  }
+
+  deleteEquipmentRow(index: number): void {
+    if (this.equipmentRows.length > 1) {
+      this.equipmentRows.splice(index, 1);
+    }
+  }
+
+  addServiceRow(index: number): void {
+    this.serviceRows.splice(index + 1, 0, {});
+  }
+
+  deleteServiceRow(index: number): void {
+    if (this.serviceRows.length > 1) {
+      this.serviceRows.splice(index, 1);
+    }
   }
 
   toggleSubCriteriaView(index: number) {
@@ -1079,11 +1231,15 @@ buildMainFormGroup(): void {
       })
     ]),
 
-    competitionType: new FormControl('', [Validators.required]),
-    prequalificationDetails: new FormControl('', [Validators.required]),
-    coordinatorName: new FormControl(''),
-    coordinatorNumber: new FormControl(''),
-    coordinatorEmail: new FormControl(''),
+      // contractType: new FormControl('', [Validators.required]),
+      competitionType: new FormControl('', [Validators.required]),
+      technicalDocs: this.fb.array([this.createTechnicalDocRow()]),
+
+      prequalificationDetails: new FormControl('', [Validators.required]),
+      coordinatorName: new FormControl(''),
+      coordinatorNumber: new FormControl(''),
+      coordinatorEmail: new FormControl(''),
+
 
     activity: [''],
     subactivity: [''],
@@ -1127,11 +1283,13 @@ buildMainFormGroup(): void {
       )
     ),
 
-    technicalDocs: this.fb.array([this.createTechnicalDocRow()]),
-    laborItems: this.fb.array([this.createLaborRow()]),
-    materialItems: this.fb.array([this.createMaterialRow()]),
-    equipmentItems: this.fb.array([this.createEquipmentRow()]),
-    evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
+      laborItems: this.fb.array([this.createLaborRow()]),
+      materialItems: this.fb.array([this.createMaterialRow()]),
+      equipmentItems: this.fb.array([this.createEquipmentRow()]),
+      evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
+      competitionFragmentation: [false],
+      noOfYears: ['1'],
+      competitionFragmentationItems: this.fb.array([this.createCompetitionFragmentationRow()]),
 
     // scope of work
     MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
@@ -1185,44 +1343,136 @@ buildMainFormGroup(): void {
     })
   });
 
-  // Set default technical eval value
-  this.rfpForm.get('TotTechEval')?.setValue(100);
+    this.rfpForm.get('TotTechEval')?.setValue(100);
+    
+    // this.rfpForm = this.fb.group({
+    //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
+    //   CostCenter1: new FormControl(
+    //     { value: localStorage.getItem('CC'), disabled: true }
+    //     ,
+    //     Validators.required
+    //   ),
 
-  // Direct purchase change listener
+    //   Dept: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required,
+    //   ]),
+    //   MatGrpId: ['', [Validators.required]],
+    //   DeliveryDate: ['', [Validators.required]],
+    //   ProjJust: new FormControl('', [
+    //     Validators.required,
+    //     Validators.maxLength(300),
+    //   ]),
+    //   MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+    //   MemManagerName: new FormControl('', [Validators.required]),
+
+    //   SOP: new FormControl('', [Validators.required]),
+    //   PurGrpId: new FormControl('', [Validators.required]),
+    //   billOFQty: this.fb.array([this.createBoQ()], [Validators.required]),
+    //   estPrice: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required,
+    //   ]),
+    //   vatAmount: new FormControl({ value: '', disabled: true }),
+    //   estPriceVAT: new FormControl({ value: '', disabled: true }, [
+    //     Validators.required
+    //   ]),
+    //   DurationType: new FormControl('', [Validators.required]),
+    //   // new flow afreen
+    //   invite: new FormControl('', [Validators.required]),
+    //   crNumber: new FormControl('', [Validators.required]),
+    //   directPurchaseType: new FormControl('', [Validators.required]),
+    //   contractType: new FormControl('', [Validators.required]),
+    //   competitionType: new FormControl('', [Validators.required]),
+    //   limitedType: new FormControl('', [Validators.required]),
+    //   //
+
+
+    //   ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+
+    //   Payment: this.fb.array([]),
+
+    //   PayTermsEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: [''],
+    //     Percentage: ['0'],
+    //   }),
+    //   CC: new FormControl(''),
+
+
+
+    //   TechRFP: new FormControl('N'),
+
+    //   TotTechEval: new FormControl(''),
+
+    //   // TechEval: new FormControl(''),
+    //   vendorEvaluationWeightage: this.fb.group({
+    //     technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99), ]],
+    //     financialEvaluationWeightage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(1), Validators.max(99)]]
+    //   }),
+
+    //   ProjManpower: new FormControl(this.isManPow),
+    //   CancelRFP: new FormControl(''),
+    //   Evalcrt: this.fb.array([]),
+    //   EvalCriteria: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: (this.slel).toString(), disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]],
+    //     Percentage: ['0'],
+    //     Headline:['', Validators.required],
+    //     SubCriFlg:['',Validators.required ]
+
+    //   }),
+    //   EvalCriteriaEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]],
+    //     Percentage: ['0'],
+    //     Headline:[''],
+    //     SubCriFlg:['']
+    //   }),
+    //   RfpTreq: this.fb.array([]),
+    //   TechReq: this.fb.group({
+    //     RfpNo: [''],
+    //     RfpVersion: [''],
+    //     ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]]
+    //   }),
+    //   TechReqEdit: this.fb.group({
+    //     RfpNo: [''],
+    //     RfpVersion: [''],
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     Descr: ['', [Validators.maxLength(600)]]
+    //   }),
+
+
+    //   Attachments: this.fb.array([]),
+    //   ManPower: this.fb.array([]),
+    //   ManPowerForm: this.fb.group({
+    //     ItemNo: [{ value: this.slman.toString(), disabled: true }],
+    //     JobTitle: [''],
+    //     Amount: [''],
+    //     SpeQualf:[''],
+    //     Specilization:[''],
+    //     SpeExp: ['', Validators.maxLength(300)],
+
+    //   }),
+    //   ManPowerFormEdit: this.fb.group({
+    //     ItemNo: [{ value: '', disabled: true }],
+    //     JobTitle: [''],
+    //     Amount: [''],
+    //     SpeQualf:[''],
+    //     Specilization:[''],
+    //     SpeExp: ['', Validators.maxLength(300)],
+
+    //   }),
+    //   ConsultWork: this.fb.array([]),
+    //   procurementChecklist: this.fb.group({})
+    // });
+    // Direct purchase change listener
   this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
     this.showEmergencyDocs = value === 'Emergency';
   });
-}
-
-
-
-get technicalDocs(): FormArray {
-  return this.rfpForm.get('technicalDocs') as FormArray;
-}
-
-createTechnicalDocRow(): FormGroup {
-  return this.fb.group({
-    documentNumber: ['']
-  });
-}
-
-addTechnicalDoc(index: number): void {
-  this.technicalDocs.insert(index + 1, this.createTechnicalDocRow());
-}
-
-deleteTechnicalDoc(index: number): void {
-  if (this.technicalDocs.length > 1) {
-    this.technicalDocs.removeAt(index);
   }
-}
-
-
-
-  onDirectPurchaseEmergency(value: any) {
-  // Example: show only when user selects "cancel"
-  this.showEmergencyDocs = value === 'Emergency';  
-}
-
 
   beforeUpload = (file: NzUploadFile): boolean => {
     const ext = (file.name.split('.').pop() || '').toLowerCase();
@@ -1243,25 +1493,109 @@ deleteTechnicalDoc(index: number): void {
     return false; // stop auto upload
   };
 
-  /** remove file when ✖ is clicked */
+  handleImportFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const allowed = ['pdf', 'doc', 'docx', 'xlsx', 'png', 'jpg'];
+    const isAllowed = allowed.includes(ext);
+    const isLt10M = file.size / 1024 / 1024 <= 10;
+
+    if (!isAllowed) {
+      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      input.value = '';
+      return;
+    }
+    if (!isLt10M) {
+      this.cs.createMessage('error', 'File must be 10MB or smaller.');
+      input.value = '';
+      return;
+    }
+
+    const nzFile: NzUploadFile = {
+      uid: Date.now().toString(),
+      name: file.name,
+      status: 'done',
+      size: file.size,
+      type: file.type,
+      originFileObj: file as any
+    };
+
+    this.fileList = [...this.fileList, nzFile];
+    this.cs.createMessage('success', `File "${file.name}" added successfully.`);
+    input.value = '';
+  }
+
+  downloadTemplate(section: 'workforce' | 'materials' | 'equipment' | 'service'): void {
+    const templates = {
+      workforce: { path: 'assets/general-model/workforce.xlsx', filename: 'workforce.xlsx' },
+      materials: { path: 'assets/general-model/material.xlsx', filename: 'material.xlsx' },
+      equipment: { path: 'assets/general-model/equipment and devices.xlsx', filename: 'equipment and devices.xlsx' },
+      service: { path: 'assets/general-model/services and outputs.xlsx', filename: 'services and outputs.xlsx' }
+    };
+
+    const template = templates[section];
+    const url = encodeURI(template.path);
+
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        saveAs(blob, template.filename);
+        this.cs.createMessage('success', 'Downloaded successfully.');
+      },
+      error: (err) => {
+        console.error('Download failed:', err);
+        this.cs.createMessage('error', 'Unable to download the template.');
+      }
+    });
+  }
+
   handleRemove = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.filter(f => f.uid !== file.uid);
-    return true; // allow remove
+    return true;
   };
+  
   removeFile(file: NzUploadFile): void {
     this.fileList = this.fileList.filter(f => f.uid !== file.uid);
   }
 
+   onDirectPurchaseEmergency(value: any) {
+  // Example: show only when user selects "cancel"
+  this.showEmergencyDocs = value === 'Emergency';  
+}
+ 
+get technicalDocs(): FormArray {
+  return this.rfpForm.get('technicalDocs') as FormArray;
+}
+ 
+createTechnicalDocRow(): FormGroup {
+  return this.fb.group({
+    documentNumber: ['']
+  });
+}
+ 
+addTechnicalDoc(index: number): void {
+  this.technicalDocs.insert(index + 1, this.createTechnicalDocRow());
+}
+ 
+deleteTechnicalDoc(index: number): void {
+  if (this.technicalDocs.length > 1) {
+    this.technicalDocs.removeAt(index);
+  }
+}
+ 
 get progressPx(): number {
   const segment = 890 / 4; // 222.5px per segment
   return this.step * segment;
 }
-
-
-
+ 
+ 
+ 
 get progressWidth(): number {
   return (this.step / 4) * 100;
 }
+
 
   // beforeUpload = (file: NzUploadFile): boolean => {
   //   this.fileList = this.fileList.concat(file);
@@ -1298,8 +1632,7 @@ get progressWidth(): number {
     this.autoPopulateSopFields();
     const compCtrl = this.rfpForm.get('competitionType')!;
     const costCtrl = this.rfpForm.get('estimatedCost')!;
-
-     this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
+    this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
     this.showEmergencyDocs = value === 'Emergency';   // <-- check actual value!
   });
 
@@ -2210,97 +2543,127 @@ private renumberTechReq(): void {
 
 // ------------ ADD ROW ------------ //
 
-addTechReq(cond: 'add' | 'save' | any) {
-  const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
-  if (techReqGroup.invalid) {
-    techReqGroup.markAllAsTouched();
-    return;
-  }
+//  addTechReq(cond: 'add' | 'save' | any) {
 
-  const row = {
-    ItemNo: this.srNoTechReq.toString(),
-    Descr: techReqGroup.get('Descr')?.value || '',
-    RfpNo: techReqGroup.get('RfpNo')?.value || '',
-    RfpVersion: techReqGroup.get('RfpVersion')?.value || ''
-  };
+//   // read the TechReq form group value (not the whole form)
+//   const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+//   if (!techReqGroup) { return; }
 
-  this.TechReqListData.push(row);
+//   if (techReqGroup.invalid) {
+//     // mark touched so errors show if any
+//     techReqGroup.markAllAsTouched();
+//     return;
+//   }
 
-  this.renumberTechReq();
+//   // clone to avoid reference problems
+//   const data = {
+//     RfpNo: techReqGroup.get('RfpNo')?.value || '',
+//     RfpVersion: techReqGroup.get('RfpVersion')?.value || '',
+//     ItemNo: techReqGroup.get('ItemNo')?.value?.toString() || (this.srNoTechReq).toString(),
+//     Descr: techReqGroup.get('Descr')?.value || ''
+//   };
 
-  if (cond === 'add') {
-    techReqGroup.reset();
-    techReqGroup.patchValue({
-      ItemNo: this.srNoTechReq.toString()
-    });
-  }
-}
+//   // push new entry
+//   this.TechReqListData.push(data);
+//   // create a new array reference so change detection picks it up
+//   this.TechReqListData = [...this.TechReqListData];
 
+//   // update any other storage you use (avoid writing into rfpForm.value directly)
+//   // for example set a property or call an API payload builder. If you must keep in form,
+//   // keep it in a separate control RfpTreq:
+//   if (this.rfpForm.get('RfpTreq')) {
+//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+//   }
 
-// ------------ DELETE ROW ------------ //
+//   if (cond === 'add') {
+//     // increment serial and reset the input group for the next entry
+//     this.srNoTechReq++;
+//     techReqGroup.reset();
+//     techReqGroup.patchValue({
+//       RfpNo: '',
+//       RfpVersion: '',
+//       ItemNo: this.srNoTechReq.toString(),
+//       Descr: ''
+//     });
+//   }
+// }
 
-removeTechReq(index: number) {
-  const idx = index - 1;
-  if (idx < 0 || idx >= this.TechReqListData.length) return;
+// removeTechReq(index: number) {
+//   // index is 1-based in your current calls, convert:
+//   const idx = index - 1;
+//   if (idx < 0 || idx >= this.TechReqListData.length) { return; }
 
-  this.TechReqListData.splice(idx, 1);
+//   this.TechReqListData.splice(idx, 1);
+//   // renumber serials if you want to keep sequential
+//   this.TechReqListData = this.TechReqListData.map((item, i) => ({
+//     ...item,
+//     ItemNo: (i + 1).toString()
+//   }));
+//   this.srNoTechReq = this.TechReqListData.length + 1;
 
-  this.renumberTechReq();
+//   if (this.rfpForm.get('RfpTreq')) {
+//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+//   }
 
-  if (this.techReqEditIndex === idx) {
-    this.showEditTechReq = false;
-  }
-}
+//   // if the edit panel was open for a removed index, close it
+//   if (this.techReqEditIndex === idx) {
+//     this.showEditTechReq = false;
+//   }
+// }
 
+// editTechReq(index: number) {
+//   // index is 0-based in table loop (your template uses index as i)
+//   const data = this.TechReqListData[index];
+//   if (!data) { return; }
 
-// ------------ EDIT ROW ------------ //
+//   this.techReqEditIndex = index;
+//   this.showEditTechReq = true;
 
-editTechReq(index: number) {
-  const row = this.TechReqListData[index];
-  if (!row) return;
+//   // populate the edit group
+//   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+//   editG.reset();
+//   editG.patchValue({
+//     RfpNo: data.RfpNo || '',
+//     RfpVersion: data.RfpVersion || '',
+//     ItemNo: (index + 1).toString(),
+//     Descr: data.Descr || ''
+//   });
 
-  this.techReqEditIndex = index;
-  this.showEditTechReq = true;
+//   // ensure required validator is applied for edit description while editing
+//   editG.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
+//   editG.get('Descr')?.updateValueAndValidity();
+// }
 
-  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+// saveEditTechReq() {
+//   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+//   if (!editG || editG.invalid) {
+//     editG?.markAllAsTouched();
+//     return;
+//   }
 
-  editGroup.reset({
-    ItemNo: row.ItemNo,
-    Descr: row.Descr,
-    RfpNo: row.RfpNo,
-    RfpVersion: row.RfpVersion
-  });
+//   const data = {
+//     RfpNo: editG.get('RfpNo')?.value || '',
+//     RfpVersion: editG.get('RfpVersion')?.value || '',
+//     ItemNo: editG.get('ItemNo')?.value?.toString() || (this.techReqEditIndex + 1).toString(),
+//     Descr: editG.get('Descr')?.value || ''
+//   };
 
-  editGroup.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
-  editGroup.get('Descr')?.updateValueAndValidity();
-}
+//   // replace in the array
+//   this.TechReqListData[this.techReqEditIndex] = data;
+//   this.TechReqListData = [...this.TechReqListData];
 
+//   // reflect in the full list control if you have one
+//   if (this.rfpForm.get('RfpTreq')) {
+//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+//   }
 
-// ------------ SAVE EDIT ------------ //
+//   // hide edit panel and clear the edit group
+//   this.showEditTechReq = false;
+//   editG.reset();
+//   editG.get('Descr')?.clearValidators();
+//   editG.get('Descr')?.updateValueAndValidity();
+// }
 
-saveEditTechReq() {
-  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
-  if (editGroup.invalid) {
-    editGroup.markAllAsTouched();
-    return;
-  }
-
-  const updated = {
-    ItemNo: (this.techReqEditIndex + 1).toString(),
-    Descr: editGroup.value.Descr,
-    RfpNo: editGroup.value.RfpNo,
-    RfpVersion: editGroup.value.RfpVersion
-  };
-
-  this.TechReqListData[this.techReqEditIndex] = updated;
-
-  this.TechReqListData = [...this.TechReqListData];
-
-  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
-
-  this.showEditTechReq = false;
-  editGroup.reset();
-}
 
 
   // add teachnical evaluation criteria from group
@@ -2335,7 +2698,7 @@ saveEditTechReq() {
       this.subCriterias.push(this.initialSubCriteria);
       return;
     }
-    
+   
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
     if (cond === 'sub') {
@@ -2353,8 +2716,10 @@ saveEditTechReq() {
             ...subCriteria,
             Percentage: subCriteria.Percentage.toString(),
             ItemNo: data.ItemNo,
-            SubItemNo: (index + 1).toString()
+            SubItemNo: (index + 1).toString(),
+           
           };
+          
         })
       }
     }
@@ -2387,6 +2752,118 @@ saveEditTechReq() {
       this.EvalListData.pop()
     }
   }
+  // private renumberTechReq(): void {
+  // this.TechReqListData = this.TechReqListData.map((item, index) => ({
+  //   ...item,
+  //   ItemNo: (index + 1).toString()
+  // }));
+
+  
+ 
+//   this.srNoTechReq = this.TechReqListData.length + 1;
+ 
+//   // update list control
+//   this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+ 
+//   // update the SL.No input at the top
+//   this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+// }
+ 
+ 
+// ------------ ADD ROW ------------ //
+ 
+addTechReq(cond: 'add' | 'save' | any) {
+  const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+  if (techReqGroup.invalid) {
+    techReqGroup.markAllAsTouched();
+    return;
+  }
+ 
+  const row = {
+    ItemNo: this.srNoTechReq.toString(),
+    Descr: techReqGroup.get('Descr')?.value || '',
+    RfpNo: techReqGroup.get('RfpNo')?.value || '',
+    RfpVersion: techReqGroup.get('RfpVersion')?.value || ''
+  };
+ 
+  this.TechReqListData.push(row);
+ 
+  this.renumberTechReq();
+ 
+  if (cond === 'add') {
+    techReqGroup.reset();
+    techReqGroup.patchValue({
+      ItemNo: this.srNoTechReq.toString()
+    });
+  }
+}
+ 
+ 
+// ------------ DELETE ROW ------------ //
+ 
+removeTechReq(index: number) {
+  const idx = index - 1;
+  if (idx < 0 || idx >= this.TechReqListData.length) return;
+ 
+  this.TechReqListData.splice(idx, 1);
+ 
+  this.renumberTechReq();
+ 
+  if (this.techReqEditIndex === idx) {
+    this.showEditTechReq = false;
+  }
+}
+ 
+ 
+// ------------ EDIT ROW ------------ //
+ 
+editTechReq(index: number) {
+  const row = this.TechReqListData[index];
+  if (!row) return;
+ 
+  this.techReqEditIndex = index;
+  this.showEditTechReq = true;
+ 
+  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+ 
+  editGroup.reset({
+    ItemNo: row.ItemNo,
+    Descr: row.Descr,
+    RfpNo: row.RfpNo,
+    RfpVersion: row.RfpVersion
+  });
+ 
+  editGroup.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
+  editGroup.get('Descr')?.updateValueAndValidity();
+}
+ 
+ 
+// ------------ SAVE EDIT ------------ //
+ 
+saveEditTechReq() {
+  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+  if (editGroup.invalid) {
+    editGroup.markAllAsTouched();
+    return;
+  }
+ 
+  const updated = {
+    ItemNo: (this.techReqEditIndex + 1).toString(),
+    Descr: editGroup.value.Descr,
+    RfpNo: editGroup.value.RfpNo,
+    RfpVersion: editGroup.value.RfpVersion
+  };
+ 
+  this.TechReqListData[this.techReqEditIndex] = updated;
+ 
+  this.TechReqListData = [...this.TechReqListData];
+ 
+  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+ 
+  this.showEditTechReq = false;
+  editGroup.reset();
+}
+ 
 
   // remove evaluation criteria from group
   removeEval(index: number) {
@@ -2432,29 +2909,41 @@ saveEditTechReq() {
       this.editEval(index);
     }
   }
+getTotalWeightage(): number {
+  return this.evalCriteriaItems.controls
+    .map(ctrl => Number(ctrl.get('Percentage')?.value || 0))
+    .reduce((acc, v) => acc + v, 0);
+}
+openSubCriteriaForRow(index: number) {
+  const total = this.getTotalWeightage();
 
-  openSubCriteriaForRow(index: number) {
-    const item = this.evalCriteriaItems.at(index);
-    // const subCriFlg = item.get('SubCriFlg')?.value;
-    const subCriFlg = "X";
-    
-    if (subCriFlg === 'X') {
-      this.evalEditIndex = index;
-      const percentage = item.get('Percentage')?.value || 100;
-      
-      this.rfpForm.controls.EvalCriteria.patchValue({
-        Percentage: percentage,
-        ItemNo: (index + 1).toString()
-      });
-      
-      this.subCriterias.clear();
-      this.subCriterias.push(this.initialSubCriteria);
-      this.isSubCriteria = true;
-    } else {
-      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
-    }
+  // If total > 100 -> block and show message
+  if (total > 100) {
+    this.cs.createMessage('error', `Total Weightage exceeds 100 (current: ${total}). Please adjust values.`);
+    this.isSubCriteria = false;
+    this.subCriterias.clear();
+    return;
   }
 
+  const item = this.evalCriteriaItems.at(index);
+  const subCriFlg = "X"; // your existing logic
+
+  if (subCriFlg === 'X') {
+    this.evalEditIndex = index;
+    const percentage = Number(item.get('Percentage')?.value || 0);
+
+    this.rfpForm.controls.EvalCriteria.patchValue({
+      Percentage: percentage,
+      ItemNo: (index + 1).toString()
+    });
+
+    this.subCriterias.clear();
+    this.subCriterias.push(this.initialSubCriteria);
+    this.isSubCriteria = true;
+  } else {
+    this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
+  }
+}
   // edit evaluation criteria from group
   editEval(index: number) {
     this.evalEditIndex = index;
@@ -2583,6 +3072,7 @@ saveEditTechReq() {
     ]);
     this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
     this.isSubCriteriaEdit = false;
+
   }
 
   // add manpower from group
@@ -3117,8 +3607,6 @@ saveEditTechReq() {
       boqGroup.get('budgetYear')?.updateValueAndValidity();
 
     }
-
-
 
     if (this.TechReqListData.length) {
       this.rfpForm.controls['TechReq'].get('Descr')?.removeValidators([
