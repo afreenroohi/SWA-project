@@ -2560,3 +2560,34 @@ display: none !important;
   //padding-bottom: 6px !important;  /* moves placeholder up visually */
   display: inline-block;    
 }
+
+/* Bill of Quantity table input fields - consistent width */
+.boq-quantity-title + nz-collapse table input[nz-input] {
+  width: 100% !important;
+  min-width: 80px !important;
+  border-radius: 4px !important;
+  height: 32px !important;
+  padding: 4px 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure all input fields in BOQ tables have same width */
+::ng-deep .boq-quantity-title + nz-collapse table tbody td input[nz-input] {
+  width: 100% !important;
+  min-width: 80px !important;
+  border-radius: 4px !important;
+  height: 32px !important;
+  padding: 4px 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* Fix for number type inputs in BOQ tables */
+::ng-deep .boq-quantity-title + nz-collapse table tbody td input[type="number"] {
+  width: 100% !important;
+  min-width: 80px !important;
+  border-radius: 4px !important;
+  height: 32px !important;
+  padding: 4px 8px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
