@@ -587,7 +587,15 @@
     "No of Years":"No of Years",
     "Competition Fragmentation":"Competition Fragmentation",
     "The Bundle":"The Bundle",
-    "Quantity":"Quantity"
+    "Quantity":"Quantity",
+    "Workforce - General Model":"Workforce - General Model",
+    "Service and Output - General Model":"Service and Output - General Model",
+    "Equipment and Devices - General Model":"Equipment and Devices - General Model",
+    "Package":"Package",
+    "Role":"Role",
+    "Name":"Name",
+    "Extension No.":"Extension No."
+    
     
   },
   "COC": {

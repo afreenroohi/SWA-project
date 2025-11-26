@@ -576,11 +576,11 @@
               <table class="table table-bordered technical-table">
                 <thead>
                   <tr>
-                    <th>Role</th>
-                    <th>Name</th>
-                    <th>Extension No.</th>
-                    <th>Job Title</th>
-                    <th>Action</th>
+                    <th>{{"RFP.Role"|translate}}</th>
+                    <th>{{"RFP.Name"|translate}}</th>
+                    <th>{{"RFP.Extension No."|translate}}</th>
+                    <th>{{"RFP.Job Title"|translate}}</th>
+                    <th>{{"RFP.Action"|translate}}</th>
                   </tr>
                 </thead>
 
@@ -2247,7 +2247,7 @@
                 nz-button 
                 [nzType]="selectedBundleIndex === bundleIndex ? 'primary' : 'default'"
                 (click)="selectBundle(bundleIndex)">
-                {{ bundle.get('package')?.value || 'Package ' + (bundleIndex + 1) }}
+                {{ (bundle.get('package')?.value|translate) || ('Package' + (bundleIndex + 1) |translate)}}
               </button>
             </div>
           </div>
@@ -2260,7 +2260,7 @@
             </h5>
             <nz-collapse [nzExpandIconPosition]="'right'">
               <!-- Workforce - General Model -->
-              <nz-collapse-panel nzHeader="Workforce - General Model">
+              <nz-collapse-panel [nzHeader]="'RFP.Workforce - General Model'| translate">
                 <input #workforceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="workforceFileInput.click()">
@@ -2349,7 +2349,7 @@
                       <th>{{'RFP.Structural Code'| translate }}</th>
                       <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate }}</th>
                       <ng-container *ngIf="selectedYears > 1">
-                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} {{'RFP.Year Quantity'| translate}}</th>
+                        <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }} {{'RFP.Year Quantity'| translate}}</th>
                       </ng-container>
                       <th>{{'RFP.Action'|translate}}</th>
                     </tr>
@@ -2381,16 +2381,16 @@
               </nz-collapse-panel>
 
                 <!-- Equipment and Devices - General Model -->
-                <nz-collapse-panel nzHeader="Equipment and Devices - General Model">
+                <nz-collapse-panel [nzHeader]="'RFP.Equipment and Devices - General Model'|translate">
                   <input #equipmentFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                   <div class="d-flex justify-content-end gap-2 mb-3">
                     <button nz-button nzType="default" (click)="equipmentFileInput.click()">
                       <i nz-icon nzType="import" nzTheme="outline"></i>
-                      Import
+                      {{"RFP.Import"|translate}}
                     </button>
                     <button nz-button nzType="default" (click)="downloadTemplate('equipment')">
                       <i nz-icon nzType="export" nzTheme="outline"></i>
-                      Export
+                      {{"RFP.Export"|translate}}
                     </button>
                   </div>
                   <div style="overflow-x: auto;">
@@ -2408,7 +2408,7 @@
                         <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">Quantity</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}  {{'RFP.Year Quantity'| translate}}</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }}  {{'RFP.Year Quantity'| translate}}</th>
                         </ng-container>
                         <th>{{'RFP.Action'|translate}}</th>
                       </tr>
@@ -2441,16 +2441,16 @@
                 </nz-collapse-panel>
 
                 <!-- Service and Output - General Model -->
-                <nz-collapse-panel nzHeader="Service and Output - General Model">
+                <nz-collapse-panel [nzHeader]="'RFP.Service and Output - General Model'|translate">
                   <input #serviceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                   <div class="d-flex justify-content-end gap-2 mb-3">
                     <button nz-button nzType="default" (click)="serviceFileInput.click()">
                       <i nz-icon nzType="import" nzTheme="outline"></i>
-                      Import
+                      {{"RFP.Import"|translate}}
                     </button>
                     <button nz-button nzType="default" (click)="downloadTemplate('service')">
                       <i nz-icon nzType="export" nzTheme="outline"></i>
-                      Export
+                      {{"RFP.Export"|translate}}
                     </button>
                   </div>
                   <div style="overflow-x: auto;">
@@ -2466,7 +2466,7 @@
                         <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate}}</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}{{'RFP.Year Quantity'|translate}}</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }}{{'RFP.Year Quantity'|translate}}</th>
                         </ng-container>
                         <th>{{'RFP.Action'|translate}}</th>
                       </tr>

@@ -570,7 +570,16 @@
     "No of Years": "عدد السنوات",
     "Competition Fragmentation": "تجزئة المنافسة",
     "The Bundle": "الحزمة",
-    "Quantity": "الكمية"
+    "Quantity": "الكمية",
+    "Workforce - General Model": "القوى العاملة - النموذج العام",
+    "Service and Output - General Model": "الخدمة والمخرجات - النموذج العام",
+    "Equipment and Devices - General Model": "المعدات والأجهزة - النموذج العام",
+    "Package": "الحزمة ",
+    "Role": "الدور",
+    "Name": "الاسم",
+    "Extension No.": "الرقم الداخلي"
+
+
     
     
 
