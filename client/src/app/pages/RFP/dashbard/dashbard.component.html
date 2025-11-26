@@ -1,81 +1,195 @@
 <!-- <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
 <!-- <ngx-spinner bdColor = "rgb(25,113,229)" size = "default" color = "#1fcecb" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
 <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
-<div class="container-fluid">
+<div class="container-fluid dashboard-wrapper">
     <div class="row">
-        <h1 class="page-title">List of RFPs</h1>
-         <!-- <div class="rfp-header">List of RFPs</div> -->
-        <div class="col-12 mt-2">
-            <form [formGroup]="repForm">
-                <div class="create__form__section">
-                    <div class="row w-100 my-3 justify-content-center">
+        <!-- Dashboard Header -->
+        <div class="col-12 mb-3">
+            <div class="dashboard-header">
+                <div class="header-content">
+                    <i nz-icon nzType="dashboard" nzTheme="outline" class="header-icon"></i>
+                    <div>
+                        <h1 class="dashboard-title">RFP Summary</h1>
+                        <p class="dashboard-subtitle">Real-time RFP status and Summary</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- * Project Name -->
-                        <div class="col-12 col-md-2 mt-3">
-                            <nz-form-label for="dep">{{ 'RFP.Project Name' | translate }}</nz-form-label>
-                            <nz-select id="dep" formControlName="dep" nzShowSearch style="width: 100%;" nzAllowClear>
-                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
-                                    [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
-                            </nz-select>
+        <!-- Dashboard Stats Cards -->
+        <div class="col-12 mb-4">
+            <div class="row">
+                <div class="col-12 col-lg-3 col-md-6 mb-3">
+                    <div class="stat-card stat-card-total">
+                        <div class="stat-icon">
+                            <i nz-icon nzType="project" nzTheme="outline"></i>
                         </div>
-
-                        <!-- * Purchase Request Number -->
-                        <div class="col-12 col-md-2 mt-3">
-                            <nz-form-label for="rfpNo">{{ 'RFP.Purchase Request Number' | translate }}</nz-form-label>
-                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
-                                [nzDisabled]="rfpList.length === 0">
-                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.PurchaseReqNo"
-                                    [nzLabel]="cs.userLanguage === 'en' ? o.PurchaseReqNo : o.PurchaseReqNo"></nz-option>
-                            </nz-select>
-                        </div>
-
-                        <!-- * RFP Number -->
-                        <div class="col-12 col-md-2 mt-3">
-                            <nz-form-label for="rfpNo">{{ 'RFP.RFP Number' | translate }}</nz-form-label>
-                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
-                                [nzDisabled]="rfpList.length === 0">
-                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpNo"
-                                    [nzLabel]="cs.userLanguage === 'en' ? o.RfpNo : o.RfpNo"></nz-option>
-                            </nz-select>
-                        </div>
-
-                        <!-- * Pending with User -->
-                        <div class="col-12 col-md-2 mt-3">
-                            <nz-form-label for="rfpNo">{{ 'RFP.Pending with User' | translate }}</nz-form-label>
-                            <nz-select formControlName="rfpNo" nzShowSearch style="width: 100%;" nzAllowClear
-                                [nzDisabled]="rfpList.length === 0">
-                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
-                                    [nzLabel]="o.WfPendUsrEn"></nz-option>
-                            </nz-select>
-                        </div>
-
-                        <!-- * Status -->
-                        <div class="col-12 col-md-2 mt-3">
-                            <nz-form-label for="status">Status</nz-form-label>
-                            <nz-select formControlName="status" nzShowSearch style="width: 100%;" nzAllowClear>
-                                <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
-                                    [nzLabel]="o.WfPendUsrEn"></nz-option>
-                                <!-- <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
-                                <nz-option nzValue="Draft" nzLabel="Draft"></nz-option>
-                                <nz-option nzValue="Cancelled" nzLabel="Cancelled"></nz-option>
-                                <nz-option nzValue="Returned" nzLabel="Returned"></nz-option>
-                                <nz-option nzValue="Submitted" nzLabel="Submitted"></nz-option> -->
-                            </nz-select>
-                        </div>
-
-
-                        <div class="col-12 col-md-2 text-center" style="margin-top: 1.5rem;">
-                            <button nz-button nzType="primary" style="margin-top: 1.4rem;" nzSize="default"
-                                (click)="filterSearch()"> {{ 'RFP.search' | translate }}</button>
+                        <div class="stat-content">
+                            <div class="stat-label">Total Projects</div>
+                            <div class="stat-value">{{ totalProjects }}</div>
+                            <div class="stat-trend">All RFPs</div>
                         </div>
                     </div>
                 </div>
-            </form>
+                <div class="col-12 col-lg-3 col-md-6 mb-3">
+                    <div class="stat-card stat-card-approved">
+                        <div class="stat-icon">
+                            <i nz-icon nzType="check-circle" nzTheme="outline"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Approved</div>
+                            <div class="stat-value">{{ approvedProjects }}</div>
+                            <div class="stat-trend">{{ approvedProjects > 0 ? ((approvedProjects / totalProjects) * 100).toFixed(0) + '%' : '0%' }} of total</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6 mb-3">
+                    <div class="stat-card stat-card-draft">
+                        <div class="stat-icon">
+                            <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Draft</div>
+                            <div class="stat-value">{{ draftProjects }}</div>
+                            <div class="stat-trend">In progress</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6 mb-3">
+                    <div class="stat-card stat-card-submitted">
+                        <div class="stat-icon">
+                            <i nz-icon nzType="send" nzTheme="outline"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Submitted</div>
+                            <div class="stat-value">{{ submittedProjects }}</div>
+                            <div class="stat-trend">Pending review</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
-                Action="MG"></app-rfptable>
+        <!-- Chart Section -->
+        <div class="col-12 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">
+                        <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
+                        Project Status Overview
+                    </h3>
+                </div>
+                <div class="chart-container">
+                    <canvas baseChart
+                        [data]="barChartData"
+                        [options]="barChartOptions"
+                        type="bar">
+                    </canvas>
+                </div>
+            </div>
+        </div>
 
-            <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+        <!-- Filters Section -->
+        <div class="col-12">
+            <div class="filter-section">
+                <div class="filter-header">
+                    <div class="filter-title-wrapper">
+                        <i nz-icon nzType="filter" nzTheme="outline" class="filter-icon"></i>
+                        <h2 class="filter-title">Advanced Filters</h2>
+                    </div>
+                    <button nz-button nzType="default" class="reset-btn" (click)="repForm.reset()">
+                        <i nz-icon nzType="reload" nzTheme="outline"></i>
+                        Reset
+                    </button>
+                </div>
+                <form [formGroup]="repForm">
+                    <div class="filter-content">
+                        <div class="row g-3 align-items-end">
+                            <!-- * Project Name -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">{{ 'RFP.Project Name' | translate }}</label>
+                                    <nz-select id="dep" formControlName="dep" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Purchase Request Number -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">{{ 'RFP.Purchase Request Number' | translate }}</label>
+                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
+                                        [nzDisabled]="rfpList.length === 0">
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.PurchaseReqNo"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.PurchaseReqNo : o.PurchaseReqNo"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * RFP Number -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">{{ 'RFP.RFP Number' | translate }}</label>
+                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
+                                        [nzDisabled]="rfpList.length === 0">
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpNo"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpNo : o.RfpNo"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Pending with User -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">{{ 'RFP.Pending with User' | translate }}</label>
+                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
+                                        [nzDisabled]="rfpList.length === 0">
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
+                                            [nzLabel]="o.WfPendUsrEn"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Status -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Status</label>
+                                    <nz-select formControlName="status" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
+                                            [nzLabel]="o.WfPendUsrEn"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- Spacer -->
+                            <div class="col"></div>
+
+                            <!-- Search Button -->
+                            <div class="col-auto ms-auto">
+                                <button nz-button nzType="primary" class="search-btn-compact" (click)="filterSearch()">
+                                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                                    {{ 'RFP.search' | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-header">
+                    <h3 class="results-title">
+                        <i nz-icon nzType="table" nzTheme="outline"></i>
+                        RFP List
+                    </h3>
+                </div>
+                <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
+                    Action="MG"></app-rfptable>
+                <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+            </div>
 
         </div>
     </div>

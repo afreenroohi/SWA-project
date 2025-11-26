@@ -19,3 +19,179 @@
 .ant-btn-round {
   border-radius: 2px;
 }
+
+::ng-deep .enhanced-table {
+  .ant-table {
+    font-size: 14px;
+    table-layout: fixed;
+    width: 100%;
+    
+    .ant-table-thead > tr > th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 8px;
+      border-bottom: 2px solid #005c99;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+      &:nth-child(1) { width: 18%; }
+      &:nth-child(2) { width: 10%; }
+      &:nth-child(3) { width: 7%; }
+      &:nth-child(4) { width: 10%; }
+      &:nth-child(5) { width: 9%; }
+      &:nth-child(6) { width: 11%; }
+      &:nth-child(7) { width: 10%; }
+      &:nth-child(8) { width: 10%; }
+      &:nth-child(9) { width: 8%; }
+      &:nth-child(10) { width: 7%; }
+    }
+
+    .ant-table-tbody > tr {
+      transition: all 0.3s;
+
+      &:hover {
+        background: #f0f7ff;
+        box-shadow: 0 2px 8px rgba(0, 92, 153, 0.1);
+      }
+
+      > td {
+        padding: 10px 8px;
+        font-size: 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .ant-table-tbody > tr:nth-child(even) {
+      background: #fafafa;
+    }
+  }
+
+  .ant-pagination {
+    margin: 16px 0;
+    
+    .ant-pagination-item-active {
+      background: #005c99;
+      border-color: #005c99;
+      
+      a {
+        color: white;
+      }
+    }
+
+    .ant-pagination-item:hover {
+      border-color: #005c99;
+      
+      a {
+        color: #005c99;
+      }
+    }
+  }
+
+  .ant-btn {
+    font-size: 13px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 4px;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .ant-dropdown-trigger {
+    background: white;
+    border: 1px solid #d9d9d9;
+    color: #1f2937;
+    font-weight: 500;
+    
+    &:hover {
+      border-color: #005c99;
+      color: #005c99;
+    }
+  }
+
+  .action-dropdown-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid #d9d9d9;
+    background: white;
+    transition: all 0.3s;
+
+    .anticon {
+      font-size: 18px;
+      color: #595959;
+    }
+
+    &:hover {
+      border-color: #005c99;
+      background: #f0f7ff;
+      
+      .anticon {
+        color: #005c99;
+      }
+    }
+  }
+}
+
+::ng-deep .ant-dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+
+  .ant-dropdown-menu-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    
+    &:hover {
+      background: #f0f7ff;
+      color: #005c99;
+    }
+
+    .anticon {
+      margin-right: 8px;
+      color: #005c99;
+    }
+  }
+}
+
+.status-approved {
+  color: #52c41a !important;
+  font-weight: 600;
+}
+
+.status-draft {
+  color: #faad14 !important;
+  font-weight: 600;
+}
+
+.status-cancelled {
+  color: #ff4d4f !important;
+  font-weight: 600;
+}
+
+.status-returned {
+  color: #722ed1 !important;
+  font-weight: 600;
+}
+
+.status-submitted {
+  color: #1890ff !important;
+  font-weight: 600;
+}
+
+::ng-deep .enhanced-table .ant-table-tbody > tr > td:last-child {
+  text-align: center;
+}

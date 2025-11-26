@@ -9,6 +9,7 @@ import { CommonService } from 'src/app/service/common.service';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { RFPService } from 'src/app/service/RFP/rfp.service';
 import { listOfColumnRFPMG } from 'src/app/shared/shared';
+import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-dashbard',
@@ -24,6 +25,41 @@ export class DashbardComponent implements OnInit, OnDestroy {
   listOfColumnList = listOfColumnRFPMG;
   size: NzButtonSize = 'large';
   repForm: FormGroup;
+
+  // Dashboard Stats
+  totalProjects = 0;
+  approvedProjects = 0;
+  draftProjects = 0;
+  cancelledProjects = 0;
+  submittedProjects = 0;
+
+  // Chart Data
+  public barChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Total', 'Approved', 'Draft', 'Cancelled', 'Submitted'],
+    datasets: [{ 
+      data: [0, 0, 0, 0, 0], 
+      label: 'Projects', 
+      backgroundColor: ['#005c99', '#52c41a', '#faad14', '#ff4d4f', '#722ed1'],
+      borderRadius: 8,
+      barThickness: 40
+    }]
+  };
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { 
+      legend: { display: false },
+      tooltip: { 
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 1 } }
+    }
+  };
 
   private readonly destroy$ = new Subject<void>();
 
@@ -162,8 +198,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
 this.rfpList = this.listArray;
 // this.listOfDisplayData = this.listArray; // ensures table renders dummy rows
 
-
-
+  this.calculateStats();
   console.log(this.rfpList,'listtttttttttttttttttt')
 }
 
@@ -295,6 +330,15 @@ this.rfpList = this.listArray;
       this.rfpList = dummyData;
       this.spinner.hide();
     }, 1000);
+  }
+
+  calculateStats() {
+    this.totalProjects = this.listArray?.length || 0;
+    this.approvedProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'A').length || 0;
+    this.draftProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'D').length || 0;
+    this.cancelledProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'C').length || 0;
+    this.submittedProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'S').length || 0;
+    this.barChartData.datasets[0].data = [this.totalProjects, this.approvedProjects, this.draftProjects, this.cancelledProjects, this.submittedProjects];
   }
 
   ngOnDestroy(): void {
