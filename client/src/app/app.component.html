@@ -101,9 +101,10 @@
     <div nz-row nzJustify="space-between" nzAlign="middle">
       <div nz-col nzSpan="12">
         <div nz-row nzAlign="middle">
-          <div class="logo-container">
+          <div class="logo-container" [class.collapsed]="isCollapsed">
             <a href="/">
-              <img [src]="logoSrc" width="220px" height="77px" alt="logo" />
+              <img *ngIf="!isCollapsed" [src]="logoSrc" width="220px" height="77px" alt="logo" />
+              <img *ngIf="isCollapsed" src="./assets/logo/swa-header-logo.svg" width="65px" height="77px" alt="logo" />
             </a>
           </div>
           &nbsp; &nbsp;
@@ -285,7 +286,10 @@
     </nz-sider>
 
     <!-- Floating toggle button when sidebar is collapsed -->
-    <div class="floating-toggle" *ngIf="isUserLoggedIn && isCollapsed">
+    <div class="floating-toggle" *ngIf="isUserLoggedIn && isCollapsed" [ngStyle]="{
+      'left': cs.userLanguage === 'en' ? '20px' : 'auto',
+      'right': cs.userLanguage === 'ar' ? '20px' : 'auto'
+    }">
       <button nz-button nzType="primary" nzShape="circle" (click)="isCollapsed = !isCollapsed">
         <span nz-icon nzType="menu-unfold"></span>
       </button>

@@ -106,6 +106,11 @@ nz-sider {
   height: 80px;
   border-inline-end: 4px solid #f7f8fa;
   border-bottom: 4px solid #f7f8fa;
+  transition: width 0.3s ease;
+}
+
+.logo-container.collapsed {
+  width: 70px;
 }
  
 .ant-right-layout {
