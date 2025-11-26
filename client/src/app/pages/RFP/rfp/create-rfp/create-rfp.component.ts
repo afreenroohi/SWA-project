@@ -758,6 +758,9 @@ deleteCriteria(index: number) {
     this.rfpForm.get('directPurchaseType')?.clearValidators();
     this.rfpForm.get('limitedType')?.clearValidators();
 
+    // Reset estimated cost to 0 when competition type changes
+    this.rfpForm.get('estimatedCost')?.setValue(0);
+
     // Handle Limited Competition
     if (value === 'L') {
       console.log(this.showLimitedField)
@@ -766,7 +769,6 @@ deleteCriteria(index: number) {
       this.isPrivateSelected = false;
       // this.rfpForm.get('limitedType')?.setValidators([Validators.required]);
       this.rfpForm.get('invite')?.setValue('');
-      this.rfpForm.get('estimatedCost')?.reset()
     }
 
     // Handle Direct Purchase
@@ -1268,7 +1270,7 @@ buildMainFormGroup(): void {
     number: new FormControl('', [Validators.min(1)]),
 
     requestStatus: ['', [Validators.required]],
-    estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    estimatedCost: [0, [Validators.required, Validators.min(0)]],
     includeFrameworkItems: ['', [Validators.required]],
     prequalificationRequired: [false, [Validators.required]],
     qualificationReference: [''],

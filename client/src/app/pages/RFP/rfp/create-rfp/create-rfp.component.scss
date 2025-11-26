@@ -999,7 +999,7 @@ background: rgba(217, 83, 79, 0.08);
 //added by essaki
    width: 100%;
     background: #EDEDED;
-    border: 2px solid #000066;
+    border: 2px solid #005bbd;
     border-radius: 0px;
     padding: 18px 22px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -1038,8 +1038,8 @@ width: 100%;
 }
  
 .step-circle {
-  width: 32px;
-  height: 32px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background-color: #005bbd;
   border: 2px solid #005bbd;
@@ -1087,7 +1087,7 @@ width: 100%;
 .step-line {
   flex: 1;
   height: 2px;
-  background-color: #000000;
+  background-color: #005bbd;
   margin: 0 10px;
   margin-bottom: 24px;
 }
@@ -1164,6 +1164,22 @@ border-radius: 50%;
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
   text-align: center !important;
   margin: 0 !important;
+}
+
+/* RTL Collapse Panel Margins */
+:host-context([dir="rtl"]) .ant-collapse {
+  margin-right: 20px !important;
+  margin-left: 20px !important;
+}
+
+:host-context([dir="rtl"]) .stepper-card {
+  margin-right: 20px !important;
+  margin-left: 20px !important;
+}
+
+:host-context([dir="rtl"]) .create_rfp_head {
+  margin-right: 20px !important;
+  margin-left: 20px !important;
 }
  
  

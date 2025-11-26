@@ -345,7 +345,7 @@ nz-breadcrumb {
 }
 
 .ant-menu {
-  background-color: #f7f8fa !important;
+  background-color: #ffffff !important;
 }
 
 .ant-menu-submenu-open {
@@ -479,62 +479,34 @@ nz-sider {
   position: absolute;
   bottom: 1rem;
 }
-
-/* ------------------ MOBILE VIEW ------------------ */
-@media (max-width: $mobile) {
-  .menu-sidebar {
-    width: 280px !important;
-    max-width: 280px !important;
-    transform: translateX(-100%);
-    z-index: 1200;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-    
-    &:not(.ant-layout-sider-collapsed) {
-      transform: translateX(0);
-    }
-  }
-  
-  .sider-backdrop {
-    position: fixed;
-    top: $header-height-mobile;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1100;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    
-    &.show {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .menu-sidebar {
-    width: 260px !important;
-    max-width: 260px !important;
-  }
-}
-.main-content {
-  transition: margin-left $transition-speed ease, margin-right $transition-speed ease;
-  
-  @media (max-width: $mobile) {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    width: 100%;
-  }
-}
-
-/* ------------------ GENERAL REFINEMENTS ------------------ */
-/* (logo-container handled above; keep width auto) */
+ 
 .logo-container {
-  /* width intentionally auto — actual layout is absolute positioning above */
-  width: auto;
-  height: $header-height;
+  width: 250px;
+  height: 80px;
+  border-inline-end: 4px solid #f7f8fa;
+  border-bottom: 4px solid #f7f8fa;
+  transition: width 0.3s ease;
+}
+
+.logo-container.collapsed {
+  width: 70px;
+}
+ 
+.ant-right-layout {
+  margin-left: 250px
+}
+ 
+.ant-left-layout {
+  margin-right: 250px
+}
+
+.ant-full-layout {
+  margin-left: 0;
+  margin-right: 0;
+}
+ 
+.ant-top-layout {
+  margin-top: 80px
 }
 
 nz-footer {
@@ -679,3 +651,91 @@ h6 {
 ::ng-deep .ant-layout-sider-trigger {
   display: none !important;
 }
+
+/* Sidebar collapse button */
+.sidebar-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.collapse-btn {
+  background: #f0f0f0 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+}
+
+.collapse-btn:hover {
+  background: #e6f7ff !important;
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+}
+
+.menu-with-toggle {
+  padding-top: 50px !important;
+}
+
+/* Floating toggle button */
+.floating-toggle {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 1001;
+}
+
+.floating-toggle button {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* Custom Dropdown Styles */
+.user-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+}
+
+.theme-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: #1f1f1f;
+  border-color: #303030;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #ffffff;
+}
+
+
