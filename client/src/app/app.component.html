@@ -98,25 +98,16 @@
           >
             {{ "COM.ChangeUsr" | translate }}
           </button>
-        </div> -->
-      <!-- </div>
-      <div nz-col nzSpan="4">
-        <div style="text-align: center" *ngIf="isUserLoggedIn">
-          &nbsp;
-          <nz-avatar
-            nzIcon="user"
-            *ngIf="isUserLoggedIn"
-            style="background-color: var(--primary-color)"
-          ></nz-avatar>
-          &nbsp;
-          <span *ngIf="dispname" style="color: black">{{ dispname }}</span>
+
+          <!-- user avatar + display name -->
+          <div class="responsive-flex center" style="display:flex; align-items:center;">
+            <nz-avatar nzIcon="user" *ngIf="isUserLoggedIn" class="touch-friendly" style="background-color: var(--primary-color); height:25px; width:25px;"></nz-avatar>
+            <span *ngIf="dispname" class="dispname hide-mobile">{{ dispname }}</span>
+          </div>
         </div>
       </div>
- 
- 
-      <!-- ✅ End Header User Section -->
-    <!-- </div>
-  </nz-header> --> 
+    </div>
+  </nz-header> 
 
 
 
