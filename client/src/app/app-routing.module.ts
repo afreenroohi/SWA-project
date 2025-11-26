@@ -29,11 +29,12 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./pages/Admin/admin.module').then(m => m.AdminModule)},
   
   { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
-
+  
+  // { path: '**', redirectTo: 'rfp/home' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false, enableTracing: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

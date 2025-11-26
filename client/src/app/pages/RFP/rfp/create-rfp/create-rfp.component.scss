@@ -988,7 +988,7 @@ background: rgba(217, 83, 79, 0.08);
 // }
  
  
- .stepper-card {
+  .stepper-card {
 // width: 100%;
 // background: #fff;
 // border: 1px solid #e5e5e5;
@@ -1011,6 +1011,93 @@ background: rgba(217, 83, 79, 0.08);
 width: 100%;
 }
  
+/* Custom Stepper Styles */
+.custom-stepper {
+  width: 100%;
+  padding: 20px 0;
+}
+ 
+.stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+ 
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+ 
+.step-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+ 
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #005bbd;
+  border: 2px solid #005bbd;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s;
+}
+ 
+.step-item.active .step-circle {
+  background-color: #005bbd;
+  border-color: #005bbd;
+  color: white;
+}
+ 
+.step-item.completed .step-circle {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: white;
+}
+ 
+.step-number {
+  font-size: 14px;
+  font-weight: 600;
+}
+ 
+.step-title {
+  font-size: 12px;
+  text-align: center;
+  max-width: 150px;
+  line-height: 1.2;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ 
+.step-item.active .step-title {
+  color: #005bbd;
+  font-weight: 500;
+}
+ 
+.step-line {
+  flex: 1;
+  height: 2px;
+  background-color: #000000;
+  margin: 0 10px;
+  margin-bottom: 24px;
+}
+ 
+.step-line.completed {
+  background-color: #52c41a;
+}
+ 
+ 
+ 
 /* Style titles lightly */
 :host ::ng-deep .ant-steps-item-title {
 font-size: 14px;
@@ -1030,17 +1117,21 @@ border-radius: 50%;
 }
  
 /* Active step highlight */
-:host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
-background-color: #005bbd !important;
-border-color: #005bbd !important;
-color: #ffffff !important;
-}
+// :host ::ng-deep .ant-steps-item-active .ant-steps-item-icon {
+//   background-color: #005bbd !important;
+//   border-color: #005bbd !important;
+//   color: #ffffff !important;
+// }
  
-/* Default connecting lines */
-:host ::ng-deep .ant-steps-item-tail::after {
-  border-color: #cccccc !important;
-}
-
+// /* Simple stepper line styling */
+// :host ::ng-deep .ant-steps-horizontal .ant-steps-item-tail > i {
+//   background-color: #000000 !important;
+// }
+ 
+// :host ::ng-deep .ant-steps-horizontal .ant-steps-item-finish .ant-steps-item-tail > i {
+//   background-color: #005bbd !important;
+// }
+ 
 /* RTL Stepper Fixes */
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail {
   display: block !important;
@@ -1049,57 +1140,57 @@ color: #ffffff !important;
   left: 60% !important;
   right: 50px !important;
   width: calc(100% - 14px) !important;
-  height: 1px !important;
-  background: #f0f0f0 !important;
+  height: 2px !important;
+  background: #000000 !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-finish .ant-steps-item-tail {
-  background: #005bbd !important;
+  background: #1890ff !important;
 }
-
-
+ 
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-tail::after {
   display: none !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item:last-child .ant-steps-item-tail {
   display: none !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-title {
   text-align: center !important;
 }
-
+ 
 :host-context([dir="rtl"]) ::ng-deep .ant-steps-item-content {
   text-align: center !important;
   margin: 0 !important;
 }
-
-
+ 
+ 
 /* ========== Responsive ========== */
 @media (max-width: 880px) {
-
- .attachment-row,
- .section {
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
- }
-
- .attachment-select,
- .upload-area {
-  width: 100% !important;
-  max-width: 100%;
- }
-
- .attachment-actions {
-  margin-top: 0;
-  justify-content: flex-start;
- }
-
- .upload-area {
-  min-height: 140px;
- }
+ 
+  .attachment-row,
+  .section {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+ 
+  .attachment-select,
+  .upload-area {
+    width: 100% !important;
+    max-width: 100%;
+  }
+ 
+  .attachment-actions {
+    margin-top: 0;
+    justify-content: flex-start;
+  }
+ 
+  .upload-area {
+    min-height: 140px;
+  }
 }
 
 /* ========== Misc (form styling) ========== */
@@ -1457,8 +1548,8 @@ text-overflow: ellipsis;
 .trash-btn {
 border: 1px solid #d9534f;
 color: #d9534f;
-width: 42px;
-height: 42px;
+width: 34px;
+height: 34px;
 display: inline-flex;
 align-items: center;
 justify-content: center;
@@ -1867,21 +1958,21 @@ color: #b52b27;
 
 /* ========== Bill of Quantity Section Styling ========== */
 /* Header same as Basic Information - no custom styling needed */
-
+ 
 .boq-toggle {
   background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%) !important;
   border: 2px solid #1f4e79 !important;
   padding: 14px 18px !important;
   box-shadow: 0 2px 8px rgba(31, 78, 121, 0.12) !important;
   transition: all 0.3s ease !important;
-
+ 
   &:hover {
     border-color: #0d3a5c !important;
     box-shadow: 0 4px 12px rgba(31, 78, 121, 0.18) !important;
     transform: translateY(-1px);
   }
 }
-
+ 
 .boq-label {
   font-size: 15px !important;
   font-weight: 600 !important;
@@ -1889,14 +1980,14 @@ color: #b52b27;
   display: flex;
   align-items: center;
 }
-
+ 
 .boq-field-label {
   font-size: 14px !important;
   font-weight: 600 !important;
   color: #2c3e50 !important;
   margin-bottom: 8px !important;
 }
-
+ 
 .boq-section-title {
   font-size: 15px !important;
   font-weight: 600 !important;
@@ -1907,16 +1998,16 @@ color: #b52b27;
   padding-bottom: 8px;
   border-bottom: 2px solid #1f4e79;
 }
-
+ 
 .boq-table {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
   border-radius: 8px !important;
   overflow: hidden !important;
-
+ 
   thead tr {
     background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
   }
-
+ 
   thead th {
     color: #000000 !important;
     font-weight: 600 !important;
@@ -1925,22 +2016,22 @@ color: #b52b27;
     text-align: center !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
-
+ 
   tbody tr {
     transition: all 0.2s ease;
-
+ 
     &:hover {
       background-color: #f0f5ff !important;
     }
   }
-
+ 
   tbody td {
     padding: 10px 8px !important;
     font-size: 13px !important;
     vertical-align: middle !important;
   }
 }
-
+ 
 .boq-bundle-title {
   color: #1f4e79 !important;
   font-size: 16px !important;
@@ -1951,7 +2042,7 @@ color: #b52b27;
   padding: 10px 0;
   border-bottom: 2px solid #e0e6ed;
 }
-
+ 
 .boq-quantity-title {
   color: #1f4e79 !important;
   font-size: 16px !important;
@@ -1962,7 +2053,7 @@ color: #b52b27;
   padding: 10px 0;
   border-bottom: 2px solid #e0e6ed;
 }
-
+ 
 /* Bundle buttons styling */
 .d-flex.gap-2.flex-wrap button[nz-button] {
   font-weight: 500 !important;
@@ -1970,30 +2061,30 @@ color: #b52b27;
   padding: 8px 16px !important;
   transition: all 0.3s ease !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
-
+ 
   &[nzType="primary"] {
     background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
     border-color: #1f4e79 !important;
     color: #ffffff !important;
-
+ 
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(31, 78, 121, 0.25) !important;
     }
   }
-
+ 
   &[nzType="default"] {
     background: #ffffff !important;
     border: 1px solid #1f4e79 !important;
     color: #1f4e79 !important;
-
+ 
     &:hover {
       background: #f0f5ff !important;
       transform: translateY(-1px);
     }
   }
 }
-
+ 
 /* Quantity tables collapse panels */
 ::ng-deep .boq-quantity-title    {
   .ant-collapse-item {
@@ -2002,7 +2093,7 @@ color: #b52b27;
     margin-bottom: 12px !important;
     overflow: hidden;
   }
-
+ 
   .ant-collapse-header {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
     color: #1f4e79 !important;
@@ -2010,23 +2101,23 @@ color: #b52b27;
     font-size: 14px !important;
     padding: 12px 16px !important;
     transition: all 0.2s ease !important;
-
+ 
     &:hover {
       background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
     }
   }
-
+ 
   .ant-collapse-content {
     background: #ffffff !important;
   }
-
+ 
   table {
     margin: 0 !important;
-    
+   
     thead tr {
       background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
     }
-
+ 
     thead th {
       color: #000000 !important;
       font-weight: 600 !important;
@@ -2034,17 +2125,17 @@ color: #b52b27;
       padding: 10px 8px !important;
       text-align: center !important;
     }
-
+ 
     tbody td {
       padding: 8px 6px !important;
       font-size: 13px !important;
     }
-
+ 
     input[nz-input] {
       border-radius: 4px !important;
       border: 1px solid #d9d9d9 !important;
       transition: all 0.2s ease !important;
-
+ 
       &:focus {
         border-color: #1f4e79 !important;
         box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.1) !important;
@@ -2052,6 +2143,7 @@ color: #b52b27;
     }
   }
 }
+ 
 
 /* ========== SUBCRITERIA DRAWER STYLES ========== */
 
@@ -2601,4 +2693,20 @@ display: none !important;
   font-size: 14px !important;
   text-align: center !important;
   box-sizing: border-box !important;
+}
+.btn-add {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+ 
+.btn-add i[nz-icon] {
+  font-size: 18px !important;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

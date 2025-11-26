@@ -104,41 +104,65 @@
     <div class="p-2" *ngIf="step1">
       <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
       <div class="stepper-card mt-4">
-        <nz-steps [nzCurrent]="step" nzDirection="horizontal" class="simple-stepper">
-
-          <nz-step [nzTitle]="'RFP.Basic Information'|translate" (click)="goto(0)" 
-                   [ngClass]="{'step-disabled': false}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': basicInfoValid, 'invalid': !basicInfoValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Scope of Work'|translate" (click)="goto(1)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': scopeOfWorkValid, 'invalid': !scopeOfWorkValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Technical Evaluation Criteria'|translate" (click)="goto(2)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': standardsValid, 'invalid': !standardsValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Bill of Quantity'|translate" (click)="goto(3)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid}">
-            <ng-template #nzIcon>
-              <span class="validation-indicator" [ngClass]="{'valid': billOfQuantityValid, 'invalid': !billOfQuantityValid}"></span>
-            </ng-template>
-          </nz-step>
-          
-          <nz-step [nzTitle]="'RFP.Attachments'|translate" (click)="goto(4)" 
-                   [ngClass]="{'step-disabled': !basicInfoValid || !scopeOfWorkValid || !standardsValid || !billOfQuantityValid}">
-          </nz-step>
-
-        </nz-steps>
+        <div class="custom-stepper">
+          <div class="stepper-container">
+            <!-- Step 1 -->
+            <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
+              <div class="step-circle">
+                <span class="step-number" *ngIf="step <= 0">1</span>
+                <i nz-icon nzType="check" *ngIf="step > 0"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
+            </div>
+            
+            <!-- Line 1 -->
+            <div class="step-line" [class.completed]="step > 0"></div>
+            
+            <!-- Step 2 -->
+            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" [class.disabled]="!canNavigateToStep(1)" (click)="goto(1)">
+              <div class="step-circle">
+                <span class="step-number" *ngIf="step <= 1">2</span>
+                <i nz-icon nzType="check" *ngIf="step > 1"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
+            </div>
+            
+            <!-- Line 2 -->
+            <div class="step-line" [class.completed]="step > 1"></div>
+            
+            <!-- Step 3 -->
+            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" [class.disabled]="!canNavigateToStep(2)" (click)="goto(2)">
+              <div class="step-circle">
+                <span class="step-number" *ngIf="step <= 2">3</span>
+                <i nz-icon nzType="check" *ngIf="step > 2"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
+            </div>
+            
+            <!-- Line 3 -->
+            <div class="step-line" [class.completed]="step > 2"></div>
+            
+            <!-- Step 4 -->
+            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" [class.disabled]="!canNavigateToStep(3)" (click)="goto(3)">
+              <div class="step-circle">
+                <span class="step-number" *ngIf="step <= 3">4</span>
+                <i nz-icon nzType="check" *ngIf="step > 3"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
+            </div>
+            
+            <!-- Line 4 -->
+            <div class="step-line" [class.completed]="step > 3"></div>
+            
+            <!-- Step 5 -->
+            <div class="step-item" [class.active]="step === 4" [class.disabled]="!canNavigateToStep(4)" (click)="goto(4)">
+              <div class="step-circle">
+                <span class="step-number">5</span>
+              </div>
+              <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -224,6 +248,8 @@
               <small *ngIf="showDirectPurchaseField" style="margin-top: 8px; color: #1890ff">Estimated cost is more than
                 100K SAR</small>
               <small *ngIf="showLimitedField" style="margin-top: 8px; color: #1890ff">Estimated cost is more than 500K
+                SAR</small>
+                <small *ngIf="showErrorField" style="margin-top: 8px; color: #d71a05">Values Must not be Negative or Zero
                 SAR</small>
 
               <!-- Max Value Validation -->
@@ -1844,7 +1870,8 @@
                   <!-- Add button sits to the right of the input -->
                   <button nz-button nzSize="default" class="btn-add" [disabled]="rfpForm.controls.TechReq.invalid"
                     (click)="addTechReq('add')" title="Add">
-                  <i nz-icon nzType="plus" nzTheme="outline" style="font-size: 20px;"></i>
+                     <i nz-icon nzType="plus" nzTheme="outline" style="font-size: 20px;"></i>
+ 
                   </button>
                 </div>
  
@@ -2136,7 +2163,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="billOfQuantity"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2178,19 +2205,23 @@
             <table class="table table-bordered boq-table">
               <thead>
                 <tr>
-                  <th>S.No</th>
-                  <th>Package</th>
-                  <th>Description</th>
-                  <th>Classification Field</th>
-                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value">Action</th>
+                  <th style="width: 60px;">S.No</th>
+                  <th style="width: 150px;">Package</th>
+                  <th style="width: 250px;">Description</th>
+                  <th style="width: 200px;">Classification Field</th>
+                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">Action</th>
                 </tr>
               </thead>
               <tbody formArrayName="competitionFragmentationItems">
                 <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
                   <td>{{ i + 1 }}</td>
-                  <td><input nz-input formControlName="package" placeholder="Enter package" /></td>
-                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description"></textarea></td>
-                  <td><input nz-input formControlName="classificationField" placeholder="Enter classification" /></td>
+                  <td><input nz-input formControlName="package" placeholder="Enter package" style="width: 100%;" /></td>
+                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description" style="width: 100%;"></textarea></td>
+                  <td>
+                    <nz-select formControlName="classificationField" style="width: 100%;" nzPlaceHolder="Classification">
+                      <nz-option *ngFor="let type of classificationTypes" [nzValue]="type.id" [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
+                    </nz-select>
+                  </td>
                   <td class="text-center" *ngIf="rfpForm.get('competitionFragmentation')?.value">
                     <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
                       <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" 
@@ -2292,7 +2323,7 @@
               </nz-collapse-panel>
 
               <!-- Materials - General Model -->
-              <nz-collapse-panel nzHeader="Materials - General Model">
+              <nz-collapse-panel nzHeader="{{'RFP.Materials - General Model'| translate}}">
                 <input #materialsFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="materialsFileInput.click()">
@@ -2308,19 +2339,19 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
-                      <th>Serial Number</th>
-                      <th>Category</th>
-                      <th>Item</th>
-                      <th>Unit of Measurement</th>
-                      <th>Item Description</th>
-                      <th>Specifications</th>
-                      <th>Product from Mandatory List</th>
-                      <th>Structural Code</th>
-                      <th *ngIf="selectedYears === 1">Quantity</th>
+                      <th>{{'RFP.Serial Number'| translate}}</th>
+                      <th>{{'RFP.Category'| translate}}</th>
+                      <th>{{'RFP.Item'| translate}}</th>
+                      <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                      <th>{{'RFP.Item Description'|translate}}</th>
+                      <th>{{'RFP.Specifications'| translate}}</th>
+                      <th>{{'RFP.Product from Mandatory List' | translate}}</th>
+                      <th>{{'RFP.Structural Code'| translate }}</th>
+                      <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate }}</th>
                       <ng-container *ngIf="selectedYears > 1">
-                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} {{'RFP.Year Quantity'| translate}}</th>
                       </ng-container>
-                      <th>Action</th>
+                      <th>{{'RFP.Action'|translate}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2366,20 +2397,20 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
-                        <th>Serial Number</th>
-                        <th>Category</th>
-                        <th>Item</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item Description</th>
-                        <th>Specifications</th>
-                        <th>Product from Mandatory List</th>
-                        <th>Structural Code</th>
-                        <th>Attachments</th>
+                        <th>{{'RFP.Serial Number'| translate}}</th>
+                        <th>{{'RFP.Category'| translate}}</th>
+                        <th>{{'RFP.Item' | translate}}</th>
+                        <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                        <th>{{'RFP.Item Description' | translate}}</th>
+                        <th>{{'RFP.Specifications'| translate}}</th>
+                        <th>{{'RFP.Product from Mandatory List'| translate}}</th>
+                        <th>{{'RFP.Structural Code'| translate}}</th>
+                        <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">Quantity</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}  {{'RFP.Year Quantity'| translate}}</th>
                         </ng-container>
-                        <th>Action</th>
+                        <th>{{'RFP.Action'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -2426,18 +2457,18 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
-                        <th>Serial Number</th>
-                        <th>Category</th>
-                        <th>Item</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item Description</th>
-                        <th>Specifications</th>
-                        <th>Attachments</th>
-                        <th *ngIf="selectedYears === 1">Quantity</th>
+                        <th>{{'RFP.Serial Number'|translate}}</th>
+                        <th>{{'RFP.Category'|translate}}</th>
+                        <th>{{'RFP.Item'|translate}}</th>
+                        <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                        <th>{{'RFP.Item Description'| translate}}</th>
+                        <th>{{'RFP.Specifications'|translate}}</th>
+                        <th>{{'RFP.Attachments'|translate}}</th>
+                        <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate}}</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}{{'RFP.Year Quantity'|translate}}</th>
                         </ng-container>
-                        <th>Action</th>
+                        <th>{{'RFP.Action'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>

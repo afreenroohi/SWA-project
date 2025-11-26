@@ -193,9 +193,6 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     else {
       this.spinner.hide()
     }
-
-    this.router.navigate(['/']);  
-
   }
 
   ngOnDestroy(): void {
