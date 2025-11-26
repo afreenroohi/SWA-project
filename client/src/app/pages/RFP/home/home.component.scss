@@ -1,26 +1,84 @@
-h6{
-    font-size: 1.3rem !important;
-    text-align: center;
-  }
+/* home.component.scss */
 
-  .aoa_object {
-    display: inline-block;
-    width:100%;
-    text-align:center;
-    vertical-align:middle;
-    overflow:hidden;
-    margin: 0 auto;
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+h6 {
+  font-size: 1.3rem !important;
+  text-align: center;
 }
 
+/* small helper removed duplicates in original; keep central object styling if needed */
+.aoa_object {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* overlay (if used) */
 .overlay {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  color: white; background: #666666; opacity: .8;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  background: #666666;
+  opacity: .8;
   z-index: 1000;
+}
+
+/* Title + subtitle */
+.welcome-title {
+  color: #005c99;
+  font-weight: 700;
+  font-size: clamp(18px, 2.6vw, 28px); /* responsive scaling */
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  text-align: center;
+  /* only animate horizontal movement if you add transforms later */
+  transition: transform 0.28s ease, opacity 0.18s ease;
+  will-change: transform;
+}
+
+.welcome-sub {
+  font-size: clamp(13px, 1.6vw, 16px);
+  text-align: center;
+}
+
+/* Container that holds the whole home area */
+.home-inner {
+  position: relative;                 /* necessary for absolute centering of welcome-wrap */
+  height: calc(100vh - 160px);        /* keep same as before to match header/footer space */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Absolute center the welcome content inside home-inner.
+   Using absolute centering locks the vertical position (top:50% + translateY(-50%))
+   so it will NOT move up/down when the content margin changes.
+   The element will still move left/right naturally because the parent (.main-content)
+   gets a different margin-left when the sider collapses. */
+.welcome-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  max-width: 900px; /* optional cap so text doesn't expand too wide on large screens */
+  padding: 0 16px;
+  box-sizing: border-box;
+  transition: transform 0.28s ease; /* only used if you choose to do an extra slide */
+  will-change: transform;
+}
+
+/* Small responsive tweak */
+@media (max-width: 767.98px) {
+  .home-inner {
+    height: calc(100vh - 130px);
+  }
+  .welcome-wrap {
+    padding: 0 12px;
+  }
 }

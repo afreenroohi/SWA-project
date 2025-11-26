@@ -258,6 +258,9 @@
                 Value cannot be greater than {{this.costvalue}}
               </small>
             </div>
+
+            
+
             <!-- * Limited Competition -->
             <div class="col-4 my-1" *ngIf="showLimitedField">
               <nz-form-label nzRequired for="limitedType">{{ "RFP.Limited Competition" | translate }}</nz-form-label>
@@ -1817,30 +1820,30 @@
       <nz-collapse id="standards" *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
         <nz-collapse-panel [(nzActive)]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
-
+ 
             <div class="tech-info-text-with-icon">
 
               {{'RFP.Kindly specifies the criteria for evaluating the offers'|translate}}
                 <div class="tooltip-wrapper">
                 <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
                 </i>
-
+ 
                 <!-- Tooltip shown on hover -->
                 <div class="custom-tooltip">
                   <ul class="tooltip-list">
                     <li>{{'RFP.All basic criteria must be met for the competitor to be evaluated on the technical criteria.'|translate}}
                     </li>
-                    
+                   
                   </ul>
                 </div>
               </div>
-
+ 
             </div>
-
+ 
           </div>
-
-
-
+ 
+ 
+ 
           <!-- ===================== TECHNICAL REQUIREMENTS ===================== -->
 <div class="row w-100 mb-4">
             <div formGroupName="TechReq" class="row align-items-start">
@@ -1974,19 +1977,19 @@
               </ng-container>
             </tbody>
           </nz-table>
-
-
+ 
+ 
           <!-- ===================== EVALUATION CRITERIA ===================== -->
           <!-- <hr class="seperationLine w-98 mb-2" /> -->
           <div class="tech-info-row mt-2">
-
+ 
             <div class="tech-info-text-with-icon">
               {{"RFP.Evaluation and analysis of offer"|translate}}
 
               <div class="tooltip-wrapper">
                 <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
                 </i>
-
+ 
                 <!-- Tooltip shown on hover -->
                 <div class="custom-tooltip">
                   <ul class="tooltip-list">
@@ -1996,10 +1999,10 @@
                 </div>
               </div>
             </div>
-
+ 
           </div>
-
-
+ 
+ 
           <div class="row w-100 mt-2">
             <div class="row mt-1">
               <div class="col-md-4">
@@ -2008,14 +2011,14 @@
                   <nz-input-number nz-input formControlName="TotTechEval" style="width: 100%" [nzMin]="1" [nzMax]="100"
                     [nzDisabled]="true">
                   </nz-input-number>
-
+ 
                   <small *ngIf="rfpForm.controls.TotTechEval.touched && rfpForm.controls.TotTechEval.invalid"
                     style="margin-top: 8px; color: red">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
                 </nz-form-control>
               </div>
-
+ 
               <!-- <div class="col d-flex justify-content-fx-start posr-t-2 gap-2">
           <button [disabled]="!editTotTechEval" nz-button nzType="primary" nzSize="default" (click)="handleTotTechEvalEdit(false)">
             <span>{{ "contract.buttons.Save" | translate }}</span>
@@ -2026,7 +2029,7 @@
         </div> -->
             </div>
           </div>
-
+ 
           <table class="table table-bordered technical-table mt-3">
             <thead>
               <tr>
@@ -2086,8 +2089,8 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let subItem of item.value.subCriteriaList; let j = index" style="background-color: white; transition: all 0.3s;" 
-                              onmouseover="this.style.backgroundColor='#f0f5ff'" 
+                          <tr *ngFor="let subItem of item.value.subCriteriaList; let j = index" style="background-color: white; transition: all 0.3s;"
+                              onmouseover="this.style.backgroundColor='#f0f5ff'"
                               onmouseout="this.style.backgroundColor='white'">
                             <td style="text-align: center; border-left: 3px solid #1f4e79; padding: 12px; font-weight: 500;">{{ j + 1 }}</td>
                             <td style="padding: 12px; border: 1px solid #dee2e6;">{{ subItem.Descr }}</td>
@@ -2110,20 +2113,20 @@
               <span>{{ "RFP.Add Criteria" | translate }}</span>
             </button>
           </div>
-
+ 
           <br />
-
-
-
+ 
+ 
+ 
           <!-- ===================== VENDOR EVALUATION WEIGHTAGE ===================== -->
           <!-- <hr class="seperationLine" /> -->
-
+ 
           <div class="tech-info-row">
             <div class="tech-info-text-with-icon">
              {{"RFP.The weightage of the evaluation"|translate}} 
             </div>
           </div>
-
+ 
           <!-- Technical Evaluation Weight Table -->
           <div class="mt-3">
             <nz-table #techWeightTable [nzData]="[{}]" [nzShowPagination]="false" nzSize="small" class="table table-bordered technical-table mt-3">
@@ -2143,7 +2146,7 @@
               </tbody>
             </nz-table>
           </div>
-
+ 
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2">
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
@@ -2155,7 +2158,7 @@
               </button>
             </div>
           </div>
-
+ 
         </nz-collapse-panel>
       </nz-collapse>
 
@@ -2320,7 +2323,7 @@
               </nz-collapse-panel>
 
               <!-- Materials - General Model -->
-              <nz-collapse-panel nzHeader="Materials - General Model">
+              <nz-collapse-panel nzHeader="{{'RFP.Materials - General Model'| translate}}">
                 <input #materialsFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="materialsFileInput.click()">
@@ -2336,19 +2339,19 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
-                      <th>Serial Number</th>
-                      <th>Category</th>
-                      <th>Item</th>
-                      <th>Unit of Measurement</th>
-                      <th>Item Description</th>
-                      <th>Specifications</th>
-                      <th>Product from Mandatory List</th>
-                      <th>Structural Code</th>
-                      <th *ngIf="selectedYears === 1">Quantity</th>
+                      <th>{{'RFP.Serial Number'| translate}}</th>
+                      <th>{{'RFP.Category'| translate}}</th>
+                      <th>{{'RFP.Item'| translate}}</th>
+                      <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                      <th>{{'RFP.Item Description'|translate}}</th>
+                      <th>{{'RFP.Specifications'| translate}}</th>
+                      <th>{{'RFP.Product from Mandatory List' | translate}}</th>
+                      <th>{{'RFP.Structural Code'| translate }}</th>
+                      <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate }}</th>
                       <ng-container *ngIf="selectedYears > 1">
-                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                        <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} {{'RFP.Year Quantity'| translate}}</th>
                       </ng-container>
-                      <th>Action</th>
+                      <th>{{'RFP.Action'|translate}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2394,20 +2397,20 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
-                        <th>Serial Number</th>
-                        <th>Category</th>
-                        <th>Item</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item Description</th>
-                        <th>Specifications</th>
-                        <th>Product from Mandatory List</th>
-                        <th>Structural Code</th>
-                        <th>Attachments</th>
+                        <th>{{'RFP.Serial Number'| translate}}</th>
+                        <th>{{'RFP.Category'| translate}}</th>
+                        <th>{{'RFP.Item' | translate}}</th>
+                        <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                        <th>{{'RFP.Item Description' | translate}}</th>
+                        <th>{{'RFP.Specifications'| translate}}</th>
+                        <th>{{'RFP.Product from Mandatory List'| translate}}</th>
+                        <th>{{'RFP.Structural Code'| translate}}</th>
+                        <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">Quantity</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}  {{'RFP.Year Quantity'| translate}}</th>
                         </ng-container>
-                        <th>Action</th>
+                        <th>{{'RFP.Action'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -2454,18 +2457,18 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
-                        <th>Serial Number</th>
-                        <th>Category</th>
-                        <th>Item</th>
-                        <th>Unit of Measurement</th>
-                        <th>Item Description</th>
-                        <th>Specifications</th>
-                        <th>Attachments</th>
-                        <th *ngIf="selectedYears === 1">Quantity</th>
+                        <th>{{'RFP.Serial Number'|translate}}</th>
+                        <th>{{'RFP.Category'|translate}}</th>
+                        <th>{{'RFP.Item'|translate}}</th>
+                        <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                        <th>{{'RFP.Item Description'| translate}}</th>
+                        <th>{{'RFP.Specifications'|translate}}</th>
+                        <th>{{'RFP.Attachments'|translate}}</th>
+                        <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate}}</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year Quantity</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }}{{'RFP.Year Quantity'|translate}}</th>
                         </ng-container>
-                        <th>Action</th>
+                        <th>{{'RFP.Action'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>

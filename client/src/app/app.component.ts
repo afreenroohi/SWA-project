@@ -25,7 +25,19 @@ import { RFPService } from './service/RFP/rfp.service';
 })
 export class AppComponent {
   title = 'committee';
+  collapsedWidth = 80;                     // final width of collapsed sidebar (px)
+expandedSiderWidth = 250;               // normal sidebar width (px)
+expandedLogo = 'assets/logo/swa-logo-dark.svg';
+// collapsedLogo = 'assets/logo/swa-header-logo.svg';
   isCollapsed = false;
+  isMobile = false;
+  expandedWidth = 250;
+   layoutContentMarginLeft: number = 250;
+layoutContentMarginRight: number = 0;
+
+// headerLeftWidth is used for inline width and stays a string with "px"
+headerLeftWidth: string = this.expandedWidth + 'px';
+  
   public navItems: any[] = [];
 
   readonly IconList = IconList;
@@ -110,6 +122,27 @@ export class AppComponent {
     sessionStorage.clear();
 
   }
+//   public openParentsForActive(): void {
+//   try {
+//     if (!this.navItems || !Array.isArray(this.navItems)) return;
+//     for (const nav of this.navItems) {
+//       if (nav?.navItem && Array.isArray(nav.navItem)) {
+//         const childActive = nav.navItem.some((si: any) => si.name === this.cs.activeMenu);
+//         // Keep already-open menus open; open the parent if childActive
+//         if (childActive) {
+//           nav.isOpen = true;
+//         }
+//       }
+//       // Also mark top-level menu as selected if there is no child and name matches
+//       if (!nav.navItem && nav.Module === this.cs.activeMenu) {
+//         nav.isOpen = true;
+//       }
+//     }
+//   } catch (e) {
+//     // fail silently
+//     // console.warn('openParentsForActive error', e);
+//   }
+// }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
@@ -169,6 +202,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.cs.activeMenu = 'home';
+    // this.setActiveMenuFromUrl();
      this.isUserLoggedIn = true;
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
@@ -271,21 +305,27 @@ export class AppComponent {
    * @returns void
    * 
    */
-  navigate(item: any): void {
-    if (item.name === 'logout') {
-      this.logout();
-    } else {
-      if (item.Module) {
-        this.navItems.forEach((nav: any) => { 
-          if (nav.isOpen) {
-            nav.isOpen = false;
-          }
-        })
-      }
-      this.cs.activeMenu = item.name ?? item.Module;
-      this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+ navigate(item: any): void {
+  if (item.name === 'logout') {
+    this.logout();
+  } else {
+    if (item.Module) {
+      this.navItems.forEach((nav: any) => { 
+        if (nav.isOpen) {
+          nav.isOpen = false;
+        }
+      })
+    }
+    this.cs.activeMenu = item.name ?? item.Module;
+    this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+
+    // Auto-close the sidebar on mobile so the content is visible
+    if (this.isMobile) {
+      this.isCollapsed = true;
     }
   }
+}
+
 
   /**
    * Login API and Menu construction method.
@@ -324,11 +364,18 @@ set enableTestLogon(value: boolean) {
         },
       )
       // if(userName === 'OALMAGHRABI'){
-      if(userName === 'testrfp'){
-          this.roleTest('Requestor')
-          // this.router.navigate(['rfp/create']);
-          this.router.navigate(['rfp/dashboard']);
-      }
+     if (userName === 'testrfp') {
+  this.roleTest('Requestor');
+
+  // ensure Dashboard is the active/selected menu key
+  this.cs.activeMenu = 'Dashboard';
+
+  // close any open submenus so the Dashboard top-level looks highlighted
+  this.navItems.forEach(nav => nav.isOpen = false);
+
+  // navigate to dashboard
+  this.router.navigate(['rfp/dashboard']);
+}
       if(userName === 'SALSUBKI'){
           this.roleTest('Approver')
           this.router.navigate(['rfp/myinbox']);
@@ -362,6 +409,11 @@ set enableTestLogon(value: boolean) {
         // Budallocator Manager Approver&Manager
         this.router.navigate(['rfp/myinbox']);
       }
+  //     this.cs.activeMenu = 'Dashboard';
+  // this.navItems.forEach(n => n.isOpen = false);
+  // // call helper if exists (keeps same behavior as the forkJoin branch)
+  // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+  // this.router.navigate(['rfp/dashboard']);
 
     return
     // * Setting the Initial State for Login
@@ -426,7 +478,7 @@ set enableTestLogon(value: boolean) {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
           ModuleIcon: 'line-chart',
-          link: '/dashboard'
+          link:  'rfp/dashboard'
         },
       )
       if (RFPLoginRes) {
@@ -476,6 +528,10 @@ set enableTestLogon(value: boolean) {
         this.norole = true;
         this.router.navigate(['noaccess']);
       }
+    //   this.cs.activeMenu = 'Dashboard';
+    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+    // this.navItems.forEach(n => n.isOpen = false);
+    // this.router.navigate(['/dashboard']);
     },
       (error) => {
         this.spinner.hide()
@@ -511,7 +567,7 @@ set enableTestLogon(value: boolean) {
             Module: 'RFP - Requester',
             ModuleAr: 'إدارة طلب المنافسات',
             ModuleIcon: 'mail',
-            isOpen: true,
+            isOpen: false,
             navItem: [
               {
                 name: 'create',

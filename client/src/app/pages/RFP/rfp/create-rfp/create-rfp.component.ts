@@ -13,9 +13,9 @@ import {
   ValidatorFn,
   AbstractControl
 } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { saveAs } from 'file-saver';
+// import { HttpClient } from '@angular/common/http';
+// import { Observable, of } from 'rxjs';
+// import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
@@ -28,13 +28,24 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { Router } from '@angular/router';
 import { IconList } from 'src/app/components/icon/icon.component';
-
 import * as moment from 'moment';
 import { CommaSeparatePipe } from 'src/app/pipes/comma-separate.pipe';
 import { RFPService } from 'src/app/service/RFP/rfp.service';
 import { QualificationListFullResponse } from '../rfp.model';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.component';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { saveAs } from 'file-saver';
+
+
+
+type FormOption = {
+  key: string;     // value used by the select
+  label: string;   // shown to user
+  path: string;    // path under assets/ or a full URL
+  filename?: string; // optional download filename override
+};
 
 @Component({
   selector: 'app-create-rfp',
@@ -42,6 +53,7 @@ import { ErrorPopupComponent } from 'src/app/components/error-popup/error-popup.
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  showEmergencyDocs: boolean = false;
   step:number=0;
   //showScope=false;
   directCompetitionId: any = null;
@@ -275,7 +287,7 @@ export class CreateRFPComponent implements OnInit {
   procurementCheckListData: any = [];
 
   boqTabelList: any = [];
-  showEmergencyDocs: boolean = false;
+ 
 
   managerSubId: string = '';
 
@@ -1221,15 +1233,19 @@ toggleExpand(index: number): void {
    */
 
 
-  buildMainFormGroup(): void {
-    this.rfpForm = this.fb.group({
-      limitedType: new FormControl(''),    // for limited competition options
-      directPurchaseType: new FormControl(''),// for direct purchase options
-      invite: new FormControl('', [Validators.required]),
-      crNumber: this.fb.array([this.fb.group({
+ // Updated buildMainFormGroup() with correct ItemNo reset after delete
+buildMainFormGroup(): void {
+  this.rfpForm = this.fb.group({
+    limitedType: new FormControl(''),
+    directPurchaseType: new FormControl(''),
+    invite: new FormControl('', [Validators.required]),
+
+    crNumber: this.fb.array([
+      this.fb.group({
         crNumber: ['', Validators.required],
         companyName: ['', Validators.required]
-      })]),
+      })
+    ]),
 
       // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
@@ -1241,58 +1257,47 @@ toggleExpand(index: number): void {
       coordinatorEmail: new FormControl(''),
 
 
-      activity: [''],
-      subactivity: [''],
+    activity: [''],
+    subactivity: [''],
 
-      requiresSiteVisit: [false, [Validators.required]], // toggle
-      email: new FormControl('', [Validators.email]),
-      contactNumber: new FormControl(''),
-      userId: new FormControl(''),
-      projectRelaunched: [false, [Validators.required]], // toggle
-      number: new FormControl('', [Validators.min(1)]),
+    requiresSiteVisit: [false, [Validators.required]],
+    email: new FormControl('', [Validators.email]),
+    contactNumber: new FormControl(''),
+    userId: new FormControl(''),
+    projectRelaunched: [false, [Validators.required]],
+    number: new FormControl('', [Validators.min(1)]),
 
-      requestStatus: ['', [Validators.required]],
-      estimatedCost: ['', [Validators.required, Validators.min(1)]],
-      includeFrameworkItems: ['', [Validators.required]],
-      prequalificationRequired: [false, [Validators.required]],
-      qualificationReference: [''],
-      qualificationLink: [''],
-      competitionName: ['', [Validators.required, Validators.maxLength(200)]],
-      dividedIntoLots: [false, [Validators.required]],
-      contractDuration: ['', [Validators.required]],
-      MatGrpId: ['', [Validators.required]],
-      DeliveryDate: ['', [Validators.required]],
-      ProjJust: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(300),
-      ]),
-      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-      DurationType: new FormControl('', [Validators.required]),
-      workLocation: new FormControl([], [Validators.required]),
-      workExecutionLocation: ['', [Validators.required]],
-      reAnnounced: [false, [Validators.required]],
-      cancellationReport: [''],
-      projectJustification: [
-        '',
-        [Validators.required, Validators.maxLength(500)],
-      ],
-      projectContinuous: [false, [Validators.required]],
-      //projectRelaunched: [false, [Validators.required]],
-      // members: this.fb.array([this.createMemberRow()])
-      members: this.fb.array(
-        this.committeeMembers.map((m) =>
-          this.fb.group({
-           role: [{ 
-          value: m.role, 
-          disabled: true  // <--- This line disables the FormControl
-      }, Validators.required],
-      
-      name: ['', Validators.required],
-      extension: ['', Validators.required],
-      jobTitle: ['', Validators.required],
-          })
-        )
-      ),
+    requestStatus: ['', [Validators.required]],
+    estimatedCost: ['', [Validators.required, Validators.min(1)]],
+    includeFrameworkItems: ['', [Validators.required]],
+    prequalificationRequired: [false, [Validators.required]],
+    qualificationReference: [''],
+    qualificationLink: [''],
+    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    dividedIntoLots: [false, [Validators.required]],
+    contractDuration: ['', [Validators.required]],
+    MatGrpId: ['', [Validators.required]],
+    DeliveryDate: ['', [Validators.required]],
+    ProjJust: new FormControl('', [Validators.required, Validators.maxLength(300)]),
+    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+    DurationType: new FormControl('', [Validators.required]),
+    workLocation: new FormControl([], [Validators.required]),
+    workExecutionLocation: ['', [Validators.required]],
+    reAnnounced: [false, [Validators.required]],
+    cancellationReport: [''],
+    projectJustification: ['', [Validators.required, Validators.maxLength(500)]],
+    projectContinuous: [false, [Validators.required]],
+
+    members: this.fb.array(
+      this.committeeMembers.map((m) =>
+        this.fb.group({
+          role: [{ value: m.role, disabled: true }, Validators.required],
+          name: ['', Validators.required],
+          extension: ['', Validators.required],
+          jobTitle: ['', Validators.required]
+        })
+      )
+    ),
 
       laborItems: this.fb.array([this.createLaborRow()]),
       materialItems: this.fb.array([this.createMaterialRow()]),
@@ -1302,64 +1307,57 @@ toggleExpand(index: number): void {
       noOfYears: ['1'],
       competitionFragmentationItems: this.fb.array([this.createCompetitionFragmentationRow()]),
 
-      // scope of work
-      MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
-      MemManagerName: new FormControl('', [Validators.required]),
-      SOP: new FormControl('', [Validators.required]),
-      labor: new FormControl(''),
-      materials: new FormControl(''),
-      equipment: new FormControl(''),
-      qualitySpecifications: new FormControl(''),
-      safetySpecifications: new FormControl(''),
-      definationCompetition: new FormControl(''),
+    // scope of work
+    MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
+    MemManagerName: new FormControl('', [Validators.required]),
+    SOP: new FormControl('', [Validators.required]),
+    labor: new FormControl(''),
+    materials: new FormControl(''),
+    equipment: new FormControl(''),
+    qualitySpecifications: new FormControl(''),
+    safetySpecifications: new FormControl(''),
+    definationCompetition: new FormControl(''),
 
-      EvalCriteria: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: (this.slel).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline: ['', Validators.required],
-        SubCriFlg: ['', Validators.required]
+    EvalCriteria: this.fb.group({
+      RfpNo: [''],
+      ItemNo: [{ value: (this.slel).toString(), disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]],
+      Percentage: ['0'],
+      Headline: ['', Validators.required],
+      SubCriFlg: ['', Validators.required]
+    }),
 
-      }),
+    EvalCriteriaEdit: this.fb.group({
+      RfpNo: [''],
+      ItemNo: [{ value: '', disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]],
+      Percentage: ['0'],
+      Headline: [''],
+      SubCriFlg: ['']
+    }),
 
-      // Eval Criteria edit group (used for editing)
-      EvalCriteriaEdit: this.fb.group({
-        RfpNo: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]],
-        Percentage: ['0'],
-        Headline: [''],
-        SubCriFlg: ['']
-      }),
+    TotTechEval: new FormControl(''),
 
+    // Technical Requirements form groups
+    TechReq: this.fb.group({
+      RfpNo: [''],
+      RfpVersion: [''],
+      ItemNo: [{ value: this.srNoTechReq.toString(), disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]]
+    }),
 
-      //Technical Evaluation
-      TotTechEval: new FormControl(''),
+    TechReqEdit: this.fb.group({
+      RfpNo: [''],
+      RfpVersion: [''],
+      ItemNo: [{ value: '', disabled: true }],
+      Descr: ['', [Validators.maxLength(600)]]
+    }),
 
-
-      // Technical Requirements group
-      TechReq: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: (this.srNoTechReq).toString(), disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-      // Technical Requirements edit group
-      TechReqEdit: this.fb.group({
-        RfpNo: [''],
-        RfpVersion: [''],
-        ItemNo: [{ value: '', disabled: true }],
-        Descr: ['', [Validators.maxLength(600)]]
-      }),
-
-      // Vendor evaluation weightage
-      vendorEvaluationWeightage: this.fb.group({
-        technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99),]],
-        financialEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]]
-      }),
-
-    });
+    vendorEvaluationWeightage: this.fb.group({
+      technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]],
+      financialEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]]
+    })
+  });
 
     this.rfpForm.get('TotTechEval')?.setValue(100);
     
@@ -1620,7 +1618,7 @@ get progressWidth(): number {
   //   return false;
   // };
 
-  setManagerList() {
+  setManagerList() {  
     if (
       this.rfpForm.controls['MemName'].value.length > 0 &&
       (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
@@ -2542,6 +2540,25 @@ get progressWidth(): number {
 
     // this.checkQualPer();
   }
+// ------------ RENUMBER & SYNC FUNCTION (MOST IMPORTANT) ------------ //
+
+private renumberTechReq(): void {
+  this.TechReqListData = this.TechReqListData.map((item, index) => ({
+    ...item,
+    ItemNo: (index + 1).toString()
+  }));
+
+  this.srNoTechReq = this.TechReqListData.length + 1;
+
+  // update list control
+  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+
+  // update the SL.No input at the top
+  this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+}
+
+
+// ------------ ADD ROW ------------ //
 
 //  addTechReq(cond: 'add' | 'save' | any) {
 
@@ -2752,22 +2769,22 @@ get progressWidth(): number {
       this.EvalListData.pop()
     }
   }
-  private renumberTechReq(): void {
-  this.TechReqListData = this.TechReqListData.map((item, index) => ({
-    ...item,
-    ItemNo: (index + 1).toString()
-  }));
+  // private renumberTechReq(): void {
+  // this.TechReqListData = this.TechReqListData.map((item, index) => ({
+  //   ...item,
+  //   ItemNo: (index + 1).toString()
+  // }));
 
   
  
-  this.srNoTechReq = this.TechReqListData.length + 1;
+//   this.srNoTechReq = this.TechReqListData.length + 1;
  
-  // update list control
-  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+//   // update list control
+//   this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
  
-  // update the SL.No input at the top
-  this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
-}
+//   // update the SL.No input at the top
+//   this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+// }
  
  
 // ------------ ADD ROW ------------ //
@@ -4917,3 +4934,7 @@ export function dateValidator(): ValidatorFn {
 
 
 }
+function downloadSelectedForm() {
+  throw new Error('Function not implemented.');
+}
+
