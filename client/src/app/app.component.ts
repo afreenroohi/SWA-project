@@ -110,6 +110,9 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   // logoSrc = "assets/logo/mwan_logo.png";
   logoSrc = "assets/logo/swa-logo-dark.svg";
   
+  isDarkMode = false;
+  showDropdown = false;
+  
 
   login() {
     this.oauthService.initLoginFlow();
@@ -143,6 +146,13 @@ headerLeftWidth: string = this.expandedWidth + 'px';
 //     // console.warn('openParentsForActive error', e);
 //   }
 // }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: any) {
+    if (!event.target.closest('.user-dropdown')) {
+      this.showDropdown = false;
+    }
+  }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
@@ -204,6 +214,13 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     this.cs.activeMenu = 'home';
     // this.setActiveMenuFromUrl();
      this.isUserLoggedIn = true;
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
     //   const decode: any = jwt_decode(token);
@@ -305,6 +322,7 @@ headerLeftWidth: string = this.expandedWidth + 'px';
    * @returns void
    * 
    */
+  
  navigate(item: any): void {
   if (item.name === 'logout') {
     this.logout();
@@ -337,9 +355,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
    * 
    */
 private _enableTestLogon: boolean = true;
+private hasUsedTestLogin: boolean = false;
 
 get enableTestLogon(): boolean {
-  return this._enableTestLogon;
+  return !this.hasUsedTestLogin;
 }
 
 set enableTestLogon(value: boolean) {
@@ -350,7 +369,8 @@ set enableTestLogon(value: boolean) {
       this.isUserLoggedIn = true;
     this.dispname = userName.toUpperCase();
     this.ProxyUserId = userName.toUpperCase();
-    this.enableTestLogon = false;
+    this.hasUsedTestLogin = true;
+    this.isCollapsed = true;
 
     
     // console.log(userName,'userName==')
@@ -2735,6 +2755,23 @@ set enableTestLogon(value: boolean) {
         navItem.isOpen = false
       }
     }
+  }
+
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  toggleTheme(): void {
+    const htmlElement = document.documentElement;
+    console.log('Toggling theme to:', this.isDarkMode ? 'dark' : 'light');
+    if (this.isDarkMode) {
+      htmlElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    }
+    console.log('HTML element data-theme:', htmlElement.getAttribute('data-theme'));
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {
