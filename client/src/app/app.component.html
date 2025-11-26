@@ -143,15 +143,27 @@
         <div nz-row nzJustify="end" nzAlign="middle">
           <div nz-col class="user-info-container">
             <div style="display: flex; align-items: center; gap: 10px;" *ngIf="isUserLoggedIn && dispname">
-              <!-- Avatar with proper user icon -->
-              <nz-avatar nzIcon="user" style="
-                  background-color:#005c99;
-                  color: #3277ee;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 22px;
-                "></nz-avatar>
+              <!-- Avatar with custom dropdown -->
+              <div class="user-dropdown" (click)="toggleDropdown()">
+                <nz-avatar nzIcon="user" style="
+                    background-color:#005c99;
+                    color: #3277ee;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 22px;
+                    cursor: pointer;
+                  "></nz-avatar>
+                <div class="dropdown-menu" *ngIf="showDropdown">
+                  <div class="dropdown-item">
+                    <span class="theme-label">
+                      <span nz-icon [nzType]="isDarkMode ? 'moon' : 'sun'"></span>
+                      {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
+                    </span>
+                    <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
+                  </div>
+                </div>
+              </div>
               <div style="display:flex;flex-direction:column;line-height:1.2;">
                 <span style="color: black; font-weight: 500;">
                   {{ dispname }}
@@ -173,9 +185,14 @@
 
 
 
-  <nz-layout class="ant-top-layout">
-    <nz-sider class="menu-sidebar" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+<nz-layout class="ant-top-layout">
+    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn && !isCollapsed" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" style="background-color: white;">
+      <div class="sidebar-toggle" *ngIf="navItems && navItems.length > 0" style="padding: 10px; margin-bottom: 10px;">
+        <button nz-button nzType="text" nzSize="small" (click)="isCollapsed = !isCollapsed" class="collapse-btn">
+          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+        </button>
+      </div>
+      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngClass]="{'menu-with-toggle': isUserLoggedIn}">
         <ng-container *ngFor="let item of navItems">
           <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
             <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="
@@ -267,12 +284,22 @@
       </div>
     </nz-sider>
 
-    <!-- <nz-content [ngStyle]="{
-        'margin-left': cs.userLanguage === 'en' ? '200px' : '',
-        'margin-right': cs.userLanguage === 'ar' ? '190px' : ''
+    <!-- Floating toggle button when sidebar is collapsed -->
+    <div class="floating-toggle" *ngIf="isUserLoggedIn && isCollapsed">
+      <button nz-button nzType="primary" nzShape="circle" (click)="isCollapsed = !isCollapsed">
+        <span nz-icon nzType="menu-unfold"></span>
+      </button>
+    </div>
+
+    <nz-content [ngClass]="{
+        'ant-right-layout': cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed,
+        'ant-left-layout': cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed,
+        'ant-full-layout': !isUserLoggedIn || isCollapsed
       }"
-      style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
-    <nz-content [class]="cs.userLanguage === 'en' ? 'ant-right-layout' : 'ant-left-layout'"
+      [ngStyle]="{
+        'margin-left': (cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed) ? '200px' : '0',
+        'margin-right': (cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed) ? '200px' : '0'
+      }"
       style="background-color: white">
       <div class="inner-content">
         <router-outlet></router-outlet>

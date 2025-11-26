@@ -102,8 +102,8 @@
 <div class="col-12">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
-      <p class="create_rfp_head">{{ "RFP.NewRFP" | translate }}</p>
-      <div class="stepper-card mt-4">
+      <p class="create_rfp_head" style="margin-left: 20px;">{{ "RFP.NewRFP" | translate }}</p>
+      <div class="stepper-card mt-4" style="margin-left: 20px;">
         <div class="custom-stepper">
           <div class="stepper-container">
             <!-- Step 1 -->
@@ -169,7 +169,7 @@
 
 
       <!-- * Create RFP -->
-      <nz-collapse id="basicInfo" *ngIf=showBasicInfo [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100">
+      <nz-collapse id="basicInfo" *ngIf=showBasicInfo [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100" style="margin-left: 20px;">
         <nz-collapse-panel [nzActive]="basicInfoActive" nzHeader="{{ 'RFP.Basic Information' | translate }}">
           <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
           <div class="row w-100 my-2">
@@ -1435,7 +1435,7 @@
       </nz-collapse>
 
       <!-- Scope of Work *ngIf="showScopeOfWork"-->
-      <nz-collapse id="scopeOfWork" *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="scopeOfWork" *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
         <nz-collapse-panel [nzActive]="scopeOfWorkActive" nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
           <div class="row w-100">
 
@@ -1817,7 +1817,7 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse id="standards" *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="standards" *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
         <nz-collapse-panel [(nzActive)]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
  
@@ -2163,7 +2163,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse id="billOfQuantity"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2513,7 +2513,7 @@
 
 
       <!-- Attachments *ngIf="showAttachments" -->
-      <nz-collapse id="attachments" *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4">
+      <nz-collapse id="attachments" *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
         <nz-collapse-panel [nzActive]="attachmentsCollapseActive" [nzHeader]="'RFP.Attachments'|translate">
           <div class="attachment-body">
 

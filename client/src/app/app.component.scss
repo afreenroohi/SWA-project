@@ -41,7 +41,7 @@ nz-breadcrumb {
 }
  
 .ant-menu {
-  background-color: #f7f8fa !important;
+  background-color: #ffffff !important;
 }
  
 .ant-menu-submenu-open {
@@ -114,6 +114,11 @@ nz-sider {
  
 .ant-left-layout {
   margin-right: 250px
+}
+
+.ant-full-layout {
+  margin-left: 0;
+  margin-right: 0;
 }
  
 .ant-top-layout {
@@ -253,3 +258,91 @@ h6 {
 ::ng-deep .custom-spinner {
   border-radius: 50%;
 }
+
+/* Sidebar collapse button */
+.sidebar-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.collapse-btn {
+  background: #f0f0f0 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+}
+
+.collapse-btn:hover {
+  background: #e6f7ff !important;
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+}
+
+.menu-with-toggle {
+  padding-top: 50px !important;
+}
+
+/* Floating toggle button */
+.floating-toggle {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 1001;
+}
+
+.floating-toggle button {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* Custom Dropdown Styles */
+.user-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+}
+
+.theme-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: #1f1f1f;
+  border-color: #303030;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #ffffff;
+}
+
+
