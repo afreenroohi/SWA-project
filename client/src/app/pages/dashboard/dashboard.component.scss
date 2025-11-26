@@ -1,9 +1,15 @@
 :host {
-
     .dashboard {
-
         display: grid;
         row-gap: 1rem;
+        
+        @media (max-width: 768px) {
+            row-gap: 0.75rem;
+        }
+        
+        @media (max-width: 480px) {
+            row-gap: 0.5rem;
+        }
 
         nz-select { 
             width: 100%;
@@ -11,16 +17,46 @@
 
         .row {
             --bs-gutter-y: 1rem;
+            
+            @media (max-width: 768px) {
+                --bs-gutter-y: 0.75rem;
+            }
+            
+            @media (max-width: 480px) {
+                --bs-gutter-y: 0.5rem;
+            }
         }
 
         .dashboard-options {
-
             display: flex;
             justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+            
+            @media (max-width: 768px) {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
 
             .option {
-
                 width: 20%;
+                min-width: 200px;
+                
+                @media (max-width: 1200px) {
+                    width: 25%;
+                }
+                
+                @media (max-width: 992px) {
+                    width: 30%;
+                }
+                
+                @media (max-width: 768px) {
+                    width: 100%;
+                    min-width: auto;
+                }
+                
                 nz-form-item {
                     margin-bottom: 0px;
                 }
@@ -28,8 +64,11 @@
                 nz-form-label {
                     display: flex;
                     justify-content: flex-start;
+                    
+                    @media (max-width: 480px) {
+                        font-size: 14px;
+                    }
                 }
-
             }
         }
 
@@ -37,30 +76,87 @@
             display: flex;
             gap: 0.5rem;
             justify-content: flex-end;
+            
+            @media (max-width: 768px) {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            button {
+                @media (max-width: 480px) {
+                    width: 32px;
+                    height: 32px;
+                    
+                    i {
+                        font-size: 14px;
+                    }
+                }
+            }
         }
 
         .dashboard-table {
-                display: grid;
-                place-items: start;
+            display: grid;
+            place-items: start;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
 
-                dashboard-table {
-                    min-width: 75rem;
-                    max-width: 100%;
-                    width: 100%;
+            dashboard-table {
+                min-width: 75rem;
+                max-width: 100%;
+                width: 100%;
+                
+                @media (max-width: 1200px) {
+                    min-width: 60rem;
+                }
+                
+                @media (max-width: 992px) {
+                    min-width: 50rem;
+                }
+                
+                @media (max-width: 768px) {
+                    min-width: 40rem;
+                }
+                
+                @media (max-width: 480px) {
+                    min-width: 35rem;
+                }
             }
-
         }
 
         .dashboard-charts.row {
-
             .col-6 {
                 height: 50vh;
+                
+                @media (max-width: 992px) {
+                    height: 45vh;
+                }
+                
+                @media (max-width: 768px) {
+                    width: 100%;
+                    height: 40vh;
+                    margin-bottom: 1rem;
+                }
+                
+                @media (max-width: 480px) {
+                    height: 35vh;
+                }
             }
 
             .col-12 {
                 height: 90vh;
+                
+                @media (max-width: 992px) {
+                    height: 80vh;
+                }
+                
+                @media (max-width: 768px) {
+                    height: 70vh;
+                }
+                
+                @media (max-width: 480px) {
+                    height: 60vh;
+                }
             }
-
         }
 
         .dashboard-cards {
@@ -72,18 +168,48 @@
                 gap: 1rem;
                 overflow-x: auto;
                 scroll-behavior: smooth;
-                padding: 1rem 1rem; 
+                padding: 1rem;
                 scrollbar-width: none;
-                    -ms-overflow-style: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
                 
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
+                @media (max-width: 768px) {
+                    gap: 0.75rem;
+                    padding: 0.75rem;
+                }
+                
+                @media (max-width: 480px) {
+                    gap: 0.5rem;
+                    padding: 0.5rem;
+                    flex-direction: column;
+                    overflow-x: visible;
+                }
+                
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
 
             .card-items {
-                min-width: 283PX;
+                min-width: 283px;
                 flex: 0 0 auto;
+                
+                @media (max-width: 1200px) {
+                    min-width: 260px;
+                }
+                
+                @media (max-width: 992px) {
+                    min-width: 240px;
+                }
+                
+                @media (max-width: 768px) {
+                    min-width: 220px;
+                }
+                
+                @media (max-width: 480px) {
+                    min-width: 100%;
+                    width: 100%;
+                }
             }
         }
 

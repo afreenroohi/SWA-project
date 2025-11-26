@@ -1037,12 +1037,12 @@
                 Save As Draft
               </button> -->
 
-              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()"
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()"
                 [disabled]="!basicInfoValid">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
 
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinue()"
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinue()"
                 [disabled]="!basicInfoValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
@@ -1803,11 +1803,11 @@
             </div>
           </div>
           <div class="row mt-2">
-            <div class="d-flex justify-content-end mt-2 actions gap-2">
-              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+            <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueScope()"
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueScope()"
                 [disabled]="!scopeOfWorkValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
@@ -2148,11 +2148,11 @@
           </div>
  
           <div class="row mt-2">
-            <div class="d-flex justify-content-end mt-2 actions gap-2">
-              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+            <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueStandards()"
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueStandards()"
                 [disabled]="!standardsValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
@@ -2168,7 +2168,7 @@
 
           <!-- Competition Fragmentation Toggle -->
           <div class="col-12 my-3">
-            <div class="toggle-row info-box boq-toggle">
+            <div class="toggle-row info-box boq-toggle responsive-flex between">
               <label class="toggle-label boq-label">
                 <i nz-icon nzType="appstore" nzTheme="outline" style="margin-right: 8px; color: #1f4e79;"></i>
                 Competition Fragmentation
@@ -2202,7 +2202,8 @@
               Competition Fragmentation Details
             </nz-form-label>
 
-            <table class="table table-bordered boq-table">
+            <div class="table-responsive-wrapper">
+              <table class="table table-bordered boq-table">
               <thead>
                 <tr>
                   <th style="width: 60px;">S.No</th>
@@ -2233,7 +2234,8 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
 
           <!-- Bundle Buttons (Horizontal) -->
@@ -2242,9 +2244,10 @@
               <i nz-icon nzType="folder-open" nzTheme="outline" style="margin-right: 8px;"></i>
               The Bundle
             </h5>
-            <div class="d-flex gap-2 flex-wrap">
+            <div class="d-flex gap-2 flex-wrap responsive-flex wrap">
               <button *ngFor="let bundle of competitionFragmentationItems.controls; let bundleIndex = index" 
                 nz-button 
+                class="touch-friendly"
                 [nzType]="selectedBundleIndex === bundleIndex ? 'primary' : 'default'"
                 (click)="selectBundle(bundleIndex)">
                 {{ bundle.get('package')?.value || 'Package ' + (bundleIndex + 1) }}
@@ -2272,8 +2275,8 @@
                     Export
                   </button>
                 </div>
-                <div style="overflow-x: auto;">
-                <table class="table table-bordered">
+                <div class="table-responsive-wrapper">
+                <table class="table table-bordered technical-table">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
                       <th rowspan="2">Serial Number</th>
@@ -2335,8 +2338,8 @@
                     Export
                   </button>
                 </div>
-                <div style="overflow-x: auto;">
-                <table class="table table-bordered">
+                <div class="table-responsive-wrapper">
+                <table class="table table-bordered technical-table">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
                       <th>{{'RFP.Serial Number'| translate}}</th>
@@ -2393,8 +2396,8 @@
                       Export
                     </button>
                   </div>
-                  <div style="overflow-x: auto;">
-                  <table class="table table-bordered">
+                  <div class="table-responsive-wrapper">
+                  <table class="table table-bordered technical-table">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
                         <th>{{'RFP.Serial Number'| translate}}</th>
@@ -2453,8 +2456,8 @@
                       Export
                     </button>
                   </div>
-                  <div style="overflow-x: auto;">
-                  <table class="table table-bordered">
+                  <div class="table-responsive-wrapper">
+                  <table class="table table-bordered technical-table">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
                         <th>{{'RFP.Serial Number'|translate}}</th>
@@ -2499,11 +2502,11 @@
             </div>
 
           <div class="row mt-2">
-            <div class="d-flex justify-content-end mt-2 actions gap-2">
-              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+            <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="saveAndContinueBOQ()">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueBOQ()">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
@@ -2561,11 +2564,11 @@
             </div>
           </div>
           <div class="row mt-2">
-            <div class="d-flex justify-content-end mt-2 actions gap-2">
-              <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
+            <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="submitCase()">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="submitCase()">
                 {{ "RFP.Submit" | translate }}
               </button>
             </div>

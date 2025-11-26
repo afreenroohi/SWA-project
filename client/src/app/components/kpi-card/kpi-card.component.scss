@@ -1,7 +1,47 @@
-.Kpi-container{
+.Kpi-container {
     padding: 1rem 2rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     border: 1px solid rgb(231, 231, 231);
     height: auto;
     width: 100%;
+    box-sizing: border-box;
+    transition: padding 0.3s ease, border-radius 0.3s ease;
+    
+    @media (max-width: 992px) {
+        padding: 0.875rem 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.375rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 0.625rem 1rem;
+        border-radius: 0.25rem;
+    }
+    
+    h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        line-height: 1.2;
+        
+        @media (max-width: 480px) {
+            margin-bottom: 0.375rem;
+        }
+    }
+    
+    p {
+        margin: 0;
+        font-size: clamp(0.875rem, 2vw, 1rem);
+        line-height: 1.4;
+        color: #666;
+    }
+    
+    /* Hover effect for better interactivity */
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-1px);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
 }
