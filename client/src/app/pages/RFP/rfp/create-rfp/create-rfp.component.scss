@@ -756,15 +756,23 @@ background: rgba(217, 83, 79, 0.08);
 // :host ::ng-deep .ant-steps-item-tail::after {
 // border-color: #cccccc !important;
 // }
-// .btn-add {
-//   margin-top: -2px;        /* pushes it slightly upward */
-//   background-color: #0b6aa0 !important;
-//   color: #ffffff !important;
-//   border: 1px solid #0b6aa0 !important;
-//   font-weight: 500;
-//   min-width: 130px;
-//   height: 38px;
-// }
+.btn-add {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.btn-add i[nz-icon] {
+  font-size: 18px !important; 
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
  
 // .btn-add:hover {
 //   background-color: #0a5b87 !important;
@@ -1092,7 +1100,7 @@ color: #ffffff !important;
  .upload-area {
   min-height: 140px;
  }
-
+}
 
 /* ========== Misc (form styling) ========== */
 h6 {
@@ -2577,21 +2585,20 @@ display: none !important;
   font-weight: 600 !important;  
   font-size: 18px;              
   color: #333;  
-}}
+}
 
-.stepper-card {
-  ::ng-deep .ant-steps-item-container::after {
-    content: '';
-    height: 3px !important;
-    border-radius: 3px;
-    background: 
-      linear-gradient(to right,
-        black 0,               /* LEFT BLACK EDGE */
-        black 8px,
-        #1f4e79 8px,           /* your main line color */
-        #1f4e79 calc(100% - 8px),
-        black calc(100% - 8px), /* RIGHT BLACK EDGE */
-        black 100%
-      ) !important;
-  }
+/* BOQ Table Input Fields - Uniform Width */
+::ng-deep #billOfQuantity table input,
+::ng-deep #billOfQuantity table input[nz-input],
+::ng-deep #billOfQuantity table input[type="number"] {
+  width: 100% !important;
+  min-width: 100px !important;
+  max-width: 150px !important;
+  height: 36px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d9d9d9 !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
 }
