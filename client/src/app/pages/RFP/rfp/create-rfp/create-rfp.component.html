@@ -2168,7 +2168,7 @@
             <div class="toggle-row info-box boq-toggle">
               <label class="toggle-label boq-label">
                 <i nz-icon nzType="appstore" nzTheme="outline" style="margin-right: 8px; color: #1f4e79;"></i>
-                Competition Fragmentation
+                {{"RFP.Competition Fragmentation"|translate}}
               </label>
               <nz-switch formControlName="competitionFragmentation" (ngModelChange)="onCompetitionFragmentationChange($event)"></nz-switch>
             </div>
@@ -2176,7 +2176,7 @@
 
           <!-- No of Years Dropdown -->
           <div class="col-4 my-1">
-            <nz-form-label nzRequired for="noOfYears" class="boq-field-label">No of Years</nz-form-label>
+            <nz-form-label nzRequired for="noOfYears" class="boq-field-label">{{"RFP.No of Years"|translate}}</nz-form-label>
             <nz-form-control>
               <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear (ngModelChange)="onYearsChange($event)">
                 <nz-option nzValue="1" nzLabel="One or less than one year"></nz-option>
@@ -2196,26 +2196,26 @@
           <div class="col-12 my-3">
             <nz-form-label nzRequired class="boq-section-title">
               <i nz-icon nzType="table" nzTheme="outline" style="margin-right: 8px;"></i>
-              Competition Fragmentation Details
+              {{"RFP.Competition Fragmentation Details"|translate}}
             </nz-form-label>
 
             <table class="table table-bordered boq-table">
               <thead>
                 <tr>
-                  <th style="width: 60px;">S.No</th>
-                  <th style="width: 150px;">Package</th>
-                  <th style="width: 250px;">Description</th>
-                  <th style="width: 200px;">Classification Field</th>
-                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">Action</th>
+                  <th style="width: 60px;">{{"RFP.S.No"|translate}}</th>
+                  <th style="width: 150px;">{{"RFP.Package"|translate}}</th>
+                  <th style="width: 250px;">{{"RFP.Description"|translate}}</th>
+                  <th style="width: 200px;">{{"RFP.Classification Field"|translate}}</th>
+                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">{{"RFP.Action"|translate}}</th>
                 </tr>
               </thead>
               <tbody formArrayName="competitionFragmentationItems">
                 <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
                   <td>{{ i + 1 }}</td>
-                  <td><input nz-input formControlName="package" placeholder="Enter package" style="width: 100%;" /></td>
-                  <td><textarea nz-input formControlName="description" rows="1" placeholder="Enter description" style="width: 100%;"></textarea></td>
+                  <td><textarea nz-input formControlName="package" rows="1" [placeholder]="'RFP.Enter package'|translate" style="width: 100%;"></textarea></td>
+                  <td><textarea nz-input formControlName="description" rows="1" [placeholder]="'RFP.Enter description'|translate" style="width: 100%;"></textarea></td>
                   <td>
-                    <nz-select formControlName="classificationField" style="width: 100%;" nzPlaceHolder="Classification">
+                    <nz-select formControlName="classificationField" style="width: 100%;" [nzPlaceHolder]="'RFP.Classification'|translate">
                       <nz-option *ngFor="let type of classificationTypes" [nzValue]="type.id" [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
                     </nz-select>
                   </td>
@@ -2237,7 +2237,7 @@
           <div class="col-12 my-3">
             <h5 class="boq-bundle-title">
               <i nz-icon nzType="folder-open" nzTheme="outline" style="margin-right: 8px;"></i>
-              The Bundle
+              {{"RFP.The Bundle"|translate}}
             </h5>
             <div class="d-flex gap-2 flex-wrap">
               <button *ngFor="let bundle of competitionFragmentationItems.controls; let bundleIndex = index" 
@@ -2253,7 +2253,7 @@
           <div class="col-12 my-4">
             <h5 class="boq-quantity-title">
               <i nz-icon nzType="database" nzTheme="outline" style="margin-right: 8px;"></i>
-              Quantity Tables
+              {{"RFP.Quantity Tables"|translate}}
             </h5>
             <nz-collapse [nzExpandIconPosition]="'right'">
               <!-- Workforce - General Model -->
@@ -2262,33 +2262,33 @@
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="workforceFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
-                    Import
+                    {{"RFP.Import"|translate}}
                   </button>
                   <button nz-button nzType="default" (click)="downloadTemplate('workforce')">
                     <i nz-icon nzType="export" nzTheme="outline"></i>
-                    Export
+                    {{"RFP.Export"|translate}}
                   </button>
                 </div>
                 <div style="overflow-x: auto;">
                 <table class="table table-bordered">
                   <thead>
                     <tr style="background-color: #1f4e79; color: white;">
-                      <th rowspan="2">Serial Number</th>
-                      <th rowspan="2">Job Title</th>
-                      <th rowspan="2">Item description</th>
-                      <th rowspan="2">Least eligible for admission</th>
-                      <th rowspan="2">Minimum years of experience</th>
-                      <th *ngIf="selectedYears === 1" rowspan="2">Quantity</th>
+                      <th rowspan="2">{{"RFP.Serial Number"|translate}}</th>
+                      <th rowspan="2">{{"RFP.Job Title"|translate}}</th>
+                      <th rowspan="2">{{"RFP.Item description"|translate}}</th>
+                      <th rowspan="2">{{"RFP.Least eligible for admission"|translate}}</th>
+                      <th rowspan="2">{{"RFP.Minimum years of experience"|translate}}</th>
+                      <th *ngIf="selectedYears === 1" rowspan="2">{{"RFP.Quantity"|translate}}</th>
                       <ng-container *ngIf="selectedYears > 1">
-                        <th [attr.colspan]="3" *ngFor="let year of getYearsArray()">{{ ['First', 'Second', 'Third', 'Fourth', 'Fifth'][year - 1] }} Year</th>
+                        <th [attr.colspan]="3" *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1] |translate}}{{"RFP.Year"|translate}}</th>
                       </ng-container>
-                      <th rowspan="2">Action</th>
+                      <th rowspan="2">{{"RFP.Action"|translate}}</th>
                     </tr>
                     <tr style="background-color: #1f4e79; color: white;" *ngIf="selectedYears > 1">
                       <ng-container *ngFor="let year of getYearsArray()">
-                        <th>No.</th>
-                        <th>Expected basic working hours</th>
-                        <th>Expected number of overtime hours</th>
+                        <th>{{"RFP.No."|translate}}</th>
+                        <th>{{"RFP.Expected basic working hours"|translate}}</th>
+                        <th>{{"RFP.Expected number of overtime hours"|translate}}</th>
                       </ng-container>
                     </tr>
                   </thead>
@@ -2325,11 +2325,11 @@
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="materialsFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
-                    Import
+                    {{"RFP.Import"|translate}}
                   </button>
                   <button nz-button nzType="default" (click)="downloadTemplate('materials')">
                     <i nz-icon nzType="export" nzTheme="outline"></i>
-                    Export
+                    {{"RFP.Export"|translate}}
                   </button>
                 </div>
                 <div style="overflow-x: auto;">
