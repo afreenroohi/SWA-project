@@ -35,11 +35,11 @@ export class DashbardComponent implements OnInit, OnDestroy {
 
   // Chart Data
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Total', 'Approved', 'Draft', 'Cancelled', 'Submitted'],
+    labels: ['Procurement', 'Finance', 'Quality Control', 'HR', 'Legal'],
     datasets: [{ 
-      data: [0, 0, 0, 0, 0], 
-      label: 'Projects', 
-      backgroundColor: ['#005c99', '#52c41a', '#faad14', '#ff4d4f', '#722ed1'],
+      data: [8, 5, 12, 3, 7], 
+      label: 'Pending Department', 
+      backgroundColor: ['#005c99', '#005c99', '#005c99', '#005c99', '#005c99'],
       borderRadius: 8,
       barThickness: 40
     }]
@@ -101,96 +101,36 @@ export class DashbardComponent implements OnInit, OnDestroy {
    
 
   this.listArray = [
-  {
-    RfpName: 'Water Treatment Expansion',
-    RfpNo: 'RFP-2025-001',
-    RfpVersion: '1',
-    PurchaseReqNo: 'PR-2025-1001',
-    CreatedOn: '2025101000',
-    SlaEndDate: '2025101500',   // 15 Oct 2025
-    SlaEndTime: '202510151030', // 10:30 AM
-    DeptText: 'Engineering Department',
-    WfPendingDpt: 'Procurement',
-    WfPendingDptAr: 'المشتريات',
-    WfPendUsrEn: 'Mohammed Ali',
-    WfPendUsrAr: 'محمد علي',
-    RfpStatus: 'A',
-    SlaInd: 'Y',
-    Sla: '5 Days',
-    SlaAr: '٥ أيام'
-  },
-  {
-    RfpName: 'Desalination Plant Maintenance',
-    RfpNo: 'RFP-2025-002',
-    RfpVersion: '2',
-    PurchaseReqNo: 'PR-2025-1002',
-    CreatedOn: '2025092500',
-    SlaEndDate: '2025092800',
-    SlaEndTime: '202509281145',
-    DeptText: 'Engineering Department', // 'Operations',
-    WfPendingDpt: 'Finance',
-    WfPendingDptAr: 'المالية',
-    WfPendUsrEn: 'Fatima Noor',
-    WfPendUsrAr: 'فاطمة نور',
-    RfpStatus: 'D',
-    SlaInd: 'N',
-    Sla: '3 Days',
-    SlaAr: '٣ أيام'
-  },
-  {
-    RfpName: 'Pipeline Inspection Drones',
-    RfpNo: 'RFP-2025-003',
-    RfpVersion: '1',
-    PurchaseReqNo: 'PR-2025-1003',
-    CreatedOn: '2025083000',
-    SlaEndDate: '2025090100',
-    SlaEndTime: '202509011600',
-    DeptText:'Engineering Department', // 'Technology',
-    WfPendingDpt: 'Quality Control',
-    WfPendingDptAr: 'مراقبة الجودة',
-    WfPendUsrEn: 'John Smith',
-    WfPendUsrAr: 'جون سميث',
-    RfpStatus: 'C',
-    SlaInd: 'Y',
-    Sla: '2 Days',
-    SlaAr: '٢ أيام'
-  },
-  {
-    RfpName: 'IT Infrastructure Upgrade',
-    RfpNo: 'RFP-2025-004',
-    RfpVersion: '3',
-    PurchaseReqNo: 'PR-2025-1004',
-    CreatedOn: '2025091000',
-    SlaEndDate: '2025091400',
-    SlaEndTime: '202509141200',
-    DeptText: 'Engineering Department', //'IT Department',
-    WfPendingDpt: 'HR',
-    WfPendingDptAr: 'الموارد البشرية',
-    WfPendUsrEn: 'Aisha Karim',
-    WfPendUsrAr: 'عائشة كريم',
-    RfpStatus: 'R',
-    SlaInd: 'N',
-    Sla: '4 Days',
-    SlaAr: '٤ أيام'
-  },
-  {
-    RfpName: 'Smart Meter Installation',
-    RfpNo: 'RFP-2025-005',
-    RfpVersion: '1',
-    PurchaseReqNo: 'PR-2025-1005',
-    CreatedOn: '2025071500',
-    SlaEndDate: '2025071600',
-    SlaEndTime: '202507160930',
-    DeptText: 'Engineering Department', //'Customer Services',
-    WfPendingDpt: 'Legal',
-    WfPendingDptAr: 'القانونية',
-    WfPendUsrEn: 'Khalid Hassan',
-    WfPendUsrAr: 'خالد حسن',
-    RfpStatus: 'S',
-    SlaInd: 'Y',
-    Sla: '1 Day',
-    SlaAr: 'يوم واحد'
-  }
+  { RfpName: 'Water Treatment Expansion', RfpNo: 'RFP-2025-001', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1001', CreatedOn: '2025101000', SlaEndDate: '2025101500', SlaEndTime: '202510151030', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Mohammed Ali', WfPendUsrAr: 'محمد علي', RfpStatus: 'A', SlaInd: 'Y', Sla: '5 Days', SlaAr: '٥ أيام' },
+  { RfpName: 'Desalination Plant', RfpNo: 'RFP-2025-002', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1002', CreatedOn: '2025092500', SlaEndDate: '2025092800', SlaEndTime: '202509281145', DeptText: 'Engineering Department', WfPendingDpt: 'Finance', WfPendingDptAr: 'المالية', WfPendUsrEn: 'Fatima Noor', WfPendUsrAr: 'فاطمة نور', RfpStatus: 'D', SlaInd: 'N', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Pipeline Inspection', RfpNo: 'RFP-2025-003', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1003', CreatedOn: '2025083000', SlaEndDate: '2025090100', SlaEndTime: '202509011600', DeptText:'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'John Smith', WfPendUsrAr: 'جون سميث', RfpStatus: 'C', SlaInd: 'Y', Sla: '2 Days', SlaAr: '٢ أيام' },
+  { RfpName: 'IT Infrastructure', RfpNo: 'RFP-2025-004', RfpVersion: '3', PurchaseReqNo: 'PR-2025-1004', CreatedOn: '2025091000', SlaEndDate: '2025091400', SlaEndTime: '202509141200', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Aisha Karim', WfPendUsrAr: 'عائشة كريم', RfpStatus: 'R', SlaInd: 'N', Sla: '4 Days', SlaAr: '٤ أيام' },
+  { RfpName: 'Smart Meter', RfpNo: 'RFP-2025-005', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1005', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Khalid Hassan', WfPendUsrAr: 'خالد حسن', RfpStatus: 'S', SlaInd: 'Y', Sla: '1 Day', SlaAr: 'يوم واحد' },
+  { RfpName: 'Network Security', RfpNo: 'RFP-2025-006', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1006', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Sara Ahmed', WfPendUsrAr: 'سارة أحمد', RfpStatus: 'A', SlaInd: 'Y', Sla: '2 Days', SlaAr: 'يومان' },
+  { RfpName: 'Cloud Migration', RfpNo: 'RFP-2025-007', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1007', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Ali Hassan', WfPendUsrAr: 'علي حسن', RfpStatus: 'D', SlaInd: 'N', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Data Center', RfpNo: 'RFP-2025-008', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1008', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Omar Khalid', WfPendUsrAr: 'عمر خالد', RfpStatus: 'S', SlaInd: 'Y', Sla: '4 Days', SlaAr: '٤ أيام' },
+  { RfpName: 'Software Licensing', RfpNo: 'RFP-2025-009', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1009', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Legal', WfPendingDptAr: 'القانونية', WfPendUsrEn: 'Noor Ali', WfPendUsrAr: 'نور علي', RfpStatus: 'A', SlaInd: 'Y', Sla: '2 Days', SlaAr: 'يومان' },
+  { RfpName: 'Hardware Procurement', RfpNo: 'RFP-2025-010', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1010', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Layla Ahmed', WfPendUsrAr: 'ليلى أحمد', RfpStatus: 'D', SlaInd: 'N', Sla: '5 Days', SlaAr: '٥ أيام' },
+  { RfpName: 'Training Services', RfpNo: 'RFP-2025-011', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1011', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'HR', WfPendingDptAr: 'الموارد البشرية', WfPendUsrEn: 'Zain Malik', WfPendUsrAr: 'زين مالك', RfpStatus: 'S', SlaInd: 'Y', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Consulting Services', RfpNo: 'RFP-2025-012', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1012', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Finance', WfPendingDptAr: 'المالية', WfPendUsrEn: 'Huda Youssef', WfPendUsrAr: 'هدى يوسف', RfpStatus: 'A', SlaInd: 'Y', Sla: '6 Days', SlaAr: '٦ أيام' },
+  { RfpName: 'Facility Management', RfpNo: 'RFP-2025-013', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1013', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Tariq Nasser', WfPendUsrAr: 'طارق ناصر', RfpStatus: 'D', SlaInd: 'N', Sla: '4 Days', SlaAr: '٤ أيام' },
+  { RfpName: 'Equipment Maintenance', RfpNo: 'RFP-2025-014', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1014', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Reem Saleh', WfPendUsrAr: 'ريم صالح', RfpStatus: 'S', SlaInd: 'Y', Sla: '2 Days', SlaAr: 'يومان' },
+  { RfpName: 'Vehicle Fleet', RfpNo: 'RFP-2025-015', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1015', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Yara Ibrahim', WfPendUsrAr: 'يارا إبراهيم', RfpStatus: 'A', SlaInd: 'Y', Sla: '7 Days', SlaAr: '٧ أيام' },
+  { RfpName: 'Office Supplies', RfpNo: 'RFP-2025-016', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1016', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Karim Faisal', WfPendUsrAr: 'كريم فيصل', RfpStatus: 'D', SlaInd: 'N', Sla: '1 Day', SlaAr: 'يوم واحد' },
+  { RfpName: 'Marketing Campaign', RfpNo: 'RFP-2025-017', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1017', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Finance', WfPendingDptAr: 'المالية', WfPendUsrEn: 'Dina Rashid', WfPendUsrAr: 'دينا راشد', RfpStatus: 'S', SlaInd: 'Y', Sla: '5 Days', SlaAr: '٥ أيام' },
+  { RfpName: 'Legal Advisory', RfpNo: 'RFP-2025-018', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1018', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Legal', WfPendingDptAr: 'القانونية', WfPendUsrEn: 'Sami Adel', WfPendUsrAr: 'سامي عادل', RfpStatus: 'A', SlaInd: 'Y', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Insurance Services', RfpNo: 'RFP-2025-019', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1019', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Finance', WfPendingDptAr: 'المالية', WfPendUsrEn: 'Mona Samir', WfPendUsrAr: 'منى سمير', RfpStatus: 'D', SlaInd: 'N', Sla: '4 Days', SlaAr: '٤ أيام' },
+  { RfpName: 'Audit Services', RfpNo: 'RFP-2025-020', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1020', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Amr Tamer', WfPendUsrAr: 'عمرو تامر', RfpStatus: 'S', SlaInd: 'Y', Sla: '6 Days', SlaAr: '٦ أيام' },
+  { RfpName: 'Recruitment Services', RfpNo: 'RFP-2025-021', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1021', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'HR', WfPendingDptAr: 'الموارد البشرية', WfPendUsrEn: 'Jana Walid', WfPendUsrAr: 'جنى وليد', RfpStatus: 'A', SlaInd: 'Y', Sla: '2 Days', SlaAr: 'يومان' },
+  { RfpName: 'Payroll System', RfpNo: 'RFP-2025-022', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1022', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'HR', WfPendingDptAr: 'الموارد البشرية', WfPendUsrEn: 'Basem Fouad', WfPendUsrAr: 'باسم فؤاد', RfpStatus: 'D', SlaInd: 'N', Sla: '5 Days', SlaAr: '٥ أيام' },
+  { RfpName: 'Security Services', RfpNo: 'RFP-2025-023', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1023', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Lina Majed', WfPendUsrAr: 'لينا ماجد', RfpStatus: 'S', SlaInd: 'Y', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Cleaning Services', RfpNo: 'RFP-2025-024', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1024', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Procurement', WfPendingDptAr: 'المشتريات', WfPendUsrEn: 'Fadi Nabil', WfPendUsrAr: 'فادي نبيل', RfpStatus: 'A', SlaInd: 'Y', Sla: '4 Days', SlaAr: '٤ أيام' },
+  { RfpName: 'Catering Services', RfpNo: 'RFP-2025-025', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1025', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Rana Hisham', WfPendUsrAr: 'رنا هشام', RfpStatus: 'D', SlaInd: 'N', Sla: '2 Days', SlaAr: 'يومان' },
+  { RfpName: 'Transportation', RfpNo: 'RFP-2025-026', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1026', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Nabil Sherif', WfPendUsrAr: 'نبيل شريف', RfpStatus: 'S', SlaInd: 'Y', Sla: '7 Days', SlaAr: '٧ أيام' },
+  { RfpName: 'Printing Services', RfpNo: 'RFP-2025-027', RfpVersion: '2', PurchaseReqNo: 'PR-2025-1027', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Salma Essam', WfPendUsrAr: 'سلمى عصام', RfpStatus: 'A', SlaInd: 'Y', Sla: '1 Day', SlaAr: 'يوم واحد' },
+  { RfpName: 'Event Management', RfpNo: 'RFP-2025-028', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1028', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Legal', WfPendingDptAr: 'القانونية', WfPendUsrEn: 'Marwan Gamal', WfPendUsrAr: 'مروان جمال', RfpStatus: 'D', SlaInd: 'N', Sla: '5 Days', SlaAr: '٥ أيام' },
+  { RfpName: 'Waste Management', RfpNo: 'RFP-2025-029', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1029', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Quality Control', WfPendingDptAr: 'مراقبة الجودة', WfPendUsrEn: 'Ghada Tarek', WfPendUsrAr: 'غادة طارق', RfpStatus: 'S', SlaInd: 'Y', Sla: '3 Days', SlaAr: '٣ أيام' },
+  { RfpName: 'Energy Management', RfpNo: 'RFP-2025-030', RfpVersion: '1', PurchaseReqNo: 'PR-2025-1030', CreatedOn: '2025071500', SlaEndDate: '2025071600', SlaEndTime: '202507160930', DeptText: 'Engineering Department', WfPendingDpt: 'Legal', WfPendingDptAr: 'القانونية', WfPendUsrEn: 'Hazem Ashraf', WfPendUsrAr: 'حازم أشرف', RfpStatus: 'A', SlaInd: 'Y', Sla: '6 Days', SlaAr: '٦ أيام' }
 ];
 
 
@@ -338,7 +278,6 @@ this.rfpList = this.listArray;
     this.draftProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'D').length || 0;
     this.cancelledProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'C').length || 0;
     this.submittedProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'S').length || 0;
-    this.barChartData.datasets[0].data = [this.totalProjects, this.approvedProjects, this.draftProjects, this.cancelledProjects, this.submittedProjects];
   }
 
   ngOnDestroy(): void {
