@@ -30,6 +30,7 @@ import { BudgetPlannerStepOneComponent } from './components/budget-planner-step-
 import { BudgetPlannerStepTwoComponent } from './components/budget-planner-step-two/budget-planner-step-two.component';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { BudgetPlannerBOQTabelComponent } from './components/budget-planner-boq-tabel/budget-planner-boq-tabel.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 const routes: Routes = [
@@ -152,6 +153,7 @@ const routes: Routes = [
     ComponentsModule,
     NzDrawerModule,
     NzCollapseModule,
+    NgChartsModule,
     RouterModule.forChild(routes)
     
   ],
