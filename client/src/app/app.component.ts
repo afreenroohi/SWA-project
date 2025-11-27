@@ -227,6 +227,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     if (savedTheme === 'dark') {
       this.isDarkMode = true;
       document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      // Default to light theme
+      this.isDarkMode = false;
+      document.documentElement.removeAttribute('data-theme');
     }
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
