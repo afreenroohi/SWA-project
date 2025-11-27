@@ -17,7 +17,6 @@ import { HostListener } from '@angular/core';
 import { PROCESS_TYPES } from './shared/shared';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RFPService } from './service/RFP/rfp.service';
-import { ResponsiveService } from './service/responsive.service';
 
 @Component({
   selector: 'app-root',
@@ -155,6 +154,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     }
   }
 
+
+
+
+
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
     let isAccess = false;
@@ -180,8 +183,7 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     private api: ApiService,
     private translate: TranslateService,
     public cs: CommonService,
-    private rfp: RFPService,
-    private responsiveService: ResponsiveService
+    private rfp: RFPService
   ) {
     this.translate.addLangs(['en', 'ar']);
     this.translate.use('en');
@@ -207,114 +209,6 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     }
   }
 
-private setWidthsFromCollapse(): void {
-  // On mobile, don't apply margins - content should be full width
-  if (this.isMobile) {
-    this.headerLeftWidth = 'auto';
-    this.layoutContentMarginLeft = 0;
-    this.layoutContentMarginRight = 0;
-    return;
-  }
-  
-  // numeric width in px
-  const w = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
-
-  // header width uses string with "px"
-  this.headerLeftWidth = `${w}px`;
-
-  // layout margins use numeric values only
-  if (this.cs?.userLanguage === 'ar') {
-    // RTL: right margin shifts content
-    this.layoutContentMarginRight = w;
-    this.layoutContentMarginLeft = 0;
-  } else {
-    // LTR: left margin shifts content
-    this.layoutContentMarginLeft = w;
-    this.layoutContentMarginRight = 0;
-  }
-
-  // update logo dynamically
-  this.logoSrc = this.isCollapsed ? '': this.expandedLogo;
-}
-
-private updateLayoutForBreakpoint(breakpoint: any): void {
-  if (breakpoint.isMobile) {
-    // Mobile: full width content, no sidebar margins
-    this.layoutContentMarginLeft = 0;
-    this.layoutContentMarginRight = 0;
-    this.headerLeftWidth = 'auto';
-  } else {
-    // Desktop: apply normal sidebar margins
-    this.setWidthsFromCollapse();
-  }
-}
-
-  onBreakpoint(evt: any): void {
-    // Normalize to boolean:
-    let isBroken = false;
-
-    if (typeof evt === 'boolean') {
-      isBroken = evt;
-    } else if (evt && typeof evt === 'object') {
-      if ('matches' in evt && typeof evt.matches === 'boolean') {
-        isBroken = !!evt.matches;
-      } else if ('target' in evt && evt.target && 'matches' in evt.target) {
-        isBroken = !!evt.target.matches;
-      } else {
-        isBroken = false;
-      }
-    }
-
-    if (isBroken) {
-      // small screen: collapse and mark mobile
-      this.isCollapsed = true;
-      this.isMobile = true;
-    } else {
-      // desktop breakpoint: keep current user collapse state but not mobile
-      this.isMobile = false;
-    }
-
-    // keep header and layout widths synced with collapse state
-    this.setWidthsFromCollapse();
-  }
-
-
-toggleSidebar(): void {
-  this.isCollapsed = !this.isCollapsed;
-  this.setWidthsFromCollapse();
-  
-  // On mobile, close sidebar when navigating
-  if (this.isMobile && !this.isCollapsed) {
-    // Sidebar is now open on mobile, add backdrop
-    document.body.style.overflow = 'hidden';
-  } else {
-    // Sidebar is closed, remove backdrop
-    document.body.style.overflow = '';
-  }
-}
-private updateLayoutMargins(): void {
-  // compute numeric sider width (px)
-  const siderWidth: number = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
-
-  // set numeric margins (numbers only)
-  if (this.cs?.userLanguage === 'ar') {
-    this.layoutContentMarginLeft = 0;
-    this.layoutContentMarginRight = siderWidth;
-  } else {
-    this.layoutContentMarginLeft = siderWidth;
-    this.layoutContentMarginRight = 0;
-  }
-
-  // headerLeftWidth is used in inline style and expects a "px" string
-  this.headerLeftWidth = `${siderWidth}px`;
-
-  // update logo src if you toggle that visually
-  this.updateLogoForCollapse?.();
-}
-
-private updateLogoForCollapse(): void {
-  this.logoSrc = this.isCollapsed ? '' : this.expandedLogo;
-}
   ngOnDestroy(): void {
     this._destroy.next(undefined);
     this._destroy.complete();
@@ -324,6 +218,9 @@ private updateLogoForCollapse(): void {
     this.cs.activeMenu = 'home';
     // this.setActiveMenuFromUrl();
      this.isUserLoggedIn = true;
+    
+    // Collapse sidebar on home page
+    this.isCollapsed = true;
     
     // Load saved theme
     const savedTheme = localStorage.getItem('theme');
@@ -450,7 +347,6 @@ private updateLogoForCollapse(): void {
     // Auto-close the sidebar on mobile so the content is visible
     if (this.isMobile) {
       this.isCollapsed = true;
-      document.body.style.overflow = '';
     }
   }
 }

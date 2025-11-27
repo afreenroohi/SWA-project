@@ -2215,32 +2215,6 @@ color: #b52b27;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   overflow: hidden;
-  
-  @media (max-width: 768px) {
-    font-size: 12px;
-    
-    th, td {
-      padding: 8px 4px !important;
-      font-size: 11px !important;
-    }
-    
-    input, textarea, nz-select {
-      font-size: 12px !important;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 11px;
-    
-    th, td {
-      padding: 6px 2px !important;
-      font-size: 10px !important;
-    }
-    
-    input, textarea, nz-select {
-      font-size: 11px !important;
-    }
-  }
 }
 
 /* Competition Fragmentation Table Responsive */
@@ -2248,22 +2222,6 @@ color: #b52b27;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
   border-radius: 8px !important;
   overflow: hidden !important;
-  
-  @media (max-width: 768px) {
-    font-size: 12px;
-    
-    th, td {
-      padding: 8px 4px !important;
-      font-size: 11px !important;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    th, td {
-      padding: 6px 2px !important;
-      font-size: 10px !important;
-    }
-  }
   
   thead tr {
     background: linear-gradient(135deg, #1f4e79 0%, #164063 100%) !important;
@@ -2276,16 +2234,6 @@ color: #b52b27;
     padding: 12px 10px !important;
     text-align: center !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    
-    @media (max-width: 768px) {
-      font-size: 11px !important;
-      padding: 8px 4px !important;
-    }
-    
-    @media (max-width: 480px) {
-      font-size: 10px !important;
-      padding: 6px 2px !important;
-    }
   }
   
   tbody tr {
@@ -2300,23 +2248,155 @@ color: #b52b27;
     padding: 10px 8px !important;
     font-size: 13px !important;
     vertical-align: middle !important;
-    
-    @media (max-width: 768px) {
-      padding: 8px 4px !important;
-      font-size: 11px !important;
-    }
-    
-    @media (max-width: 480px) {
-      padding: 6px 2px !important;
-      font-size: 10px !important;
-    }
   }
 }
 
-/* Responsive Table Wrapper */
-.table-responsive-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+/* Table wrapper for horizontal scroll */
+@media (max-width: 768px) {
+  .table-bordered,
+  .technical-table,
+  .boq-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  
+  .table-bordered table,
+  .technical-table table,
+  .boq-table table {
+    width: auto;
+    min-width: 100%;
+  }
+  
+  /* Ensure table cells don't wrap */
+  .table-bordered th,
+  .table-bordered td,
+  .technical-table th,
+  .technical-table td,
+  .boq-table th,
+  .boq-table td {
+    white-space: nowrap;
+  }
+}
+
+/* Mobile responsive styling for all buttons */
+@media (max-width: 768px) {
+  button[nz-button] {
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+  
+  button.btn-review-text[nz-button] {
+    font-size: 10px !important;
+    padding: 6px 8px !important;
+    height: auto !important;
+    min-width: auto !important;
+    width: auto !important;
+    max-width: 180px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  button.btn-review-text[nz-button] span[nz-icon] {
+    margin-right: 3px !important;
+    font-size: 12px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .action-btn {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 4px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Additional mobile responsive styles */
+@media (max-width: 480px) {
+  button[nz-button] {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+  }
+  
+  button.btn-review-text[nz-button] {
+    font-size: 9px !important;
+    padding: 4px 6px !important;
+    max-width: 140px !important;
+  }
+  
+  button.btn-review-text[nz-button] span[nz-icon] {
+    margin-right: 2px !important;
+    font-size: 10px !important;
+  }
+  
+  .action-btn {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 2px !important;
+    font-size: 10px !important;
+  }
+  
+  /* Technical requirements input and button */
+  .d-flex.align-items-start.gap-2 {
+    gap: 4px !important;
+  }
+  
+  .d-flex.align-items-start.gap-2 input[nz-input] {
+    height: 28px !important;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+  
+  .btn-add {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 2px !important;
+    min-width: 28px !important;
+  }
+  
+  .btn-add i {
+    font-size: 14px !important;
+  }
+  
+  /* Technical Requirements Row - make everything smaller */
+  .row.align-items-start .col-2 {
+    flex: 0 0 12% !important;
+    max-width: 12% !important;
+  }
+  
+  .row.align-items-start .col-2 input[nz-input] {
+    font-size: 10px !important;
+    padding: 2px 4px !important;
+    height: 24px !important;
+  }
+  
+  .row.align-items-start .col-2 nz-form-label {
+    font-size: 9px !important;
+    margin-bottom: 2px !important;
+  }
+  
+  /* Description column adjustments */
+  .row.align-items-start .col {
+    flex: 1 1 auto !important;
+  }
+  
+  .row.align-items-start .col nz-form-label {
+    font-size: 10px !important;
+    margin-bottom: 2px !important;
+  }
+}
+
+/* Additional mobile-overflow-scrolling: touch;
   
   @media (max-width: 768px) {
     margin: 0 -15px;
@@ -3556,4 +3636,360 @@ display: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ========== MOBILE RESPONSIVE ENHANCEMENTS ========== */
+@media (max-width: 768px) {
+  /* Main container adjustments */
+  .p-2 {
+    padding: 8px !important;
+  }
+  
+  .create_rfp_head {
+    font-size: 16px !important;
+    margin-left: 8px !important;
+  }
+  
+  .stepper-card {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    padding: 12px !important;
+  }
+  
+  /* Collapse panels */
+  nz-collapse {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+  }
+  
+  /* Form columns - make all full width */
+  .col-4, .col-3, .col-6, .col-8 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding: 4px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .col-2 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding: 4px !important;
+  }
+  
+  /* Form inputs */
+  input[nz-input], 
+  .ant-input,
+  .ant-select-selector,
+  .ant-picker,
+  textarea {
+    height: 44px !important;
+    font-size: 16px !important;
+    padding: 12px !important;
+  }
+  
+  textarea {
+    min-height: 88px !important;
+  }
+  
+  /* Buttons */
+  .ant-btn {
+    height: 44px !important;
+    font-size: 16px !important;
+    padding: 0 20px !important;
+    min-width: 120px !important;
+  }
+  
+  /* Action buttons */
+  .actions {
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  
+  .actions button {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+  
+  /* Tables */
+  .technical-table {
+    font-size: 12px !important;
+  }
+  
+  .technical-table th,
+  .technical-table td {
+    padding: 6px 4px !important;
+    font-size: 11px !important;
+    word-break: break-word !important;
+  }
+  
+  /* Table wrapper for horizontal scroll */
+  .table-responsive-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin: 0 -8px !important;
+    padding: 0 8px !important;
+  }
+  
+  /* Toggle rows */
+  .toggle-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  
+  .toggle-label {
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+  }
+  
+  /* Info boxes */
+  .info-box {
+    padding: 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  
+  /* CR Number container */
+  .cr-number-container {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .cr-number-item {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .cr-input {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+  
+  /* Upload areas */
+  .upload-inline-box,
+  .upload-inline-box-emergency {
+    min-height: 60px !important;
+    height: 60px !important;
+  }
+  
+  .upload-inline-text,
+  .upload-inline-text-emergency {
+    font-size: 14px !important;
+  }
+  
+  /* Stepper adjustments */
+  .custom-stepper {
+    padding: 8px !important;
+  }
+  
+  .stepper-container {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  .step-item {
+    flex-direction: row !important;
+    width: 100% !important;
+    padding: 12px !important;
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    border: 2px solid transparent !important;
+  }
+  
+  .step-item.active {
+    background: #e6f4ff !important;
+    border-color: #1890ff !important;
+  }
+  
+  .step-item.completed {
+    background: #f6ffed !important;
+    border-color: #52c41a !important;
+  }
+  
+  .step-circle {
+    margin-bottom: 0 !important;
+    margin-right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .step-title {
+    font-size: 14px !important;
+    text-align: left !important;
+    max-width: none !important;
+  }
+  
+  .step-line {
+    display: none !important;
+  }
+  
+  /* BOQ Tables */
+  .boq-table {
+    font-size: 11px !important;
+  }
+  
+  .boq-table th,
+  .boq-table td {
+    padding: 6px 3px !important;
+    font-size: 10px !important;
+    min-width: 60px !important;
+  }
+  
+  /* Bundle buttons */
+  .d-flex.gap-2.flex-wrap {
+    flex-direction: column !important;
+  }
+  
+  .d-flex.gap-2.flex-wrap button {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Attachment areas */
+  .attachment-body {
+    padding: 12px !important;
+  }
+  
+  .upload-area {
+    min-height: 100px !important;
+  }
+  
+  .upload-message {
+    font-size: 14px !important;
+  }
+  
+  .helper {
+    font-size: 12px !important;
+  }
+  
+  /* Form labels */
+  .ant-form-item-label > label,
+  .boq-field-label,
+  .boq-section-title,
+  .bold-label {
+    font-size: 14px !important;
+  }
+  
+  /* Icons and action buttons */
+  .add-icon, .delete-icon {
+    font-size: 18px !important;
+  }
+  
+  .action-btn {
+    min-width: 40px !important;
+    height: 40px !important;
+    padding: 8px !important;
+  }
+  
+  /* Responsive flex utilities */
+  .responsive-flex {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .between {
+    justify-content: flex-start !important;
+  }
+  
+  /* Tech info rows */
+  .tech-info-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+  
+  .tech-info-text-with-icon {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  
+  /* Review buttons */
+  .btn-review-text {
+    width: 100% !important;
+    margin-bottom: 12px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Enhanced textareas */
+  .enhanced-textarea {
+    min-height: 100px !important;
+    font-size: 16px !important;
+    padding: 16px !important;
+  }
+  
+  /* Drawer adjustments for mobile */
+  ::ng-deep .ant-drawer-body {
+    padding: 16px !important;
+  }
+  
+  .subcriteria-form-row {
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .drawer-title {
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* ========== EXTRA SMALL MOBILE (480px and below) ========== */
+@media (max-width: 480px) {
+  .create_rfp_head {
+    font-size: 14px !important;
+    margin-left: 4px !important;
+  }
+  
+  .stepper-card {
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+    padding: 8px !important;
+  }
+  
+  nz-collapse {
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+  }
+  
+  .col-2 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .technical-table th,
+  .technical-table td {
+    padding: 4px 2px !important;
+    font-size: 10px !important;
+  }
+  
+  .boq-table th,
+  .boq-table td {
+    padding: 4px 2px !important;
+    font-size: 9px !important;
+    min-width: 50px !important;
+  }
+  
+  .step-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .step-title {
+    font-size: 12px !important;
+  }
+  
+  .action-btn {
+    min-width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .add-icon, .delete-icon {
+    font-size: 16px !important;
+  }
 }

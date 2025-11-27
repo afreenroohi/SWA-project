@@ -1,487 +1,116 @@
 @import '../_variables.scss';
-
-/* ===============================
-   HEADER + SIDEBAR LAYOUT STYLES
-   =============================== */
-
-/* SASS constants (explicit, no :root variables) */
-$sider-expanded: 250px;
-$sider-collapsed: 80px;
-$header-height: 80px;
-$header-height-mobile: 60px;
-$transition-speed: 0.28s;
-
-/* Responsive breakpoints */
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1200px;
-
+ 
 .trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 24px;
   cursor: pointer;
-  transition: color $transition-speed;
+  transition: color 0.3s;
 }
+ 
 .trigger:hover {
   color: #1890ff;
 }
-
-/* ---------- Header & collapsible left column ---------- */
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: $header-height;
-  z-index: 20;
-  background: #fff;
-  border-bottom: 1px solid #f3f3f3;
-  box-sizing: border-box;
-  transition: padding $transition-speed ease, box-shadow $transition-speed ease, background-color $transition-speed ease;
-  
-  @media (max-width: $mobile) {
-    height: $header-height-mobile;
-  }
-}
-
-/* Keep header single-row and prevent wrapping (prevents vertical jump) */
-.header-inner {
-  display: flex;
-  align-items: center;
-  padding: 6px 2px;
-  flex-wrap: nowrap; /* prevents header content wrapping to next line */
-  transition: padding $transition-speed ease, gap $transition-speed ease;
-  
-  @media (max-width: $mobile) {
-    padding: 4px 8px;
-    gap: 8px;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 2px 4px;
-    gap: 4px;
-  }
-}
-
-/* left column that aligns with the sider width (250px or collapsed width) */
-/* width must match nz-sider width so header-left lines up with sider */
-.header-left {
-  height: $header-height;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  border-inline-end: 4px solid #f7f8fa;
-  background: white;
-  transition: width $transition-speed ease, padding $transition-speed ease;
-  flex: 0 0 auto;
-  overflow: hidden;
-
-  /* default expanded width (kept as fallback) */
-  width: $sider-expanded;
-
-  /* Make header-left a positioning context for absolutely positioned logo */
-  position: relative;
-  
-  @media (max-width: $mobile) {
-    height: $header-height-mobile;
-    width: auto !important;
-    border-inline-end: none;
-    flex: 0 0 auto;
-    min-width: 60px;
-  }
-}
-
-/* when collapsed (class toggled in template) */
-.header-left.collapsed {
-  width: $sider-collapsed !important;
-  padding-left: 6px;
-}
-
-/* Keep the same inner alignment */
-.header-left-inner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-left: 8px;
-  height: $header-height;
-  white-space: nowrap;
-  transition: transform $transition-speed ease, gap $transition-speed ease;
-}
-
-/* FIX: fixed slot for the hamburger so hiding logo doesn't move it */
-.toggle-wrap {
-  width: 44px;          /* fixed width to reserve space for the toggle */
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-/* hamburger button */
-.sidebar-toggle {
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: #005c99;
-  font-size: 20px;
-  transition: color 0.18s ease, transform 0.18s ease;
-  line-height: 1;
-  padding: 0;
-}
-.sidebar-toggle:hover {
-  color: #003f66;
-}
-.sidebar-toggle:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-/* Header logo container + image
-   -- Use absolute positioning so hiding the logo does not affect layout or cause reflow/flicker. */
-.logo-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%); /* horizontal centering */
-  height: $header-height;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* center horizontally within its box */
-  box-sizing: border-box;
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 5;
-  width: 100%; /* ensures it spans the full header-left width */
-}
-
-.header-logo-img {
-  height: 48px; /* slightly taller for better visual balance */
-  width: auto;
-  display: block;
-  margin: 0 auto;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-/* Strong hiding rules avoid reflow and keep toggle in place.
-   Use both .logo-hidden and .collapsed variants (template can toggle either class). */
-.logo-container.logo-hidden,
-.logo-container.collapsed {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateX(-50%) scale(0.9);
-}
-
-/* the right controls area — stays full width and does not shrink */
-.header-controls {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  padding: 0 16px;
-  min-width: 0; /* allow content to flex without pushing header into two lines */
-  transition: margin-left $transition-speed ease, transform $transition-speed ease;
-}
-
-/* keep the user id input & test login visible and sized */
-.userid-input {
-  height: 32px;
-  width: 200px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #d9d9d9;
-  box-sizing: border-box;
-}
-
-/* user display name */
-.dispname {
-  color: black;
-  font-weight: 500;
-  margin-left: 4px;
-  white-space: nowrap;
-}
-
-/* Mobile-specific header adjustments */
-@media (max-width: $mobile) {
-  .header-controls {
-    gap: 8px;
-    padding: 0 8px;
-    
-    .ant-btn {
-      padding: 4px 8px;
-      font-size: 12px;
-      height: 28px;
-    }
-    
-    nz-avatar {
-      width: 20px !important;
-      height: 20px !important;
-      line-height: 20px !important;
-      font-size: 12px !important;
-    }
-  }
-  
-  .userid-input {
-    width: 120px;
-    height: 28px;
-    font-size: 14px;
-  }
-  
-  .dispname {
-    font-size: 14px;
-    display: none;
-  }
-  
-  .logo-container {
-    position: static;
-    transform: none;
-    height: $header-height-mobile;
-    width: auto;
-    margin-left: 8px;
-  }
-  
-  .header-logo-img {
-    height: 36px;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-controls {
-    gap: 4px;
-    padding: 0 4px;
-    
-    .ant-btn {
-      padding: 2px 6px;
-      font-size: 11px;
-      height: 24px;
-    }
-  }
-  
-  .userid-input {
-    width: 100px;
-    height: 24px;
-    font-size: 12px;
-  }
-  
-  .header-logo-img {
-    height: 28px;
-  }
-}
-
-/* ============== LAYOUT BASE ============== */
-
+ 
 nz-header {
   background: #fff;
   padding: 0;
   position: fixed;
   width: 100%;
   top: 0 !important;
-  z-index: 20;
+  display: flex;
+  align-items: center;
 }
-
+ 
 nz-content {
   overflow-y: auto;
+  transition: filter 0.3s ease;
 }
-
+ 
 nz-breadcrumb {
   margin: 16px 0;
 }
-
-/* keep margin-top equal to header height to prevent vertical shift */
+ 
 .inner-content {
-  padding: 40px;
-  margin-top: $header-height;
-  transition: margin-left $transition-speed ease, margin-right $transition-speed ease, width $transition-speed ease;
-  
-  @media (max-width: $mobile) {
-    padding: 20px 15px;
-    margin-top: $header-height-mobile;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 15px 10px;
-  }
-}
-
-/* Put welcome section in wrapper to vertically center and prevent vertical jump */
-.welcome-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 20px;
+  margin-top: 1.2rem;
+  transition: filter 0.3s ease;
+  max-width: 100%;
   width: 100%;
-  height: 100%;
-  transform: translateY(0); /* lock vertical position */
-  transition: transform $transition-speed ease;
 }
-
-
-/* ensure the welcome heading uses horizontal transform for smoother movement */
-.welcome-wrapper .welcome-title {
-  transition: transform $transition-speed ease;
-  transform: translateX(0);
-  margin: 0;
-  padding: 0;
-}
-.main-content.collapsed .welcome-title {
-  transform: translateX(-20px); /* subtle horizontal shift */
-}
-
-/* ============== MENU + SIDEBAR STYLING ============== */
-
+ 
 .ant-menu-inline,
 .ant-menu-vertical,
 .ant-menu-vertical-left {
+ 
   border-right: none;
 }
-
+ 
 .ant-menu {
   background-color: #ffffff !important;
 }
-
+ 
 .ant-menu-submenu-open {
   background-color: $primary !important;
   color: white !important;
 }
-
+ 
 ::ng-deep.ant-menu-light .ant-menu-submenu-open .ant-menu-submenu-title:hover {
   color: white;
 }
-
+ 
+ 
+ 
 .ant-layout {
+ 
   height: 100vh;
-  background: #f7f8fa;
+  background: #f7f8fa
 }
-
-/* set heights consistently */
-.app-header,
-.ant-layout-header,
-.header-left,
-.header-controls {
-  height: $header-height;
-  min-height: $header-height;
-  display: flex;
-  align-items: center;
+ 
+.ant-layout-header {
+  height: 80px;
+  border-bottom: 4px solid #f7f8fa;
 }
-
-/* ------------------ COLLAPSIBLE SIDEBAR ------------------ */
-/* Ensure nz-sider default width equals $sider-expanded */
+ 
 nz-sider {
   position: fixed !important;
-  width: $sider-expanded !important;
-  max-width: $sider-expanded !important;
+  width: 190px !important;
+  max-width: 190px !important;
   overflow-y: auto;
   top: 0 !important;
-  height: calc(100vh - #{$header-height});
-  margin-top: $header-height;
-  transition: width $transition-speed ease, transform $transition-speed ease;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
   box-sizing: border-box;
-  z-index: 1000;
-  
-  @media (max-width: $mobile) {
-    height: calc(100vh - #{$header-height-mobile});
-    margin-top: $header-height-mobile;
-    transform: translateX(-100%);
-    z-index: 1200;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-    
-    &.ant-layout-sider-collapsed {
-      transform: translateX(-100%);
-    }
-    
-    &:not(.ant-layout-sider-collapsed) {
-      transform: translateX(0);
-    }
-  }
+  transition: transform 0.3s ease;
 }
-
-/* menu sidebar container */
+ 
 .menu-sidebar {
   position: relative;
   background: white;
-  /* remove sidebar image if you don't want it: comment the next line */
   background-image: url('../assets/logo/menu-background.svg');
+  background-size: cover;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 100% 100%;
   border-inline-end: 4px solid #f7f8fa;
   overflow-x: hidden;
-  transition: width $transition-speed ease;
 }
-
-/* collapsed sider will have width equal to $sider-collapsed (ng-zorro adds .collapsed class) */
-.menu-sidebar.collapsed {
-  width: $sider-collapsed !important;
-  max-width: $sider-collapsed !important;
-  background: #ffffff;
-  border-inline-end: 4px solid #f7f8fa;
+ 
+.menu {
+  color: #7d947d;
+ 
+  // .menu-items {
+  // border-top: 1px solid $primary;
+  // }
 }
-
-/* hide menu text and logo when collapsed */
-.menu-sidebar.collapsed .menu span {
-  display: none !important;
-}
-
-.menu-sidebar.collapsed .menu .ant-menu-item,
-.menu-sidebar.collapsed .menu .ant-menu-submenu-title {
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-  justify-content: center;
-}
-
-.menu-sidebar.collapsed .menu span[nz-icon],
-.menu-sidebar.collapsed .menu app-icon {
-  display: inline-block !important;
-  margin: 0 auto !important;
-  line-height: 32px !important;
-}
-
-/* hide copyright when collapsed */
-.menu-sidebar.collapsed .copy-right-container {
-  display: none !important;
-}
-
-/* Keep main content margin-left aligned with sider width.
-   We expect the template to set margin-left inline from TS via layoutContentMarginLeft
-   but keep this CSS fallback for safety */
-.ant-right-layout {
-  margin-left: $sider-expanded;
-  transition: margin-left $transition-speed ease;
-}
-.ant-left-layout {
-  margin-right: $sider-expanded;
-  transition: margin-right $transition-speed ease;
-}
-
-/* If sider collapsed (class present on .menu-sidebar), move content */
-.menu-sidebar.collapsed ~ nz-layout .ant-right-layout,
-.menu-sidebar.collapsed ~ nz-layout .main-content {
-  margin-left: $sider-collapsed !important;
-}
-
-/* When collapsed, also shrink header-left (if class added in template)
-   This keeps header and sider exactly the same width visually. */
-.header-left.collapsed {
-  width: $sider-collapsed !important;
-}
-
-/* ------------------ COPY RIGHT ------------------ */
+ 
 .copy-right-container {
   position: absolute;
   bottom: 1rem;
 }
  
 .logo-container {
-  width: 250px;
+  width: 200px;
   height: 80px;
   border-inline-end: 4px solid #f7f8fa;
   border-bottom: 4px solid #f7f8fa;
@@ -489,15 +118,15 @@ nz-sider {
 }
 
 .logo-container.collapsed {
-  width: 70px;
+  width: 68px;
 }
  
 .ant-right-layout {
-  margin-left: 250px
+  margin-left: 190px
 }
  
 .ant-left-layout {
-  margin-right: 250px
+  margin-right: 190px
 }
 
 .ant-full-layout {
@@ -508,112 +137,94 @@ nz-sider {
 .ant-top-layout {
   margin-top: 80px
 }
-
+ 
 nz-footer {
   text-align: center;
 }
-
+ 
 h6 {
   font-size: 2rem !important;
 }
-
-/* RTL and LTR footer alignment */
-[dir='ltr'] .ant-layout-footer {
+ 
+[dir="ltr"] .ant-layout-footer {
+ 
   background: none;
   text-align: left;
 }
-[dir='rtl'] .ant-layout-footer {
+ 
+[dir="rtl"] .ant-layout-footer {
+ 
   background: none;
   text-align: right;
 }
-
-/* Ant overrides */
-/* Responsive Ant Design Overrides */
-::ng-deep .ant-table-pagination > * {
+ 
+::ng-deep .ant-table-pagination>* {
   margin-inline: 5px !important;
 }
-
-@media (max-width: $mobile) {
-  ::ng-deep .ant-table {
-    font-size: 12px;
-    
-    .ant-table-thead > tr > th {
-      padding: 8px 4px;
-      font-size: 11px;
-    }
-    
-    .ant-table-tbody > tr > td {
-      padding: 8px 4px;
-      font-size: 12px;
-    }
-  }
-  
-  ::ng-deep .ant-card {
-    .ant-card-head {
-      padding: 0 12px;
-      min-height: 40px;
-      
-      .ant-card-head-title {
-        font-size: 14px;
-      }
-    }
-    
-    .ant-card-body {
-      padding: 12px;
-    }
-  }
-  
-  ::ng-deep .ant-btn {
-    height: 32px;
-    padding: 4px 12px;
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  ::ng-deep .ant-btn {
-    height: 28px;
-    padding: 2px 8px;
-    font-size: 12px;
-  }
-}
-
-::ng-deep [dir='rtl'] .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+ 
+ 
+::ng-deep [dir="rtl"] .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
 .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
   padding-right: 0px !important;
 }
-
-::ng-deep [dir='rtl'] .ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+ 
+::ng-deep [dir="rtl"] .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow {
   margin-inline-start: 75% !important;
 }
-
+ 
 ::ng-deep .ant-menu-submenu-arrow {
   margin-inline-start: 75% !important;
 }
-
-/* avatar resize */
-.ant-avatar.ant-avatar-icon {
-  font-size: 15px !important;
+ 
+// user logged in icon re-size
+.user-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-inline-end: 0.3rem;
 }
-.ant-avatar {
-  height: 25px !important;
-  width: 25px !important;
-  line-height: 25px !important;
+ 
+.user-info-container .ant-avatar {
+  height: 40px !important;
+  width: 40px !important;
+  line-height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
 }
-
-/* menu arrow colors */
+ 
+.user-info-container .ant-avatar.ant-avatar-icon {
+  font-size: 22px !important;
+}
+ 
+.user-info-container .ant-avatar .anticon,
+.user-info-container .ant-avatar i.anticon {
+  font-size: 22px !important;
+  color: white !important;
+  display: inline-block !important;
+}
+ 
+::ng-deep .user-info-container .ant-avatar .anticon,
+::ng-deep .user-info-container .ant-avatar i.anticon {
+  font-size: 22px !important;
+  color: white !important;
+  display: inline-block !important;
+}
+ 
 ::ng-deep .ant-menu-submenu .ant-menu-submenu-arrow {
   color: $primary !important;
 }
+ 
 ::ng-deep .ant-menu-submenu-open .ant-menu-submenu-arrow {
   color: white !important;
 }
+ 
 ::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
 ::ng-deep .ant-menu-item:active {
   background-color: #f1f1f1;
 }
-
-/* modal styling (unchanged) */
+ 
 ::ng-deep .ant-modal.change-role {
   .ant-modal-header {
     border-bottom: 0;
@@ -630,7 +241,7 @@ h6 {
       svg {
         width: 16.41px;
         height: 16.4px;
-        color: #e1e1e1;
+        color: #E1E1E1;
       }
     }
   }
@@ -641,15 +252,24 @@ h6 {
     }
   }
 }
-
+ 
 ::ng-deep .ant-select-multiple .ant-select-selector {
   height: 4rem;
   align-items: baseline;
 }
-
-::ng-deep .ant-layout-sider-zero-width-trigger,
-::ng-deep .ant-layout-sider-trigger {
-  display: none !important;
+ ::ng-deep .custom-spinner .spinner {
+  border-radius: 50%;          /* Makes the container circular */
+  width: 120px !important;     /* Adjust size as needed */
+  height: 120px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4); /* Optional: inner circular background */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+ 
+::ng-deep .custom-spinner {
+  border-radius: 50%;
 }
 
 /* Sidebar collapse button */
@@ -696,6 +316,8 @@ h6 {
 
 
 
+
+
 /* Custom Dropdown Styles */
 .user-dropdown {
   position: relative;
@@ -710,7 +332,7 @@ h6 {
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  min-width: 200px;
+  min-width: 190px;
   margin-top: 4px;
 }
 
@@ -738,4 +360,192 @@ h6 {
   color: #ffffff;
 }
 
+.test-login-container {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.test-login-container input {
+  width: 150px !important;
+  height: 32px !important;
+  font-size: 14px !important;
+  padding: 4px 11px !important;
+}
+
+.test-login-container button {
+  height: 32px !important;
+  font-size: 14px !important;
+  padding: 4px 15px !important;
+  min-width: auto !important;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .test-login-container {
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .test-login-container input {
+    width: 100px !important;
+    font-size: 12px !important;
+  }
+  
+  .test-login-container button {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+  
+  .logo-container {
+    position: relative !important;
+    top: 0 !important;
+    height: 80px !important;
+    min-height: 80px !important;
+  }
+  
+  nz-header {
+    height: 80px !important;
+    min-height: 80px !important;
+  }
+  
+  .inner-content {
+    padding: 15px !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  nz-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .scope-of-work-labels,
+  nz-form-label {
+    display: block !important;
+    order: 2 !important;
+    margin-top: 15px !important;
+    margin-bottom: 5px !important;
+    width: 100% !important;
+  }
+  
+  .default-text {
+    order: 1 !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .scope-of-work-container {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .labour-label {
+    order: 3 !important;
+    margin-top: 15px !important;
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  .scope-button {
+    order: 2 !important;
+    margin-bottom: 20px !important;
+    margin-top: 15px !important;
+  }
+  
+  .default-text-btn {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    height: auto !important;
+    min-width: auto !important;
+  }
+  
+  /* Create RFP Component Responsive */
+  .create-rfp-container {
+    padding: 10px !important;
+  }
+  
+  .create-rfp-form .ant-form-item {
+    margin-bottom: 16px !important;
+  }
+  
+  .create-rfp-form .ant-form-item-label {
+    padding-bottom: 4px !important;
+  }
+  
+  .create-rfp-form .ant-input,
+  .create-rfp-form .ant-select,
+  .create-rfp-form .ant-picker {
+    width: 100% !important;
+  }
+  
+  .create-rfp-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  
+  .create-rfp-buttons button {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+  
+  /* All buttons responsive */
+  button[nz-button] {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Scope of work buttons */
+  .scope-of-work button {
+    width: 70% !important;
+    margin-bottom: 10px !important;
+    max-width: 200px !important;
+  }
+  
+  /* Technical evaluation tables horizontal scroll */
+  .technical-evaluation-table,
+  .evaluation-criteria-table {
+    overflow-x: auto !important;
+    width: 100% !important;
+  }
+  
+  .technical-evaluation-table table,
+  .evaluation-criteria-table table {
+    min-width: 600px !important;
+  }
+  
+
+  
+  .ant-right-layout,
+  .ant-left-layout {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  nz-sider {
+    z-index: 1000 !important;
+  }
+  
+  .hide-on-mobile-open {
+    display: none !important;
+  }
+  
+  nz-content:not(.ant-full-layout) {
+    filter: blur(3px) !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+  
+  nz-content:not(.ant-full-layout) .inner-content {
+    filter: blur(3px) !important;
+  }
+  
+  .dashboard-wrapper {
+    filter: blur(3px) !important;
+    transition: filter 0.3s ease;
+  }
+}
 
