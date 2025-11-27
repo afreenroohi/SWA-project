@@ -66,7 +66,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
     labels: [],
     datasets: [{
       data: [],
-      backgroundColor: ['#005c99', '#0077c2', '#004a7a', '#003d66', '#52c41a', '#faad14'],
+      backgroundColor: ['#005c99', '#0077c2', '#004a7a', '#003d66', '#faad14'],
       borderWidth: 2,
       borderColor: '#fff'
     }]
@@ -311,12 +311,29 @@ this.rfpList = this.listArray;
 
   calculatePendingUsers() {
     const userCounts: { [key: string]: number } = {};
-    this.listArray?.forEach((item: any) => {
+    let testUser = [
+      {"WfPendUsrEn":"Afreen"},
+      {"WfPendUsrEn":"Dina Rashid"},
+      {"WfPendUsrEn":"Dina Rashid"},
+      {"WfPendUsrEn":"Mona Samir"},
+      {"WfPendUsrEn":"Jana Walid"},
+      {"WfPendUsrEn":"Jana Walid"},
+      {"WfPendUsrEn":"Afreen"},
+      {"WfPendUsrEn":"Afreen"},
+      // {"WfPendUsrEn":"Rana Hisham"},
+      // {"WfPendUsrEn":"Nabil Sherif"},
+      // {"WfPendUsrEn":"Salma Essam"},
+      // {"WfPendUsrEn":"Marwan Gamal"},
+      // {"WfPendUsrEn":"Ghada Tarek"},
+      // {"WfPendUsrEn":"Hazem Ashraf"}
+
+    ]
+    testUser?.forEach((item: any) => {
       if (item.WfPendUsrEn) {
         userCounts[item.WfPendUsrEn] = (userCounts[item.WfPendUsrEn] || 0) + 1;
       }
     });
-    const colors = ['#005c99', '#0077c2', '#004a7a', '#003d66', '#52c41a', '#faad14'];
+    const colors = ['#005c99', '#0077c2', '#004a7a', '#003d66', '#faad14'];
     this.doughnutChartData.labels = Object.keys(userCounts);
     this.doughnutChartData.datasets[0].data = Object.values(userCounts);
     this.doughnutChartData.datasets[0].backgroundColor = colors.slice(0, Object.keys(userCounts).length);
