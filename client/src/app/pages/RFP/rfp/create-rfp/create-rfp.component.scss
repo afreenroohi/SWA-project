@@ -2319,82 +2319,7 @@ color: #b52b27;
   }
 }
 
-/* Additional mobile responsive styles */
-@media (max-width: 480px) {
-  button[nz-button] {
-    font-size: 11px !important;
-    padding: 4px 8px !important;
-    height: 28px !important;
-    min-height: 28px !important;
-  }
-  
-  button.btn-review-text[nz-button] {
-    font-size: 9px !important;
-    padding: 4px 6px !important;
-    max-width: 140px !important;
-  }
-  
-  button.btn-review-text[nz-button] span[nz-icon] {
-    margin-right: 2px !important;
-    font-size: 10px !important;
-  }
-  
-  .action-btn {
-    width: 24px !important;
-    height: 24px !important;
-    padding: 2px !important;
-    font-size: 10px !important;
-  }
-  
-  /* Technical requirements input and button */
-  .d-flex.align-items-start.gap-2 {
-    gap: 4px !important;
-  }
-  
-  .d-flex.align-items-start.gap-2 input[nz-input] {
-    height: 28px !important;
-    font-size: 12px !important;
-    padding: 4px 8px !important;
-  }
-  
-  .btn-add {
-    width: 28px !important;
-    height: 28px !important;
-    padding: 2px !important;
-    min-width: 28px !important;
-  }
-  
-  .btn-add i {
-    font-size: 14px !important;
-  }
-  
-  /* Technical Requirements Row - make everything smaller */
-  .row.align-items-start .col-2 {
-    flex: 0 0 12% !important;
-    max-width: 12% !important;
-  }
-  
-  .row.align-items-start .col-2 input[nz-input] {
-    font-size: 10px !important;
-    padding: 2px 4px !important;
-    height: 24px !important;
-  }
-  
-  .row.align-items-start .col-2 nz-form-label {
-    font-size: 9px !important;
-    margin-bottom: 2px !important;
-  }
-  
-  /* Description column adjustments */
-  .row.align-items-start .col {
-    flex: 1 1 auto !important;
-  }
-  
-  .row.align-items-start .col nz-form-label {
-    font-size: 10px !important;
-    margin-bottom: 2px !important;
-  }
-}
+
 
 /* Additional mobile-overflow-scrolling: touch;
   
@@ -2432,11 +2357,52 @@ color: #b52b27;
   }
 }
 
+/* Key Assessment Criteria Sl.No column sizing */
+[formGroupName="TechReq"] .col-2 {
+  width: 60px !important;
+  flex: 0 0 60px !important;
+  max-width: 60px !important;
+}
+
+/* Key Assessment Criteria input column sizing */
+[formGroupName="TechReq"] .col {
+  max-width: calc(100% - 60px) !important;
+}
+
+/* Key Assessment Criteria label sizing */
+[formGroupName="TechReq"] nz-form-label {
+  font-size: 10px !important;
+}
+
+/* Key Assessment Criteria row alignment */
+[formGroupName="TechReq"] .row {
+  align-items: center !important;
+}
+
+/* btn-add mobile responsive */
+@media (max-width: 768px) {
+  button.btn-add[nz-button] {
+    height: 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 2px !important;
+  }
+  
+  button.btn-add[nz-button] i {
+    font-size: 16px !important;
+  }
+  
+  [formGroupName="TechReq"] input[nz-input] {
+    height: 44px !important;
+  }
+}
+
 /* Responsive Actions */
 .actions {
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 0.75rem !important;
+    gap: 0.7rem !important;
     
     button {
       width: 100%;

@@ -1817,7 +1817,7 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse id="standards" *ngIf="showStandards"  [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
+      <nz-collapse id="standards"   [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
         <nz-collapse-panel [(nzActive)]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
  
@@ -1865,7 +1865,7 @@
                   {{ 'RFP.Enter Key Assesment Criteria' | translate }}
                 </nz-form-label>
                 <!-- use a wrapper to ensure the input grows and button stays to the right -->
-                <div class="d-flex align-items-start gap-2">
+                <div class="d-flex align-items-center gap-2">
                   <input nzAutosize rows="2" nz-input formControlName="Descr" class="flex-grow-1" />
                   <!-- Add button sits to the right of the input -->
                   <button nz-button nzSize="default" class="btn-add" [disabled]="rfpForm.controls.TechReq.invalid"
