@@ -6,10 +6,10 @@
      <div class="row mb-4 pb-4 border-set">
       <div class="col-12 col-md-4">
         <form [formGroup]="repForm">
-        <nz-form-label for="rfptype">{{
+        <nz-form-label for="rfptype" style="margin-left: 20px;">{{
           "RFP.Select RFP" | translate
         }}</nz-form-label>
-        <nz-select formControlName="rfptype" style="width: 100%" nzAllowClear>
+        <nz-select formControlName="rfptype" style="width: 100%;;margin-left: 20px;"  nzAllowClear>
           <nz-option
             *ngFor="let o of FilterList"
             [nzValue]="o.id"
@@ -43,6 +43,6 @@
       </app-rfptable>
 
     </div>
-    <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
+    <app-no-data-found *ngIf="!listArray?.length" style="margin-left: 20px"></app-no-data-found>
   </div>
 </div>

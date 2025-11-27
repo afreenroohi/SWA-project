@@ -125,6 +125,13 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     sessionStorage.clear();
 
   }
+  toggleLang() {
+  if (this.cs.userLanguage === 'en') {
+    this.onChangeLang('ar');
+  } else {
+    this.onChangeLang('en');
+  }
+}
 //   public openParentsForActive(): void {
 //   try {
 //     if (!this.navItems || !Array.isArray(this.navItems)) return;
@@ -220,6 +227,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     if (savedTheme === 'dark') {
       this.isDarkMode = true;
       document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      // Default to light theme
+      this.isDarkMode = false;
+      document.documentElement.removeAttribute('data-theme');
     }
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
