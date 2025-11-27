@@ -125,6 +125,13 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     sessionStorage.clear();
 
   }
+  toggleLang() {
+  if (this.cs.userLanguage === 'en') {
+    this.onChangeLang('ar');
+  } else {
+    this.onChangeLang('en');
+  }
+}
 //   public openParentsForActive(): void {
 //   try {
 //     if (!this.navItems || !Array.isArray(this.navItems)) return;

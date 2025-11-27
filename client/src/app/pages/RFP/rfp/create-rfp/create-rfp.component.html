@@ -102,7 +102,16 @@
 <div class="col-12">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
-      <p class="create_rfp_head" style="margin-left: 20px;">{{ "RFP.NewRFP" | translate }}</p>
+      <!-- <p class="create_rfp_head" style="margin-left: 20px;">{{ "RFP.NewRFP" | translate }}</p> -->
+       <div class="rfp-header-box">
+  <div class="rfp-header-content">
+    <i nz-icon nzType="file-add" nzTheme="outline" class="rfp-header-icon"></i>
+
+    <div>
+      <h1 class="rfp-header-title">{{ "RFP.NewRFP" | translate }}</h1>
+    </div>
+  </div>
+</div>
 <div class="stepper-card mt-4" style="margin-left: 20px;">
   <div class="custom-stepper">
     <div class="stepper-container">

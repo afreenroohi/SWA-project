@@ -1072,7 +1072,40 @@ background: rgba(217, 83, 79, 0.08);
   color: #005bbd;
   font-weight: 600;
 }
+.rfp-header-box {
+  width: 100%;
+  background: linear-gradient(90deg, #004f87, #015f96, #00558c);
+  padding: 25px 30px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  margin-left:20px;
+}
 
+.rfp-header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rfp-header-icon {
+  font-size: 48px;
+  color: white;
+}
+
+.rfp-header-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.rfp-header-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 5px 0 0 0;
+}
 /* Horizontal Line */
 .step-line {
   flex: 1;
