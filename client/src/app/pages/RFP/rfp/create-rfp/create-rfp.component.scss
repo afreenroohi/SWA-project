@@ -1075,18 +1075,20 @@ background: rgba(217, 83, 79, 0.08);
 .rfp-header-box {
   width: 100%;
   background: linear-gradient(90deg, #004f87, #015f96, #00558c);
-  padding: 25px 30px;
+  padding: 14px 28px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   margin-bottom: 25px;
   margin-left:20px;
+  margin-right:20px;
 }
 
 .rfp-header-content {
   display: flex;
   align-items: center;
   gap: 20px;
+  //margin-right: 20px;
 }
 
 .rfp-header-icon {
