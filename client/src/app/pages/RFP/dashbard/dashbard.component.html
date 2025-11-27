@@ -71,7 +71,7 @@
         </div>
 
         <!-- Chart Section -->
-        <div class="col-12 mb-4">
+        <div class="col-12 col-lg-6 mb-4">
             <div class="chart-card">
                 <div class="chart-header">
                     <h3 class="chart-title">
@@ -84,6 +84,25 @@
                         [data]="barChartData"
                         [options]="barChartOptions"
                         type="bar">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doughnut Chart Section -->
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">
+                        <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
+                        Pending with Users
+                    </h3>
+                </div>
+                <div class="chart-container">
+                    <canvas baseChart
+                        [data]="doughnutChartData"
+                        [options]="doughnutChartOptions"
+                        type="doughnut">
                     </canvas>
                 </div>
             </div>
