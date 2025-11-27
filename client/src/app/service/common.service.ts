@@ -248,11 +248,21 @@ export class CommonService extends Loader {
 
   /**
    *
-   * @param dateString Date String `(YYYYMMDD)`
+   * @param dateString Date String `(YYYYMMDD)` or Date object
    * @returns Date String `(DD/MM/YYYY)`
    */
-  returnDate(dateString: string) {
-    return dateString.replace(/(\d{4})(\d{2})(\d{2})/g, '$3/$2/$1');
+  returnDate(dateString: string | Date | any) {
+    if (!dateString) return '';
+    if (dateString instanceof Date) {
+      const day = ('0' + dateString.getDate()).slice(-2);
+      const month = ('0' + (dateString.getMonth() + 1)).slice(-2);
+      const year = dateString.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    if (typeof dateString === 'string') {
+      return dateString.replace(/(\d{4})(\d{2})(\d{2})/g, '$3/$2/$1');
+    }
+    return '';
   }
 
   /**

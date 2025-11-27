@@ -1,278 +1,685 @@
 <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="container-fluid p-2" *ngIf="this.detArray">
-  <div class="row">
-    <p class="create_rfp_head col-10">
-      {{ "RFP.Project Details" | translate }}
-    </p>
-    <!-- * Back Button -->
-    <div class="col-2">
+  <div class="row mb-4">
+    <div class="col-10">
+      <h2 class="page-title">{{ "RFP.Project Details" | translate }}</h2>
+    </div>
+    <div class="col-2 text-end">
       <button nz-button nzType="primary" (click)="back()">
+        <span nz-icon nzType="arrow-left"></span>
         {{ "COMMON.Back" | translate }}
       </button>
     </div>
   </div>
 
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel
-      nzActive="true"
-      nzHeader="{{ 'RFP.RFP Details' | translate }}"
-    >
-      <div class="row">
-        <div class="col-12 mt-1">
-          <div class="row">
-            <div class="col-3 my-2">
-              <b> {{ "RFP.ProjNameAr" | translate }}</b>
-              <p>
-                {{ detArray.RfpName }}
-              </p>
-            </div>
-            <div class="col-3 my-2">
-              <b> {{ "RFP.RFP Number" | translate }}</b>
-              <p>
-                {{ detArray.RfpNo }}
-              </p>
-            </div>
+  <div class="row">
+    <!-- Vertical Stepper -->
+    <div class="col-md-2">
+      <div class="vertical-stepper">
+        <div class="stepper-item active">
+          <div class="stepper-circle">1</div>
+          <div class="stepper-label">{{ "RFP.Basic Information" | translate }}</div>
+        </div>
+        <div class="stepper-item">
+          <div class="stepper-circle">2</div>
+          <div class="stepper-label">{{ "RFP.SCOPE OF WORK" | translate }}</div>
+        </div>
+        <div class="stepper-item">
+          <div class="stepper-circle">3</div>
+          <div class="stepper-label">{{ "RFP.Technical Evaluation Criteria" | translate }}</div>
+        </div>
+        <div class="stepper-item">
+          <div class="stepper-circle">4</div>
+          <div class="stepper-label">{{ "RFP.Bill of Quantity" | translate }}</div>
+        </div>
+        <div class="stepper-item">
+          <div class="stepper-circle">5</div>
+          <div class="stepper-label">{{ "RFP.Attachments" | translate }}</div>
+        </div>
+      </div>
+    </div>
 
-            <div class="col-3 my-2">
-              <b>{{ "RFP.Department" | translate }}</b>
-              <p>
-                {{ detArray.DeptText }}
-              </p>
-            </div>
-
-            <div class="col-3 my-2">
-              <b>{{ "RFP.CC" | translate }}</b>
-              <p>
-                {{ costCenterTenderLevel }}
-              </p>
-            </div>
-
-            <div class="col-3 my-2">
-              <b>{{ "RFP.DelDate" | translate }}</b>
-              <p>
-                {{ cs.returnDate(detArray.DeliveryDate) }}
-              </p>
-            </div>
-
-            <div class="col-3 my-2">
-
-              <b>{{ "RFP.MatGrp" | translate }}</b>
-              <p>
-                {{ getMaterialGroup(detArray.MatGrpId) || '-' }}
-              </p>
+    <!-- Main Content -->
+    <div class="col-md-10">
+      <!-- Basic Information Card -->
+      <div class="info-card">
+        <div class="card-header">
+          <h3>{{ "RFP.Basic Information" | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="row w-100 my-2">
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired>{{ "RFP.Project Name" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.CompetitionName || detArray.RfpName }}</div>
             </div>
 
+            <div class="col-4 my-1" *ngIf="detArray.CompetitionType">
+              <nz-form-label nzRequired>{{ "RFP.Type of Competition" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.CompetitionType }}</div>
+            </div>
 
-            <!-- <ng-container *ngIf="isFinanceTeam || isProcurementTeam">
-              <div class="col-3 my-2">
-                <b>{{ "RFP.Commitment Item" | translate }}</b>
-                <ng-container *ngIf="isQualificationFinTeam; else notEditor">
-                  <nz-select
-                    nzShowSearch
-                    style="width: 100%"
-                    nzAllowClear
-                    [(ngModel)]="commitmentItem"
-                    required
-                    #commitment="ngModel"
-                    (ngModelChange)="commitmentChange()"
-                  >
-                    <nz-option
-                      *ngFor="let commitItem of commitmentItems"
-                      [nzValue]="commitItem.Commitmentitem"
-                      [nzLabel]="
-                        commitItem.Commitmentitem + '-' + commitItem.Description
-                      "
-                    >
-                    </nz-option>
-                  </nz-select>
-                  <small
-                    *ngIf="commitment.touched && commitment.invalid"
-                    style="margin-top: 8px; color: red"
-                    >{{ "RFP.FieldIsRequired" | translate }}
-                  </small>
-                </ng-container>
-                <ng-template #notEditor
-                  ><p>
-                    {{ getCommitmentName(detArray.CommitmentItem) }}
-                  </p></ng-template
-                >
+            <div class="col-4 my-1" *ngIf="detArray.EstimatedCost">
+              <nz-form-label nzRequired>{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.numberWithCommas(detArray.EstimatedCost) }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired>{{ "RFP.Duration Type" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.userLanguage === "en" ? durationType?.value : durationType?.valueAr }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired>{{ "RFP.Project Duration" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.ProjDuration }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.WorkLocation">
+              <nz-form-label nzRequired>{{ "RFP.Work Execution Location" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.WorkLocation }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.Activity">
+              <nz-form-label nzRequired>{{ "RFP.Activity" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.Activity }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.Subactivity">
+              <nz-form-label nzRequired>{{ "RFP.Subactivity" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.Subactivity }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.CoordinatorName">
+              <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.CoordinatorName }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.CoordinatorNumber">
+              <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.CoordinatorNumber }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.CoordinatorEmail">
+              <nz-form-label>{{ "RFP.coordinator email" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.CoordinatorEmail }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.RFP Number" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.RfpNo }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.Department" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.DeptText }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.CC" | translate }}</nz-form-label>
+              <div class="field-value">{{ costCenterTenderLevel }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.DelDate" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.returnDate(detArray.DeliveryDate) }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.MatGrp" | translate }}</nz-form-label>
+              <div class="field-value">{{ getMaterialGroup(detArray.MatGrpId) || '-' }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.PurGrp" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.PurGrpId + " - " + detArray.PurGrpText }}</div>
+            </div>
+
+            <div class="col-4 my-1">
+              <nz-form-label>{{ "RFP.Technical Member Manager Name" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.userLanguage === "en" ? detArray.TecMemName : detArray.TecMemNamear }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.QualfCommMemne">
+              <nz-form-label>{{ "RFP.Technical Member Qualification" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.userLanguage === "en" ? detArray.QualfCommMemne : detArray.QualfCommMemnr }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="visibleFinancialDetails && detArray.EstmPriceWithoutVat">
+              <nz-form-label>{{ "RFP.RfpEstmPrice" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.numberWithCommas(detArray.EstmPriceWithoutVat) }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="visibleFinancialDetails && VATAmount">
+              <nz-form-label>{{ "RFP.VAT Amount" | translate }}</nz-form-label>
+              <div class="field-value">{{ VATAmount }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="visibleFinancialDetails && detArray.EstPrice">
+              <nz-form-label>{{ "RFP.RfpEstmPrice VAT" | translate }}</nz-form-label>
+              <div class="field-value">{{ cs.numberWithCommas(detArray.EstPrice) }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.ProjTypeText">
+              <nz-form-label>{{ "RFP.Select Proj Type" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.ProjTypeText | translate }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.PurchaseType">
+              <nz-form-label>{{ "RFP.PurTyp" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.PurchaseType === "R" ? ("RFP.RFP" | translate) : ("RFP.DirPur" | translate) }}</div>
+            </div>
+
+            <div class="col-4 my-1" *ngIf="detArray.TechDocs">
+              <nz-form-label>{{ "RFP.Technical Docs" | translate }}</nz-form-label>
+              <div class="field-value">{{ detArray.TechDocs | translate }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.TechRfp">
+              <label class="field-label">{{ "RFP.TechRFP" | translate }}</label>
+              <div class="field-value">{{ detArray.TechRfp }}</div>
+            </div>
+
+            <!-- Technical Committee Members Table -->
+            <div class="col-12 my-3" *ngIf="ReqToTmbrNavg && ReqToTmbrNavg.length > 0">
+              <label class="field-label">{{ "RFP.Technical Committee Members" | translate }} <span class="required">*</span></label>
+              <table class="table table-bordered mt-2" style="font-size: 14px;">
+                <thead style="background-color: #f0f2f5;">
+                  <tr>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Role" | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Name" | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Extension No." | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Job Title" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of ReqToTmbrNavg; let i = index">
+                    <td style="padding: 12px;">{{ i === 0 ? 'Project Director' : i === 1 ? 'Project Coordinator' : 'Committee Member' }}</td>
+                    <td style="padding: 12px;">{{ cs.userLanguage === "en" ? member.TecMemName : member.TecMemNameAr }}</td>
+                    <td style="padding: 12px;">-</td>
+                    <td style="padding: 12px;">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Project Continuous Nature -->
+            <div class="col-12 my-3" *ngIf="detArray.ProjectContinuous !== undefined">
+              <label class="field-label">{{ "RFP.Is the project a continuous nature" | translate }}</label>
+              <div class="field-value">
+                <nz-switch [ngModel]="detArray.ProjectContinuous" nzDisabled></nz-switch>
               </div>
-              <div class="col-3 my-2">
-                <b>{{ "RFP.Internal Order" | translate }}</b>
-                <ng-container
-                  *ngIf="isQualificationFinTeam; else notEditorOrder"
-                >
-                  <nz-select
-                    nzShowSearch
-                    style="width: 100%"
-                    nzAllowClear
-                    [(ngModel)]="internalOrder"
-                  >
-                    <nz-option
-                      *ngFor="let internalOrder of internalOrders"
-                      [nzValue]="internalOrder.InternalOrder"
-                      [nzLabel]="internalOrder.InternalOrder"
-                    >
-                    </nz-option>
-                  </nz-select>
-                </ng-container>
-                <ng-template #notEditorOrder
-                  ><p>
-                    {{ getInternalOrderItem(detArray.InternalOrder) }}
-                  </p></ng-template
-                >
-              </div>
-            </ng-container> -->
-
-            <ng-container *ngIf="visibleFinancialDetails">
-              <div class="col-3 my-2">
-                <b>{{ "RFP.RfpEstmPrice" | translate }}</b>
-                <p>
-                  {{ cs.numberWithCommas(detArray.EstmPriceWithoutVat) }}
-                </p>
-              </div>
-
-              <div class="col-3 my-2">
-                <b>{{ "RFP.VAT Amount" | translate }}</b>
-                <p>
-                  {{ VATAmount }}
-                </p>
-              </div>
-
-              <div class="col-3 my-2">
-                <b>{{ "RFP.RfpEstmPrice VAT" | translate }}</b>
-                <p>
-                  {{ cs.numberWithCommas(detArray.EstPrice) }}
-                </p>
-              </div>
-            </ng-container>
-
-            <div class="col-3 my-2">
-              <b>{{ "RFP.PurGrp" | translate }}</b>
-              <p>
-                {{ detArray.PurGrpId + " - " + detArray.PurGrpText }}
-              </p>
             </div>
 
-            <ng-container
-              *ngFor="let techMember of ReqToTmbrNavg; index as index"
-            >
-              <div class="col-3 my-2">
-                <b
-                  >{{ "RFP.Technical Member Name" | translate }}
-                  {{ index + 1 }}</b
-                >
-                <p>
-                  {{
-                    cs.userLanguage === "en"
-                      ? techMember.TecMemName
-                      : techMember.TecMemNameAr
-                  }}
-                </p>
-              </div>
-            </ng-container>
-            <div class="col-3 my-2">
-              <b>{{ "RFP.Technical Member Manager Name" | translate }}</b>
-              <p>
-                {{
-                  cs.userLanguage === "en"
-                    ? detArray.TecMemName
-                    : detArray.TecMemNamear
-                }}
-              </p>
+            <!-- Project Relaunched -->
+            <div class="col-12 my-3" *ngIf="detArray.ProjectRelaunched !== undefined">
+              <label class="field-label">{{ "RFP.Is the project being relaunched?" | translate }}</label>
+              <div class="field-value">{{ detArray.ProjectRelaunched ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
             </div>
 
-            <div class="col-3 my-2" *ngIf="detArray.QualfCommMemne">
-              <b>{{ "RFP.Technical Member Qualification" | translate }}</b>
-              <p>
-                {{
-                  cs.userLanguage === "en"
-                    ? detArray.QualfCommMemne
-                    : detArray.QualfCommMemnr
-                }}
-              </p>
+            <!-- Site Visit Required -->
+            <div class="col-12 my-3" *ngIf="detArray.RequiresSiteVisit !== undefined">
+              <label class="field-label">{{ "RFP.requiresSiteVisit" | translate }}</label>
+              <div class="field-value">{{ detArray.RequiresSiteVisit ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
             </div>
 
-            <!-- <div class="col-6 mt-4">
-                <div class="row">
-                  <div class="col-6">
-                    <b> Duration Type </b>
-                  </div>
-                  <div class="col-6">
-                    {{ cs.userLanguage === 'en' ? durationType.value :  durationType.valueAr}}
-                  </div>
-                </div>
-              </div> -->
-
-            <div class="col-3 my-2">
-              <b> {{ "RFP.Project Duration" | translate }} </b>
-              <p>
-                {{ detArray.ProjDuration }} ({{
-                  cs.userLanguage === "en"
-                    ? durationType?.value
-                    : durationType?.valueAr
-                }})
-              </p>
+            <div class="col-md-4 mb-3" *ngIf="detArray.SiteVisitEmail">
+              <label class="field-label">{{ "RFP.Email for Site Visit" | translate }}</label>
+              <div class="field-value">{{ detArray.SiteVisitEmail }}</div>
             </div>
 
-            <div class="col-3 my-2">
-              <b> {{ "RFP.TechEvalCritTot" | translate }} </b>
-              <p>
-                {{ detArray.TotTechEval }}
-              </p>
+            <div class="col-md-4 mb-3" *ngIf="detArray.SiteVisitContact">
+              <label class="field-label">{{ "RFP.ContactNumber for Site Visit" | translate }}</label>
+              <div class="field-value">{{ detArray.SiteVisitContact }}</div>
             </div>
 
-            <div class="col-3 my-2" *ngIf="detArray.ProjTypeText">
-              <b> {{ "RFP.Select Proj Type" | translate }}</b>
-              <p>
-                {{ detArray.ProjTypeText | translate }}
-              </p>
+            <!-- Prequalification Required -->
+            <div class="col-12 my-3" *ngIf="detArray.PrequalificationRequired !== undefined">
+              <label class="field-label">{{ "RFP.prequalificationRequired" | translate }}</label>
+              <div class="field-value">{{ detArray.PrequalificationRequired ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
             </div>
 
-            <div class="col-3 my-2" *ngIf="detArray.PurchaseType">
-              <b> {{ "RFP.PurTyp" | translate }}</b>
-              <p>
-                {{
-                  detArray.PurchaseType === "R"
-                    ? ("RFP.RFP" | translate)
-                    : ("RFP.DirPur" | translate)
-                }}
-              </p>
+            <!-- Framework Included -->
+            <div class="col-12 my-3" *ngIf="detArray.FrameworkIncluded !== undefined">
+              <label class="field-label">{{ "RFP.frameworkIncluded" | translate }}</label>
+              <div class="field-value">{{ detArray.FrameworkIncluded ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
             </div>
 
-            <div class="col-3 my-2" *ngIf="detArray.TechDocs">
-              <b> {{ "RFP.Technical Docs" | translate }}</b>
-              <p>
-                {{ detArray.TechDocs | translate }}
-              </p>
-            </div>
-
-            <div class="col-3 my-2" *ngIf="detArray.TechRfp">
-              <b> {{ "RFP.TechRFP" | translate }}</b>
-              <p>
-                {{
-                  detArray.TechRfp === "X"
-                    ? ("RFP.Yes" | translate)
-                    : ("RFP.No" | translate)
-                }}
-              </p>
-            </div>
-
-            <div class="col-3 my-2" *ngIf="detArray.ProjManpower">
-              <b> {{ "RFP.Manpower" | translate }}</b>
-              <p>
-                {{
-                  detArray.ProjManpower === "X"
-                    ? ("RFP.Yes" | translate)
-                    : ("RFP.No" | translate)
-                }}
-              </p>
+            <!-- Project Justification -->
+            <div class="col-12 my-3" *ngIf="detArray.JustfProj">
+              <label class="field-label">{{ "RFP.Project Justification / Necessity / Impact of Not Proceeding" | translate }}</label>
+              <div class="field-value">{{ detArray.JustfProj }}</div>
             </div>
           </div>
         </div>
       </div>
-    </nz-collapse-panel>
-  </nz-collapse>
+
+      <!-- Scope of Work Card -->
+      <div class="info-card mt-4">
+        <div class="card-header">
+          <h3>{{ "RFP.SCOPE OF WORK" | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 mb-3" *ngIf="detArray.DefinitionOfCompetition">
+              <label class="field-label">{{ "RFP.Definition of Competition" | translate }}</label>
+              <div class="field-value">{{ detArray.DefinitionOfCompetition }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.WorkProgram">
+              <label class="field-label">{{ "RFP.Work Program" | translate }}</label>
+              <div class="field-value">{{ detArray.WorkProgram }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.PlaceOfExecution">
+              <label class="field-label">{{ "RFP.Place of Execution of Works and Services" | translate }}</label>
+              <div class="field-value">{{ detArray.PlaceOfExecution }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.HowToCarryOut">
+              <label class="field-label">{{ "RFP.How to Carry Out Work and Services" | translate }}</label>
+              <div class="field-value">{{ detArray.HowToCarryOut }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.ScopeOfWork">
+              <label class="field-label">{{ "RFP.Scope Of Work" | translate }}</label>
+              <div class="field-value" [innerHTML]="detArray.ScopeOfWork"></div>
+            </div>
+
+            <!-- Technical Documents Table -->
+            <div class="col-md-12 mb-3" *ngIf="detArray.TechnicalDocuments && detArray.TechnicalDocuments.length > 0">
+              <label class="field-label">{{ "RFP.Technical Documents" | translate }}</label>
+              <nz-table #technicalDocsTable [nzData]="detArray.TechnicalDocuments" [nzShowPagination]="false" [nzBordered]="true">
+                <thead>
+                  <tr>
+                    <th>{{ "RFP.Serial Number" | translate }}</th>
+                    <th>{{ "RFP.Document Number" | translate }}</th>
+                    <th>{{ "RFP.Action" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let doc of technicalDocsTable.data; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ doc.DocumentNumber }}</td>
+                    <td>
+                      <button nz-button nzType="link" nzSize="small" (click)="downloadFile(doc)">
+                        <span nz-icon nzType="download"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.Labor">
+              <label class="field-label">{{ "RFP.Labor" | translate }}</label>
+              <div class="field-value">{{ detArray.Labor }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.Materials">
+              <label class="field-label">{{ "RFP.Materials" | translate }}</label>
+              <div class="field-value">{{ detArray.Materials }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.Equipment">
+              <label class="field-label">{{ "RFP.Equipment" | translate }}</label>
+              <div class="field-value">{{ detArray.Equipment }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.QualitySpecifications">
+              <label class="field-label">{{ "RFP.Quality Specifications" | translate }}</label>
+              <div class="field-value">{{ detArray.QualitySpecifications }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="detArray.SafetySpecifications">
+              <label class="field-label">{{ "RFP.Safety Specifications" | translate }}</label>
+              <div class="field-value">{{ detArray.SafetySpecifications === "X" ? ("RFP.Yes" | translate) : ("RFP.No" | translate) }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.ProjManpower">
+              <label class="field-label">{{ "RFP.Manpower" | translate }}</label>
+              <div class="field-value">{{ detArray.ProjManpower === "X" ? ("RFP.Yes" | translate) : ("RFP.No" | translate) }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.TotTechEval">
+              <label class="field-label">{{ "RFP.TechEvalCritTot" | translate }}</label>
+              <div class="field-value">{{ detArray.TotTechEval }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.ProjectRelaunched !== undefined">
+              <label class="field-label">{{ "RFP.Is the project being relaunched?" | translate }}</label>
+              <div class="field-value">{{ detArray.ProjectRelaunched ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.PreviousProjectNumber">
+              <label class="field-label">{{ "RFP.Previous Project Number" | translate }}</label>
+              <div class="field-value">{{ detArray.PreviousProjectNumber }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.RequiresSiteVisit !== undefined">
+              <label class="field-label">{{ "RFP.requiresSiteVisit" | translate }}</label>
+              <div class="field-value">{{ detArray.RequiresSiteVisit ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.SiteVisitEmail">
+              <label class="field-label">{{ "RFP.Email for Site Visit" | translate }}</label>
+              <div class="field-value">{{ detArray.SiteVisitEmail }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.SiteVisitContact">
+              <label class="field-label">{{ "RFP.ContactNumber for Site Visit" | translate }}</label>
+              <div class="field-value">{{ detArray.SiteVisitContact }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.PrequalificationRequired !== undefined">
+              <label class="field-label">{{ "RFP.prequalificationRequired" | translate }}</label>
+              <div class="field-value">{{ detArray.PrequalificationRequired ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.PrequalificationDetails">
+              <label class="field-label">{{ "RFP.Prequalification Number" | translate }}</label>
+              <div class="field-value">{{ detArray.PrequalificationDetails }}</div>
+            </div>
+
+            <div class="col-md-4 mb-3" *ngIf="detArray.FrameworkIncluded !== undefined">
+              <label class="field-label">{{ "RFP.frameworkIncluded" | translate }}</label>
+              <div class="field-value">{{ detArray.FrameworkIncluded ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</div>
+            </div>
+          </div>
+
+          <!-- Technical Committee Members Table -->
+          <div class="row mt-4" *ngIf="ReqToTmbrNavg && ReqToTmbrNavg.length > 0">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Technical Committee Members" | translate }} <span class="required">*</span></label>
+              <table class="table table-bordered mt-2" style="font-size: 14px;">
+                <thead style="background-color: #f0f2f5;">
+                  <tr>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Role" | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Name" | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Extension No." | translate }}</th>
+                    <th style="padding: 12px; font-weight: 600;">{{ "RFP.Job Title" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of ReqToTmbrNavg; let i = index">
+                    <td style="padding: 12px;">{{ i === 0 ? 'Project Director' : i === 1 ? 'Project Coordinator' : 'Committee Member' }}</td>
+                    <td style="padding: 12px;">{{ cs.userLanguage === "en" ? member.TecMemName : member.TecMemNameAr }}</td>
+                    <td style="padding: 12px;">-</td>
+                    <td style="padding: 12px;">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Project Continuous Nature -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Is the project a continuous nature" | translate }}</label>
+              <div class="field-value">
+                <nz-switch [ngModel]="detArray.ProjectContinuous" nzDisabled></nz-switch>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bill of Quantity Card -->
+      <div class="info-card mt-4" *ngIf="false">
+        <div class="card-header">
+          <h3>{{ "RFP.Bill of Quantity" | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <!-- Competition Fragmentation -->
+          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentation !== undefined">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Competition Fragmentation" | translate }}</label>
+              <div class="field-value">
+                <nz-switch [ngModel]="detArray.CompetitionFragmentation" nzDisabled></nz-switch>
+              </div>
+            </div>
+          </div>
+
+          <!-- No of Years -->
+          <div class="row mb-3" *ngIf="detArray.NoOfYears">
+            <div class="col-md-4">
+              <label class="field-label">{{ "RFP.No of Years" | translate }}</label>
+              <div class="field-value">{{ detArray.NoOfYears }}</div>
+            </div>
+          </div>
+
+          <!-- Competition Fragmentation Details Table -->
+          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentationItems && detArray.CompetitionFragmentationItems.length > 0">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Competition Fragmentation Details" | translate }}</label>
+              <nz-table #fragTable [nzData]="detArray.CompetitionFragmentationItems" [nzShowPagination]="false" [nzBordered]="true">
+                <thead>
+                  <tr>
+                    <th>{{ "RFP.S.No" | translate }}</th>
+                    <th>{{ "RFP.Package" | translate }}</th>
+                    <th>{{ "RFP.Description" | translate }}</th>
+                    <th>{{ "RFP.Classification Field" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of fragTable.data; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.Package }}</td>
+                    <td>{{ item.Description }}</td>
+                    <td>{{ item.ClassificationField }}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+
+          <!-- BOQ Tables by Year -->
+          <div class="row mt-4" *ngIf="groupBOQItemsBasedonBudgetingYears">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Quantity Tables" | translate }}</label>
+              <nz-collapse [nzBordered]="true">
+                <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
+                  [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key">
+                  <nz-table #boqTable [nzData]="group.value" [nzShowPagination]="false" [nzBordered]="true">
+                    <thead>
+                      <tr>
+                        <th>{{ "RFP.slNo" | translate }}</th>
+                        <th>{{ "RFP.MatDes" | translate }}</th>
+                        <th>{{ "RFP.itemDesc" | translate }}</th>
+                        <th>{{ "RFP.QTY" | translate }}</th>
+                        <th>{{ "RFP.UOM" | translate }}</th>
+                        <ng-container *ngIf="visibleFinancialDetails">
+                          <th>{{ "RFP.Price" | translate }}</th>
+                          <th>{{ "RFP.TotalPrice" | translate }}</th>
+                          <th>{{ "RFP.VATAmount" | translate }}</th>
+                          <th>{{ "RFP.TotalWithVAT" | translate }}</th>
+                        </ng-container>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of boqTable.data; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ data.MaterialText }}</td>
+                        <td>{{ data.ItemDescription }}</td>
+                        <td>{{ data.Quantity }}</td>
+                        <td>{{ data.Uom }}</td>
+                        <ng-container *ngIf="visibleFinancialDetails">
+                          <td>{{ data.Price }}</td>
+                          <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
+                          <td>{{ getVatAmountRow(data) | number: '1.2-2' }}</td>
+                          <td>{{ getTotalWithVatRow(data) | number: '1.2-2' }}</td>
+                        </ng-container>
+                      </tr>
+                      <tr *ngIf="visibleFinancialDetails">
+                        <td colspan="6" style="text-align: right;">{{ "COM.Total" | translate }}:</td>
+                        <td>{{ getGrandTotalPrice(boqTable.data) | number: '1.2-2' }}</td>
+                        <td>{{ getGrandVatAmount(boqTable.data) | number: '1.2-2' }}</td>
+                        <td>{{ getGrandTotalWithVat(boqTable.data) | number: '1.2-2' }}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Evaluation Criteria Card -->
+      <div class="info-card mt-4" *ngIf="false">
+        <div class="card-header">
+          <h3>{{ "RFP.Technical Evaluation Criteria" | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <!-- 1. Criteria for evaluating the offers -->
+          <div class="row" *ngIf="ReqToTreqNavg && ReqToTreqNavg.length > 0">
+            <div class="col-12 mb-4">
+              <label class="field-label">{{ "RFP.Criteria for evaluating the offers" | translate }}</label>
+              <nz-table #keyAssessmentTable [nzData]="ReqToTreqNavg" [nzShowPagination]="false" [nzBordered]="true">
+                <thead>
+                  <tr>
+                    <th>{{ "RFP.slNo" | translate }}</th>
+                    <th>{{ "RFP.Key Assessment Criteria" | translate }}</th>
+                    <th>{{ "RFP.Pass/Fail" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of keyAssessmentTable.data">
+                    <td>{{ +data.ItemNo }}</td>
+                    <td>{{ data.Descr }}</td>
+                    <td>{{ "RFP.Pass" | translate }}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+
+          <!-- 2. Evaluation and analysis of offer -->
+          <div class="row mt-4">
+            <div class="col-12 mb-3">
+              <label class="field-label">{{ "RFP.Evaluation and analysis of offer" | translate }}</label>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="field-label">{{ "RFP.Technical evaluation passing percentage" | translate }}</label>
+              <div class="field-value">{{ detArray.TotTechEval || 70 }}%</div>
+            </div>
+          </div>
+
+          <!-- Evaluation Criteria Table with Sub-criteria -->
+          <div class="row mt-4" *ngIf="ReqToTechNavg && ReqToTechNavg.length > 0">
+            <div class="col-12 mb-3">
+              <label class="field-label">{{ "RFP.Technical Evaluation Criteria Details" | translate }}</label>
+              <nz-table #evalCriteriaTable [nzData]="ReqToTechNavg" [nzShowPagination]="false" [nzBordered]="true">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>{{ "RFP.slNo" | translate }}</th>
+                    <th>{{ "RFP.Headline" | translate }}</th>
+                    <th>{{ "RFP.Weightage" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let data of evalCriteriaTable.data">
+                    <tr>
+                      <td *ngIf="data.TechToTechSub && data.TechToTechSub.length; else emptyCell" [(nzExpand)]="data.expand"></td>
+                      <ng-template #emptyCell><td></td></ng-template>
+                      <td>{{ +data.ItemNo }}</td>
+                      <td>
+                        <div><strong>{{ data.Headline }}</strong></div>
+                        <div *ngIf="data.Descr" style="color: #666; font-size: 0.9em; margin-top: 4px;">{{ data.Descr }}</div>
+                      </td>
+                      <td>{{ data.Percentage }}%</td>
+                    </tr>
+                    <tr *ngIf="data.TechToTechSub && data.TechToTechSub.length" [nzExpand]="data.expand">
+                      <td colspan="4" style="padding: 0;">
+                        <nz-table #innerTable [nzData]="data.TechToTechSub" nzSize="middle" [nzShowPagination]="false" [nzBordered]="false">
+                          <thead>
+                            <tr>
+                              <th>{{ "RFP.slNo" | translate }}</th>
+                              <th>{{ "RFP.Des" | translate }}</th>
+                              <th>{{ "RFP.Weightage" | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let innerData of innerTable.data">
+                              <td>{{ innerData.SubItemNo }}</td>
+                              <td>{{ innerData.Descr }}</td>
+                              <td>{{ innerData.Percentage }}%</td>
+                            </tr>
+                          </tbody>
+                        </nz-table>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+
+          <!-- 3. The weightage of the evaluation -->
+          <div class="row mt-4">
+            <div class="col-12 mb-3">
+              <label class="field-label">{{ "RFP.The weightage of the evaluation" | translate }}</label>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="field-label">{{ "RFP.Financial weight" | translate }}</label>
+              <div class="field-value">{{ detArray.FinEvalWatage || 80 }}%</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="field-label">{{ "RFP.Technical weight" | translate }}</label>
+              <div class="field-value">{{ detArray.TechEvalWatage || 20 }}%</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="field-label">{{ "RFP.Technical pass rate" | translate }}</label>
+              <div class="field-value">{{ detArray.TotTechEval || 70 }}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attachments Card -->
+      <div class="info-card mt-4">
+        <div class="card-header">
+          <h3>{{ "RFP.Attachments" | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="attachment-body">
+            <label class="field-label">{{ "RFP.Attachments" | translate }}</label>
+            
+            <!-- Uploaded Files List -->
+            <ul class="custom-uploaded-list" style="margin-top: 12px;">
+              <li class="uploaded-file-item">
+                <div class="file-info">
+                  <i nz-icon nzType="paper-clip"></i>
+                  <span class="file-name">Technical_Specifications.pdf</span>
+                </div>
+                <a nz-tooltip nzTooltipTitle="Download" class="delete-icon" style="color: #0b6aa0; cursor: pointer;">
+                  <i nz-icon nzType="download"></i>
+                </a>
+              </li>
+              <li class="uploaded-file-item">
+                <div class="file-info">
+                  <i nz-icon nzType="paper-clip"></i>
+                  <span class="file-name">Project_Requirements.docx</span>
+                </div>
+                <a nz-tooltip nzTooltipTitle="Download" class="delete-icon" style="color: #0b6aa0; cursor: pointer;">
+                  <i nz-icon nzType="download"></i>
+                </a>
+              </li>
+              <li class="uploaded-file-item">
+                <div class="file-info">
+                  <i nz-icon nzType="paper-clip"></i>
+                  <span class="file-name">Budget_Breakdown.xlsx</span>
+                </div>
+                <a nz-tooltip nzTooltipTitle="Download" class="delete-icon" style="color: #0b6aa0; cursor: pointer;">
+                  <i nz-icon nzType="download"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- <nz-collapse  *ngIf="isQualificationFinTeam || isFinanceTeam || isProcurementTeam || isCEO"  [nzExpandIconPosition]="expandIconPosition" class="mt-4">
     <nz-collapse-panel [nzActive]="true" nzHeader="{{ 'RFP.Budget Planning' | translate }}">
       <div class="budget-planning-section">
@@ -314,896 +721,11 @@
     </nz-collapse-panel>
     <app-budget-planner [budgetDetails]="budgetDetails"  [isBudgetPlannerVisible]="isBudgetPlannerVisible" [rfpNo]="this.detArray.RfpNo"  [rfpVersion]="this.detArray.RfpVersion" (onBudgetPlannerClosed)="onBugetPlanClosed()" ></app-budget-planner>
   </nz-collapse> -->
-  <nz-collapse
-    *ngIf="isProcurementTeam"
-    [nzExpandIconPosition]="expandIconPosition"
-    class="mt-4"
-  >
-    <nz-collapse-panel
-      nzActive="true"
-      nzHeader="{{ 'RFP.Procurement Header' | translate }}"
-    >
-      <div class="row" [formGroup]="procurementDetailsForm">
-        <div class="col-3 my-2">
-          <b>{{ "RFP.Dty" | translate }}</b>
-          <nz-form-control *ngIf="!isSearchRFPActive">
-            <nz-select
-              nzShowSearch
-              style="width: 100%"
-              nzAllowClear
+ 
 
-              formControlName="DocTypeId"
-            >
-              <nz-option
-                *ngFor="let documentType of dtypes"
-                [nzValue]="documentType.id"
-                
-                [nzLabel]="
+ 
 
-                  cs.userLanguage === 'en'
-                    ? documentType.value
-                    : documentType.valueAr
-                "
-              >
-              </nz-option>
-            </nz-select>
-            <small
-              *ngIf="
-                procurementDetailsForm?.get('DocTypeId')?.touched &&
-                procurementDetailsForm?.get('DocTypeId')?.invalid
-              "
-              style="margin-top: 8px; color: red"
-              >{{ "RFP.FieldIsRequired" | translate }}
-            </small>
-          </nz-form-control>
-          <p *ngIf="isSearchRFPActive">{{detArray.DocTypeId || '-'}}</p>
-        </div>
-
-        <div class="col-3 my-2">
-          <b>{{ "RFP.EXPRO agreement exists" | translate }}</b>
-          <nz-form-control *ngIf="!isSearchRFPActive">
-            <nz-switch
-            style="width: 100%"
-            formControlName="ExproAggrement"
-
-            nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
-            nzUnCheckedChildren="{{ 'RFP.No' | translate }}"
-          >
-          </nz-switch>
-
-          </nz-form-control>
-          <p *ngIf="isSearchRFPActive">{{ detArray.ExproAggrement === 'Y' ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</p>
-
-
-        </div>
-
-        <div class="col-3 my-2">
-          <b>{{ "RFP.urgentRFP" | translate }}</b>
-           <nz-form-control *ngIf="!isSearchRFPActive">
-            <nz-switch
-              style="width: 100%"
-              formControlName="UrgentRfp"
-
-              nzCheckedChildren="{{ 'RFP.Yes' | translate }}"
-              nzUnCheckedChildren="{{ 'RFP.No' | translate }}"
-            >
-            </nz-switch>
-          </nz-form-control>
-          <p *ngIf="isSearchRFPActive">{{ detArray.UrgntRfp === 'Y' ? ('RFP.Yes' | translate) : ('RFP.No' | translate) }}</p>
-
-        </div>
-
-        <div
-          class="col-md-12 col-12 my-2"
-          *ngIf="procurementDetailsForm?.get('UrgentRfp')?.value"
-        >
-          <b>{{ "RFP.Project Justification Eme" | translate }}</b>
-          <nz-form-control>
-            <textarea
-              rows="4"
-              nz-input
-              formControlName="UrgentRfpJustification"
-            >
-            </textarea>
-            <small
-              *ngIf="
-                procurementDetailsForm?.get('UrgentRfpJustification')
-                  ?.touched &&
-                procurementDetailsForm
-                  ?.get('UrgentRfpJustification')
-                  ?.hasError('maxlength')
-              "
-              style="margin-top: 8px; color: red"
-              >{{ "RFP.300MaxCharactersError" | translate }}</small
-            >
-          </nz-form-control>
-        </div>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel nzHeader="{{ 'RFP.Project Justification' | translate }}">
-      <div class="row">
-        <div class="col-12">
-          {{ detArray.JustfProj }}
-        </div>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
-      <div class="row">
-        <div class="col-12" [innerHTML]="detArray.ScopeWork"></div>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <nz-collapse
-    [nzExpandIconPosition]="expandIconPosition"
-    class="mt-4"
-    [class.d-none]="this.Actiondet?.CwfDept == 'RDC'"
-  >
-    <nz-collapse-panel nzHeader="{{ 'RFP.Procurement Checklist' | translate }}">
-      <div class="row mt-3 mb-5">
-        <ng-container *ngFor="let list of detArray.ReqToPMChklstNavg.results">
-          <div class="col-md-6 col-12 mt-4">
-            <div class="col-12">
-              <h3>
-                {{
-                  cs.userLanguage === "en"
-                    ? list.ChecklistNameEn
-                    : list.ChecklistNameAr
-                }}
-              </h3>
-            </div>
-            <div class="col-12" *ngIf="list.ChecklistValEn">
-              {{
-                cs.userLanguage === "en"
-                  ? list.ChecklistValEn
-                  : list.ChecklistValAr
-              }}
-            </div>
-
-            <div class="col-12" *ngIf="list.TextValue">
-              {{ list.TextValue }}
-            </div>
-
-            <div class="col-12" *ngIf="list.ChecklistCmnts">
-              <h3>{{ "COM.Comment" | translate }}</h3>
-            </div>
-            <div class="col-12" *ngIf="list.ChecklistCmnts">
-              {{ list.ChecklistCmnts }}
-            </div>
-          </div>
-        </ng-container>
-      </div>
-
-      <ng-container
-        *ngIf="
-          this.Actiondet?.CwfApprvRole == 'FRASGN1' &&
-          (this.Actiondet?.CwfDept == 'FR1' ||
-            this.Actiondet?.CwfDept == 'FR2' ||
-            this.Actiondet?.CwfDept == 'FR3')
-        "
-      >
-        <div class="row pt-3 border-set" [formGroup]="procurmentForm">
-          <ng-container *ngFor="let proList of procurementCheckListData">
-            <div class="col-6 mt-5">
-              <h4>
-                {{
-                  cs.userLanguage === "en"
-                    ? proList.checklist_name_en
-                    : proList.checklist_name_ar
-                }}
-              </h4>
-
-              <ng-container
-                *ngIf="
-                  proList.to_ChkLstDts.results.length == 1 &&
-                  !proList.to_ChkLstDts.results[0].checklist_val_en
-                "
-              >
-                <div class="row">
-                  <div class="col-12">
-                    <nz-form-label>{{
-                      "COM.Comment" | translate
-                    }}</nz-form-label>
-                    <textarea
-                      nz-input
-                      style="height: 100px"
-                      formControlName="{{ 'procu' + proList.checklist_id }}"
-                    ></textarea>
-                  </div>
-                </div>
-              </ng-container>
-
-              <ng-container
-                *ngIf="
-                  proList.to_ChkLstDts.results.length == 1 &&
-                  proList.to_ChkLstDts.results[0].checklist_val_en
-                "
-              >
-                <div class="row">
-                  <div class="col-12">
-                    <label
-                      nz-checkbox
-                      formControlName="{{ 'procu' + proList.checklist_id }}"
-                      >{{
-                        cs.userLanguage === "en"
-                          ? proList.to_ChkLstDts.results[0].checklist_val_en
-                          : proList.to_ChkLstDts.results[0].checklist_val_ar
-                      }}</label
-                    >
-                  </div>
-                </div>
-              </ng-container>
-
-              <ng-container *ngIf="proList.to_ChkLstDts.results.length > 1">
-                <nz-radio-group
-                  style="width: 100%"
-                  [nzName]="'procu' + proList.checklist_id"
-                  formControlName="{{ 'procu' + proList.checklist_id }}"
-                  (ngModelChange)="checkProcRadio($event, proList)"
-                >
-                  <div class="row" nz-row>
-                    <div
-                      class="col-md-5 col-12"
-                      *ngFor="let radioGroup of proList.to_ChkLstDts.results"
-                    >
-                      <label
-                        nz-radio
-                        nzValue="{{
-                          radioGroup.checklist_val_id +
-                            radioGroup.checklist_val_en
-                        }}"
-                        >{{
-                          cs.userLanguage === "en"
-                            ? radioGroup.checklist_val_en
-                            : radioGroup.checklist_val_ar
-                        }}</label
-                      >
-                    </div>
-
-                    <!-- *ngIf="procurmentForm.value['procu'+proList.checklist_id].toLowerCase().indexOf('yes') > -1 && proList.to_ChkLstDts.results[0].is_comments_required" -->
-                    <div class="col-12 mt-3">
-                      <nz-form-label for="typeComment">{{
-                        "COM.Comment" | translate
-                      }}</nz-form-label>
-                      <br />
-                      <textarea
-                        nz-input
-                        style="height: 100px"
-                        formControlName="{{
-                          'procu' + proList.checklist_id + 'Comment'
-                        }}"
-                      ></textarea>
-                    </div>
-                  </div>
-                </nz-radio-group>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-      </ng-container>
-    </nz-collapse-panel>
-  </nz-collapse>
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel
-      nzActive="true"
-      nzHeader="{{ 'RFP.Bill of Quantity' | translate }}"
-    >
-    <ng-container >
-      <ng-container *ngIf="(isFinanceOfficer || newFORole) && commitmentItems && internalOrderItems && !isSearchRFPActive">
-      <form  [formGroup]="applyCommitmentItemAndInternalOrderToAllYearsForm" (ngSubmit)="applyCommitmentItemAndInternalOrderToAllYears()">
-      <div class="commitment-item-internal-order-selection">
-        <div class="commitment-item">
-          <nz-form-label nzRequired>
-            {{ "RFP.Commitment Item" | translate }}
-          </nz-form-label>
-          <nz-select
-            nzShowSearch
-            style="width: 100%"
-            nzAllowClear
-            formControlName="commitmentItem"
-            required
-          >
-            <nz-option
-              *ngFor="let commitItem of commitmentItems"
-              [nzValue]="commitItem.Commitmentitem"
-              [nzLabel]="
-                commitItem.Commitmentitem + '-' + commitItem.Description
-              "
-            ></nz-option>
-          </nz-select>
-          <div
-            *ngIf="
-              applyCommitmentItemAndInternalOrderToAllYearsForm.get('commitmentItem')?.touched &&
-              applyCommitmentItemAndInternalOrderToAllYearsForm.get('commitmentItem')?.invalid
-            "
-          >
-            <small
-              class="error"
-              *ngIf="
-                applyCommitmentItemAndInternalOrderToAllYearsForm
-                  .get('commitmentItem')
-                  ?.hasError('required')
-              "
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="internal-order">
-          <nz-form-label>{{ "RFP.Internal Order" | translate }}</nz-form-label>
-          <nz-select
-            nzShowSearch
-            style="width: 100%"
-            nzAllowClear
-            formControlName="internalOrder"
-          >
-            <nz-option
-              *ngFor="let internalOrder of masterInternalOrder"
-              [nzValue]="internalOrder.InternalOrder"
-              [nzLabel]="internalOrder.InternalOrder"
-            ></nz-option>
-          </nz-select>
-        </div>
-        <div class="apply-for-all">
-          <button nz-button nzType="primary" type="submit">
-            {{ 'RFP.Apply' | translate }}
-          </button>
-         </div>
-      </div>
-</form>
-</ng-container>
-</ng-container>
-  <nz-collapse [nzBordered]="true" *ngIf="groupBOQItemsBasedonBudgetingYears">
-    <form [formGroup]="budgetPlannerForm">
-      <div formArrayName="budgetingGroups">
-        <nz-collapse>
-          <nz-collapse-panel
-            *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue; let i = index"
-            [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key"
-          >
-            <ng-container [formGroupName]="i">
-              <div *ngIf="visibleCommitmentItemAndInternalOrder" class="commitment-item-internal-order-selection">
-                <div class="commitment-item">
-                  <nz-form-label nzRequired>
-                    {{ "RFP.Commitment Item" | translate }}
-                  </nz-form-label>
-                  <nz-select
-                    nzShowSearch
-                    style="width: 100%"
-                    nzAllowClear
-                    formControlName="commitmentItem"
-                    required
-                    *ngIf="(isFinanceOfficer || newFORole) && !isSearchRFPActive"
-                  >
-                    <nz-option
-                      *ngFor="let commitItem of commitmentItems"
-                      [nzValue]="commitItem.Commitmentitem"
-                      [nzLabel]="
-                        commitItem.Commitmentitem + '-' + commitItem.Description
-                      "
-                    ></nz-option>
-                  </nz-select>
-                  <div
-                    *ngIf="
-                      budgetingGroups.at(i).get('commitmentItem')?.touched &&
-                      budgetingGroups.at(i).get('commitmentItem')?.invalid
-                    "
-                  >
-                    <small
-                      class="error"
-                      *ngIf="
-                        budgetingGroups.at(i)
-                          .get('commitmentItem')
-                          ?.hasError('required')
-                      "
-                    >
-                      This field is required.
-                    </small>
-                  </div>
-                  <p *ngIf="!(isFinanceOfficer || newFORole) || (isFinanceOfficer && isSearchRFPActive)">
-                    {{ group.value[0]?.CommItm || '-' }}
-                  </p>
-
-                </div>
-
-                <div class="internal-order">
-                  <nz-form-label>{{ "RFP.Internal Order" | translate }}</nz-form-label>
-                  <nz-select
-                    nzShowSearch
-                    style="width: 100%"
-                    nzAllowClear
-                    formControlName="internalOrder"
-                    *ngIf="(isFinanceOfficer || newFORole) && !isSearchRFPActive"
-                  >
-                    <nz-option
-                      *ngFor="let internalOrder of internalOrderItems[i]"
-                      [nzValue]="internalOrder.InternalOrder"
-                      [nzLabel]="internalOrder.InternalOrder"
-                    ></nz-option>
-                  </nz-select>
-                  <p *ngIf="!(isFinanceOfficer || newFORole) || (isFinanceOfficer && isSearchRFPActive)">{{ group.value[0]?.IntOrd || '-' }}</p>
-
-                </div>
-                <!-- Budget Check -->
-                <div class="internal-order" *ngIf="newFORole || isFinanceOfficer || isFinanceTeam">
-                  <nz-form-label>{{ "RFP.Available Budget" | translate }}</nz-form-label>
-                  <p>{{ availableBudget[group.key] || '-' }}</p>
-
-                </div>
-
-                <!-- Refresh Button For Available budget -->
-                <!-- <div class="internal-order">
-                  <button nz-button nzType="default" nzSize="default" *ngIf="this.Actiondet?.CwfApprvRole === 'AP'" (click)="refreshBudget()">
-                    <i nz-icon nzType="reload" nzTheme="outline"  nz-tooltip nzTooltipTitle="Refresh"></i>
-                  </button>
-                </div> -->
-
-              </div>
-
-              <nz-table
-                #nzTable
-                [nzFrontPagination]="false"
-                [nzScroll]="{ x: 'auto' }"
-                [nzData]="group.value"
-                nzBordered="true"
-                [nzNoResult]="'RFP.Norecordsfound' | translate"
-              >
-                <thead style="background: red !important">
-                  <tr>
-                    <th>{{ "RFP.MatDes" | translate }}</th>
-                    <th>{{ "RFP.itemDesc" | translate }}</th>
-                    <th>{{ "RFP.QTY" | translate }}</th>
-                    <th>{{ "RFP.UOM" | translate }}</th>
-                    <ng-container *ngIf="visibleFinancialDetails">
-                      <th>{{ "RFP.Price" | translate }}</th>
-                      <th>{{ "RFP.TotalPrice" | translate }}</th>
-                      <th>{{ "RFP.VATAmount" | translate }}</th>
-                      <th>{{ "RFP.TotalWithVAT" | translate }}</th>
-
-                    </ng-container>
-                  </tr>
-                </thead>
-                <tbody style="background: white">
-                  <tr *ngFor="let data of nzTable.data; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ data.MaterialText }}</td>
-                    <td>{{ data.Quantity }}</td>
-                    <td>{{ data.Uom }}</td>
-                    <ng-container *ngIf="visibleFinancialDetails">
-                      <td>{{ data.Price }}</td>
-                      <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
-                      <td>{{ getVatAmountRow(data) | number: '1.2-2' }}</td>
-                      <td>{{ getTotalWithVatRow(data) | number: '1.2-2' }}</td>
-                    </ng-container>
-                  </tr>
-                  <tr *ngIf="visibleFinancialDetails">
-                    <td colspan="5" style="text-align: right; ">
-                      {{ "COM.Total" | translate }}:
-                    </td>
-                    <td>
-                      {{ getGrandTotalPrice(nzTable.data) | number: '1.2-2' }}
-                    </td>
-                    <td>
-                      {{ getGrandVatAmount(nzTable.data) | number: '1.2-2' }}
-                    </td>
-                    <td>
-                      {{ getGrandTotalWithVat(nzTable.data) | number: '1.2-2' }}
-                    </td>
-                  </tr>
-
-                </tbody>
-              </nz-table>
-            </ng-container>
-          </nz-collapse-panel>
-        </nz-collapse>
-      </div>
-    </form>
-    <div *ngIf="(isFinanceOfficer || newFORole) && !isSearchRFPActive" class="apply-actions"  style="margin-top: 1rem; display: flex; gap: 1rem">
-      <button [disabled]="budgetingGroups.invalid" nz-button nzType="primary" (click)="saveCommitmentItemAndInternalOrderToAllYears()" >
-        {{ 'RFP.SaveChanges' | translate }}
-      </button>
-      <button nz-button nzType="default" (click)="clearCommitmentItemAndInternalOrderToAllYears()">
-        {{ 'RFP.ClearAll' | translate }}
-      </button>
-    </div>
-
-
-
-    </nz-collapse>
-    </nz-collapse-panel>
-    </nz-collapse>
-
-
-
-  <!-- Todo : Check from this -->
-  <!-- * Technical Requirements -->
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <!-- Todo: Make the translation for Technical Requirements -->
-    <nz-collapse-panel
-      nzHeader="{{ 'RFP.Technical Requirements' | translate }}"
-    >
-      <nz-table
-        *ngIf="this.detArray.ReqToTreqNavg.results"
-        #nzTable
-        [nzData]="ReqToTreqNavg"
-        [nzPageSize]="5"
-        [nzTotal]="1000"
-        [nzPageIndex]="1"
-        [nzFrontPagination]="true"
-        [nzPageSizeOptions]="[5, 10, 15, 20, 25]"
-        nzBordered="true"
-        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-        nzTableLayout="fixed"
-      >
-        <thead>
-          <tr>
-            <th>{{ "RFP.slNo" | translate }}</th>
-            <th>{{ "RFP.Des" | translate }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{ +data.ItemNo }}</td>
-            <td>{{ data.Descr }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <!-- * Technical Evaluation Criteria -->
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel nzHeader="{{ 'RFP.Evaluation Criteria' | translate }}">
-      <nz-table
-        *ngIf="this.detArray.ReqToTechNavg.results"
-        #nestedTable
-        [nzData]="ReqToTechNavg"
-        [nzPageSize]="5"
-        [nzTotal]="1000"
-        [nzPageIndex]="1"
-        [nzFrontPagination]="true"
-        [nzPageSizeOptions]="[5, 10, 15, 20, 25]"
-        nzBordered="true"
-        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-        nzTableLayout="fixed"
-      >
-        <thead>
-          <tr>
-            <th></th>
-            <th>{{ "RFP.slNo" | translate }}</th>
-            <th>{{ "RFP.Headline" | translate }}</th>
-            <th>{{ "RFP.Weightage" | translate }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let data of nestedTable.data">
-            <tr>
-              <td
-                *ngIf="data.TechToTechSub.length; else emptyData"
-                [(nzExpand)]="data.expand"
-              ></td>
-              <ng-template #emptyData><td></td></ng-template>
-              <td>{{ +data.ItemNo }}</td>
-              <td>
-                <h3>{{ data.Headline }}</h3>
-                <span>{{ data.Descr }}</span>
-              </td>
-              <td>{{ data.Percentage }}</td>
-            </tr>
-            <tr *ngIf="data.TechToTechSub.length" [nzExpand]="data.expand">
-              <nz-table
-                #innerTable
-                [nzData]="data.TechToTechSub"
-                nzSize="middle"
-                [ngClass]="{
-                  'inner-table-align-margin-left-class':
-                    cs.userLanguage === 'en',
-                  'inner-table-align-margin-right-class ':
-                    cs.userLanguage === 'ar'
-                }"
-                [nzShowPagination]="false"
-              >
-                <thead>
-                  <th>{{ "RFP.slNo" | translate }}</th>
-                  <th>{{ "RFP.Des" | translate }}</th>
-                  <th>{{ "RFP.Weightage" | translate }}</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let innerData of innerTable.data">
-                    <td>{{ innerData.SubItemNo }}</td>
-                    <td>{{ innerData.Descr }}</td>
-                    <td>{{ innerData.Percentage }}</td>
-                  </tr>
-                </tbody>
-              </nz-table>
-            </tr>
-          </ng-container>
-        </tbody>
-      </nz-table>
-    </nz-collapse-panel>
-  </nz-collapse>
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel
-      nzHeader="{{ 'RFP.Vendor Evaluation Weightage' | translate }}"
-    >
-      <div class="row w-100" nzAlign="middle">
-        <div class="col-md-4">
-          <b>{{ "RFP.Vendor Evaluation Weightage" | translate }}</b>
-          <p>{{ detArray.TechEvalWatage }}</p>
-        </div>
-        <div class="col-md-4">
-          <b>{{ "RFP.Financial Evaluation Weightage" | translate }}</b>
-          <p>{{ detArray.FinEvalWatage }}</p>
-        </div>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <!-- * Man Power  -->
-  <nz-collapse
-    [nzExpandIconPosition]="expandIconPosition"
-    class="mt-4"
-    *ngIf="
-      (detArray.PurchaseType === 'R' || detArray.PurchaseType === 'D') &&
-      this.detArray.ProjManpower === 'X'
-    "
-  >
-    <nz-collapse-panel nzHeader="{{ 'RFP.ManPowerTab' | translate }}">
-      <nz-table
-        *ngIf="this.detArray.ReqToMpwrNavg.results"
-        #nzTable
-        [nzData]="ReqToMpwrNavg"
-        [nzPageSize]="5"
-        [nzTotal]="1000"
-        [nzPageIndex]="1"
-        [nzFrontPagination]="true"
-        [nzPageSizeOptions]="[5, 10, 15, 20, 25]"
-        nzBordered="true"
-        nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
-        nzTableLayout="fixed"
-      >
-        <thead>
-          <tr>
-            <th>{{ "RFP.slNo" | translate }}</th>
-            <th>{{ "RFP.JobTitle" | translate }}</th>
-            <th>{{ "RFP.QTY" | translate }}</th>
-            <th>{{ "RFP.Qualification" | translate }}</th>
-            <th>{{ "RFP.Specialization" | translate }}</th>
-            <th>{{ "RFP.Exp" | translate }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{ +data.ItemNo }}</td>
-            <td>{{ data.JobTitle }}</td>
-            <td>{{ data.Amount }}</td>
-            <td>{{ getQualification(data.SpeQualf) }}</td>
-            <td>{{ data.Specilization }}</td>
-            <td>{{ data.SpeExp }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <!-- * Attachments -->
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel nzHeader="{{ 'RFP.Attachments' | translate }}">
-      <div
-        class="col-4 mt-2"
-        *ngIf="this.detArray && this.detArray.ReqToAttchNavg"
-      >
-        <div class="row">
-          <!-- <div class="col" *ngFor="let b of this.detArray.ReqToAttchNavg.results; let i = index;">
-              <p>{{ b.FileName }} &nbsp;&nbsp;
-                <button nz-button nzType="primary" nzSize="default" (click)="downloadFile(b, i)" nzShape="circle">
-                  <span nz-icon nzType="download"></span>
-                </button>
-              </p>
-            </div> -->
-          <app-filenet
-            class="mt-3"
-            [fileList]="fileNetList"
-            [showUpload]="false"
-            [hideDelete]="true"
-          ></app-filenet>
-        </div>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <!-- * Comment History -->
-  <nz-collapse [nzExpandIconPosition]="expandIconPosition" class="mt-4">
-    <nz-collapse-panel nzHeader="{{ 'COM.CommentHistory' | translate }}">
-      <div class="col-12">
-        <button
-          nz-button
-          nzType="primary"
-          nzShape="round"
-          class="mb-2"
-          (click)="showHideComments(true)"
-        >
-          <span nz-icon nzType="comment" nzTheme="outline"></span
-          >{{ "RFP.View" | translate }}
-        </button>
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <nz-collapse
-    [nzExpandIconPosition]="expandIconPosition"
-    class="mt-4"
-    *ngIf="this.Actiondet"
-  >
-    <nz-collapse-panel
-      nzActive="true"
-      nzHeader="{{ 'COC.Comments' | translate }}"
-    >
-      <div class="row">
-        <!-- <div class="col-12">
-                  <button nz-button nzType="primary" nzShape="round" class="mb-2" (click)="showHideComments(true)">
-                    <span nz-icon nzType="comment" nzTheme="outline"></span>{{'COM.CommentHistory' | translate }}
-                  </button>
-                </div> -->
-        <div class="col-12">
-          <nz-form-label>{{ "COC.Comments" | translate }}</nz-form-label>
-          <textarea
-            style="min-height: 100px"
-            nz-input
-            [(ngModel)]="reqComments"
-          ></textarea>
-        </div>
-
-        <!-- <div class="col-12"
-          *ngIf="this.Actiondet.CwfApprvRole != 'APRT1' && this.Actiondet.CwfApprvRole != 'FRAPRT1' && this.Actiondet.CwfApprvRole != 'FRAPRT2' && this.Actiondet.CwfApprvRole != 'FRAPRT3' && Actiondet.CwfApprvRole != 'APED1' ">
-          <nz-form [formGroup]="ApprForm">
-            <nz-form-label for="MemName">{{
-              "RFP.Select Employee" | translate
-              }}</nz-form-label>
-            <nz-form-control>
-              <nz-select (ngModelChange)="getAssgnUser($event)" formControlName="UserInfo" nzShowSearch
-                style="width: 100%" nzAllowClear>
-                <nz-option *ngFor="let o of userList" [nzValue]="o" [nzLabel]="o.NwfApprvNameen"></nz-option>
-              </nz-select>
-            </nz-form-control>
-
-          </nz-form>
-        </div> -->
-      </div>
-    </nz-collapse-panel>
-  </nz-collapse>
-
-  <div class="col-12 mt-3" *ngIf="!isSearchRFPActive">
-    <div class="rfp-action-btn">
-      <button
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        *ngIf="isProcurementTeam"
-        [disabled]="procurementDetailsForm?.invalid"
-        (click)="setProcurementDetails()"
-      >
-        {{ "RFP.save changes" | translate }}
-      </button>
-      <button
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        *ngIf="
-          this.Actiondet?.CwfApprvRole === 'APRT1' ||
-          this.Actiondet?.CwfApprvRole === 'APABRJAS1' ||
-          this.Actiondet?.CwfApprvRole === 'APAB1'|| this.Actiondet?.CwfApprvRole === 'AP'"
-        [disabled]="isProcurementTeam && (procurementDetailsForm?.invalid || isSaveChanges)"
-        (click)="approveClick()"
-      >
-        {{ "RFP.Approved" | translate }}
-      </button>
-      <!-- <div *ngIf="Actiondet?.CwfApprvRole === 'AP' && !checkBudgetPerYear()" style="color: red">
-        <ul>
-          <li *ngFor="let warning of errWarnings">
-             {{ cs.userLanguage === 'en' ? warning.en : warning.ar }}
-          </li>
-        </ul>
-      </div> -->
-      <button
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        *ngIf="
-          this.Actiondet?.CwfApprvRole === 'ASRT1' ||
-          this.Actiondet?.CwfApprvRole === 'ASRTED1' ||
-          this.Actiondet?.CwfApprvRole === 'ASABRT1'
-        "
-        (click)="checkEmployeeSelected()"
-        [disabled]="
-
-          (isProcurementTeam &&
-            (procurementDetailsForm?.invalid || isSaveChanges))
-        "
-      >
-        {{ "RFP.Assign" | translate }}
-      </button>
-
-      <button
-        *ngIf="
-          (isProcurementTeam && this.Actiondet?.CwfApprvRole === 'APRT1') ||
-          this.Actiondet?.CwfApprvRole === 'ASABRT1' ||
-          this.Actiondet?.CwfApprvRole === 'APABRJAS1' ||
-          this.Actiondet?.CwfApprvRole === 'APAB1'
-        "
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        (click)="showAssignBack()"
-      >
-      {{
-      Actiondet?.CwfApprvRole === 'APABRJAS1'
-      ? ("COC.AssignBacktoPUDdirector" | translate)
-      : Actiondet?.CwfApprvRole === 'APAB1'
-      ? ("COC.AssignBacktoPUDmanager" | translate)
-      : ("COC.AssignBk" | translate)
-      }}
-
-      </button>
-
-      <button
-        nz-button
-        *ngIf="
-          this.Actiondet?.CwfApprvRole === 'ASRTED1' ||
-          (isProcurementTeam &&
-            (this.Actiondet?.CwfApprvRole === 'APRT1' ||
-              this.Actiondet?.CwfApprvRole === 'ASABRT1'))
-        "
-        nzType="primary"
-        nzSize="default"
-        (click)="edit(this.detArray.RfpNo, this.detArray.RfpVersion, 'ASRTED1', 'PUD')"
-      >
-        {{ "RFP.Edit" | translate }}
-      </button>
-
-      <button
-        nz-button
-        *ngIf="
-          this.Actiondet?.CwfApprvRole === 'APRT1' ||
-          this.Actiondet?.CwfApprvRole === 'ASRT1' ||
-          this.Actiondet?.CwfApprvRole === 'ASRTED1' ||
-          this.Actiondet?.CwfApprvRole === 'ASABRT1'
-        "
-        nzType="primary"
-        nzSize="default"
-        (click)="isReturnClick = true"
-      >
-        {{ "RFP.Return" | translate }}
-      </button>
-
-      <button
-        nz-button
-        *ngIf="this.Actiondet?.CwfApprvRole === 'APABRJAS1'"
-        nzType="primary"
-        nzSize="default"
-        (click)="isReject = true"
-      >
-        {{ "RFP.Reject" | translate }}
-      </button>
-      <!-- <button
-        nz-button
-        nzType="primary"
-        nzSize="default"
-        *ngIf="this.Actiondet?.CwfApprvRole === 'APABRJAS1'"
-        (click)="isAssign = true"
-        [disabled]="isBudgetDetailsPresentPerYear"
-      >
-        {{ "RFP.Assign" | translate }}
-      </button> -->
-    </div>
-  </div>
+ 
 </div>
 
 <nz-modal

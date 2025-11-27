@@ -9,8 +9,8 @@
                 <div class="header-content">
                     <i nz-icon nzType="dashboard" nzTheme="outline" class="header-icon"></i>
                     <div>
-                        <h1 class="dashboard-title">RFP Summary</h1>
-                        <p class="dashboard-subtitle">Real-time RFP status and Summary</p>
+                        <h1 class="dashboard-title">{{"RFP.RFP Summary"|translate}}</h1>
+                        <p class="dashboard-subtitle">{{"RFP.Real-time RFP status and Summary"|translate}}</p>
                     </div>
                 </div>
             </div>
@@ -25,9 +25,9 @@
                             <i nz-icon nzType="project" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">Total Projects</div>
+                            <div class="stat-label">{{'RFP.Total_Projects'|translate}}</div>
                             <div class="stat-value">{{ totalProjects }}</div>
-                            <div class="stat-trend">All RFPs</div>
+                            <div class="stat-trend">{{'RFP.All RFPs'|translate}}</div>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                             <i nz-icon nzType="check-circle" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">Approved</div>
+                            <div class="stat-label">{{'RFP.Approved'|translate}}</div>
                             <div class="stat-value">{{ approvedProjects }}</div>
                             <div class="stat-trend">{{ approvedProjects > 0 ? ((approvedProjects / totalProjects) * 100).toFixed(0) + '%' : '0%' }} of total</div>
                         </div>
@@ -49,9 +49,9 @@
                             <i nz-icon nzType="file-text" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">Draft</div>
+                            <div class="stat-label">{{'RFP.Draft'|translate}}</div>
                             <div class="stat-value">{{ draftProjects }}</div>
-                            <div class="stat-trend">In progress</div>
+                            <div class="stat-trend">{{'RFP.In progress'|translate}}</div>
                         </div>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                             <i nz-icon nzType="send" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">Submitted</div>
+                            <div class="stat-label">{{'RFP.Submitted'|translate}}</div>
                             <div class="stat-value">{{ submittedProjects }}</div>
-                            <div class="stat-trend">Pending review</div>
+                            <div class="stat-trend">{{'RFP.Pending review'|translate}}</div>
                         </div>
                     </div>
                 </div>
@@ -71,12 +71,12 @@
         </div>
 
         <!-- Chart Section -->
-        <div class="col-12 mb-4">
+        <div class="col-12 col-lg-6 mb-4">
             <div class="chart-card">
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
-                        Project Pending Department
+                        {{'RFP.Project Pending Department'|translate}}
                     </h3>
                 </div>
                 <div class="chart-container">
@@ -89,17 +89,36 @@
             </div>
         </div>
 
+        <!-- Doughnut Chart Section -->
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">
+                        <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
+                        {{"RFP.Pending with Users"|translate}}
+                    </h3>
+                </div>
+                <div class="chart-container">
+                    <canvas baseChart
+                        [data]="doughnutChartData"
+                        [options]="doughnutChartOptions"
+                        type="doughnut">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Filters Section -->
         <div class="col-12">
             <div class="filter-section">
                 <div class="filter-header">
                     <div class="filter-title-wrapper">
                         <i nz-icon nzType="filter" nzTheme="outline" class="filter-icon"></i>
-                        <h2 class="filter-title">Advanced Filters</h2>
+                        <h2 class="filter-title">{{'RFP.Advanced Filters'|translate}}</h2>
                     </div>
                     <button nz-button nzType="default" class="reset-btn" (click)="repForm.reset()">
                         <i nz-icon nzType="reload" nzTheme="outline"></i>
-                        Reset
+                        {{'RFP.Reset'|translate}}
                     </button>
                 </div>
                 <form [formGroup]="repForm">
@@ -155,7 +174,7 @@
                             <!-- * Status -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
-                                    <label class="filter-label-compact">Status</label>
+                                    <label class="filter-label-compact">{{'RFP.Status'|translate}}</label>
                                     <nz-select formControlName="status" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
                                         <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
                                             [nzLabel]="o.WfPendUsrEn"></nz-option>
@@ -183,7 +202,7 @@
                 <div class="results-header">
                     <h3 class="results-title">
                         <i nz-icon nzType="table" nzTheme="outline"></i>
-                        RFP List
+                        {{'RFP.RFP List'|translate}}
                     </h3>
                 </div>
                 <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"

@@ -61,6 +61,34 @@ export class DashbardComponent implements OnInit, OnDestroy {
     }
   };
 
+  // Doughnut Chart for Pending Users
+  public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: ['#005c99', '#0077c2', '#004a7a', '#003d66', '#faad14'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  };
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: { padding: 15, font: { size: 12 } }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 }
+      }
+    }
+  };
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -139,6 +167,7 @@ this.rfpList = this.listArray;
 // this.listOfDisplayData = this.listArray; // ensures table renders dummy rows
 
   this.calculateStats();
+  this.calculatePendingUsers();
   console.log(this.rfpList,'listtttttttttttttttttt')
 }
 
@@ -278,6 +307,36 @@ this.rfpList = this.listArray;
     this.draftProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'D').length || 0;
     this.cancelledProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'C').length || 0;
     this.submittedProjects = this.listArray?.filter((item: any) => item.RfpStatus === 'S').length || 0;
+  }
+
+  calculatePendingUsers() {
+    const userCounts: { [key: string]: number } = {};
+    let testUser = [
+      {"WfPendUsrEn":"Afreen"},
+      {"WfPendUsrEn":"Dina Rashid"},
+      {"WfPendUsrEn":"Dina Rashid"},
+      {"WfPendUsrEn":"Mona Samir"},
+      {"WfPendUsrEn":"Jana Walid"},
+      {"WfPendUsrEn":"Jana Walid"},
+      {"WfPendUsrEn":"Afreen"},
+      {"WfPendUsrEn":"Afreen"},
+      // {"WfPendUsrEn":"Rana Hisham"},
+      // {"WfPendUsrEn":"Nabil Sherif"},
+      // {"WfPendUsrEn":"Salma Essam"},
+      // {"WfPendUsrEn":"Marwan Gamal"},
+      // {"WfPendUsrEn":"Ghada Tarek"},
+      // {"WfPendUsrEn":"Hazem Ashraf"}
+
+    ]
+    testUser?.forEach((item: any) => {
+      if (item.WfPendUsrEn) {
+        userCounts[item.WfPendUsrEn] = (userCounts[item.WfPendUsrEn] || 0) + 1;
+      }
+    });
+    const colors = ['#005c99', '#0077c2', '#004a7a', '#003d66', '#faad14'];
+    this.doughnutChartData.labels = Object.keys(userCounts);
+    this.doughnutChartData.datasets[0].data = Object.values(userCounts);
+    this.doughnutChartData.datasets[0].backgroundColor = colors.slice(0, Object.keys(userCounts).length);
   }
 
   ngOnDestroy(): void {

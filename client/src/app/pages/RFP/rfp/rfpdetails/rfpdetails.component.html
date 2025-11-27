@@ -1,9 +1,8 @@
+<!-- OLD CODE - COMMENTED OUT
 <div *ngIf="Action === 'budget'">
   <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
     <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Request For Budget Allocation'| translate }}">
-
     <div class="row">
-     
       <div class="col-12 mt-1">
         <div class="row">
           <div class="col-4 mt-4">
@@ -14,7 +13,6 @@
                 <p>{{ detArray.ProjName }}</p>
             </div>
           </div>
-
           <div class="col-4 mt-4" *ngIf="detArray?.Unplanned !== 'X'">
             <div class="row">
               <div class="col-10">
@@ -25,7 +23,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-4 mt-4" *ngIf="detArray?.Unplanned">
             <div class="row">
               <div class="col-10">
@@ -36,8 +33,6 @@
               </p>
             </div>
           </div>
-
-        
           <div class="col-4 mt-4">
             <div class="row">
               <div class="col-10">
@@ -48,7 +43,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-4 mt-4">
             <div class="row">
               <div class="col-10">
@@ -59,8 +53,6 @@
               </p>
             </div>
           </div>
-
-      
           <div class="col-4 mt-4">
             <div class="row">
               <div class="col-10">
@@ -71,7 +63,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-4 mt-4">
             <div class="row">
               <div class="col-10">
@@ -85,52 +76,125 @@
         </div>
       </div>
     </div>
-  
     </nz-collapse-panel>
   </nz-collapse>
-
- 
     <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
       <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Project Justification'| translate }}">
-
     <div class="row">
       <div class="col-12">
         {{ detArray.Justification }}
       </div>
     </div>
- 
 </nz-collapse-panel>
 </nz-collapse>
-
-
 <nz-collapse class="mt-4" [nzExpandIconPosition]="expandIconPosition">
   <nz-collapse-panel nzActive="true" nzHeader="{{ 'RFP.Attachments'| translate }}">
- 
     <div class="col-12 mt-2 mb-2">
       <app-filenet class="mt-3" [fileList]="this.detArray.BaReqToBaNavg.results" [showUpload]="false" [hideDelete]="true"></app-filenet>
     </div>
-    <!-- <div class="col-4 mt-2" *ngIf="this.detArray.BaReqToBaNavg">
-      <div class="row">
-        <div class="col" *ngFor="let b of this.detArray.BaReqToBaNavg.results">
-          <p>{{ b.AttchId.split('/')[1] }} &nbsp;&nbsp;
-             <button
-            nz-button
-            nzType="primary"
-            nzSize="default"
-            (click)="downloadFile(b)"
-            nzShape="circle"
-          >
-            <span nz-icon nzType="download"></span>
-          </button>
-         </p>
-        </div>
-      </div>
-    
-
-  
-
-
-    <div class="col-10"></div>
-  </div> -->
 </nz-collapse-panel>
 </nz-collapse>
+</div>
+END OLD CODE -->
+
+<!-- NEW REDESIGNED RFP DETAIL PAGE -->
+<div class="rfp-detail-container">
+  <div class="rfp-header">
+    <h2>RFP Details</h2>
+    <span class="status-badge active">Active</span>
+  </div>
+
+  <nz-card class="info-card" nzTitle="Basic Information">
+    <div class="info-grid">
+      <div class="info-item">
+        <label>RFP Number</label>
+        <p>RFP-2024-001</p>
+      </div>
+      <div class="info-item">
+        <label>Project Name</label>
+        <p>Infrastructure Development Project</p>
+      </div>
+      <div class="info-item">
+        <label>Department</label>
+        <p>IT Department</p>
+      </div>
+      <div class="info-item">
+        <label>Budget Type</label>
+        <p>Capital Expenditure</p>
+      </div>
+      <div class="info-item">
+        <label>Requested Amount</label>
+        <p class="amount">₹ 5,00,000</p>
+      </div>
+      <div class="info-item">
+        <label>Status</label>
+        <span class="status-badge pending">Pending Approval</span>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card class="info-card" nzTitle="Project Details">
+    <div class="info-grid">
+      <div class="info-item full-width">
+        <label>Project Description</label>
+        <p>This project aims to upgrade the existing IT infrastructure including servers, networking equipment, and security systems to support growing business needs.</p>
+      </div>
+      <div class="info-item">
+        <label>Start Date</label>
+        <p>01-Jan-2024</p>
+      </div>
+      <div class="info-item">
+        <label>End Date</label>
+        <p>31-Dec-2024</p>
+      </div>
+      <div class="info-item">
+        <label>Created By</label>
+        <p>John Doe</p>
+      </div>
+      <div class="info-item">
+        <label>Created On</label>
+        <p>15-Nov-2023</p>
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card class="info-card" nzTitle="Budget Breakdown">
+    <nz-table [nzData]="dummyBudgetData" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dummyBudgetData">
+          <td>{{ item.category }}</td>
+          <td>{{ item.description }}</td>
+          <td class="amount">₹ {{ item.amount }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card class="info-card" nzTitle="Justification">
+    <p class="justification-text">
+      The current IT infrastructure is outdated and unable to meet the demands of our expanding operations. 
+      This upgrade is critical for maintaining business continuity, improving security posture, and supporting 
+      digital transformation initiatives. The investment will result in improved system performance, reduced 
+      downtime, and enhanced data security.
+    </p>
+  </nz-card>
+
+  <nz-card class="info-card" nzTitle="Attachments">
+    <div class="attachment-list">
+      <div class="attachment-item" *ngFor="let file of dummyAttachments">
+        <span nz-icon nzType="file-text" nzTheme="outline"></span>
+        <span class="file-name">{{ file.name }}</span>
+        <button nz-button nzType="link" nzSize="small">
+          <span nz-icon nzType="download"></span> Download
+        </button>
+      </div>
+    </div>
+  </nz-card>
+</div>
