@@ -63,6 +63,20 @@ export class RfpdetailsComponent implements OnInit {
     })
   }
 
+  // Dummy data for redesigned page
+  dummyBudgetData = [
+    { category: 'Hardware', description: 'Servers and Storage', amount: '2,50,000' },
+    { category: 'Software', description: 'Licenses and Tools', amount: '1,00,000' },
+    { category: 'Networking', description: 'Switches and Routers', amount: '1,00,000' },
+    { category: 'Security', description: 'Firewall and Security Tools', amount: '50,000' }
+  ];
+
+  dummyAttachments = [
+    { name: 'Project_Proposal.pdf', size: '2.5 MB' },
+    { name: 'Budget_Details.xlsx', size: '1.2 MB' },
+    { name: 'Technical_Specs.docx', size: '850 KB' }
+  ];
+
   ngOnInit(): void {
     this.spinner.show();
     if (this.detArray) {
