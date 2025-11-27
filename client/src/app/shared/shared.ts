@@ -830,7 +830,7 @@ export const listOfColumnRFPMG = [
 
   {
     id: 4,
-    title: 'Purchase Request Number',
+    title: 'PR Number',
     titleAr: 'رقم طلب الشراء',
     sortFn: (a: DataItem, b: DataItem) =>
       a.PurchaseReqNo.localeCompare(b.PurchaseReqNo),
@@ -848,28 +848,24 @@ export const listOfColumnRFPMG = [
   },
   {
     id: 49,
-    title: 'Requester Department',
+    title: 'Req. Dept',
     titleAr: 'الجهة الطالبة',
   },
   {
     id: 41,
-    title: 'Pending with Department',
+    title: 'Pending Dept',
     titleAr: 'قيد الانتظار مع القسم',
   },
 
   {
     id: 42,
-    title: 'Pending with User',
+    title: 'Pending User',
     titleAr: 'قيد الانتظار مع المستخدم',
   },
   {
     id: 6,
     title: 'Status',
     titleAr: 'الحالة',
-    filterMultiple: true,
-    listOfFilter: STATUS_FILTER,
-    listOfFilterAr: STATUS_FILTER_AR,
-    filterFn: (list: string[], item: DataItem) => list.some(name => item.RfpStatus.indexOf(name) !== -1)
   },
   // {
   //   id: 6,
@@ -890,8 +886,13 @@ export const listOfColumnRFPMG = [
   // },
   {
     id: 7,
-    title: 'Action',
-    titleAr: 'الإجراء',
+    title: 'View',
+    titleAr: 'عرض',
+  },
+  {
+    id: 8,
+    title: 'Actions',
+    titleAr: 'الإجراءات',
   },
   // {
   //   id:10,

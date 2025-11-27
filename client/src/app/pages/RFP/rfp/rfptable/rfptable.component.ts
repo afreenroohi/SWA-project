@@ -239,6 +239,24 @@ export class RfptableComponent implements OnInit, OnChanges {
     );
   }
 
+  onActionClick(action: string, data: any): void {
+    console.log('Action clicked:', action, 'Data:', data);
+    switch(action) {
+      case 'changeBOQ':
+        this.nzMessageService.info(`Change BOQ for ${data.RfpNo}`);
+        break;
+      case 'extendBidOpening':
+        this.nzMessageService.info(`Extend Bid Opening for ${data.RfpNo}`);
+        break;
+      case 'addAttachments':
+        this.nzMessageService.info(`Add More Attachments for ${data.RfpNo}`);
+        break;
+      case 'inviteCompanies':
+        this.nzMessageService.info(`Invite More Companies for ${data.RfpNo}`);
+        break;
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

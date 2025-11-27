@@ -1,23 +1,15 @@
 <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
-<nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="5"
-  [nzScroll]="{ x: 'auto' }" [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
-  [nzPageSizeOptions]="[5,10,15,20,25]" nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}">
+<nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="10"
+  [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
+  [nzPageSizeOptions]="[10,20,30,50]" nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" class="enhanced-table">
   <thead>
     <tr>
       <th *ngFor="let column of listOfColumn; index as i" [nzSortFn]="column.sortFn"
-        [nzSortDirections]="column.sortDirections" [nzCustomFilter]="column.title === 'Project Name'"
+        [nzSortDirections]="column.sortDirections"
         [nzFilterMultiple]="column.filterMultiple"
         [nzFilters]="cs.userLanguage === 'en' ? column.listOfFilter : column.listOfFilterAr"
-        [nzFilterFn]="column.filterFn" [ngStyle]="{'width': i===listOfColumn.length-1 ? '19%' : '' }">
+        [nzFilterFn]="column.filterFn">
         {{ cs.userLanguage === 'en'? column.title : column.titleAr }}
-        <nz-filter-trigger *ngIf="column.title === 'Project Name' " [(nzVisible)]="visible"
-          [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-          <span nz-icon nzType="search"></span>
-        </nz-filter-trigger>
-        <nz-filter-trigger *ngIf="column.title === 'Status' " [(nzVisible)]="statusvisible"
-          [nzActive]="searchValue.length > 0" [nzDropdownMenu]="statusMenu">
-          <span nz-icon nzType="search"></span>
-        </nz-filter-trigger>
       </th>
     </tr>
   </thead>
@@ -40,7 +32,15 @@
       <!--end of columns for manager dashboad-->
 
 
-      <td *ngIf="data.RfpStatus"> {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}</td>
+      <td *ngIf="data.RfpStatus" [ngClass]="{
+        'status-approved': data.RfpStatus === 'A',
+        'status-draft': data.RfpStatus === 'D',
+        'status-cancelled': data.RfpStatus === 'C',
+        'status-returned': data.RfpStatus === 'R',
+        'status-submitted': data.RfpStatus === 'S'
+      }"> 
+        {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}
+      </td>
       <!-- <td [ngStyle]="{
         color: data.SlaInd === 'N' ? 'red' : 'green'
       }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td> -->
@@ -60,7 +60,6 @@
           nzTooltipTitle="{{ 'RFP.Cancel' | translate }}" nzTooltipPlacement="bottomLeft"
           [nzTooltipArrowPointAtCenter]="true">
           <app-icon [icon]="IconList.deleteIcon"></app-icon>
-          <!-- {{ 'RFP.Cancel' | translate }} -->
         </button>
         <button nz-button nzType="default" class="mx-1" style="border-color: #fff !important; padding: 0%;"
           *ngIf="Action === 'edit' && (data.RfpStatus === 'D' || data.RfpStatus === 'R')"
@@ -68,7 +67,6 @@
           nzTooltipTitle="{{ 'RFP.Edit' | translate }}" nzTooltipPlacement="bottomLeft"
           [nzTooltipArrowPointAtCenter]="true">
           <app-icon [icon]="IconList.edit"></app-icon>
-          <!-- {{ 'RFP.Edit' | translate }} -->
         </button>
 
         <button nz-button nzType="default" *ngIf="Action === 'reopen'"
@@ -76,20 +74,33 @@
           nzTooltipTitle="{{ 'RFP.ReOpen' | translate }}" nzTooltipPlacement="bottomLeft"
           [nzTooltipArrowPointAtCenter]="true">
           <span nz-icon nzType="diff"></span>
-          <!-- {{ 'RFP.ReOpen' | translate }} -->
         </button>
+      </td>
 
-        <!--
-        &nbsp; &nbsp;
-        <button
-          nz-button
-          nzType="default"
-          *ngIf="Action === 'approve'"
-          (click)="openModel()"
-          nzSize="default"
-          nzShape="round">
-          <span nz-icon nzType="diff"></span>
-        </button> -->
+      <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+        <button nz-button nz-dropdown [nzDropdownMenu]="actionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+          <span nz-icon nzType="more" nzTheme="outline"></span>
+        </button>
+        <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="onActionClick('changeBOQ', data)">
+              <span nz-icon nzType="edit" nzTheme="outline"></span>
+              Change BOQ
+            </li>
+            <li nz-menu-item (click)="onActionClick('extendBidOpening', data)">
+              <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+              Extend Bid Opening
+            </li>
+            <li nz-menu-item (click)="onActionClick('addAttachments', data)">
+              <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+              Add More Attachments
+            </li>
+            <li nz-menu-item (click)="onActionClick('inviteCompanies', data)">
+              <span nz-icon nzType="team" nzTheme="outline"></span>
+              Invite More Companies
+            </li>
+          </ul>
+        </nz-dropdown-menu>
       </td>
 
       <!-- <td>
