@@ -656,7 +656,7 @@
 
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
               <nz-form-label nzRequired>{{ "RFP.Previous Project Number" | translate}}</nz-form-label>
-              <input nz-input placeholder="Enter Previous Project Number" formControlName="number" />
+              <input nz-input [placeholder]="'RFP.Enter Previous Project Number'" formControlName="number" />
             </div>
 
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
@@ -735,7 +735,7 @@
 
             <!-- * Prequalification Details (show only if toggle is ON) -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('prequalificationRequired')?.value">
-              <nz-form-label nzRequired>Prequalification Number</nz-form-label>
+              <nz-form-label nzRequired>{{"RFP.Prequalification Number"|translate}}</nz-form-label>
               <input nz-input placeholder="Enter Reference Number" formControlName="prequalificationDetails" />
               <small
                 *ngIf="rfpForm.controls.prequalificationDetails.touched && rfpForm.controls.prequalificationDetails.invalid"
