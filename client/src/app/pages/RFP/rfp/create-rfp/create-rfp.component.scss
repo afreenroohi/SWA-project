@@ -988,110 +988,100 @@ background: rgba(217, 83, 79, 0.08);
 // }
  
  
-  .stepper-card {
-// width: 100%;
-// background: #fff;
-// border: 1px solid #e5e5e5;
-// border-radius: 8px;
-// padding: 18px 22px;
-// box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-//   margin-top: -10px; /* Example adjustment to move it up */
-//added by essaki
-   width: 100%;
-    background: #EDEDED;
-    border: 2px solid #005bbd;
-    border-radius: 0px;
-    padding: 18px 22px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    margin-top: -10px;
+.stepper-card {
+  width: 100%;
+  background: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  margin-top: -10px;
 }
- 
-/* Keep NG-Zorro default stepper clean */
-.simple-stepper {
-width: 100%;
-}
- 
-/* Custom Stepper Styles */
+
+/* Stepper Container */
 .custom-stepper {
   width: 100%;
   padding: 20px 0;
 }
- 
+
 .stepper-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
- 
+
+/* Step Card (Square) */
 .step-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   flex: 0 0 auto;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
 }
- 
+
 .step-item.disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.4;
 }
- 
-.step-circle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background-color: #005bbd;
+
+/* Square Box */
+.step-box {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  background-color: #4a9cf3;
   border: 2px solid #005bbd;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
-  transition: all 0.3s;
+  color: #fff;
+  font-size: 22px;
+  transition: all 0.3s ease;
 }
- 
-.step-item.active .step-circle {
-  background-color: #005bbd;
-  border-color: #005bbd;
-  color: white;
+
+/* Active Step */
+.step-item.active .step-box {
+  background-color: #003d80;
+  border-color: #003d80;
+  transform: scale(1.1);
 }
- 
-.step-item.completed .step-circle {
+
+/* Completed Step */
+.step-item.completed .step-box {
   background-color: #52c41a;
   border-color: #52c41a;
-  color: white;
 }
- 
-.step-number {
-  font-size: 14px;
-  font-weight: 600;
-}
- 
+
+/* Title Below Icon */
 .step-title {
   font-size: 12px;
   text-align: center;
   max-width: 150px;
   line-height: 1.2;
-  color: #666;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #444;
 }
- 
+
 .step-item.active .step-title {
   color: #005bbd;
-  font-weight: 500;
+  font-weight: 600;
 }
- 
+
+/* Horizontal Line */
 .step-line {
   flex: 1;
   height: 2px;
-  background-color: #005bbd;
+  background-color: #b9b9b9;
   margin: 0 10px;
   margin-bottom: 24px;
 }
- 
+
 .step-line.completed {
   background-color: #52c41a;
 }
@@ -2725,4 +2715,13 @@ display: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+// Increase collapse width
+nz-collapse {
+  width: 100%  !important;
+}
+
+[dir="rtl"] nz-collapse {
+  width: calc(100% - 10px) !important;
 }
