@@ -185,7 +185,6 @@ export class RfptableComponent implements OnInit, OnChanges {
         IsRfpRddApproved : detail.IsRfpRddApproved
       },
     });
-    this.spinner.show();
   }
 
   close() {

@@ -171,64 +171,192 @@ export class RfpdetailviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    if (
-      window.history.state.Action === 'approve' ||
-      window.history.state.Action === 'review' || window.history.state.Action === 'edit' 
-    ) {
-      this.Actiondet = {
-        RfpNo: window.history.state.RfpNo,
-        RfpVersion: window.history.state.RfpVersion,
-        RfpDeptId: window.history.state.DeptId,
-        WfFlowType: window.history.state.WfFlowType,
-        CwfDept: window.history.state.CwfDept,
-        CwfApprvLevel: window.history.state.CwfApprvLevel,
-        CwfApprvRole: window.history.state.CwfApprvRole,
-        NwfApprvDept: window.history.state.NwfApprvDept,
-        NwfApprvLevel: window.history.state.NwfApprvLevel,
-        NwfApprvRole: window.history.state.NwfApprvRole,
-        NwfApprvId: window.history.state.NwfApprvId,
-        NwfDept: window.history.state.NwfDept,
-        Action: window.history.state.Action,
-        WfReqComment: window.history.state.WfReqComment,
-        IsRfpRddApproved: window.history.state.IsRfpRddApproved,
-      } as ActionDetail;
-    } 
-
-    console.log(this.Actiondet?.CwfApprvRole, 'CwfApprvRole')
-
-    if (window.history.state.RfpNo === undefined) {
+    
+    if (!window.history.state.RfpNo) {
+      this.spinner.hide();
       this.router.navigate(['rfp/myrfp']);
+      return;
     }
-    this.applyCommitmentItemAndInternalOrderToAllYearsForm.get('commitmentItem')?.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        // Clear internalOrder field
-        this.applyCommitmentItemAndInternalOrderToAllYearsForm.get('internalOrder')?.setValue(null);
-         this.spinner.show();
-        this.rfp.getInternalOrders(value).subscribe({
-          next: (res) => {
-            this.masterInternalOrder = res;
-            this.spinner.hide();
-          },
-          error: (err) => {
-            console.error('Failed to fetch internal orders', err);
-            this.masterInternalOrder = [];
-            this.spinner.hide();
-          }
-        });
-      });
 
-    this.checkIsSearchRFActive()
+    // Set dummy data for UI testing
+    this.detArray = {
+      CompetitionName: 'Water Treatment Expansion Project',
+      RfpName: window.history.state.RfpName || 'Water Treatment Expansion',
+      RfpNo: window.history.state.RfpNo || 'RFP-2024-001',
+      RfpVersion: window.history.state.RfpVersion || '1',
+      CompetitionType: 'Public Competition',
+      EstimatedCost: 5000000,
+      DeptText: 'Operations Department',
+      DeptId: '00005014',
+      CostCenter: '1000',
+      DeliveryDate: new Date(),
+      MatGrpId: 'MAT001',
+      EstmPriceWithoutVat: 1000000,
+      EstPrice: 1150000,
+      PurGrpId: 'PUR001',
+      PurGrpText: 'Procurement Group 1',
+      TecMemName: 'John Doe',
+      TecMemNamear: 'جون دو',
+      ProjDuration: '12',
+      TotTechEval: '70',
+      ProjTypeText: 'Infrastructure',
+      PurchaseType: 'R',
+      TechDocs: 'Required',
+      TechRfp: 'X',
+      ProjManpower: 'X',
+      WorkLocation: 'Riyadh, Jeddah',
+      Activity: 'Construction',
+      Subactivity: 'Water Treatment',
+      CoordinatorName: 'Ahmed Ali',
+      CoordinatorNumber: '+966501234567',
+      CoordinatorEmail: 'ahmed.ali@company.com',
+      QualfCommMemne: 'Bachelor in Engineering',
+      QualfCommMemnr: 'بكالوريوس في الهندسة',
+      ProjectContinuous: true,
+      ProjectRelaunched: false,
+      RequiresSiteVisit: true,
+      SiteVisitEmail: 'sitevisit@company.com',
+      SiteVisitContact: '+966501234568',
+      PrequalificationRequired: false,
+      FrameworkIncluded: false,
+      JustfProj: 'This project is required for water treatment expansion to meet growing demand',
+      ScopeWork: '<p>Complete water treatment facility expansion including new equipment installation</p>',
+      TechEvalWatage: '20',
+      FinEvalWatage: '80',
+      RfpStatus: 'S',
+      DocTypeId: 'DT001',
+      ExproAgrmnt: 'N',
+      UrgntRfp: 'N',
+      UrgntRfpJustf: '',
+      ReqToBoqNavg: { results: [] },
+      ReqToBudsrNavg: { results: [] },
+      ReqToQualfNavg: { results: [] },
+      ReqToFinNavg: { results: [] },
+      ReqToAttchNavg: { results: [] },
+      ReqToMpwrNavg: { results: [] },
+      ReqToWorkNavg: { results: [] },
+      ReqToTechNavg: { results: [] },
+      ReqToTreqNavg: { results: [] },
+      ReqToTmbrNavg: { results: [] },
+      ReqToPMChklstNavg: { results: [] },
+      CreatedBy: 'USER001',
+      DurationMeasure: 'M',
+      DefinitionOfCompetition: 'Water treatment facility expansion and modernization project',
+      WorkProgram: 'Phase 1: Site preparation (2 months), Phase 2: Equipment installation (6 months), Phase 3: Testing and commissioning (4 months)',
+      PlaceOfExecution: 'Main Water Treatment Plant, Industrial Area, Riyadh',
+      HowToCarryOut: 'The work will be carried out in accordance with international standards and local regulations',
+      ScopeOfWork: '<p>Complete water treatment facility expansion including new equipment installation, pipeline upgrades, and control system modernization</p>',
+      TechnicalDocuments: [
+        { DocumentNumber: 'TD-001-2024', AttchId: 'doc1' },
+        { DocumentNumber: 'TD-002-2024', AttchId: 'doc2' }
+      ],
+      Labor: 'Skilled technicians and engineers with relevant certifications required',
+      Materials: 'All materials must meet ISO standards and be approved by the project engineer',
+      Equipment: 'Heavy machinery, pumps, filtration systems, and control panels',
+      QualitySpecifications: 'All work must comply with ISO 9001:2015 quality management standards',
+      SafetySpecifications: 'X'
+    };
     
+    // Add Technical Committee Members
+    this.ReqToTmbrNavg = [
+      { TecMemName: 'Mohammed Ahmed', TecMemNameAr: 'محمد أحمد' } as any,
+      { TecMemName: 'Sara Ali', TecMemNameAr: 'سارة علي' } as any,
+      { TecMemName: 'Khalid Hassan', TecMemNameAr: 'خالد حسن' } as any
+    ];
     
-    this.getMatgp();
+    this.VATAmount = this.detArray.EstPrice - this.detArray.EstmPriceWithoutVat;
+    this.costctr = [{ CostCenter: '1000', CostCenterTxt: 'Main Cost Center' }];
+    this.durationType = { id: 'M', value: 'Months', valueAr: 'أشهر' };
+    this.rfpUserDetails = { UserId: 'USER001', RoleIdf: 'Requestor', DeptId: '00005014' } as any;
+    this.rfpRoles = ['Requestor'];
     
-    this.getITCheckList();
-    this.getQualificationList();
-    this.getRFPUserDetails();
-    this.getLoginUserDetails();
-    // this.getBudgetdeatilsIfCreated()
+    // Add dummy BOQ data
+    this.detArray.CompetitionFragmentation = true;
+    this.detArray.NoOfYears = '3';
+    this.detArray.CompetitionFragmentationItems = [
+      { Package: 'Package 1', Description: 'Civil Works', ClassificationField: 'Construction' },
+      { Package: 'Package 2', Description: 'Electrical Works', ClassificationField: 'Electrical' },
+      { Package: 'Package 3', Description: 'Mechanical Works', ClassificationField: 'Mechanical' }
+    ];
     
+    // Add dummy BOQ items grouped by year
+    this.ReqToBoqNavg = [
+      { MaterialText: 'Cement', ItemDescription: 'Portland Cement Type I', Quantity: 100, Uom: 'TON', Price: 500, budgetYear: 2024, CommItm: '', IntOrd: '' },
+      { MaterialText: 'Steel Bars', ItemDescription: 'Reinforcement Steel 16mm', Quantity: 50, Uom: 'TON', Price: 800, budgetYear: 2024, CommItm: '', IntOrd: '' },
+      { MaterialText: 'Concrete', ItemDescription: 'Ready Mix Concrete Grade 30', Quantity: 200, Uom: 'M3', Price: 350, budgetYear: 2025, CommItm: '', IntOrd: '' },
+      { MaterialText: 'Bricks', ItemDescription: 'Red Clay Bricks', Quantity: 5000, Uom: 'PCS', Price: 2, budgetYear: 2025, CommItm: '', IntOrd: '' },
+      { MaterialText: 'Paint', ItemDescription: 'Exterior Wall Paint', Quantity: 300, Uom: 'LTR', Price: 45, budgetYear: 2026, CommItm: '', IntOrd: '' }
+    ];
+    
+    this.groupBOQItemsBasedonBudgetingYears = this.ReqToBoqNavg.reduce((acc: any, item: any) => {
+      const year = item.budgetYear;
+      if (!acc[year]) acc[year] = [];
+      acc[year].push(item);
+      return acc;
+    }, {} as { [year: number]: any[] });
+    
+    // Add dummy Technical Evaluation Criteria data
+    this.ReqToTreqNavg = [
+      { ItemNo: '1', Descr: 'Valid commercial registration' } as any,
+      { ItemNo: '2', Descr: 'Valid Zakat and Tax certificate' } as any,
+      { ItemNo: '3', Descr: 'Valid GOSI certificate' } as any,
+      { ItemNo: '4', Descr: 'Financial statements for last 3 years' } as any
+    ];
+    
+    this.ReqToTechNavg = [
+      {
+        ItemNo: '1',
+        Headline: 'Technical Experience',
+        Descr: 'Previous experience in similar projects',
+        Percentage: '30',
+        expand: true,
+        TechToTechSub: [
+          { SubItemNo: '1.1', Descr: 'Number of completed projects', Percentage: '15' },
+          { SubItemNo: '1.2', Descr: 'Years of experience in the field', Percentage: '15' }
+        ]
+      },
+      {
+        ItemNo: '2',
+        Headline: 'Technical Team Qualifications',
+        Descr: 'Qualifications and certifications of technical team',
+        Percentage: '25',
+        expand: false,
+        TechToTechSub: [
+          { SubItemNo: '2.1', Descr: 'Professional certifications', Percentage: '10' },
+          { SubItemNo: '2.2', Descr: 'Educational qualifications', Percentage: '15' }
+        ]
+      },
+      {
+        ItemNo: '3',
+        Headline: 'Project Management Methodology',
+        Descr: 'Approach and methodology for project execution',
+        Percentage: '20',
+        expand: false,
+        TechToTechSub: []
+      },
+      {
+        ItemNo: '4',
+        Headline: 'Quality Assurance',
+        Descr: 'Quality control and assurance procedures',
+        Percentage: '15',
+        expand: false,
+        TechToTechSub: []
+      },
+      {
+        ItemNo: '5',
+        Headline: 'Safety Standards',
+        Descr: 'Safety measures and compliance',
+        Percentage: '10',
+        expand: false,
+        TechToTechSub: []
+      }
+    ] as any;
+    
+    this.detArray.TotTechEval = 70;
+    this.detArray.FinEvalWatage = 80;
+    this.detArray.TechEvalWatage = 20;
+    
+    this.spinner.hide();
   }
 
 
@@ -591,6 +719,10 @@ getRFPUserDetails(){
   durationType: any;
   setDetails() {
     if (this.detArray) {
+      // Initialize TechnicalDocuments if not present
+      if (!this.detArray.TechnicalDocuments) {
+        this.detArray.TechnicalDocuments = [];
+      }
       
       this.commitmentItem = this.detArray.CommitmentItem;
       this.getInternalOrders();

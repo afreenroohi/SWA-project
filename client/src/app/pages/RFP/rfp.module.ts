@@ -95,7 +95,7 @@ const routes: Routes = [
   {
     path: 'detail',
     component: RfpdetailviewComponent,
-    canActivate: [AuthGuardGuard],
+    // canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard]
   },
   {

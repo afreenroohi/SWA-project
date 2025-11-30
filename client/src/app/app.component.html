@@ -104,19 +104,25 @@
           <div class="logo-container" [class.collapsed]="isCollapsed">
             <a href="/">
               <img *ngIf="!isCollapsed" [src]="logoSrc" width="220px" height="77px" alt="logo" />
-              <img *ngIf="isCollapsed" src="./assets/logo/swa-header-logo.svg" width="65px" height="77px" alt="logo" />
+              <img *ngIf="isCollapsed" src="./assets/logo/swa-header-logo.svg" width="70px" height="77px" alt="logo" />
             </a>
           </div>
           &nbsp; &nbsp;
-          <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')" >
+          <!-- <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')" >
             <span> English</span>
           </button>
           
  
           <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'en'" (click)="onChangeLang('ar')" [class.hide-on-mobile-open]="!isCollapsed">
             <span> العربیة </span> &nbsp; &nbsp;
-          </button>
- 
+          </button> -->
+<div class="lang-toggle" (click)="toggleLang()">
+  <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
+
+  <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
+  <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
+</div>
+
           &nbsp; &nbsp;
  
           <div *ngIf="enableTestLogon" class="test-login-container">
