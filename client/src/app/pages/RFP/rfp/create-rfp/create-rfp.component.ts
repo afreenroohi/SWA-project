@@ -910,6 +910,8 @@ deleteCriteria(index: number) {
   trackByIndex(index: number, item: any): number {
     return index;
   }
+  isFacilityActivity = false;
+
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
@@ -997,6 +999,7 @@ toggleExpand(index: number): void {
 
     if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===');
+      this.isFacilityActivity = true;
 
       // Force toggle ON and make it read-only
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
@@ -1008,6 +1011,8 @@ toggleExpand(index: number): void {
       prequalDetails?.setValidators([Validators.required]);
       prequalDetails?.updateValueAndValidity();
     } else {
+      this.isFacilityActivity = false;
+      
       // Allow toggle again and clear required validator
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
