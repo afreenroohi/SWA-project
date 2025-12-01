@@ -53,7 +53,13 @@ type FormOption = {
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
+  showUrgent:boolean = false;
+  showExcept:boolean = false;
+  showConsultative:boolean = false;
   showEmergencyDocs: boolean = false;
+  showGovernmentDocs: boolean = false;
+  showSupplierDocs: boolean = false;
+  showSensitiveDocs: boolean = false;
   step:number=0;
   //showScope=false;
   directCompetitionId: any = null;
@@ -101,9 +107,9 @@ export class CreateRFPComponent implements OnInit {
 
   limitedOptions = [
     // { value: 'below500k', label: 'Less than 500k' },
-    { value: 'urgent​', label: 'Urgent​' },
+    { value: 'urgent', label: 'Urgent' },
     { value: 'Except', label: 'Except' },
-    { value: 'Consultative​', label: 'Consultative​' }
+    { value: 'Consultative​', label: 'Consultative' }
   ];
 
   // threshold constant
@@ -1327,7 +1333,7 @@ buildMainFormGroup(): void {
     prequalificationRequired: [false, [Validators.required]],
     qualificationReference: [''],
     qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(20)]],
+    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
     dividedIntoLots: [false, [Validators.required]],
     contractDuration: ['', [Validators.required]],
     MatGrpId: ['', [Validators.required]],
@@ -1541,6 +1547,14 @@ buildMainFormGroup(): void {
     // Direct purchase change listener
   this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
     this.showEmergencyDocs = value === 'Emergency';
+    this.showGovernmentDocs = value === 'GovernmentToG';
+    this.showSupplierDocs = value === 'oneSupplier';
+    this.showSensitiveDocs = value === 'sensitiveSecurity';
+  });
+  this.rfpForm.get('limitedType')?.valueChanges.subscribe(value => {
+    this.showUrgent = value === 'urgent';
+    this.showExcept = value === 'Except';
+    this.showConsultative= value === 'Consultative';
   });
   }
 
@@ -1633,6 +1647,9 @@ buildMainFormGroup(): void {
    onDirectPurchaseEmergency(value: any) {
   // Example: show only when user selects "cancel"
   this.showEmergencyDocs = value === 'Emergency';  
+  this.showGovernmentDocs = value === 'GovernmentToG';
+   this.showSupplierDocs = value === 'oneSupplier';
+    this.showSensitiveDocs = value === 'sensitiveSecurity';
 }
  
 get technicalDocs(): FormArray {
@@ -1704,6 +1721,14 @@ get progressWidth(): number {
     const costCtrl = this.rfpForm.get('estimatedCost')!;
     this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
     this.showEmergencyDocs = value === 'Emergency';   // <-- check actual value!
+    this.showGovernmentDocs = value === 'GovernmentToG';
+     this.showSupplierDocs = value === 'oneSupplier';
+    this.showSensitiveDocs = value === 'sensitiveSecurity';
+  });
+    this.rfpForm.get('limitedType')?.valueChanges.subscribe(value => {
+    this.showUrgent = value === 'urgent';
+    this.showExcept = value === 'Except';
+    this.showConsultative= value === 'Consultative';
   });
 
     compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))

@@ -278,6 +278,25 @@
                 <nz-option *ngFor="let o of limitedOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
               </nz-select>
             </div>
+             <!--Emergency -->
+            <div class="col-4 my-1 " *ngIf="showUrgent || showConsultative || showExcept" >
+              <nz-form-label nzRequired>{{ "RFP.Emergency documents" | translate }}</nz-form-label>  
+              <div class="upload-row" >
+    <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
+      nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box-emergency ">
+      <div class="upload-inline-content-emergency ">
+        <i nz-icon nzType="upload" class="upload-inline-icon-emergency "></i>
+        <span class="upload-inline-text-emergency">Click or drag to upload files</span>
+      </div>
+    </nz-upload>
+ 
+    <button nz-button nzType="default" nzShape="circle" class="trash-btn-emergency">
+      <i nz-icon nzType="delete"></i>
+    </button>
+    </div>
+ 
+</div>
+
 
             <!-- * Direct Purchase -->
             <!-- <div class="col-4 my-1" *ngIf="showDirectPurchaseField">
@@ -298,7 +317,7 @@
              
             </div>
             <!--Emergency -->
-            <div class="col-4 my-1 " *ngIf="showEmergencyDocs" >
+            <div class="col-4 my-1 " *ngIf="showEmergencyDocs || showGovernmentDocs || showSupplierDocs || showSensitiveDocs" >
               <nz-form-label nzRequired>{{ "RFP.Emergency documents" | translate }}</nz-form-label>  
               <div class="upload-row" >
     <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
