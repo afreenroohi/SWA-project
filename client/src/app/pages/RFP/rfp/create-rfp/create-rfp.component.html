@@ -238,6 +238,11 @@
               <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
               <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate" formControlName="competitionName" />
               <small
+                *ngIf="rfpForm.controls.competitionName.touched && rfpForm.controls.competitionName.hasError('required') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.FieldIsRequired' | translate }}
+              </small>
+              <small
                 *ngIf="rfpForm.controls.competitionName.touched && rfpForm.controls.competitionName.hasError('maxlength') "
                 style="margin-top: 8px; color: red">
                 {{ 'RFP.Max of 20 Characters' | translate }}

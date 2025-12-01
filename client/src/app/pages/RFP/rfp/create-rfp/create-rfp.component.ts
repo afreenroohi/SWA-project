@@ -1333,7 +1333,7 @@ buildMainFormGroup(): void {
     prequalificationRequired: [false, [Validators.required]],
     qualificationReference: [''],
     qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    competitionName: ['', [Validators.required, Validators.maxLength(20)]],
     dividedIntoLots: [false, [Validators.required]],
     contractDuration: ['', [Validators.required]],
     MatGrpId: ['', [Validators.required]],
