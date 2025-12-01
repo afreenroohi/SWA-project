@@ -75,7 +75,7 @@
             <span nz-icon nzType="delete"></span>
           </button>
           <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn mt-3"
-            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" >
+            [disabled]="subCriteria.invalid" (click)="addSubCriteria()">
             <span nz-icon nzType="plus"></span>
           </button>
         </ng-container>
@@ -98,84 +98,86 @@
 
 <!-- <ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
 <!-- <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#1fcecb" type="line-scale"></ngx-spinner> -->
- <ngx-spinner bdColor = "rgb(25,113,229)" size = "default" color = "#1fcecb" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
-<div class="col-12">
+<ngx-spinner bdColor="rgb(25,113,229)" size="default" color="#1fcecb" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="col-12" style="max-width: 100%; width: 100%;">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
       <!-- <p class="create_rfp_head" style="margin-left: 20px;">{{ "RFP.NewRFP" | translate }}</p> -->
-       <div class="rfp-header-box">
-  <div class="rfp-header-content">
-    <i nz-icon nzType="file-add" nzTheme="outline" class="rfp-header-icon"></i>
+      <div class="rfp-header-box">
+        <div class="rfp-header-content">
+          <i nz-icon nzType="file-add" nzTheme="outline" class="rfp-header-icon"></i>
 
-    <div>
-      <h1 class="rfp-header-title">{{ "RFP.NewRFP" | translate }}</h1>
-    </div>
-  </div>
-</div>
-<div class="stepper-card mt-4" style="margin-left: 20px;">
-  <div class="custom-stepper">
-    <div class="stepper-container">
-
-      <!-- Step 1 -->
-      <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
-        <div class="step-box">
-          <i nz-icon nzType="info-circle" style="font-size: 28px;"></i>
+          <div>
+            <h1 class="rfp-header-title">{{ "RFP.NewRFP" | translate }}</h1>
+          </div>
         </div>
-        <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
       </div>
+      <div class="stepper-card mt-4">
+        <div class="custom-stepper">
+          <div class="stepper-container">
 
-      <div class="step-line" [class.completed]="step > 0"></div>
+            <!-- Step 1 -->
+            <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
+              <div class="step-box">
+                <i nz-icon nzType="info-circle" style="font-size: 28px;"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
+            </div>
 
-      <!-- Step 2 -->
-      <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" (click)="goto(1)">
-        <div class="step-box">
-          <i nz-icon nzType="file-done" style="font-size: 28px;"></i>
+            <div class="step-line" [class.completed]="step > 0"></div>
+
+            <!-- Step 2 -->
+            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" (click)="goto(1)">
+              <div class="step-box">
+                <i nz-icon nzType="file-done" style="font-size: 28px;"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
+            </div>
+
+            <div class="step-line" [class.completed]="step > 1"></div>
+
+            <!-- Step 3 -->
+            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" (click)="goto(2)">
+              <div class="step-box">
+                <i nz-icon nzType="profile" style="font-size: 28px;"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
+            </div>
+
+            <div class="step-line" [class.completed]="step > 2"></div>
+
+            <!-- Step 4 -->
+            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" (click)="goto(3)">
+              <div class="step-box">
+                <i nz-icon nzType="database" style="font-size: 28px;"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
+            </div>
+
+            <div class="step-line" [class.completed]="step > 3"></div>
+
+            <!-- Step 5 -->
+            <div class="step-item" [class.active]="step === 4">
+              <div class="step-box">
+                <i nz-icon nzType="paper-clip" style="font-size: 28px;"></i>
+              </div>
+              <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
+            </div>
+
+          </div>
         </div>
-        <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
       </div>
-
-      <div class="step-line" [class.completed]="step > 1"></div>
-
-      <!-- Step 3 -->
-      <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" (click)="goto(2)">
-        <div class="step-box">
-          <i nz-icon nzType="profile" style="font-size: 28px;"></i>
-        </div>
-        <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
-      </div>
-
-      <div class="step-line" [class.completed]="step > 2"></div>
-
-      <!-- Step 4 -->
-      <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" (click)="goto(3)">
-        <div class="step-box">
-          <i nz-icon nzType="database" style="font-size: 28px;"></i>
-        </div>
-        <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
-      </div>
-
-      <div class="step-line" [class.completed]="step > 3"></div>
-
-      <!-- Step 5 -->
-      <div class="step-item" [class.active]="step === 4">
-        <div class="step-box">
-          <i nz-icon nzType="paper-clip" style="font-size: 28px;"></i>
-        </div>
-        <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 
 
 
       <!-- * Create RFP  id="basicInfo"-->
-      <nz-collapse  *ngIf=showBasicInfo [nzExpandIconPosition]="expandIconPosition" class="mt-4 w-100" style="margin-left: 20px;">
+      <nz-collapse *ngIf=showBasicInfo [nzExpandIconPosition]="expandIconPosition" class="mt-4 collapse-margin" style="width: 100%; max-width: none;">
         <nz-collapse-panel [nzActive]="basicInfoActive" nzHeader="{{ 'RFP.Basic Information' | translate }}">
           <!-- "{{ 'RFP.Create RFP' | translate }}"  -->
-          <div class="row w-100 my-2">
+          <div class="row my-2" style="width: 100%; max-width: none; margin: 0;">
 
             <!-- * Type of project -->
             <!-- <div class="col-4 my-1">
@@ -192,7 +194,7 @@
               </nz-form-control>
             </div> -->
             <!-- * Type of Competition -->
-<!-- <div class="tech-info-row">
+            <!-- <div class="tech-info-row">
 
   <div class="tech-info-text-with-icon">
     
@@ -218,10 +220,11 @@
   </div>
 
 </div> -->
- <!-- * Competition Name -->
+            <!-- * Competition Name -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate" formControlName="competitionName" />
+              <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate"
+                formControlName="competitionName" />
             </div>
 
             <div class="col-4 my-1">
@@ -241,7 +244,8 @@
             <!-- * Estimated Cost -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
-              <input nz-input type="number" [placeholder]="'RFP.Estimated_Cost'| translate" formControlName="estimatedCost" />
+              <input nz-input type="number" [placeholder]="'RFP.Estimated_Cost'| translate"
+                formControlName="estimatedCost" />
               <small
                 *ngIf="rfpForm.controls.estimatedCost.touched && rfpForm.controls.estimatedCost.hasError('required') "
                 style="margin-top: 8px; color: red">
@@ -252,7 +256,7 @@
                 100K SAR</small>
               <small *ngIf="showLimitedField" style="margin-top: 8px; color: #1890ff">Estimated cost is more than 500K
                 SAR</small>
-                <small *ngIf="showErrorField" style="margin-top: 8px; color: #d71a05">Values Must not be Negative or Zero
+              <small *ngIf="showErrorField" style="margin-top: 8px; color: #d71a05">Values Must not be Negative or Zero
                 SAR</small>
 
               <!-- Max Value Validation -->
@@ -262,7 +266,7 @@
               </small>
             </div>
 
-            
+
 
             <!-- * Limited Competition -->
             <div class="col-4 my-1" *ngIf="showLimitedField">
@@ -281,33 +285,33 @@
               </nz-select>
             </div> -->
             <div class="col-4 my-1" *ngIf="showDirectPurchaseField">
-             
+
               <nz-form-label nzRequired for="directType">{{ "RFP.Direct Purchase" | translate }}</nz-form-label>
-             
+
               <nz-select (ngModelChange)="onDirectPurchaseChange($event)" formControlName="directPurchaseType"
                 style="width: 100%">
                 <nz-option *ngFor="let o of directPurchaseOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
               </nz-select>
-             
+
             </div>
             <!--Emergency -->
-            <div class="col-4 my-1 " *ngIf="showEmergencyDocs" >
-              <nz-form-label nzRequired>{{ "RFP.Emergency documents" | translate }}</nz-form-label>  
-              <div class="upload-row" >
-    <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
-      nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box-emergency ">
-      <div class="upload-inline-content-emergency ">
-        <i nz-icon nzType="upload" class="upload-inline-icon-emergency "></i>
-        <span class="upload-inline-text-emergency">Click or drag to upload files</span>
-      </div>
-    </nz-upload>
- 
-    <button nz-button nzType="default" nzShape="circle" class="trash-btn-emergency">
-      <i nz-icon nzType="delete"></i>
-    </button>
-    </div>
- 
-</div>
+            <div class="col-4 my-1 " *ngIf="showEmergencyDocs">
+              <nz-form-label nzRequired>{{ "RFP.Emergency documents" | translate }}</nz-form-label>
+              <div class="upload-row">
+                <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
+                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box-emergency ">
+                  <div class="upload-inline-content-emergency ">
+                    <i nz-icon nzType="upload" class="upload-inline-icon-emergency "></i>
+                    <span class="upload-inline-text-emergency">Click or drag to upload files</span>
+                  </div>
+                </nz-upload>
+
+                <button nz-button nzType="default" nzShape="circle" class="trash-btn-emergency">
+                  <i nz-icon nzType="delete"></i>
+                </button>
+              </div>
+
+            </div>
 
 
             <!-- * Invite -->
@@ -371,7 +375,7 @@
 
               <div formArrayName="crNumber" class="cr-number-container">
 
-                <div *ngFor="let ctrl of crNumberArray.controls; let i = index; trackBy: trackByIndex"
+                <div  *ngFor="let ctrl of crNumberArray.controls; let i = index; trackBy: trackByIndex"
                   class="cr-number-item" [formGroupName]="i">
                   <input nz-input formControlName="crNumber" placeholder="Enter CR Number" class="cr-input" />
                   <input nz-input formControlName="companyName" placeholder="Enter Company Name" class="cr-input" />
@@ -439,7 +443,7 @@
               </nz-select>
             </div> -->
 
-           
+
 
 
 
@@ -532,8 +536,8 @@
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Activity" | translate }}</nz-form-label>
               <nz-form-control>
-                <nz-select formControlName="activity" [nzPlaceHolder]="'RFP.Select Activity'|translate" style="width: 100%" nzAllowClear
-                  (ngModelChange)="onActivityChange($event)">
+                <nz-select formControlName="activity" [nzPlaceHolder]="'RFP.Select Activity'|translate"
+                  style="width: 100%" nzAllowClear (ngModelChange)="onActivityChange($event)">
                   <nz-option *ngFor="let o of activityList" [nzValue]="o.id"
                     [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
                 </nz-select>
@@ -544,8 +548,8 @@
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Subactivity" | translate }}</nz-form-label>
               <nz-form-control>
-                <nz-select formControlName="subactivity" [nzPlaceHolder]="'RFP.Select Subactivity'|translate" style="width: 100%"
-                  nzAllowClear [disabled]="!filteredSubactivities.length">
+                <nz-select formControlName="subactivity" [nzPlaceHolder]="'RFP.Select Subactivity'|translate"
+                  style="width: 100%" nzAllowClear [disabled]="!filteredSubactivities.length">
                   <nz-option *ngFor="let o of filteredSubactivities" [nzValue]="o.id"
                     [nzLabel]="cs.userLanguage === 'en' ? o.name : o.nameAr"></nz-option>
                 </nz-select>
@@ -555,19 +559,22 @@
             <!-- *coordinator name -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator name" | translate }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Cordinator Name'| translate" formControlName="coordinatorName" />
+              <input nz-input [placeholder]="'RFP.Enter Cordinator Name'| translate"
+                formControlName="coordinatorName" />
             </div>
 
             <!-- * coordinator number -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator number" | translate }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Cordinator Number'|translate" formControlName="coordinatorNumber" />
+              <input nz-input [placeholder]="'RFP.Enter Cordinator Number'|translate"
+                formControlName="coordinatorNumber" />
             </div>
 
             <!-- * coordinator email -->
             <div class="col-4 my-1">
               <nz-form-label>{{ "RFP.coordinator email" | translate }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Cordinator Email'|translate" formControlName="coordinatorEmail" />
+              <input nz-input [placeholder]="'RFP.Enter Cordinator Email'|translate"
+                formControlName="coordinatorEmail" />
             </div>
 
             <!-- * Technical Committee Members -->
@@ -576,7 +583,7 @@
                 {{ "RFP.Technical Committee Members" | translate }}
               </nz-form-label>
 
-              <table class="table table-bordered technical-table">
+              <table class="table table-bordered technical-table" style="width: 100%; max-width: none;">
                 <thead>
                   <tr>
                     <th>{{"RFP.Role"|translate}}</th>
@@ -590,7 +597,7 @@
                 <tbody formArrayName="members">
                   <tr *ngFor="let member of members.controls; let i = index" [formGroupName]="i">
                     <td>
-                      <input nz-input formControlName="role" [disabled]="i < 3"  placeholder="Committee Member" />
+                      <input nz-input formControlName="role" [disabled]="i < 3" placeholder="Committee Member" />
                     </td>
                     <td>
                       <input nz-input formControlName="name" [placeholder]="'RFP.Enter Name'|translate" />
@@ -662,9 +669,9 @@
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
               <nz-form-label nzRequired>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
 
-              <div class="upload-row">
+              <div class="upload-row d-flex align-items-center gap-2">
                 <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
-                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box">
+                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box flex-grow-1">
                   <div class="upload-inline-content">
                     <i nz-icon nzType="upload" class="upload-inline-icon"></i>
                     <span class="upload-inline-text">Click or drag files to upload</span>
@@ -1040,13 +1047,13 @@
                 Save As Draft
               </button> -->
 
-              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()"
-                [disabled]="!basicInfoValid">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default"
+                (click)="saveAsDraft()" [disabled]="!basicInfoValid">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
 
-              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinue()"
-                [disabled]="!basicInfoValid">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default"
+                (click)="saveAndContinue()" [disabled]="!basicInfoValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
@@ -1438,9 +1445,9 @@
       </nz-collapse>
 
       <!-- Scope of Work *ngIf="showScopeOfWork"-->
-      <nz-collapse id="scopeOfWork" *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
+      <nz-collapse id="scopeOfWork" *ngIf="showScopeOfWork" [nzExpandIconPosition]="expandIconPosition" class="mt-4 collapse-margin" style="width: 100%; max-width: none;">
         <nz-collapse-panel [nzActive]="scopeOfWorkActive" nzHeader="{{ 'RFP.SCOPE OF WORK' | translate }}">
-          <div class="row w-100">
+          <div class="row" style="width: 100%; max-width: none; margin: 0;">
 
 
             <!-- <div class="col-3 mt-3">
@@ -1521,7 +1528,7 @@
                 <nz-form-label class="bold-label" nzRequired for="ProjJust">
                   {{ "RFP.Work program" | translate }}</nz-form-label>
               </div>
-              <nz-form-control >
+              <nz-form-control>
                 <textarea rows="4" nz-input formControlName="ProjJust" class="enhanced-textarea"></textarea>
 
                 <small *ngIf="
@@ -1587,51 +1594,42 @@
             </div>
             <!--Tech Document-->
             <div class="col-md-12 col-12 my-1">
-  <nz-form-label class="bold-label" nzRequired for="technicalDocs">
-    {{ "RFP.Technical Documents" | translate }}
-  </nz-form-label>
- 
-  <table class="table table-bordered technical-table mt-3">
-    <thead>
-      <tr>
-        <th>الرقم / Serial Number</th>
-        <th>رقم المستند / Document Number</th>
-        <th>Action</th>
-      </tr>
-    </thead>
- 
-    <tbody formArrayName="technicalDocs">
-      <tr *ngFor="let doc of technicalDocs.controls; let i = index" [formGroupName]="i">
-        <td>{{ i + 1 }}</td>
- 
-        <td>
-          <input nz-input formControlName="documentNumber" placeholder="Enter document number" />
-        </td>
- 
-        <td class="text-center">
-          <ng-container *ngIf="i === technicalDocs.length - 1">
-            <i
-              nz-icon
-              nzType="plus-circle"
-              nzTheme="outline"
-              class="add-icon mx-1"
-              (click)="addTechnicalDoc(i)">
-            </i>
- 
-            <i
-              nz-icon
-              nzType="delete"
-              nzTheme="outline"
-              class="delete-icon mx-1"
-              *ngIf="technicalDocs.length > 1"
-              (click)="deleteTechnicalDoc(i)">
-            </i>
-          </ng-container>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+              <nz-form-label class="bold-label" nzRequired for="technicalDocs">
+                {{ "RFP.Technical Documents" | translate }}
+              </nz-form-label>
+
+              <table class="table table-bordered technical-table mt-3">
+                <thead>
+                  <tr>
+                    <th>الرقم / Serial Number</th>
+                    <th>رقم المستند / Document Number</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody formArrayName="technicalDocs">
+                  <tr *ngFor="let doc of technicalDocs.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+
+                    <td>
+                      <input nz-input formControlName="documentNumber" placeholder="Enter document number" />
+                    </td>
+
+                    <td class="text-center">
+                      <ng-container *ngIf="i === technicalDocs.length - 1">
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
+                          (click)="addTechnicalDoc(i)">
+                        </i>
+
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1"
+                          *ngIf="technicalDocs.length > 1" (click)="deleteTechnicalDoc(i)">
+                        </i>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -1772,7 +1770,8 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Quality specifications" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Quality specifications" | translate
+                  }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertQualityText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1790,7 +1789,8 @@
 
             <div class="col-md-12 col-12 my-1">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Safety specifications" | translate }}</nz-form-label>
+                <nz-form-label class="bold-label" nzRequired for="SOP">{{ "RFP.Safety specifications" | translate
+                  }}</nz-form-label>
                 <button nz-button nzType="primary" class="btn-review-text" (click)="insertSafetyText()">
                   <span nz-icon nzType="eye" nzTheme="outline"></span>
                   Make the default text
@@ -1807,11 +1807,12 @@
           </div>
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
-              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default"
+                (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueScope()"
-                [disabled]="!scopeOfWorkValid">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default"
+                (click)="saveAndContinueScope()" [disabled]="!scopeOfWorkValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
@@ -1820,48 +1821,49 @@
       </nz-collapse>
 
       <!-- Standards *ngIf="showStandards"-->
-      <nz-collapse id="standards"   [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
-        <nz-collapse-panel [(nzActive)]="standardsActive" nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
+      <nz-collapse id="standards" [nzExpandIconPosition]="expandIconPosition" class="mt-4 collapse-margin" style="width: 100%; max-width: none;">
+        <nz-collapse-panel [(nzActive)]="standardsActive"
+          nzHeader="{{ 'RFP.Technical Evaluation Criteria' | translate }}">
           <div class="tech-info-row">
- 
+
             <div class="tech-info-text-with-icon">
 
               {{'RFP.Kindly specifies the criteria for evaluating the offers'|translate}}
-                <div class="tooltip-wrapper">
+              <div class="tooltip-wrapper">
                 <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
                 </i>
- 
+
                 <!-- Tooltip shown on hover -->
                 <div class="custom-tooltip">
                   <ul class="tooltip-list">
-                    <li>{{'RFP.All basic criteria must be met for the competitor to be evaluated on the technical criteria.'|translate}}
+                    <li>{{'RFP.All basic criteria must be met for the competitor to be evaluated on the technical
+                      criteria.'|translate}}
                     </li>
-                   
+
                   </ul>
                 </div>
               </div>
- 
+
             </div>
- 
+
           </div>
- 
- 
- 
+
+
+
           <!-- ===================== TECHNICAL REQUIREMENTS ===================== -->
-<div class="row w-100 mb-4">
+          <div class="row mb-4" style="width: 100%; max-width: none; margin: 0;">
             <div formGroupName="TechReq" class="row align-items-start">
- 
+
               <!-- ItemNo column -->
               <div class="col-2">
                 <nz-form-label nzRequired for="qslNo">{{ "RFP.slNo" | translate }}</nz-form-label>
                 <input nz-input formControlName="ItemNo" />
-                <small
-                  *ngIf="rfpForm.get('RfpTreq.ItemNo')?.touched &&
+                <small *ngIf="rfpForm.get('RfpTreq.ItemNo')?.touched &&
        rfpForm.get('RfpTreq.ItemNo')?.invalid">
                   {{ "RFP.FieldIsRequired" | translate }}
                 </small>
               </div>
- 
+
               <!-- Description input column (takes remaining space) -->
               <div class="col">
                 <nz-form-label nzRequired for="qDes">
@@ -1873,11 +1875,11 @@
                   <!-- Add button sits to the right of the input -->
                   <button nz-button nzSize="default" class="btn-add" [disabled]="rfpForm.controls.TechReq.invalid"
                     (click)="addTechReq('add')" title="Add">
-                     <i nz-icon nzType="plus" nzTheme="outline" style="font-size: 20px;"></i>
- 
+                    <i nz-icon nzType="plus" nzTheme="outline" style="font-size: 20px;"></i>
+
                   </button>
                 </div>
- 
+
                 <small
                   *ngIf="rfpForm.controls.TechReq.get('Descr')?.touched && rfpForm.controls.TechReq.get('Descr')?.errors?.required">
                   {{ "RFP.FieldIsRequired" | translate }}
@@ -1888,33 +1890,38 @@
               </div>
             </div>
           </div>
- 
- 
+
+
           <!-- <hr class="seperationLine" /> -->
- 
+
           <nz-table #nzTable [nzFrontPagination]="false" *ngIf="TechReqListData" [nzData]="TechReqListData"
-            nzBordered="true" style="margin-top: 2%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" class="table table-bordered technical-table mt-3">
+            nzBordered="true" style="margin-top: 2%" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}"
+            class="table table-bordered technical-table mt-3">
             <thead>
               <tr>
-                <th  style="background-color: #1f4e79; color: white; text-align: center; width: 80px;">{{"RFP.Sl.No"|translate}}.</th>
-                <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Key Assessment Criteria"|translate}}</th>
-                <th style="background-color: #1f4e79; color: white; text-align: center; width:130px;">{{"RFP.Pass/Fail"|translate}}</th>
-                <th style="background-color: #1f4e79; color: white; text-align: center; width:120px;">{{"RFP.Action"|translate}}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center; width: 80px;">
+                  {{"RFP.Sl.No"|translate}}.</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Key Assessment
+                  Criteria"|translate}}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center; width:130px;">
+                  {{"RFP.Pass/Fail"|translate}}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center; width:120px;">
+                  {{"RFP.Action"|translate}}</th>
               </tr>
             </thead>
- 
+
             <tbody style="background: white">
               <ng-container *ngFor="let data of nzTable.data; index as i">
                 <!-- Normal row -->
                 <tr>
                   <td style="text-align: center;" class="text-center">{{ i + 1 }}</td>
- 
+
                   <!-- Key assessment criteria -->
                   <td style="text-align: center;">
                     <!-- show description, prevent overflow -->
                     <div class="tech-key-criteria">{{ data?.Descr }}</div>
                   </td>
- 
+
                   <!-- Pass / Fail: adapt you may have boolean or string -->
                   <td style="text-align: center;" class="text-center">
                     <ng-container *ngIf="data?.PassFail !== undefined">
@@ -1922,27 +1929,27 @@
                         {{ data.PassFail ? 'Pass' : 'Fail' }}
                       </span>
                     </ng-container>
- 
+
                     <!-- fallback if no PassFail property exist -->
                     <ng-container *ngIf="data?.PassFail === undefined">
                       <span class="pass-fail-placeholder">Basic Requirements</span>
                     </ng-container>
                   </td>
- 
+
                   <!-- Actions -->
                   <td class="text-center">
-                    <button nz-button nzType="default" nzSize="small" (click)="removeTechReq(i + 1)" title="Delete" class="action-btn delete-btn"
-                      class="me-2 action-btn">
+                    <button nz-button nzType="default" nzSize="small" (click)="removeTechReq(i + 1)" title="Delete"
+                      class="action-btn delete-btn" class="me-2 action-btn">
                       <i nz-icon nzType="delete" nzTheme="outline"></i>
                     </button>
- 
-                    <button nz-button nzType="default" nzSize="small" (click)="editTechReq(i)" title="Edit" class="action-btn edit-btn"
-                      class="action-btn">
+
+                    <button nz-button nzType="default" nzSize="small" (click)="editTechReq(i)" title="Edit"
+                      class="action-btn edit-btn" class="action-btn">
                       <i nz-icon nzType="edit" nzTheme="outline"></i>
                     </button>
                   </td>
                 </tr>
- 
+
                 <!-- Your existing edit row (keeps same behaviour) -->
                 <tr *ngIf="TechReqListData.length != 0 && i == techReqEditIndex && showEditTechReq">
                   <td colspan="4" formGroupName="TechReqEdit" style="background: #f1f1f1; padding: 3%">
@@ -1955,7 +1962,7 @@
                           {{ "RFP.FieldIsRequired" | translate }}
                         </small>
                       </div>
- 
+
                       <div class="col-10">
                         <nz-form-label nzRequired for="qDes">{{ "RFP.Des" | translate }}</nz-form-label>
                         <input nzAutosize rows="2" nz-input formControlName="Descr" />
@@ -1968,7 +1975,7 @@
                         </small>
                       </div>
                     </div>
- 
+
                     <div class="mt-3">
                       <button [disabled]="rfpForm.controls.TechReqEdit.invalid" nz-button nzType="primary"
                         nzSize="default" (click)="saveEditTechReq()">
@@ -1980,33 +1987,34 @@
               </ng-container>
             </tbody>
           </nz-table>
- 
- 
+
+
           <!-- ===================== EVALUATION CRITERIA ===================== -->
           <!-- <hr class="seperationLine w-98 mb-2" /> -->
           <div class="tech-info-row mt-2">
- 
+
             <div class="tech-info-text-with-icon">
               {{"RFP.Evaluation and analysis of offer"|translate}}
 
               <div class="tooltip-wrapper">
                 <i nz-icon nzType="info-circle" nzTheme="fill" class="tech-icon-inline trigger-icon">
                 </i>
- 
+
                 <!-- Tooltip shown on hover -->
                 <div class="custom-tooltip">
                   <ul class="tooltip-list">
-                    <li>{{"RFP.The Evaluation and analysis of the offers will be based on following elements"|translate}}
-                    .</li>
+                    <li>{{"RFP.The Evaluation and analysis of the offers will be based on following
+                      elements"|translate}}
+                      .</li>
                   </ul>
                 </div>
               </div>
             </div>
- 
+
           </div>
- 
- 
-          <div class="row w-100 mt-2">
+
+
+          <div class="row mt-2" style="width: 100%; max-width: none; margin: 0;">
             <div class="row mt-1">
               <div class="col-md-4">
                 <nz-form-label nzRequired>{{ "RFP.TechEvalCritTot" | translate }}</nz-form-label>
@@ -2014,14 +2022,14 @@
                   <nz-input-number nz-input formControlName="TotTechEval" style="width: 100%" [nzMin]="1" [nzMax]="100"
                     [nzDisabled]="true">
                   </nz-input-number>
- 
+
                   <small *ngIf="rfpForm.controls.TotTechEval.touched && rfpForm.controls.TotTechEval.invalid"
                     style="margin-top: 8px; color: red">
                     {{ "RFP.FieldIsRequired" | translate }}
                   </small>
                 </nz-form-control>
               </div>
- 
+
               <!-- <div class="col d-flex justify-content-fx-start posr-t-2 gap-2">
           <button [disabled]="!editTotTechEval" nz-button nzType="primary" nzSize="default" (click)="handleTotTechEvalEdit(false)">
             <span>{{ "contract.buttons.Save" | translate }}</span>
@@ -2032,16 +2040,20 @@
         </div> -->
             </div>
           </div>
- 
-          <table class="table table-bordered technical-table mt-3">
+
+          <table class="table table-bordered technical-table mt-3" style="width: 100%; max-width: none;">
             <thead>
               <tr>
-                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.slNo" | translate }}</th>
-                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Headline" | translate }}</th>
-                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Weightage" | translate }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.slNo" | translate }}
+                </th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Headline" | translate
+                  }}</th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.Weightage" | translate
+                  }}</th>
                 <!-- <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.AreThereSubCriteria" | translate }}</th> -->
                 <!-- <th style="background-color: #1f4e79; color: white; text-align: center;">{{ "RFP.TechEvalDecr" | translate }}</th> -->
-                <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Action"|translate}} </th>
+                <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Action"|translate}}
+                </th>
               </tr>
             </thead>
             <tbody formArrayName="evalCriteriaItems">
@@ -2049,7 +2061,8 @@
                 <tr [formGroupName]="i">
                   <td style="text-align: center;">{{ i + 1 }}</td>
                   <td><input nz-input formControlName="Headline" placeholder="Enter headline" /></td>
-                  <td><nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100" [nzStep]="1"></nz-input-number></td>
+                  <td><nz-input-number style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="100"
+                      [nzStep]="1"></nz-input-number></td>
                   <!-- <td>
                     <nz-select style="width: 100%" formControlName="SubCriFlg">
                       <nz-option nzValue="X" [nzLabel]="'COM.Yes' | translate"></nz-option>
@@ -2059,46 +2072,57 @@
                   <!-- <td><textarea nz-input formControlName="Descr" rows="2" placeholder="Enter description"></textarea></td> -->
                   <td class="text-center">
                     <div class="actions-eval">
-                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" (click)="openSubCriteriaForRow(i)" title="Add Sub Criteria" style="cursor: pointer; color: #1890ff; font-size: 18px;"></i>
-                    <i nz-icon nzType="eye" nzTheme="outline" class="mx-1" (click)="toggleSubCriteriaView(i)" title="View Sub Criteria" style="cursor: pointer; color: #52c41a; font-size: 18px;"></i>
-                    <i 
-  nz-icon 
-  nzType="delete" 
-  nzTheme="outline" 
-  class="mx-1" 
-  (click)="deleteCriteria(i)" 
-  title="Delete Criteria"
-  style="cursor: pointer; color: red; font-size: 18px;">
-</i>
+                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
+                        (click)="openSubCriteriaForRow(i)" title="Add Sub Criteria"
+                        style="cursor: pointer; color: #1890ff; font-size: 18px;"></i>
+                      <i nz-icon nzType="eye" nzTheme="outline" class="mx-1" (click)="toggleSubCriteriaView(i)"
+                        title="View Sub Criteria" style="cursor: pointer; color: #52c41a; font-size: 18px;"></i>
+                      <i nz-icon nzType="delete" nzTheme="outline" class="mx-1" (click)="deleteCriteria(i)"
+                        title="Delete Criteria" style="cursor: pointer; color: red; font-size: 18px;">
+                      </i>
                     </div>
-                    
+
                   </td>
                 </tr>
-                <tr *ngIf="item.value.subCriteriaList && item.value.subCriteriaList.length > 0 && item.value.showSubCriteria">
+                <tr
+                  *ngIf="item.value.subCriteriaList && item.value.subCriteriaList.length > 0 && item.value.showSubCriteria">
                   <td colspan="6" style="padding: 0; background-color: #fafafa;">
                     <div style="padding: 20px; margin-left: 50px; margin-right: 20px;">
-                      <div style="background-color: #0d877e; padding: 8px 16px; border-radius: 4px 4px 0 0; margin-bottom: 0;">
+                      <div
+                        style="background-color: #0d877e; padding: 8px 16px; border-radius: 4px 4px 0 0; margin-bottom: 0;">
                         <span style="color: white; font-weight: 600; font-size: 14px;">
                           <i nz-icon nzType="unordered-list" nzTheme="outline" style="margin-right: 8px;"></i>
                           {{"RFP.Sub-Criteria Details"|translate}}
                         </span>
                       </div>
-                      <table class="table table-bordered mb-0" style="box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 0 0 4px 4px; overflow: hidden;">
+                      <table class="table table-bordered mb-0"
+                        style="box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 0 0 4px 4px; overflow: hidden; width: 100%; max-width: none;">
                         <thead>
                           <tr style="background-color: #1f4e79;">
-                            <th style="width: 80px; text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">{{ "RFP.slNo" | translate }}</th>
-                            <th style="text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">{{ "RFP.Des" | translate }}</th>
-                            <th style="width: 120px; text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">{{ "RFP.Weightage" | translate }}</th>
+                            <th
+                              style="width: 80px; text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">
+                              {{ "RFP.slNo" | translate }}</th>
+                            <th
+                              style="text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">
+                              {{ "RFP.Des" | translate }}</th>
+                            <th
+                              style="width: 120px; text-align: center; border: 1px solid #dee2e6; color: #1f4e79; font-weight: 600;">
+                              {{ "RFP.Weightage" | translate }}</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let subItem of item.value.subCriteriaList; let j = index" style="background-color: white; transition: all 0.3s;"
-                              onmouseover="this.style.backgroundColor='#f0f5ff'"
-                              onmouseout="this.style.backgroundColor='white'">
-                            <td style="text-align: center; border-left: 3px solid #1f4e79; padding: 12px; font-weight: 500;">{{ j + 1 }}</td>
+                          <tr *ngFor="let subItem of item.value.subCriteriaList; let j = index"
+                            style="background-color: white; transition: all 0.3s;"
+                            onmouseover="this.style.backgroundColor='#f0f5ff'"
+                            onmouseout="this.style.backgroundColor='white'">
+                            <td
+                              style="text-align: center; border-left: 3px solid #1f4e79; padding: 12px; font-weight: 500;">
+                              {{ j + 1 }}</td>
                             <td style="padding: 12px; border: 1px solid #dee2e6;">{{ subItem.Descr }}</td>
-                            <td style="text-align: center; font-weight: 600; color: #1f4e79; padding: 12px; border: 1px solid #dee2e6;">
-                              <span style="background: #e6f0ff; padding: 4px 12px; border-radius: 12px;">{{ subItem.Percentage }}%</span>
+                            <td
+                              style="text-align: center; font-weight: 600; color: #1f4e79; padding: 12px; border: 1px solid #dee2e6;">
+                              <span style="background: #e6f0ff; padding: 4px 12px; border-radius: 12px;">{{
+                                subItem.Percentage }}%</span>
                             </td>
                           </tr>
                         </tbody>
@@ -2111,62 +2135,71 @@
           </table>
           <br />
           <div class="mt-3">
-            <button nz-button nzType="primary" nzSize="default" (click)="addEvalCriteriaItem(evalCriteriaItems.length - 1)">
+            <button nz-button nzType="primary" nzSize="default" class="add-criteria-btn"
+              (click)="addEvalCriteriaItem(evalCriteriaItems.length - 1)">
               <span nz-icon nzType="plus"></span>
               <span>{{ "RFP.Add Criteria" | translate }}</span>
             </button>
           </div>
- 
+
           <br />
- 
- 
- 
+
+
+
           <!-- ===================== VENDOR EVALUATION WEIGHTAGE ===================== -->
           <!-- <hr class="seperationLine" /> -->
- 
+
           <div class="tech-info-row">
             <div class="tech-info-text-with-icon">
-             {{"RFP.The weightage of the evaluation"|translate}} 
+              {{"RFP.The weightage of the evaluation"|translate}}
             </div>
           </div>
- 
+
           <!-- Technical Evaluation Weight Table -->
           <div class="mt-3">
-            <nz-table #techWeightTable [nzData]="[{}]" [nzShowPagination]="false" nzSize="small" class="table table-bordered technical-table mt-3">
+            <nz-table #techWeightTable [nzData]="[{}]" [nzShowPagination]="false" nzSize="small"
+              class="table table-bordered technical-table mt-3" style="width: 100%; max-width: none;">
               <thead>
                 <tr>
-                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Financial weight"|translate}}</th>
-                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Technical weight"|translate}}</th>
-                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Technical pass rate"|translate}}</th>
+                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Financial
+                    weight"|translate}}</th>
+                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Technical
+                    weight"|translate}}</th>
+                  <th style="background-color: #1f4e79; color: white; text-align: center;">{{"RFP.Technical pass
+                    rate"|translate}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="text-align: center;">{{ rfpForm.get('vendorEvaluationWeightage.financialEvaluationWeightage')?.value || '-' }}</td>
-                  <td style="text-align: center;">{{ rfpForm.get('vendorEvaluationWeightage.technicalEvaluationWeightage')?.value || '-' }}</td>
+                  <td style="text-align: center;">{{
+                    rfpForm.get('vendorEvaluationWeightage.financialEvaluationWeightage')?.value || '-' }}</td>
+                  <td style="text-align: center;">{{
+                    rfpForm.get('vendorEvaluationWeightage.technicalEvaluationWeightage')?.value || '-' }}</td>
                   <td style="text-align: center;">{{ rfpForm.get('TotTechEval')?.value || '-' }}</td>
                 </tr>
               </tbody>
             </nz-table>
           </div>
- 
+
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
-              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default"
+                (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueStandards()"
-                [disabled]="!standardsValid">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default"
+                (click)="saveAndContinueStandards()" [disabled]="!standardsValid">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
           </div>
- 
+
         </nz-collapse-panel>
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
-      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
+      <nz-collapse id="billOfQuantity" *ngIf="showBillOfQuantity" [nzExpandIconPosition]="expandIconPosition"
+        class="mt-4 collapse-margin" style="width: 100%; max-width: none;">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity'|translate">
 
           <!-- Competition Fragmentation Toggle -->
@@ -2176,22 +2209,25 @@
                 <i nz-icon nzType="appstore" nzTheme="outline" style="margin-right: 8px; color: #1f4e79;"></i>
                 {{"RFP.Competition Fragmentation"|translate}}
               </label>
-              <nz-switch formControlName="competitionFragmentation" (ngModelChange)="onCompetitionFragmentationChange($event)"></nz-switch>
+              <nz-switch formControlName="competitionFragmentation"
+                (ngModelChange)="onCompetitionFragmentationChange($event)"></nz-switch>
             </div>
           </div>
 
           <!-- No of Years Dropdown -->
           <div class="col-4 my-1">
-            <nz-form-label nzRequired for="noOfYears" class="boq-field-label">{{"RFP.No of Years"|translate}}</nz-form-label>
+            <nz-form-label nzRequired for="noOfYears" class="boq-field-label">{{"RFP.No of
+              Years"|translate}}</nz-form-label>
             <nz-form-control>
-              <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear (ngModelChange)="onYearsChange($event)">
+              <nz-select formControlName="noOfYears" style="width: 100%" nzAllowClear
+                (ngModelChange)="onYearsChange($event)">
                 <nz-option nzValue="1" nzLabel="One or less than one year"></nz-option>
                 <nz-option nzValue="2" nzLabel="Two years"></nz-option>
                 <nz-option nzValue="3" nzLabel="Three years"></nz-option>
                 <nz-option nzValue="4" nzLabel="Four years"></nz-option>
                 <nz-option nzValue="5" nzLabel="Five years"></nz-option>
               </nz-select>
-              <small *ngIf="rfpForm.controls.noOfYears.touched && rfpForm.controls.noOfYears.hasError('required')" 
+              <small *ngIf="rfpForm.controls.noOfYears.touched && rfpForm.controls.noOfYears.hasError('required')"
                 style="margin-top: 8px; color: red">
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
@@ -2207,36 +2243,41 @@
 
             <div class="table-responsive-wrapper">
               <table class="table table-bordered boq-table">
-              <thead>
-                <tr>
-                  <th style="width: 60px;">{{"RFP.S.No"|translate}}</th>
-                  <th style="width: 150px;">{{"RFP.Package"|translate}}</th>
-                  <th style="width: 250px;">{{"RFP.Description"|translate}}</th>
-                  <th style="width: 200px;">{{"RFP.Classification Field"|translate}}</th>
-                  <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">{{"RFP.Action"|translate}}</th>
-                </tr>
-              </thead>
-              <tbody formArrayName="competitionFragmentationItems">
-                <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
-                  <td>{{ i + 1 }}</td>
-                  <td><textarea nz-input formControlName="package" rows="1" [placeholder]="'RFP.Enter package'|translate" style="width: 100%;"></textarea></td>
-                  <td><textarea nz-input formControlName="description" rows="1" [placeholder]="'RFP.Enter description'|translate" style="width: 100%;"></textarea></td>
-                  <td>
-                    <nz-select formControlName="classificationField" style="width: 100%;" [nzPlaceHolder]="'RFP.Classification'|translate">
-                      <nz-option *ngFor="let type of classificationTypes" [nzValue]="type.id" [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
-                    </nz-select>
-                  </td>
-                  <td class="text-center" *ngIf="rfpForm.get('competitionFragmentation')?.value">
-                    <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
-                      <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1" 
-                        (click)="addCompetitionFragmentationItem(i)"></i>
-                      <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1" 
-                        *ngIf="competitionFragmentationItems.length > 1" 
-                        (click)="deleteCompetitionFragmentationItem(i)"></i>
-                    </ng-container>
-                  </td>
-                </tr>
-              </tbody>
+                <thead>
+                  <tr>
+                    <th style="width: 60px;">{{"RFP.S.No"|translate}}</th>
+                    <th style="width: 150px;">{{"RFP.Package"|translate}}</th>
+                    <th style="width: 250px;">{{"RFP.Description"|translate}}</th>
+                    <th style="width: 200px;">{{"RFP.Classification Field"|translate}}</th>
+                    <th *ngIf="rfpForm.get('competitionFragmentation')?.value" style="width: 100px;">
+                      {{"RFP.Action"|translate}}</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="competitionFragmentationItems">
+                  <tr *ngFor="let item of competitionFragmentationItems.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><textarea nz-input formControlName="package" rows="1"
+                        [placeholder]="'RFP.Enter package'|translate" style="width: 100%;"></textarea></td>
+                    <td><textarea nz-input formControlName="description" rows="1"
+                        [placeholder]="'RFP.Enter description'|translate" style="width: 100%;"></textarea></td>
+                    <td>
+                      <nz-select formControlName="classificationField" style="width: 100%;"
+                        [nzPlaceHolder]="'RFP.Classification'|translate">
+                        <nz-option *ngFor="let type of classificationTypes" [nzValue]="type.id"
+                          [nzLabel]="cs.userLanguage === 'en' ? type.value : type.valueAr"></nz-option>
+                      </nz-select>
+                    </td>
+                    <td class="text-center" *ngIf="rfpForm.get('competitionFragmentation')?.value">
+                      <ng-container *ngIf="i === competitionFragmentationItems.length - 1">
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
+                          (click)="addCompetitionFragmentationItem(i)"></i>
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1"
+                          *ngIf="competitionFragmentationItems.length > 1"
+                          (click)="deleteCompetitionFragmentationItem(i)"></i>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -2248,10 +2289,8 @@
               {{"RFP.The Bundle"|translate}}
             </h5>
             <div class="d-flex gap-2 flex-wrap responsive-flex wrap">
-              <button *ngFor="let bundle of competitionFragmentationItems.controls; let bundleIndex = index" 
-                nz-button 
-                class="touch-friendly"
-                [nzType]="selectedBundleIndex === bundleIndex ? 'primary' : 'default'"
+              <button *ngFor="let bundle of competitionFragmentationItems.controls; let bundleIndex = index" nz-button
+                class="touch-friendly" [nzType]="selectedBundleIndex === bundleIndex ? 'primary' : 'default'"
                 (click)="selectBundle(bundleIndex)">
                 {{ (bundle.get('package')?.value|translate) || ('Package' + (bundleIndex + 1) |translate)}}
               </button>
@@ -2267,7 +2306,8 @@
             <nz-collapse [nzExpandIconPosition]="'right'">
               <!-- Workforce - General Model -->
               <nz-collapse-panel [nzHeader]="'RFP.Workforce - General Model'| translate">
-                <input #workforceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
+                <input #workforceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+                  (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="workforceFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
@@ -2279,58 +2319,63 @@
                   </button>
                 </div>
                 <div class="table-responsive-wrapper">
-                <table class="table table-bordered technical-table">
-                  <thead>
-                    <tr style="background-color: #1f4e79; color: white;">
-                      <th rowspan="2">{{"RFP.Serial Number"|translate}}</th>
-                      <th rowspan="2">{{"RFP.Job Title"|translate}}</th>
-                      <th rowspan="2">{{"RFP.Item description"|translate}}</th>
-                      <th rowspan="2">{{"RFP.Least eligible for admission"|translate}}</th>
-                      <th rowspan="2">{{"RFP.Minimum years of experience"|translate}}</th>
-                      <th *ngIf="selectedYears === 1" rowspan="2">{{"RFP.Quantity"|translate}}</th>
-                      <ng-container *ngIf="selectedYears > 1">
-                        <th [attr.colspan]="3" *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1] |translate}}{{"RFP.Year"|translate}}</th>
-                      </ng-container>
-                      <th rowspan="2">{{"RFP.Action"|translate}}</th>
-                    </tr>
-                    <tr style="background-color: #1f4e79; color: white;" *ngIf="selectedYears > 1">
-                      <ng-container *ngFor="let year of getYearsArray()">
-                        <th>{{"RFP.No."|translate}}</th>
-                        <th>{{"RFP.Expected basic working hours"|translate}}</th>
-                        <th>{{"RFP.Expected number of overtime hours"|translate}}</th>
-                      </ng-container>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let row of workforceRows; let i = index">
-                      <td>{{ i + 1 }}</td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <ng-container *ngIf="selectedYears === 1">
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                      </ng-container>
-                      <ng-container *ngIf="selectedYears > 1">
+                  <table class="table table-bordered technical-table">
+                    <thead>
+                      <tr style="background-color: #1f4e79; color: white;">
+                        <th rowspan="2">{{"RFP.Serial Number"|translate}}</th>
+                        <th rowspan="2">{{"RFP.Job Title"|translate}}</th>
+                        <th rowspan="2">{{"RFP.Item description"|translate}}</th>
+                        <th rowspan="2">{{"RFP.Least eligible for admission"|translate}}</th>
+                        <th rowspan="2">{{"RFP.Minimum years of experience"|translate}}</th>
+                        <th *ngIf="selectedYears === 1" rowspan="2">{{"RFP.Quantity"|translate}}</th>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <th [attr.colspan]="3" *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second',
+                            'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1] |translate}}{{"RFP.Year"|translate}}</th>
+                        </ng-container>
+                        <th rowspan="2">{{"RFP.Action"|translate}}</th>
+                      </tr>
+                      <tr style="background-color: #1f4e79; color: white;" *ngIf="selectedYears > 1">
                         <ng-container *ngFor="let year of getYearsArray()">
-                          <td><input nz-input type="number" placeholder="0" /></td>
-                          <td><input nz-input type="number" placeholder="0" /></td>
+                          <th>{{"RFP.No."|translate}}</th>
+                          <th>{{"RFP.Expected basic working hours"|translate}}</th>
+                          <th>{{"RFP.Expected number of overtime hours"|translate}}</th>
+                        </ng-container>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of workforceRows; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <ng-container *ngIf="selectedYears === 1">
                           <td><input nz-input type="number" placeholder="0" /></td>
                         </ng-container>
-                      </ng-container>
-                      <td class="text-center">
-                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addWorkforceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
-                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="workforceRows.length > 1" (click)="deleteWorkforceRow(i)" style="cursor: pointer;"></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <ng-container *ngFor="let year of getYearsArray()">
+                            <td><input nz-input type="number" placeholder="0" /></td>
+                            <td><input nz-input type="number" placeholder="0" /></td>
+                            <td><input nz-input type="number" placeholder="0" /></td>
+                          </ng-container>
+                        </ng-container>
+                        <td class="text-center">
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon"
+                            (click)="addWorkforceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon"
+                            *ngIf="workforceRows.length > 1" (click)="deleteWorkforceRow(i)"
+                            style="cursor: pointer;"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </nz-collapse-panel>
 
               <!-- Materials - General Model -->
               <nz-collapse-panel nzHeader="{{'RFP.Materials - General Model'| translate}}">
-                <input #materialsFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
+                <input #materialsFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+                  (change)="handleImportFile($event)" />
                 <div class="d-flex justify-content-end gap-2 mb-3">
                   <button nz-button nzType="default" (click)="materialsFileInput.click()">
                     <i nz-icon nzType="import" nzTheme="outline"></i>
@@ -2342,64 +2387,69 @@
                   </button>
                 </div>
                 <div class="table-responsive-wrapper">
-                <table class="table table-bordered technical-table">
-                  <thead>
-                    <tr style="background-color: #1f4e79; color: white;">
-                      <th>{{'RFP.Serial Number'| translate}}</th>
-                      <th>{{'RFP.Category'| translate}}</th>
-                      <th>{{'RFP.Item'| translate}}</th>
-                      <th>{{'RFP.Unit of Measurement'| translate}}</th>
-                      <th>{{'RFP.Item Description'|translate}}</th>
-                      <th>{{'RFP.Specifications'| translate}}</th>
-                      <th>{{'RFP.Product from Mandatory List' | translate}}</th>
-                      <th>{{'RFP.Structural Code'| translate }}</th>
-                      <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate }}</th>
-                      <ng-container *ngIf="selectedYears > 1">
-                        <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }} {{'RFP.Year Quantity'| translate}}</th>
-                      </ng-container>
-                      <th>{{'RFP.Action'|translate}}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let row of materialsRows; let i = index">
-                      <td>{{ i + 1 }}</td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input /></td>
-                      <td><input nz-input placeholder="no" /></td>
-                      <td><input nz-input /></td>
-                      <ng-container *ngIf="selectedYears === 1">
-                        <td><input nz-input type="number" placeholder="0" /></td>
-                      </ng-container>
-                      <ng-container *ngIf="selectedYears > 1">
-                        <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
-                      </ng-container>
-                      <td class="text-center">
-                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addMaterialsRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
-                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="materialsRows.length > 1" (click)="deleteMaterialsRow(i)" style="cursor: pointer;"></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                  <table class="table table-bordered technical-table">
+                    <thead>
+                      <tr style="background-color: #1f4e79; color: white;">
+                        <th>{{'RFP.Serial Number'| translate}}</th>
+                        <th>{{'RFP.Category'| translate}}</th>
+                        <th>{{'RFP.Item'| translate}}</th>
+                        <th>{{'RFP.Unit of Measurement'| translate}}</th>
+                        <th>{{'RFP.Item Description'|translate}}</th>
+                        <th>{{'RFP.Specifications'| translate}}</th>
+                        <th>{{'RFP.Product from Mandatory List' | translate}}</th>
+                        <th>{{'RFP.Structural Code'| translate }}</th>
+                        <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate }}</th>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third',
+                            'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }} {{'RFP.Year Quantity'| translate}}</th>
+                        </ng-container>
+                        <th>{{'RFP.Action'|translate}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of materialsRows; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input /></td>
+                        <td><input nz-input placeholder="no" /></td>
+                        <td><input nz-input /></td>
+                        <ng-container *ngIf="selectedYears === 1">
+                          <td><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
+                        <ng-container *ngIf="selectedYears > 1">
+                          <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
+                        </ng-container>
+                        <td class="text-center">
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon"
+                            (click)="addMaterialsRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon"
+                            *ngIf="materialsRows.length > 1" (click)="deleteMaterialsRow(i)"
+                            style="cursor: pointer;"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </nz-collapse-panel>
 
-                <!-- Equipment and Devices - General Model -->
-                <nz-collapse-panel [nzHeader]="'RFP.Equipment and Devices - General Model'|translate">
-                  <input #equipmentFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
-                  <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button nz-button nzType="default" (click)="equipmentFileInput.click()">
-                      <i nz-icon nzType="import" nzTheme="outline"></i>
-                      {{"RFP.Import"|translate}}
-                    </button>
-                    <button nz-button nzType="default" (click)="downloadTemplate('equipment')">
-                      <i nz-icon nzType="export" nzTheme="outline"></i>
-                      {{"RFP.Export"|translate}}
-                    </button>
-                  </div>
-                  <div class="table-responsive-wrapper">
+              <!-- Equipment and Devices - General Model -->
+              <nz-collapse-panel [nzHeader]="'RFP.Equipment and Devices - General Model'|translate">
+                <input #equipmentFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+                  (change)="handleImportFile($event)" />
+                <div class="d-flex justify-content-end gap-2 mb-3">
+                  <button nz-button nzType="default" (click)="equipmentFileInput.click()">
+                    <i nz-icon nzType="import" nzTheme="outline"></i>
+                    {{"RFP.Import"|translate}}
+                  </button>
+                  <button nz-button nzType="default" (click)="downloadTemplate('equipment')">
+                    <i nz-icon nzType="export" nzTheme="outline"></i>
+                    {{"RFP.Export"|translate}}
+                  </button>
+                </div>
+                <div class="table-responsive-wrapper">
                   <table class="table table-bordered technical-table">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
@@ -2414,7 +2464,8 @@
                         <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">Quantity</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }}  {{'RFP.Year Quantity'| translate}}</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third',
+                            'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }} {{'RFP.Year Quantity'| translate}}</th>
                         </ng-container>
                         <th>{{'RFP.Action'|translate}}</th>
                       </tr>
@@ -2437,29 +2488,33 @@
                           <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
                         </ng-container>
                         <td class="text-center">
-                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addEquipmentRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
-                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="equipmentRows.length > 1" (click)="deleteEquipmentRow(i)" style="cursor: pointer;"></i>
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon"
+                            (click)="addEquipmentRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon"
+                            *ngIf="equipmentRows.length > 1" (click)="deleteEquipmentRow(i)"
+                            style="cursor: pointer;"></i>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  </div>
-                </nz-collapse-panel>
+                </div>
+              </nz-collapse-panel>
 
-                <!-- Service and Output - General Model -->
-                <nz-collapse-panel [nzHeader]="'RFP.Service and Output - General Model'|translate">
-                  <input #serviceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg" (change)="handleImportFile($event)" />
-                  <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button nz-button nzType="default" (click)="serviceFileInput.click()">
-                      <i nz-icon nzType="import" nzTheme="outline"></i>
-                      {{"RFP.Import"|translate}}
-                    </button>
-                    <button nz-button nzType="default" (click)="downloadTemplate('service')">
-                      <i nz-icon nzType="export" nzTheme="outline"></i>
-                      {{"RFP.Export"|translate}}
-                    </button>
-                  </div>
-                  <div class="table-responsive-wrapper">
+              <!-- Service and Output - General Model -->
+              <nz-collapse-panel [nzHeader]="'RFP.Service and Output - General Model'|translate">
+                <input #serviceFileInput type="file" style="display: none" accept=".pdf,.doc,.docx,.xlsx,.png,.jpg"
+                  (change)="handleImportFile($event)" />
+                <div class="d-flex justify-content-end gap-2 mb-3">
+                  <button nz-button nzType="default" (click)="serviceFileInput.click()">
+                    <i nz-icon nzType="import" nzTheme="outline"></i>
+                    {{"RFP.Import"|translate}}
+                  </button>
+                  <button nz-button nzType="default" (click)="downloadTemplate('service')">
+                    <i nz-icon nzType="export" nzTheme="outline"></i>
+                    {{"RFP.Export"|translate}}
+                  </button>
+                </div>
+                <div class="table-responsive-wrapper">
                   <table class="table table-bordered technical-table">
                     <thead>
                       <tr style="background-color: #1f4e79; color: white;">
@@ -2472,7 +2527,8 @@
                         <th>{{'RFP.Attachments'|translate}}</th>
                         <th *ngIf="selectedYears === 1">{{'RFP.Quantity'| translate}}</th>
                         <ng-container *ngIf="selectedYears > 1">
-                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third', 'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }}{{'RFP.Year Quantity'|translate}}</th>
+                          <th *ngFor="let year of getYearsArray()">{{ ['RFP.First', 'RFP.Second', 'RFP.Third',
+                            'RFP.Fourth', 'RFP.Fifth'][year - 1]|translate }}{{'RFP.Year Quantity'|translate}}</th>
                         </ng-container>
                         <th>{{'RFP.Action'|translate}}</th>
                       </tr>
@@ -2493,23 +2549,27 @@
                           <td *ngFor="let year of getYearsArray()"><input nz-input type="number" placeholder="0" /></td>
                         </ng-container>
                         <td class="text-center">
-                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addServiceRow(i)" style="cursor: pointer; margin-right: 8px;"></i>
-                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon" *ngIf="serviceRows.length > 1" (click)="deleteServiceRow(i)" style="cursor: pointer;"></i>
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon" (click)="addServiceRow(i)"
+                            style="cursor: pointer; margin-right: 8px;"></i>
+                          <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon"
+                            *ngIf="serviceRows.length > 1" (click)="deleteServiceRow(i)" style="cursor: pointer;"></i>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  </div>
-                </nz-collapse-panel>
-              </nz-collapse>
-            </div>
+                </div>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
 
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
-              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default"
+                (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="saveAndContinueBOQ()">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default"
+                (click)="saveAndContinueBOQ()">
                 {{ "RFP.Save & Continue" | translate }}
               </button>
             </div>
@@ -2519,7 +2579,7 @@
 
 
       <!-- Attachments *ngIf="showAttachments" -->
-      <nz-collapse id="attachments" *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4" style="margin-left: 20px;">
+      <nz-collapse id="attachments" *ngIf="showAttachments" [nzExpandIconPosition]="expandIconPosition" class="mt-4 collapse-margin" style="width: 100%; max-width: none;">
         <nz-collapse-panel [nzActive]="attachmentsCollapseActive" [nzHeader]="'RFP.Attachments'|translate">
           <div class="attachment-body">
 
@@ -2568,10 +2628,12 @@
           </div>
           <div class="row mt-2">
             <div class="d-flex justify-content-end mt-2 actions gap-2 responsive-flex">
-              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default" (click)="saveAsDraft()">
+              <button nz-button nzType="primary" class="btn-save-draft touch-friendly" nzSize="default"
+                (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default" (click)="submitCase()">
+              <button nz-button nzType="primary" class="btn-save-continue touch-friendly" nzSize="default"
+                (click)="submitCase()">
                 {{ "RFP.Submit" | translate }}
               </button>
             </div>
@@ -2887,7 +2949,7 @@
       <div class="row mt-3" *ngIf="step2 || step3">
         <div class="col-2">
           <!-- <button nz-button nzType="primary" nzSize="default" (click)="isSubmitClick = true"> -->
-           <!-- {{ "RFP.Save" | translate }}
+          <!-- {{ "RFP.Save" | translate }}
           </button> -->
         </div>
         <!-- <div class="col-2">
@@ -3008,38 +3070,41 @@
             let index = index;
             let last = last
           ">
-          <div [formGroupName]="index" class="row">
-            <div class="col-2">
-              <nz-form-label nzRequired for="SubItemNo">{{
-                "RFP.slNo" | translate
-                }}</nz-form-label>
-              <input class="equal-height" nz-input formControlName="SubItemNo" />
-              <small *ngIf="
-                  subCriteria.get('SubItemNo')?.touched &&
-                  subCriteria.get('SubItemNo')?.invalid
-                ">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
+          <div [formGroupName]="index">
+            <div class="d-flex gap-3 mb-3">
+              <div class="flex-shrink-0" style="width: 120px;">
+                <nz-form-label nzRequired for="SubItemNo">{{
+                  "RFP.slNo" | translate
+                  }}</nz-form-label>
+                <input class="equal-height" nz-input formControlName="SubItemNo" />
+                <small *ngIf="
+                    subCriteria.get('SubItemNo')?.touched &&
+                    subCriteria.get('SubItemNo')?.invalid
+                  ">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </div>
+              <div class="flex-grow-1">
+                <nz-form-label nzRequired for="Percentage">{{
+                  "RFP.Weightage" | translate
+                  }}</nz-form-label>
+                <nz-input-number class="equal-height" style="width: 100%" formControlName="Percentage" [nzMin]="1"
+                  [nzMax]="
+                    isSubCriteria
+                      ? rfpForm?.controls?.EvalCriteria?.get('Percentage')
+                          ?.value ?? 100
+                      : rfpForm?.controls?.EvalCriteriaEdit?.get('Percentage')
+                          ?.value ?? 100
+                  "></nz-input-number>
+                <small *ngIf="
+                    subCriteria.get('Percentage')?.touched &&
+                    subCriteria.get('Percentage')?.invalid
+                  ">
+                  {{ "RFP.FieldIsRequired" | translate }}
+                </small>
+              </div>
             </div>
-            <div class="col-5">
-              <nz-form-label nzRequired for="Percentage">{{
-                "RFP.Weightage" | translate
-                }}</nz-form-label>
-              <nz-input-number class="equal-height" style="width: 100%" formControlName="Percentage" [nzMin]="1" [nzMax]="
-                  isSubCriteria
-                    ? rfpForm?.controls?.EvalCriteria?.get('Percentage')
-                        ?.value ?? 100
-                    : rfpForm?.controls?.EvalCriteriaEdit?.get('Percentage')
-                        ?.value ?? 100
-                "></nz-input-number>
-              <small *ngIf="
-                  subCriteria.get('Percentage')?.touched &&
-                  subCriteria.get('Percentage')?.invalid
-                ">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
-            </div>
-            <div class="mt-3">
+            <div class="mb-3">
               <nz-form-label nzRequired for="Descr">{{
                 "RFP.Des" | translate
                 }}</nz-form-label>
@@ -3056,14 +3121,17 @@
             </div>
           </div>
 
-          <button *ngIf="!last" nz-button nzType="default" nzDanger nzSize="default" class="mt-3"
-            (click)="deleteSubCriteria(index)" nzShape="circle">
-            <span nz-icon nzType="delete"></span>
-          </button>
-          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn mt-3"
-            [disabled]="subCriteria.invalid" (click)="addSubCriteria()" >
-            <span nz-icon nzType="plus"></span>
-          </button>
+          <div class="d-flex justify-content-end mt-3">
+            <button *ngIf="!last" nz-button nzType="default" nzDanger nzSize="default"
+              (click)="deleteSubCriteria(index)" nzShape="circle" style="min-width: 32px; width: 32px; height: 32px;">
+              <span nz-icon nzType="delete"></span>
+            </button>
+            <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn"
+              [disabled]="subCriteria.invalid" (click)="addSubCriteria()" nzShape="circle"
+              style="min-width: 32px; width: 32px; height: 32px;">
+              <span nz-icon nzType="plus"></span>
+            </button>
+          </div>
         </ng-container>
       </ng-container>
     </nz-form>

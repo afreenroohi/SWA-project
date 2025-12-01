@@ -608,15 +608,35 @@ html[dir="rtl"] {
   }
 }
 
-/* Touch-friendly Interactive Elements */
+/* Touch-friendly Interactive Elements - Sidebar */
 @media (hover: none) and (pointer: coarse) {
-  .ant-btn, button, [role="button"] {
+  .ant-layout-sider .ant-btn, 
+  .ant-layout-sider button, 
+  .ant-layout-sider [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Touch-friendly Interactive Elements - Content Area */
+@media (hover: none) and (pointer: coarse) {
+  .ant-layout-content .ant-btn:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn), 
+  .ant-layout-content button:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn), 
+  .ant-layout-content [role="button"]:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn) {
     min-height: 44px;
     min-width: 44px;
   }
   
   .ant-input, .ant-select-selector {
     min-height: 44px;
+  }
+  
+  /* Keep toggles normal size */
+  .ant-switch {
+    width: 44px !important;
+    height: 22px !important;
+    min-height: unset !important;
+    min-width: unset !important;
   }
 }
 // /* Allow ngx-spinner to control show/hide. Don't force display or position. */
@@ -1225,6 +1245,26 @@ html[dir="rtl"] {
   color: #ffffff !important;
 }
 
+/* Language toggle spacing - All screen sizes */
+::ng-deep .language-toggle .ant-btn-group .ant-btn,
+::ng-deep .language-toggle .ant-btn,
+::ng-deep .language-toggle button {
+  margin-right: 4px !important;
+  padding: 4px 8px !important;
+}
+
+::ng-deep .language-toggle .ant-btn-group .ant-btn:last-child,
+::ng-deep .language-toggle .ant-btn:last-child,
+::ng-deep .language-toggle button:last-child {
+  margin-right: 0 !important;
+}
+
+::ng-deep .language-toggle .ant-btn span,
+::ng-deep .language-toggle button span {
+  padding: 0 2px !important;
+  display: inline-block !important;
+}
+
 [data-theme="dark"] .copy-right-container label {
   color: #c9d1d9 !important;
 }
@@ -1299,4 +1339,9 @@ html[dir="rtl"] {
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: #595959;
+}
+@media (max-width: 1024px) {
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0 !important;
+  }
 }

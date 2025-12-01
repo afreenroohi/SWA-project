@@ -1,5 +1,5 @@
 @import '../_variables.scss';
- 
+
 .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -7,11 +7,11 @@
   cursor: pointer;
   transition: color 0.3s;
 }
- 
+
 .trigger:hover {
   color: #1890ff;
 }
- 
+
 nz-header {
   background: #fff;
   padding: 0;
@@ -21,16 +21,16 @@ nz-header {
   display: flex;
   align-items: center;
 }
- 
+
 nz-content {
   overflow-y: auto;
   transition: filter 0.3s ease;
 }
- 
+
 nz-breadcrumb {
   margin: 16px 0;
 }
- 
+
 .inner-content {
   padding: 20px;
   margin-top: 1.2rem;
@@ -38,40 +38,40 @@ nz-breadcrumb {
   max-width: 100%;
   width: 100%;
 }
- 
+
 .ant-menu-inline,
 .ant-menu-vertical,
 .ant-menu-vertical-left {
- 
+
   border-right: none;
 }
- 
+
 .ant-menu {
   background-color: #ffffff !important;
 }
- 
+
 .ant-menu-submenu-open {
   background-color: $primary !important;
   color: white !important;
 }
- 
+
 ::ng-deep.ant-menu-light .ant-menu-submenu-open .ant-menu-submenu-title:hover {
   color: white;
 }
- 
- 
- 
+
+
+
 .ant-layout {
- 
+
   height: 100vh;
   background: #f7f8fa
 }
- 
+
 .ant-layout-header {
   height: 80px;
   border-bottom: 4px solid #f7f8fa;
 }
- 
+
 nz-sider {
   position: fixed !important;
   width: 190px !important;
@@ -83,7 +83,7 @@ nz-sider {
   box-sizing: border-box;
   transition: transform 0.3s ease;
 }
- 
+
 .menu-sidebar {
   position: relative;
   background: white;
@@ -95,20 +95,20 @@ nz-sider {
   border-inline-end: 4px solid #f7f8fa;
   overflow-x: hidden;
 }
- 
+
 .menu {
   color: #7d947d;
- 
+
   // .menu-items {
   // border-top: 1px solid $primary;
   // }
 }
- 
+
 .copy-right-container {
   position: absolute;
   bottom: 1rem;
 }
- 
+
 .logo-container {
   width: 200px;
   height: 80px;
@@ -119,9 +119,9 @@ nz-sider {
 
 .logo-container.collapsed {
   width: 70px;
-   border-inline-end: 4px solid #ffffff;
+  border-inline-end: 4px solid #ffffff;
 }
- 
+
 .lang-toggle {
   width: 150px;
   height: 45px;
@@ -146,7 +146,8 @@ nz-sider {
   top: 5px;
   left: 5px;
   transition: all 0.3s ease;
-  z-index: 1;   /* BELOW THE TEXT */
+  z-index: 1;
+  /* BELOW THE TEXT */
 }
 
 /* MOVES RIGHT IN ARABIC MODE */
@@ -162,27 +163,33 @@ nz-sider {
   font-weight: 600;
   color: #808080;
   position: relative;
-  z-index: 2;   /* ABOVE TOGGLE */
   pointer-events: none;
   transition: color 0.3s ease, font-weight 0.3s ease;
+  padding: 0 8px;
+  margin: 0 2px;
 }
 
 /* ACTIVE LANGUAGE HIGHLIGHT */
 .label.active {
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* SPECIAL FIX — ARABIC TEXT MUST STAY ON TOP */
 .label.ar {
-  z-index: 3 !important;   /* FIXES YOUR ISSUE */
+  z-index: 3 !important;
+  /* FIXES YOUR ISSUE */
 }
 
+.label.en {
+  z-index: 3 !important;
+  /* FIXES YOUR ISSUE */
+}
 
 .ant-right-layout {
   margin-left: 190px
 }
- 
+
 .ant-left-layout {
   margin-right: 190px
 }
@@ -191,49 +198,49 @@ nz-sider {
   margin-left: 0;
   margin-right: 0;
 }
- 
+
 .ant-top-layout {
   margin-top: 80px
 }
- 
+
 nz-footer {
   text-align: center;
 }
- 
+
 h6 {
   font-size: 2rem !important;
 }
- 
+
 [dir="ltr"] .ant-layout-footer {
- 
+
   background: none;
   text-align: left;
 }
- 
+
 [dir="rtl"] .ant-layout-footer {
- 
+
   background: none;
   text-align: right;
 }
- 
+
 ::ng-deep .ant-table-pagination>* {
   margin-inline: 5px !important;
 }
- 
- 
+
+
 ::ng-deep [dir="rtl"] .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
 .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
   padding-right: 0px !important;
 }
- 
+
 ::ng-deep [dir="rtl"] .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow {
   margin-inline-start: 75% !important;
 }
- 
+
 ::ng-deep .ant-menu-submenu-arrow {
   margin-inline-start: 75% !important;
 }
- 
+
 // user logged in icon re-size
 .user-info-container {
   display: flex;
@@ -241,7 +248,7 @@ h6 {
   justify-content: flex-end;
   padding-inline-end: 0.3rem;
 }
- 
+
 .user-info-container .ant-avatar {
   height: 40px !important;
   width: 40px !important;
@@ -251,41 +258,42 @@ h6 {
   justify-content: center !important;
   flex-shrink: 0;
 }
- 
+
 .user-info-container .ant-avatar.ant-avatar-icon {
   font-size: 22px !important;
 }
- 
+
 .user-info-container .ant-avatar .anticon,
 .user-info-container .ant-avatar i.anticon {
   font-size: 22px !important;
   color: white !important;
   display: inline-block !important;
 }
- 
+
 ::ng-deep .user-info-container .ant-avatar .anticon,
 ::ng-deep .user-info-container .ant-avatar i.anticon {
   font-size: 22px !important;
   color: white !important;
   display: inline-block !important;
 }
- 
+
 ::ng-deep .ant-menu-submenu .ant-menu-submenu-arrow {
   color: $primary !important;
 }
- 
+
 ::ng-deep .ant-menu-submenu-open .ant-menu-submenu-arrow {
   color: white !important;
 }
- 
+
 ::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
 ::ng-deep .ant-menu-item:active {
   background-color: #f1f1f1;
 }
- 
+
 ::ng-deep .ant-modal.change-role {
   .ant-modal-header {
     border-bottom: 0;
+
     .title {
       font-family: Roboto;
       font-size: 24px;
@@ -294,8 +302,10 @@ h6 {
       text-align: left;
       color: #000000;
     }
+
     .anticon-close {
       height: 16.41px;
+
       svg {
         width: 16.41px;
         height: 16.4px;
@@ -303,29 +313,35 @@ h6 {
       }
     }
   }
+
   .ant-modal-content {
     border-top: 5px solid $primary;
+
     .ant-modal-body {
       padding-top: 0;
     }
   }
 }
- 
+
 ::ng-deep .ant-select-multiple .ant-select-selector {
   height: 4rem;
   align-items: baseline;
 }
- ::ng-deep .custom-spinner .spinner {
-  border-radius: 50%;          /* Makes the container circular */
-  width: 120px !important;     /* Adjust size as needed */
+
+::ng-deep .custom-spinner .spinner {
+  border-radius: 50%;
+  /* Makes the container circular */
+  width: 120px !important;
+  /* Adjust size as needed */
   height: 120px !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.4); /* Optional: inner circular background */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Optional: inner circular background */
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
- 
+
 ::ng-deep .custom-spinner {
   border-radius: 50%;
 }
@@ -446,39 +462,39 @@ h6 {
     align-items: center;
     gap: 8px;
   }
-  
+
   .test-login-container input {
     width: 100px !important;
     font-size: 12px !important;
   }
-  
+
   .test-login-container button {
     font-size: 12px !important;
     padding: 4px 8px !important;
   }
-  
+
   .logo-container {
     position: relative !important;
     top: 0 !important;
     height: 80px !important;
     min-height: 80px !important;
   }
-  
+
   nz-header {
     height: 80px !important;
     min-height: 80px !important;
   }
-  
+
   .inner-content {
     padding: 15px !important;
     margin-top: 0.5rem !important;
   }
-  
+
   nz-content {
     width: 100% !important;
     max-width: 100% !important;
   }
-  
+
   .scope-of-work-labels,
   nz-form-label {
     display: block !important;
@@ -487,67 +503,67 @@ h6 {
     margin-bottom: 5px !important;
     width: 100% !important;
   }
-  
+
   .default-text {
     order: 1 !important;
     margin-bottom: 10px !important;
   }
-  
+
   .scope-of-work-container {
     display: flex !important;
     flex-direction: column !important;
   }
-  
+
   .labour-label {
     order: 3 !important;
     margin-top: 15px !important;
     display: block !important;
     width: 100% !important;
   }
-  
+
   .scope-button {
     order: 2 !important;
     margin-bottom: 20px !important;
     margin-top: 15px !important;
   }
-  
+
   .default-text-btn {
     font-size: 12px !important;
     padding: 4px 8px !important;
     height: auto !important;
     min-width: auto !important;
   }
-  
+
   /* Create RFP Component Responsive */
   .create-rfp-container {
     padding: 10px !important;
   }
-  
+
   .create-rfp-form .ant-form-item {
     margin-bottom: 16px !important;
   }
-  
+
   .create-rfp-form .ant-form-item-label {
     padding-bottom: 4px !important;
   }
-  
+
   .create-rfp-form .ant-input,
   .create-rfp-form .ant-select,
   .create-rfp-form .ant-picker {
     width: 100% !important;
   }
-  
+
   .create-rfp-buttons {
     display: flex !important;
     flex-direction: column !important;
     gap: 10px !important;
   }
-  
+
   .create-rfp-buttons button {
     width: 100% !important;
     margin-bottom: 8px !important;
   }
-  
+
   /* All buttons responsive */
   button[nz-button] {
     width: 100% !important;
@@ -555,55 +571,655 @@ h6 {
     font-size: 12px !important;
     padding: 4px 8px !important;
   }
-  
-  /* Scope of work buttons */
-  .scope-of-work button {
-    width: 70% !important;
-    margin-bottom: 10px !important;
-    max-width: 200px !important;
-  }
-  
-  /* Technical evaluation tables horizontal scroll */
-  .technical-evaluation-table,
-  .evaluation-criteria-table {
-    overflow-x: auto !important;
-    width: 100% !important;
-  }
-  
-  .technical-evaluation-table table,
-  .evaluation-criteria-table table {
-    min-width: 600px !important;
-  }
-  
 
-  
-  .ant-right-layout,
-  .ant-left-layout {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  /* Floating toggle button */
+  .floating-toggle {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1001;
   }
-  
-  nz-sider {
-    z-index: 1000 !important;
+
+  .floating-toggle button {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
-  
-  .hide-on-mobile-open {
-    display: none !important;
+
+
+
+
+
+  /* Custom Dropdown Styles */
+  .user-dropdown {
+    position: relative;
   }
-  
-  nz-content:not(.ant-full-layout) {
-    filter: blur(3px) !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 190px;
+    margin-top: 4px;
   }
-  
-  nz-content:not(.ant-full-layout) .inner-content {
-    filter: blur(3px) !important;
+
+  .dropdown-item {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
   }
-  
-  .dashboard-wrapper {
-    filter: blur(3px) !important;
-    transition: filter 0.3s ease;
+
+  .theme-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  [data-theme="dark"] .dropdown-menu {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+
+  [data-theme="dark"] .dropdown-item {
+    color: #ffffff;
+  }
+
+  .test-login-container {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .test-login-container input {
+    width: 150px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+    padding: 4px 11px !important;
+  }
+
+  .test-login-container button {
+    height: 32px !important;
+    font-size: 14px !important;
+    padding: 4px 15px !important;
+    min-width: auto !important;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .test-login-container {
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .test-login-container input {
+      width: 100px !important;
+      font-size: 12px !important;
+    }
+
+    .test-login-container button {
+      font-size: 12px !important;
+      padding: 4px 8px !important;
+    }
+
+    .logo-container {
+      position: relative !important;
+      top: 0 !important;
+      height: 80px !important;
+      min-height: 80px !important;
+    }
+
+    nz-header {
+      height: 80px !important;
+      min-height: 80px !important;
+    }
+
+    .inner-content {
+      padding: 15px !important;
+      margin-top: 0.5rem !important;
+    }
+
+    nz-content {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    .scope-of-work-labels,
+    nz-form-label {
+      display: block !important;
+      order: 2 !important;
+      margin-top: 15px !important;
+      margin-bottom: 5px !important;
+      width: 100% !important;
+    }
+
+    .default-text {
+      order: 1 !important;
+      margin-bottom: 10px !important;
+    }
+
+    .scope-of-work-container {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .labour-label {
+      order: 3 !important;
+      margin-top: 15px !important;
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .scope-button {
+      order: 2 !important;
+      margin-bottom: 20px !important;
+      margin-top: 15px !important;
+    }
+
+    .default-text-btn {
+      font-size: 12px !important;
+      padding: 4px 8px !important;
+      height: auto !important;
+      min-width: auto !important;
+    }
+
+    /* Create RFP Component Responsive */
+    .create-rfp-container {
+      padding: 10px !important;
+    }
+
+    .create-rfp-form .ant-form-item {
+      margin-bottom: 16px !important;
+    }
+
+    .create-rfp-form .ant-form-item-label {
+      padding-bottom: 4px !important;
+    }
+
+    .create-rfp-form .ant-input,
+    .create-rfp-form .ant-select,
+    .create-rfp-form .ant-picker {
+      width: 100% !important;
+    }
+
+    .create-rfp-buttons {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+    }
+
+    .create-rfp-buttons button {
+      width: 100% !important;
+      margin-bottom: 8px !important;
+    }
+
+    /* All buttons responsive */
+    button[nz-button] {
+      width: 100% !important;
+      margin-bottom: 8px !important;
+      font-size: 12px !important;
+      padding: 4px 8px !important;
+    }
+
+    /* Scope of work buttons */
+    .scope-of-work button {
+      top: 100px;
+      left: 20px;
+      z-index: 1001;
+    }
+
+    .floating-toggle button {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+
+
+
+
+    /* Custom Dropdown Styles */
+    .user-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      min-width: 190px;
+      margin-top: 4px;
+    }
+
+    .dropdown-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: default;
+    }
+
+    .theme-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    [data-theme="dark"] .dropdown-menu {
+      background: #1f1f1f;
+      border-color: #303030;
+    }
+
+    [data-theme="dark"] .dropdown-item {
+      color: #ffffff;
+    }
+
+    .test-login-container {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .test-login-container input {
+      width: 150px !important;
+      height: 32px !important;
+      font-size: 14px !important;
+      padding: 4px 11px !important;
+    }
+
+    .test-login-container button {
+      height: 32px !important;
+      font-size: 14px !important;
+      padding: 4px 15px !important;
+      min-width: auto !important;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .test-login-container {
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .test-login-container input {
+        width: 100px !important;
+        font-size: 12px !important;
+      }
+
+      .test-login-container button {
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+      }
+
+      .logo-container {
+        position: relative !important;
+        top: 0 !important;
+        height: 80px !important;
+        min-height: 80px !important;
+      }
+
+      nz-header {
+        height: 80px !important;
+        min-height: 80px !important;
+      }
+
+      .inner-content {
+        padding: 15px !important;
+        margin-top: 0.5rem !important;
+      }
+
+      nz-content {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .scope-of-work-labels,
+      nz-form-label {
+        display: block !important;
+        order: 2 !important;
+        margin-top: 15px !important;
+        margin-bottom: 5px !important;
+        width: 100% !important;
+      }
+
+      .default-text {
+        order: 1 !important;
+        margin-bottom: 10px !important;
+      }
+
+      .scope-of-work-container {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .labour-label {
+        order: 3 !important;
+        margin-top: 15px !important;
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .scope-button {
+        order: 2 !important;
+        margin-bottom: 20px !important;
+        margin-top: 15px !important;
+      }
+
+      .default-text-btn {
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+        height: auto !important;
+        min-width: auto !important;
+      }
+
+      /* Create RFP Component Responsive */
+      .create-rfp-container {
+        padding: 10px !important;
+      }
+
+      .create-rfp-form .ant-form-item {
+        margin-bottom: 16px !important;
+      }
+
+      .create-rfp-form .ant-form-item-label {
+        padding-bottom: 4px !important;
+      }
+
+      .create-rfp-form .ant-input,
+      .create-rfp-form .ant-select,
+      .create-rfp-form .ant-picker {
+        width: 100% !important;
+      }
+
+      .create-rfp-buttons {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+
+      .create-rfp-buttons button {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+      }
+
+      /* All buttons responsive */
+      button[nz-button] {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+      }
+
+      /* Scope of work buttons */
+      .scope-of-work button {
+        width: 70% !important;
+        margin-bottom: 10px !important;
+        max-width: 200px !important;
+      }
+
+      /* Technical evaluation tables horizontal scroll */
+      .technical-evaluation-table,
+      .evaluation-criteria-table {
+        overflow-x: auto !important;
+        width: 100% !important;
+      }
+
+      /* Custom Dropdown Styles */
+      .user-dropdown {
+        position: relative;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border: 1px solid #d9d9d9;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        min-width: 190px;
+        margin-top: 4px;
+      }
+
+      .dropdown-item {
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: default;
+      }
+
+      .theme-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      [data-theme="dark"] .dropdown-menu {
+        background: #1f1f1f;
+        border-color: #303030;
+      }
+
+      [data-theme="dark"] .dropdown-item {
+        color: #ffffff;
+      }
+
+      .test-login-container {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .test-login-container input {
+        width: 150px !important;
+        height: 32px !important;
+        font-size: 14px !important;
+        padding: 4px 11px !important;
+      }
+
+      .test-login-container button {
+        height: 32px !important;
+        font-size: 14px !important;
+        padding: 4px 15px !important;
+        min-width: auto !important;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 768px) {
+        .test-login-container {
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .test-login-container input {
+          width: 100px !important;
+          font-size: 12px !important;
+        }
+
+        .test-login-container button {
+          font-size: 12px !important;
+          padding: 4px 8px !important;
+        }
+
+        .logo-container {
+          position: relative !important;
+          top: 0 !important;
+          height: 80px !important;
+          min-height: 80px !important;
+        }
+
+        nz-header {
+          height: 80px !important;
+          min-height: 80px !important;
+        }
+
+        .inner-content {
+          padding: 15px !important;
+          margin-top: 0.5rem !important;
+        }
+
+        nz-content {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .scope-of-work-labels,
+        nz-form-label {
+          display: block !important;
+          order: 2 !important;
+          margin-top: 15px !important;
+          margin-bottom: 5px !important;
+          width: 100% !important;
+        }
+
+        .default-text {
+          order: 1 !important;
+          margin-bottom: 10px !important;
+        }
+
+        .scope-of-work-container {
+          display: flex !important;
+          flex-direction: column !important;
+        }
+
+        .labour-label {
+          order: 3 !important;
+          margin-top: 15px !important;
+          display: block !important;
+          width: 100% !important;
+        }
+
+        .scope-button {
+          order: 2 !important;
+          margin-bottom: 20px !important;
+          margin-top: 15px !important;
+        }
+
+        .default-text-btn {
+          font-size: 12px !important;
+          padding: 4px 8px !important;
+          height: auto !important;
+          min-width: auto !important;
+        }
+
+        /* Create RFP Component Responsive */
+        .create-rfp-container {
+          padding: 10px !important;
+        }
+
+        .create-rfp-form .ant-form-item {
+          margin-bottom: 16px !important;
+        }
+
+        .create-rfp-form .ant-form-item-label {
+          padding-bottom: 4px !important;
+        }
+
+        .create-rfp-form .ant-input,
+        .create-rfp-form .ant-select,
+        .create-rfp-form .ant-picker {
+          width: 100% !important;
+        }
+
+        .create-rfp-buttons {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 10px !important;
+        }
+
+        .create-rfp-buttons button {
+          width: 100% !important;
+          margin-bottom: 8px !important;
+        }
+
+        /* All buttons responsive */
+        button[nz-button] {
+          width: 100% !important;
+          margin-bottom: 8px !important;
+          font-size: 12px !important;
+          padding: 4px 8px !important;
+        }
+
+        /* Scope of work buttons */
+        .scope-of-work button {
+          width: 70% !important;
+          margin-bottom: 10px !important;
+          max-width: 200px !important;
+        }
+
+        /* Technical evaluation tables horizontal scroll */
+        .technical-evaluation-table,
+        .evaluation-criteria-table {
+          overflow-x: auto !important;
+          width: 100% !important;
+        }
+
+        .technical-evaluation-table table,
+        .evaluation-criteria-table table {
+          min-width: 600px !important;
+        }
+
+        /* Language toggle positioning for mobile/tablet */
+        .lang-toggle {
+          position: fixed !important;
+          top: 85px !important;
+          right: 15px !important;
+          z-index: 10001 !important;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* RTL (Arabic) - position on top-left */
+        :host-context([dir="rtl"]) .lang-toggle {
+          right: auto !important;
+          left: 15px !important;
+        }
+
+        .ant-right-layout,
+        .ant-left-layout {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        nz-sider {
+          z-index: 1000 !important;
+        }
+
+        .hide-on-mobile-open {
+          display: none !important;
+        }
+
+        nz-content:not(.ant-full-layout) {
+          filter: blur(3px) !important;
+          pointer-events: auto !important;
+          cursor: pointer !important;
+        }
+
+        nz-content:not(.ant-full-layout) .inner-content {
+          filter: blur(3px) !important;
+        }
+
+        .dashboard-wrapper {
+          filter: blur(3px) !important;
+          transition: filter 0.3s ease;
+        }
+      }
+    }
   }
 }
-
