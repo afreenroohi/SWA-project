@@ -77,9 +77,8 @@ nz-sider {
   width: 190px !important;
   max-width: 190px !important;
   overflow-y: auto;
-  top: 0 !important;
+  top: 80px !important;
   height: calc(100vh - 80px);
-  margin-top: 80px;
   box-sizing: border-box;
   transition: transform 0.3s ease;
 }
@@ -110,16 +109,19 @@ nz-sider {
 }
 
 .logo-container {
-  width: 200px;
+  width: 199px;
   height: 80px;
   border-inline-end: 4px solid #f7f8fa;
   border-bottom: 4px solid #f7f8fa;
   transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-container.collapsed {
   width: 70px;
-  border-inline-end: 4px solid #ffffff;
+  border-inline-end: 4px solid #f7f8fa;
 }
 
 .lang-toggle {

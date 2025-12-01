@@ -4179,7 +4179,7 @@ nz-collapse {
 .ant-collapse,
 .ant-collapse-content,
 .ant-collapse-content-box{
-border-color: var(--dark-border-light) !important;
+border: none !important;
 }
 
 [data-theme="dark"] .table td {
@@ -4377,12 +4377,13 @@ border-color: var(--dark-border-light) !important;
 nz-collapse,
 nz-collapse-panel {
   z-index: 1 !important;
+  border: none !important;
 }
 
 /* Mobile and tablet collapse border */
 @media (max-width: 1024px) {
   nz-collapse {
-    border-bottom: 1px solid #e8e8e8 !important;
+    border: none !important;
     margin-bottom: 20px !important;
   }
 }

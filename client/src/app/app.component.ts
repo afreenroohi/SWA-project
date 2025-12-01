@@ -26,18 +26,18 @@ import { RFPService } from './service/RFP/rfp.service';
 export class AppComponent {
   title = 'committee';
   collapsedWidth = 80;                     // final width of collapsed sidebar (px)
-expandedSiderWidth = 250;               // normal sidebar width (px)
-expandedLogo = 'assets/logo/swa-logo-dark.svg';
-// collapsedLogo = 'assets/logo/swa-header-logo.svg';
+  expandedSiderWidth = 250;               // normal sidebar width (px)
+  expandedLogo = 'assets/logo/swa-logo-dark.svg';
+  // collapsedLogo = 'assets/logo/swa-header-logo.svg';
   isCollapsed = false;
   isMobile = false;
   expandedWidth = 250;
-   layoutContentMarginLeft: number = 250;
-layoutContentMarginRight: number = 0;
+  layoutContentMarginLeft: number = 250;
+  layoutContentMarginRight: number = 0;
 
-// headerLeftWidth is used for inline width and stays a string with "px"
-headerLeftWidth: string = this.expandedWidth + 'px';
-  
+  // headerLeftWidth is used for inline width and stays a string with "px"
+  headerLeftWidth: string = this.expandedWidth + 'px';
+
   public navItems: any[] = [];
 
   readonly IconList = IconList;
@@ -67,7 +67,7 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   noCOC = false;
   noCON = false;
 
-  
+
 
   rqter: any;
   appr: any;
@@ -109,10 +109,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
 
   // logoSrc = "assets/logo/mwan_logo.png";
   logoSrc = "assets/logo/swa-logo-dark.svg";
-  
+
   isDarkMode = false;
   showDropdown = false;
-  
+
 
   login() {
     this.oauthService.initLoginFlow();
@@ -126,33 +126,33 @@ headerLeftWidth: string = this.expandedWidth + 'px';
 
   }
   toggleLang() {
-  if (this.cs.userLanguage === 'en') {
-    this.onChangeLang('ar');
-  } else {
-    this.onChangeLang('en');
+    if (this.cs.userLanguage === 'en') {
+      this.onChangeLang('ar');
+    } else {
+      this.onChangeLang('en');
+    }
   }
-}
-//   public openParentsForActive(): void {
-//   try {
-//     if (!this.navItems || !Array.isArray(this.navItems)) return;
-//     for (const nav of this.navItems) {
-//       if (nav?.navItem && Array.isArray(nav.navItem)) {
-//         const childActive = nav.navItem.some((si: any) => si.name === this.cs.activeMenu);
-//         // Keep already-open menus open; open the parent if childActive
-//         if (childActive) {
-//           nav.isOpen = true;
-//         }
-//       }
-//       // Also mark top-level menu as selected if there is no child and name matches
-//       if (!nav.navItem && nav.Module === this.cs.activeMenu) {
-//         nav.isOpen = true;
-//       }
-//     }
-//   } catch (e) {
-//     // fail silently
-//     // console.warn('openParentsForActive error', e);
-//   }
-// }
+  //   public openParentsForActive(): void {
+  //   try {
+  //     if (!this.navItems || !Array.isArray(this.navItems)) return;
+  //     for (const nav of this.navItems) {
+  //       if (nav?.navItem && Array.isArray(nav.navItem)) {
+  //         const childActive = nav.navItem.some((si: any) => si.name === this.cs.activeMenu);
+  //         // Keep already-open menus open; open the parent if childActive
+  //         if (childActive) {
+  //           nav.isOpen = true;
+  //         }
+  //       }
+  //       // Also mark top-level menu as selected if there is no child and name matches
+  //       if (!nav.navItem && nav.Module === this.cs.activeMenu) {
+  //         nav.isOpen = true;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     // fail silently
+  //     // console.warn('openParentsForActive error', e);
+  //   }
+  // }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: any) {
@@ -160,10 +160,6 @@ headerLeftWidth: string = this.expandedWidth + 'px';
       this.showDropdown = false;
     }
   }
-
-
-
-
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
@@ -224,11 +220,8 @@ headerLeftWidth: string = this.expandedWidth + 'px';
   ngOnInit(): void {
     this.cs.activeMenu = 'home';
     // this.setActiveMenuFromUrl();
-     this.isUserLoggedIn = true;
-    
-    // Collapse sidebar on home page
-    this.isCollapsed = true;
-    
+    this.isUserLoggedIn = true;
+
     // Load saved theme
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -247,10 +240,10 @@ headerLeftWidth: string = this.expandedWidth + 'px';
     //     this.dispname = decode.unique_name
     //     this.email = decode.email
     //     this.isUserLoggedIn = true;
-  
+
     //     // * Gets the menu items - Login logic
     //     this.getNavItem(this.ProxyUserId);
-  
+
     //   }
     // }
     //* Subscription to get count */
@@ -259,39 +252,39 @@ headerLeftWidth: string = this.expandedWidth + 'px';
         this.bidsToBeOpenedCount = resFromComp.count;
       } else if (resFromComp.committeeAction == 'BLST') {
         this.bidsListCount = resFromComp.count;
-      } else if (resFromComp.committeeAction == 'BAPR' 
+      } else if (resFromComp.committeeAction == 'BAPR'
         || resFromComp.committeeAction === 'QAPR'
       ) {
         this.bidsToBeApprovedCount = resFromComp.count;
-      } else if (resFromComp.committeeAction == 'BFNC' 
-        || resFromComp.committeeAction == 'BOFR' 
+      } else if (resFromComp.committeeAction == 'BFNC'
+        || resFromComp.committeeAction == 'BOFR'
         || resFromComp.committeeAction === 'BEFM') {
         this.bidsFinancialOfferCount = resFromComp.count;
-      } else if (resFromComp.committeeAction == 'BOPN' 
+      } else if (resFromComp.committeeAction == 'BOPN'
         || resFromComp.CommitteeAction === 'BEMR'
-        || resFromComp.CommitteeAction === 'BTEV' 
+        || resFromComp.CommitteeAction === 'BTEV'
         || resFromComp.CommitteeAction === 'BFEM'
         || resFromComp.committeeAction === 'BTTE'
       ) {
         this.bidsToBeEvaluated = resFromComp.count;
-      } else if ( resFromComp.committeeAction === 'BFTM' ) {
+      } else if (resFromComp.committeeAction === 'BFTM') {
         this.bidsFromTechMem = resFromComp.count;
-      
-      } else if ( resFromComp.committeeAction === 'BFTC' ) {
+
+      } else if (resFromComp.committeeAction === 'BFTC') {
         this.bidsFromTechnicalEvalCount = resFromComp.count;
-      } else if ( resFromComp.committeeAction === 'BFQC' ) {
+      } else if (resFromComp.committeeAction === 'BFQC') {
         this.bidsfromQualCount = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'BFAP' ) {
+      } else if (resFromComp.CommitteeAction === 'BFAP') {
         this.bidsfinalApprovalCount = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'BPRV' ) {
+      } else if (resFromComp.CommitteeAction === 'BPRV') {
         this.pendingReviewCount = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'BOMR' ) {
+      } else if (resFromComp.CommitteeAction === 'BOMR') {
         this.openingMemberCount = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'BEMR' ) {
+      } else if (resFromComp.CommitteeAction === 'BEMR') {
         this.bidsToBeEvaluatedData = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'BPFC' ) {
+      } else if (resFromComp.CommitteeAction === 'BPFC') {
         this.bidsFromfinancialControllerApprovalCount = resFromComp.count;
-      } else if ( resFromComp.CommitteeAction === 'VNDT' ) {
+      } else if (resFromComp.CommitteeAction === 'VNDT') {
         this.vendorListCount = resFromComp.count;
       }
 
@@ -303,7 +296,7 @@ headerLeftWidth: string = this.expandedWidth + 'px';
             nav.text = "Bids to be Opened (" + this.bidsToBeOpenedCount + ")";
           } else if (nav?.name == "bidsforfinancialoffer") {
             nav.text = "Bids for financial offer (" + this.bidsFinancialOfferCount + ")";
-          }  else if (nav?.name == "bidsfromfinancialmember") {
+          } else if (nav?.name == "bidsfromfinancialmember") {
             nav.text = "Bids from financial member (" + this.bidsFinancialOfferCount + ")";
           } else if (nav?.name == "bidlist") {
             nav.text = "Bids List (" + this.bidsListCount + ")";
@@ -320,12 +313,12 @@ headerLeftWidth: string = this.expandedWidth + 'px';
             nav.text = 'Pending review (' + this.pendingReviewCount + ')';
           } else if (nav?.name == "bidswithbidopeningmember") {
             nav.text = 'Opening member (' + this.openingMemberCount + ')';
-          } else if (nav?.name === 'bidsfromtechmem' ) {
+          } else if (nav?.name === 'bidsfromtechmem') {
             nav.text = 'Bids From Technical Members (' + this.bidsFromTechMem + ')';
             nav.textAr = ' (' + this.bidsFromTechMem + ') ' + 'نتائج التحليل الفني المرسله من الأعضاء';
           } else if (nav?.name === 'vendorlist') {
             nav.text = 'Vendor List (' + this.vendorListCount + ')';
-            nav.textAr = '('  + this.vendorListCount + ') قائمة البائعين';
+            nav.textAr = '(' + this.vendorListCount + ') قائمة البائعين';
           }
         }
       }
@@ -340,27 +333,27 @@ headerLeftWidth: string = this.expandedWidth + 'px';
    * @returns void
    * 
    */
-  
- navigate(item: any): void {
-  if (item.name === 'logout') {
-    this.logout();
-  } else {
-    if (item.Module) {
-      this.navItems.forEach((nav: any) => { 
-        if (nav.isOpen) {
-          nav.isOpen = false;
-        }
-      })
-    }
-    this.cs.activeMenu = item.name ?? item.Module;
-    this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
 
-    // Auto-close the sidebar on mobile so the content is visible
-    if (this.isMobile) {
-      this.isCollapsed = true;
+  navigate(item: any): void {
+    if (item.name === 'logout') {
+      this.logout();
+    } else {
+      if (item.Module) {
+        this.navItems.forEach((nav: any) => {
+          if (nav.isOpen) {
+            nav.isOpen = false;
+          }
+        })
+      }
+      this.cs.activeMenu = item.name ?? item.Module;
+      this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+
+      // Auto-close the sidebar on mobile so the content is visible
+      if (this.isMobile) {
+        this.isCollapsed = true;
+      }
     }
   }
-}
 
 
   /**
@@ -372,86 +365,86 @@ headerLeftWidth: string = this.expandedWidth + 'px';
    * @todo Make the changes according to the Process deployment. 
    * 
    */
-private _enableTestLogon: boolean = true;
-private hasUsedTestLogin: boolean = false;
+  private _enableTestLogon: boolean = true;
+  private hasUsedTestLogin: boolean = false;
 
-get enableTestLogon(): boolean {
-  return !this.hasUsedTestLogin;
-}
+  get enableTestLogon(): boolean {
+    return !this.hasUsedTestLogin;
+  }
 
-set enableTestLogon(value: boolean) {
-  this._enableTestLogon = value;
-}
+  set enableTestLogon(value: boolean) {
+    this._enableTestLogon = value;
+  }
   async getNavItem(userName: string) {
 
-      this.isUserLoggedIn = true;
+    this.isUserLoggedIn = true;
     this.dispname = userName.toUpperCase();
     this.ProxyUserId = userName.toUpperCase();
     this.hasUsedTestLogin = true;
     this.isCollapsed = true;
 
-    
+
     // console.log(userName,'userName==')
     this.navItems = [];
     this.navItems.push(
-        {
-          Module: 'Dashboard',
-          ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'line-chart',
-          link: 'rfp/dashboard'
-        },
-      )
-      // if(userName === 'OALMAGHRABI'){
-     if (userName === 'testrfp') {
-  this.roleTest('Requestor');
+      {
+        Module: 'Dashboard',
+        ModuleAr: 'إدارة طلب المنافسات',
+        ModuleIcon: 'line-chart',
+        link: 'rfp/dashboard'
+      },
+    )
+    // if(userName === 'OALMAGHRABI'){
+    if (userName === 'testrfp') {
+      this.roleTest('Requestor');
 
-  // ensure Dashboard is the active/selected menu key
-  this.cs.activeMenu = 'Dashboard';
+      // ensure Dashboard is the active/selected menu key
+      this.cs.activeMenu = 'Dashboard';
 
-  // close any open submenus so the Dashboard top-level looks highlighted
-  this.navItems.forEach(nav => nav.isOpen = false);
+      // close any open submenus so the Dashboard top-level looks highlighted
+      this.navItems.forEach(nav => nav.isOpen = false);
 
-  // navigate to dashboard
-  this.router.navigate(['rfp/dashboard']);
-}
-      if(userName === 'SALSUBKI'){
-          this.roleTest('Approver')
-          this.router.navigate(['rfp/myinbox']);
-      }
-      if(userName === 'AALSALEM'){
+      // navigate to dashboard
+      this.router.navigate(['rfp/dashboard']);
+    }
+    if (userName === 'SALSUBKI') {
+      this.roleTest('Approver')
+      this.router.navigate(['rfp/myinbox']);
+    }
+    if (userName === 'AALSALEM') {
 
-        this.constructCOCmenu({RoleId:'FI'})
+      this.constructCOCmenu({ RoleId: 'FI' })
 
-         this.navItems.push({
-            ModuleIcon: 'dashboard',
-            Module: 'Bid Opening Committee',
-            ModuleId: '01',
-            ModuleAr: 'لجنة فتح العروض ',
-            navItem: [
-              {
-                name: 'bidopeningform',
-                iconName: IconList.listcheck,
-                text: 'Bid opening Form',
-                textAr: 'نموذج فتح العروض',
-                link: 'committee/Bid_Create',
-              },
-              {
-                name: 'bidlist',
-                iconName: IconList.listnote,
-                text: 'Bids List (' + this.bidsListCount + ')',
-                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-                link: 'committee/BidList',
-              },
-            ],
-          });
-        // Budallocator Manager Approver&Manager
-        this.router.navigate(['rfp/myinbox']);
-      }
-  //     this.cs.activeMenu = 'Dashboard';
-  // this.navItems.forEach(n => n.isOpen = false);
-  // // call helper if exists (keeps same behavior as the forkJoin branch)
-  // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
-  // this.router.navigate(['rfp/dashboard']);
+      this.navItems.push({
+        ModuleIcon: 'dashboard',
+        Module: 'Bid Opening Committee',
+        ModuleId: '01',
+        ModuleAr: 'لجنة فتح العروض ',
+        navItem: [
+          {
+            name: 'bidopeningform',
+            iconName: IconList.listcheck,
+            text: 'Bid opening Form',
+            textAr: 'نموذج فتح العروض',
+            link: 'committee/Bid_Create',
+          },
+          {
+            name: 'bidlist',
+            iconName: IconList.listnote,
+            text: 'Bids List (' + this.bidsListCount + ')',
+            textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+            link: 'committee/BidList',
+          },
+        ],
+      });
+      // Budallocator Manager Approver&Manager
+      this.router.navigate(['rfp/myinbox']);
+    }
+    //     this.cs.activeMenu = 'Dashboard';
+    // this.navItems.forEach(n => n.isOpen = false);
+    // // call helper if exists (keeps same behavior as the forkJoin branch)
+    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+    // this.router.navigate(['rfp/dashboard']);
 
     return
     // * Setting the Initial State for Login
@@ -506,9 +499,9 @@ set enableTestLogon(value: boolean) {
     // *Coc Login V2
     const COCLoginRole = this.api.get(`/v2/COCLogin?username=${this.ProxyUserId.toUpperCase()}`);
 
-    forkJoin([RFPLogin, CommitteeLogin, 
+    forkJoin([RFPLogin, CommitteeLogin,
       ContractLogin, COCLoginRole
-    ]).pipe(takeUntil(this._destroy)).subscribe(([RFPLoginRes, CommitteeLoginRes, 
+    ]).pipe(takeUntil(this._destroy)).subscribe(([RFPLoginRes, CommitteeLoginRes,
       ContractLoginRes, COCLoginRoleRes
     ]) => {
       this.navItems.push(
@@ -516,7 +509,7 @@ set enableTestLogon(value: boolean) {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
           ModuleIcon: 'line-chart',
-          link:  'rfp/dashboard'
+          link: 'rfp/dashboard'
         },
       )
       if (RFPLoginRes) {
@@ -566,10 +559,10 @@ set enableTestLogon(value: boolean) {
         this.norole = true;
         this.router.navigate(['noaccess']);
       }
-    //   this.cs.activeMenu = 'Dashboard';
-    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
-    // this.navItems.forEach(n => n.isOpen = false);
-    // this.router.navigate(['/dashboard']);
+      //   this.cs.activeMenu = 'Dashboard';
+      // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+      // this.navItems.forEach(n => n.isOpen = false);
+      // this.router.navigate(['/dashboard']);
     },
       (error) => {
         this.spinner.hide()
@@ -578,179 +571,179 @@ set enableTestLogon(value: boolean) {
   }
 
 
-   async roleTest(RoleIdf:string){
-     if (RoleIdf === 'Requestor') {
-          localStorage.setItem('ROLERFP', btoa(RoleIdf));
-          this.rqter = true;
-          // this.router.navigate(['rfp/myrfp'])
-        }
-        else if (RoleIdf === 'Approver') {
-          this.appr = true;
-        }
-        else if (RoleIdf === 'Budallocator') { 
-          localStorage.setItem('ROLEBUD', btoa(RoleIdf));
-          this.budalltr = true;
-        }
-        else if (RoleIdf == 'Manager') {
-          this.manager = true;
-        }
-        else if (RoleIdf == 'Approver&Manager') {
-          this.apprmanager = true;
-        }
-      
+  async roleTest(RoleIdf: string) {
+    if (RoleIdf === 'Requestor') {
+      localStorage.setItem('ROLERFP', btoa(RoleIdf));
+      this.rqter = true;
+      // this.router.navigate(['rfp/myrfp'])
+    }
+    else if (RoleIdf === 'Approver') {
+      this.appr = true;
+    }
+    else if (RoleIdf === 'Budallocator') {
+      localStorage.setItem('ROLEBUD', btoa(RoleIdf));
+      this.budalltr = true;
+    }
+    else if (RoleIdf == 'Manager') {
+      this.manager = true;
+    }
+    else if (RoleIdf == 'Approver&Manager') {
+      this.apprmanager = true;
+    }
 
-      if (this.rqter) {
-        this.navItems.push(
-          {
-            Module: 'RFP - Requester',
-            ModuleAr: 'إدارة طلب المنافسات',
-            ModuleIcon: 'mail',
-            isOpen: false,
-            navItem: [
-              {
-                name: 'create',
-                iconName: IconList.create,
-                text: 'Create',
-                textAr: 'انشاء منافسة',
-                link: 'rfp/create',
-              },
-              {
-                name: 'myrfp',
-                iconName: IconList.myRequest,
-                text: 'My Request',
-                textAr: 'منافساتي',
-                link: 'rfp/myrfp',
-              }
-            ],
-          },
-        )
-      }
 
-      if (this.appr) {
-        this.navItems.push(
-          {
-            Module: 'RFP - Approver',
-            ModuleAr: 'الموافقة على المنافسات',
-            ModuleIcon: 'mail',
-            isOpen: false,
-            navItem: [
+    if (this.rqter) {
+      this.navItems.push(
+        {
+          Module: 'RFP - Requester',
+          ModuleAr: 'إدارة طلب المنافسات',
+          ModuleIcon: 'mail',
+          isOpen: false,
+          navItem: [
+            {
+              name: 'create',
+              iconName: IconList.create,
+              text: 'Create',
+              textAr: 'انشاء منافسة',
+              link: 'rfp/create',
+            },
+            {
+              name: 'myrfp',
+              iconName: IconList.myRequest,
+              text: 'My Request',
+              textAr: 'منافساتي',
+              link: 'rfp/myrfp',
+            }
+          ],
+        },
+      )
+    }
 
-              {
-                name: 'list',
-                iconName: IconList.search,
-                text: 'Search RFP',
-                textAr: 'منافساتي',
-                link: 'rfp/list',
-              },
+    if (this.appr) {
+      this.navItems.push(
+        {
+          Module: 'RFP - Approver',
+          ModuleAr: 'الموافقة على المنافسات',
+          ModuleIcon: 'mail',
+          isOpen: false,
+          navItem: [
 
-              // {
-              //   name: 'dashboard',
-              //   iconName: IconList.dashboard,
-              //   text: 'Dashboard',
-              //   textAr: 'لوحة القيادة',
-              //   link: 'rfp/dashboard',
-              // },
-              {
-                name: 'myinbox',
-                iconName: IconList.inbox,
-                text: 'My Inbox',
-                textAr: 'الطلبات الواردة',
-                link: 'rfp/myinbox',
-              },
-            ],
-          },
-        )
-      }
+            {
+              name: 'list',
+              iconName: IconList.search,
+              text: 'Search RFP',
+              textAr: 'منافساتي',
+              link: 'rfp/list',
+            },
 
-      if (this.budalltr) {
-        this.navItems.push(
-          {
-            Module: 'RFP - Budget Allocation',
-            ModuleAr: 'الميزانية',
-            ModuleIcon: 'mail',
-            navItem: [
+            // {
+            //   name: 'dashboard',
+            //   iconName: IconList.dashboard,
+            //   text: 'Dashboard',
+            //   textAr: 'لوحة القيادة',
+            //   link: 'rfp/dashboard',
+            // },
+            {
+              name: 'myinbox',
+              iconName: IconList.inbox,
+              text: 'My Inbox',
+              textAr: 'الطلبات الواردة',
+              link: 'rfp/myinbox',
+            },
+          ],
+        },
+      )
+    }
 
-              {
-                name: 'budgetrequest',
-                iconName: IconList.hand,
-                text: 'Budget Requests',
-                textAr: 'طلبات الميزانية',
-                link: 'rfp/budgetrequest',
-              },
+    if (this.budalltr) {
+      this.navItems.push(
+        {
+          Module: 'RFP - Budget Allocation',
+          ModuleAr: 'الميزانية',
+          ModuleIcon: 'mail',
+          navItem: [
 
-              // {
-              //   name: 'list',
-              //   iconName: 'mail',
-              //   text: 'Search RFP',
-              //   textAr: 'منافساتي',
-              //   link: 'rfp/list',
-              // },
+            {
+              name: 'budgetrequest',
+              iconName: IconList.hand,
+              text: 'Budget Requests',
+              textAr: 'طلبات الميزانية',
+              link: 'rfp/budgetrequest',
+            },
 
-              // {
-              //   name: 'myinbox',
-              //   iconName: 'mail',
-              //   text: 'My Inbox',
-              //   textAr: 'الطلبات الواردة',
-              //   link: 'rfp/myinbox',
-              // },
+            // {
+            //   name: 'list',
+            //   iconName: 'mail',
+            //   text: 'Search RFP',
+            //   textAr: 'منافساتي',
+            //   link: 'rfp/list',
+            // },
 
-            ],
-          },
-        )
-      }
+            // {
+            //   name: 'myinbox',
+            //   iconName: 'mail',
+            //   text: 'My Inbox',
+            //   textAr: 'الطلبات الواردة',
+            //   link: 'rfp/myinbox',
+            // },
 
-      if (this.manager) {
-        this.navItems.push(
-          {
-            Module: 'RFP - Dashboard',
-            ModuleAr: 'حالة المنافسات',
-            ModuleIcon: 'mail',
-            navItem: [
+          ],
+        },
+      )
+    }
 
-              {
-                name: 'dashboard',
-                iconName: IconList.dashboard,
-                text: 'Dashboard',
-                textAr: 'لوحة القيادة',
-                link: 'rfp/dashboard',
-              },
-            ],
-          },
-        )
-      }
+    if (this.manager) {
+      this.navItems.push(
+        {
+          Module: 'RFP - Dashboard',
+          ModuleAr: 'حالة المنافسات',
+          ModuleIcon: 'mail',
+          navItem: [
 
-      if (this.apprmanager) {
-        this.navItems.push(
-          {
-            Module: 'RFP - Approver',
-            ModuleAr: 'الموافقة على المنافسات',
-            ModuleIcon: 'mail',
-            navItem: [
+            {
+              name: 'dashboard',
+              iconName: IconList.dashboard,
+              text: 'Dashboard',
+              textAr: 'لوحة القيادة',
+              link: 'rfp/dashboard',
+            },
+          ],
+        },
+      )
+    }
 
-              {
-                name: 'dashboard',
-                iconName: IconList.dashboard,
-                text: 'Dashboard',
-                textAr: 'لوحة القيادة',
-                link: 'rfp/dashboard',
-              },
+    if (this.apprmanager) {
+      this.navItems.push(
+        {
+          Module: 'RFP - Approver',
+          ModuleAr: 'الموافقة على المنافسات',
+          ModuleIcon: 'mail',
+          navItem: [
 
-              {
-                name: 'myinbox',
-                iconName: IconList.inbox,
-                text: 'My Inbox',
-                textAr: 'الطلبات الواردة',
-                link: 'rfp/myinbox',
-              },
-            ],
-          },
-        )
-      }
+            {
+              name: 'dashboard',
+              iconName: IconList.dashboard,
+              text: 'Dashboard',
+              textAr: 'لوحة القيادة',
+              link: 'rfp/dashboard',
+            },
 
-      if (this.isAdmin) {
-        this.addRFPAdminNavItem(this.isAdminFullAccess);
-      }
-   }
+            {
+              name: 'myinbox',
+              iconName: IconList.inbox,
+              text: 'My Inbox',
+              textAr: 'الطلبات الواردة',
+              link: 'rfp/myinbox',
+            },
+          ],
+        },
+      )
+    }
+
+    if (this.isAdmin) {
+      this.addRFPAdminNavItem(this.isAdminFullAccess);
+    }
+  }
 
   /**
    * Sets the RFP menu based on the Login API.
@@ -1043,15 +1036,15 @@ set enableTestLogon(value: boolean) {
           Module: 'Certificate Of Completion',
           ModuleAr: 'إدارة العقود',
           navItem: [
-          {
-            name: 'createses',
-            iconName: 'user',
-            text: 'Create SES',
-            textAr: 'انشاء صحيفة ادخال الخدمة',
-            external: true,
-            linkAr: environment.sapCreateSesArUrl,
-            linkEn:  environment.sapCreateSesUrl
-          }]
+            {
+              name: 'createses',
+              iconName: 'user',
+              text: 'Create SES',
+              textAr: 'انشاء صحيفة ادخال الخدمة',
+              external: true,
+              linkAr: environment.sapCreateSesArUrl,
+              linkEn: environment.sapCreateSesUrl
+            }]
         });
         break;
       }
@@ -1078,12 +1071,12 @@ set enableTestLogon(value: boolean) {
                 textAr: 'قائمة شهادات الإنجاز',
                 link: 'coc/coclist',
               },
-            {
-              name: 'SignatureUpload',
-              iconName: 'upload',
-              text: 'Signature Upload',
-              textAr: 'تحميل التوقيع',
-              link: 'coc/signature_upload',
+              {
+                name: 'SignatureUpload',
+                iconName: 'upload',
+                text: 'Signature Upload',
+                textAr: 'تحميل التوقيع',
+                link: 'coc/signature_upload',
               }]
           });
           break;
@@ -1093,33 +1086,33 @@ set enableTestLogon(value: boolean) {
       case 'DM':
       case 'DP':
       case 'MP':
-      case 'VP': 
+      case 'VP':
       case 'MN':
       case 'OF':
       case 'FI':
-         {
-        this.navItems.push({
-          ModuleIcon: 'dashboard',
-          Module: 'Certificate Of Completion',
-          ModuleAr: 'إدارة العقود',
-          navItem: [
-            {
-              name: 'projectowner',
-              iconName: 'user',
-              text: 'COC Action',
-              textAr: 'عقودي',
-              link: 'coc/OwnerDashboard',
-            },
-            {
-              name: 'mycoc',
-              iconName: 'folder',
-              text: 'Certificate of Completion List',
-              textAr: 'قائمة شهادات الإنجاز',
-              link: 'coc/coclist',
-            }]
-        });
-        break;
-      }
+        {
+          this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Certificate Of Completion',
+            ModuleAr: 'إدارة العقود',
+            navItem: [
+              {
+                name: 'projectowner',
+                iconName: 'user',
+                text: 'COC Action',
+                textAr: 'عقودي',
+                link: 'coc/OwnerDashboard',
+              },
+              {
+                name: 'mycoc',
+                iconName: 'folder',
+                text: 'Certificate of Completion List',
+                textAr: 'قائمة شهادات الإنجاز',
+                link: 'coc/coclist',
+              }]
+          });
+          break;
+        }
     }
   }
 
@@ -1141,9 +1134,9 @@ set enableTestLogon(value: boolean) {
       const reqVendorList = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'vendorlist')
       this.spinner.show();
       forkJoin([this.api.post('OCOM_BID_TO_Dash_CNT', reqcomtobeapproved),
-      this.api.post("OCOM_BID_TO_Dash_CNT", reqcombidlist), 
+      this.api.post("OCOM_BID_TO_Dash_CNT", reqcombidlist),
       this.api.post("OCOM_BID_TO_Dash_CNT", reqVendorList)
-    ]).subscribe(([restobeappr, resplist, reqVendorListCount]) => {
+      ]).subscribe(([restobeappr, resplist, reqVendorListCount]) => {
         this.spinner.hide();
         this.bidsToBeApprovedCount = restobeappr;
         this.bidsListCount = resplist;
@@ -1179,11 +1172,11 @@ set enableTestLogon(value: boolean) {
       this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromTechMem),
       this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromTechnicalEvaluationCommittee),
       this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromfinancialControllerApproval)
-    ])
-        .subscribe(([restobBeApproved, resList, resFinancial, resBidOpen, 
-          resBidEval, resfromQual, resfinalApproval, respendingReview, 
-          resOpeningMember, resEvaluated, resBidsFromTechMem,reqBidsFromTechnicalEvaluationCommitteeCount,
-          reqBidsFromfinancialControllerApprovalCount ]) => {
+      ])
+        .subscribe(([restobBeApproved, resList, resFinancial, resBidOpen,
+          resBidEval, resfromQual, resfinalApproval, respendingReview,
+          resOpeningMember, resEvaluated, resBidsFromTechMem, reqBidsFromTechnicalEvaluationCommitteeCount,
+          reqBidsFromfinancialControllerApprovalCount]) => {
           this.spinner.hide();
           this.bidsToBeApprovedCount = restobBeApproved;
           this.bidsListCount = resList;
@@ -1223,7 +1216,7 @@ set enableTestLogon(value: boolean) {
    */
   okOnbehalf(): void {
     this.navItems = this.navItems.filter(function (item) {
-      if (item.ModuleId !== "01" && item.ModuleId !== "02" && item.ModuleId !== "03" 
+      if (item.ModuleId !== "01" && item.ModuleId !== "02" && item.ModuleId !== "03"
         && item.ModuleId !== "04" && item.ModuleId !== "05" && item.ModuleId !== "06" && item.Module !== 'CONTRACT' && item.Module !== 'Certificate Of Completion') {
         return item
       }
@@ -1284,7 +1277,7 @@ set enableTestLogon(value: boolean) {
   constructCommitteeMenu(role: any): void {
     // global if
     if (
-      role.CommitteeId === this.roleForm.get('committeeRole')?.value.CommitteeId && 
+      role.CommitteeId === this.roleForm.get('committeeRole')?.value.CommitteeId &&
       role.CommitteeRole === this.roleForm.get('committeeRole')?.value.CommitteeRole
     ) {
       localStorage.setItem('CommitteeName', role.CommitteeName);
@@ -1517,7 +1510,7 @@ set enableTestLogon(value: boolean) {
                 textAr: 'تحميل التوقيع',
                 link: 'committee/signature_upload',
               }
-              
+
             ],
           });
 
@@ -1543,7 +1536,7 @@ set enableTestLogon(value: boolean) {
                 textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لوضع العروض المالية ',
                 link: 'committee/be_chair_dashboard/bids_financial_offer',
               },
-              
+
               // {
               //   name: 'Bids with Members',
               //   iconName: 'bars',
@@ -1887,7 +1880,7 @@ set enableTestLogon(value: boolean) {
                 textAr: ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للفحص',
                 link: 'committee/dp-evaluation/bids-to-be-evaluated',
               },
-                {
+              {
                 name: 'bidtobeapproved',
                 iconName: 'check',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
@@ -2085,7 +2078,7 @@ set enableTestLogon(value: boolean) {
               },
             ],
           });
-        } 
+        }
         else if (this.role === 'FO') {
           this.navItems.push({
             ModuleIcon: 'user',
@@ -2105,10 +2098,10 @@ set enableTestLogon(value: boolean) {
         }
       }
       // * Technical Evaluation Committee
-      else if ( role.CommitteeId === '06' ) {
+      else if (role.CommitteeId === '06') {
         localStorage.setItem('ROLETE', role.CommitteeRole);
         let navItem: any[] = [];
-        if ( this.role === 'CH' ) {
+        if (this.role === 'CH') {
           this.addAdminNavItem('COMM'); // ? Admin access for Chairman
           navItem.push(
             {
@@ -2126,7 +2119,7 @@ set enableTestLogon(value: boolean) {
               link: 'committee/technical-evaluation/bids-from-tech-members',
             }
           )
-        } else if ( this.role === 'TM' ) {
+        } else if (this.role === 'TM') {
           navItem.push(
             {
               name: 'techbidstobeevaluated',
@@ -2155,11 +2148,11 @@ set enableTestLogon(value: boolean) {
         );
 
         this.navItems.push({
-            ModuleIcon: 'user',
-            ModuleId: '06',
-            Module: 'Technical Evaluation Committee',
-            ModuleAr: 'لجنة التقييم الفني',
-            navItem: navItem
+          ModuleIcon: 'user',
+          ModuleId: '06',
+          Module: 'Technical Evaluation Committee',
+          ModuleAr: 'لجنة التقييم الفني',
+          navItem: navItem
         })
       }
 
@@ -2352,10 +2345,10 @@ set enableTestLogon(value: boolean) {
       }
     }
     // * Technical Evaluation Committee
-    else if ( committeeId === '06' ) {
-      if ( navItemId === 'bidstobeeval' ) {
+    else if (committeeId === '06') {
+      if (navItemId === 'bidstobeeval') {
         reqData.CommitteeAction = 'BTTE'
-      } else if ( navItemId === 'bidsfromtechmem' ) {
+      } else if (navItemId === 'bidsfromtechmem') {
         reqData.CommitteeAction = 'BFTM'
       }
     }
@@ -2653,7 +2646,7 @@ set enableTestLogon(value: boolean) {
           },
         ],
       });
-    } else if(role === 'CC'){
+    } else if (role === 'CC') {
       this.navItems.push({
         ModuleIcon: 'dashboard',
         Module: 'CONTRACT',
@@ -2861,8 +2854,8 @@ set enableTestLogon(value: boolean) {
         }
       }
       this.cs.updateSLAOption([
-        PROCESS_TYPES.RFP, 
-        PROCESS_TYPES.COMMITTEE, 
+        PROCESS_TYPES.RFP,
+        PROCESS_TYPES.COMMITTEE,
         // PROCESS_TYPES.CONTRACT  // ? Uncomment to get Contract in SLA list
       ]);
     }

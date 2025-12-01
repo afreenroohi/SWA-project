@@ -1,16 +1,15 @@
+
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner>  ------>
 
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
-<!-- <ngx-spinner
+ <!-- <ngx-spinner
   bdColor="rgba(51, 51, 51, 0.8)"
   size="small"
   color="#1fcecb"
   type="line-scale"
 ></ngx-spinner> -->
-<ngx-spinner bdColor="rgb(25,113,229)" size="default" color="#1fcecb" type="ball-grid-beat" [fullScreen]="true">
-  <p style="color: white"> Loading... </p>
-</ngx-spinner>
-<!-- <ngx-spinner
+<ngx-spinner bdColor = "rgb(25,113,229)" size = "default" color = "#1fcecb" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+ <!-- <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.8)"
   size="medium"
   color="#fff"
@@ -66,7 +65,7 @@
           </ng-container>
 
           <!-- proxy / change user -->
-  <!-- <button
+          <!-- <button
             *ngIf="enableproxy"
             nz-button
             nzType="primary"
@@ -75,7 +74,7 @@
             {{ "COM.ChangeUsr" | translate }}
           </button>
         </div> -->
-  <!-- </div>
+      <!-- </div>
       <div nz-col nzSpan="4">
         <div style="text-align: center" *ngIf="isUserLoggedIn">
           &nbsp;
@@ -91,14 +90,14 @@
  
  
       <!-- ✅ End Header User Section -->
-  <!-- </div>
-  </nz-header> -->
+    <!-- </div>
+  </nz-header> --> 
 
 
 
-
-  <nz-header>
-
+  
+ <nz-header>
+  
     <div nz-row nzJustify="space-between" nzAlign="middle">
       <div nz-col nzSpan="12">
         <div nz-row nzAlign="middle" style="flex-wrap: nowrap;">
@@ -117,15 +116,15 @@
           <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'en'" (click)="onChangeLang('ar')" [class.hide-on-mobile-open]="!isCollapsed">
             <span> العربیة </span> &nbsp; &nbsp;
           </button> -->
-          <div class="lang-toggle" (click)="toggleLang()">
-            <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
+<div class="lang-toggle" (click)="toggleLang()">
+  <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
 
-            <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
-            <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
-          </div>
+  <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
+  <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
+</div>
 
           &nbsp; &nbsp;
-
+ 
           <div *ngIf="enableTestLogon" class="test-login-container">
             <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto" />
             <button nz-button nzType="primary" [ngStyle]="{
@@ -134,7 +133,7 @@
               {{ "RFP.TestLogin" | translate }}
             </button>
           </div>
-
+       
 
           <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
               'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
@@ -143,7 +142,7 @@
           </button>
         </div>
       </div>
-
+ 
       <!-- ✅ Fixed Header User Section -->
       <div nz-col nzSpan="12" class="right-header-section" [ngStyle]="{
         'position': 'fixed',
@@ -193,8 +192,8 @@
           </div>
         </div>
       </div>
-
-
+ 
+ 
       <!-- ✅ End Header User Section -->
     </div>
   </nz-header>
@@ -202,16 +201,14 @@
 
 
 
-  <nz-layout class="ant-top-layout">
-    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn && !isCollapsed" nzCollapsible [(nzCollapsed)]="isCollapsed"
-      [nzTrigger]="null" style="background-color: white;">
+<nz-layout class="ant-top-layout">
+    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn && !isCollapsed" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" style="background-color: white;">
       <div class="sidebar-toggle" *ngIf="navItems && navItems.length > 0" style="padding: 10px; margin-bottom: 10px;">
         <button nz-button nzType="text" nzSize="small" (click)="isCollapsed = !isCollapsed" class="collapse-btn">
           <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
         </button>
       </div>
-      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed"
-        [ngClass]="{'menu-with-toggle': isUserLoggedIn}">
+      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngClass]="{'menu-with-toggle': isUserLoggedIn}">
         <ng-container *ngFor="let item of navItems">
           <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
             <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="
@@ -317,10 +314,13 @@
         'ant-right-layout': cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed,
         'ant-left-layout': cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed,
         'ant-full-layout': !isUserLoggedIn || isCollapsed
-      }" [ngStyle]="{
+      }"
+      [ngStyle]="{
         'margin-left': (cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed) ? '190px' : '0',
         'margin-right': (cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed) ? '190px' : '0'
-      }" (click)="isCollapsed = true" style="background-color: white">
+      }"
+      (click)="isCollapsed = true"
+      style="background-color: white">
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>
