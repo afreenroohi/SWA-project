@@ -707,7 +707,7 @@
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label nzRequired>{{ "RFP.userId" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Email" formControlName="userId" />
+              <input nz-input placeholder="Enter UID" formControlName="userId" />
             </div>
 
             <!-- * Site Visit Contact Details -->
@@ -1664,7 +1664,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="jobTitle" placeholder="Enter job title" /></td>
                     <td><input nz-input formControlName="minQualification" placeholder="Enter qualification" /></td>
-                    <td><input nz-input formControlName="minExperience" placeholder="Enter years" /></td>
+                    <td>
+                      <input nz-input type="number" formControlName="minExperience" placeholder="Enter years" min="0" />
+                      <small *ngIf="item.get('minExperience')?.touched && item.get('minExperience')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only numbers are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === laborItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
@@ -1710,7 +1716,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="material" placeholder="Enter material" /></td>
                     <td><input nz-input formControlName="specifications" placeholder="Enter specifications" /></td>
-                    <td><input nz-input formControlName="unit" placeholder="Enter unit" /></td>
+                    <td>
+                      <input nz-input formControlName="unit" placeholder="Enter unit" />
+                      <small *ngIf="item.get('unit')?.touched && item.get('unit')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only alphabets are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === materialItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
@@ -1756,7 +1768,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="machine" placeholder="Enter machine" /></td>
                     <td><input nz-input formControlName="specifications" placeholder="Enter specifications" /></td>
-                    <td><input nz-input formControlName="unit" placeholder="Enter unit" /></td>
+                    <td>
+                      <input nz-input formControlName="unit" placeholder="Enter unit" />
+                      <small *ngIf="item.get('unit')?.touched && item.get('unit')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only alphabets are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === equipmentItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
