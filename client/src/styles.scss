@@ -1,11 +1,80 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import './variables';
+@import './responsive-utilities';
+
+/* ===============================
+   RESPONSIVE BREAKPOINTS
+   =============================== */
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+@mixin media-breakpoint-up($name) {
+  $min: map-get($breakpoints, $name);
+  @if $min != 0 {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down($name) {
+  $names: map-keys($breakpoints);
+  $n: index($names, $name);
+  $max: if($n < length($names), map-get($breakpoints, nth($names, $n + 1)) - 0.02, null);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+/* ===============================
+   RESPONSIVE UTILITIES
+   =============================== */
 
 
+/* Responsive Width Classes */
 .w-25 {
     width: 25%;
+}
+
+@include media-breakpoint-down(md) {
+  .w-25 { width: 50% !important; }
+  .w-50 { width: 100% !important; }
+  .w-75 { width: 100% !important; }
+}
+
+@include media-breakpoint-down(sm) {
+  .w-25, .w-50, .w-75 { width: 100% !important; }
+}
+
+/* Mobile-first responsive containers */
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@include media-breakpoint-up(sm) {
+  .container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .container-fluid {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 }
 /* Apply consistent border-radius to all inputs */
 input, 
@@ -40,6 +109,7 @@ textarea {
     width: 75%;
 }
 
+/* Responsive Text Alignment */
 .text-end {
     text-align: end;
 }
@@ -55,12 +125,79 @@ textarea {
     text-align: left;
 }
 
+@include media-breakpoint-down(md) {
+  .text-center-mobile {
+    text-align: center !important;
+  }
+  .text-left-mobile {
+    text-align: left !important;
+  }
+}
+
+/* Responsive Display Classes */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-grid { display: grid !important; }
+
+@include media-breakpoint-down(lg) {
+  .d-lg-none { display: none !important; }
+  .d-lg-block { display: block !important; }
+  .d-lg-flex { display: flex !important; }
+}
+
+@include media-breakpoint-down(md) {
+  .d-md-none { display: none !important; }
+  .d-md-block { display: block !important; }
+  .d-md-flex { display: flex !important; }
+}
+
+@include media-breakpoint-down(sm) {
+  .d-sm-none { display: none !important; }
+  .d-sm-block { display: block !important; }
+  .d-sm-flex { display: flex !important; }
+}
+
+/* Responsive Flex Classes */
+.flex-column-mobile {
+  @include media-breakpoint-down(md) {
+    flex-direction: column !important;
+  }
+}
+
+.flex-wrap-mobile {
+  @include media-breakpoint-down(md) {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* Responsive Typography */
 .text-24 {
     font-size: 24px;
+    @include media-breakpoint-down(md) {
+      font-size: 20px;
+    }
+    @include media-breakpoint-down(sm) {
+      font-size: 18px;
+    }
 }
 
 .text-20 {
     font-size: 20px;
+    @include media-breakpoint-down(md) {
+      font-size: 18px;
+    }
+    @include media-breakpoint-down(sm) {
+      font-size: 16px;
+    }
+}
+
+.text-responsive {
+  font-size: clamp(14px, 2.5vw, 18px);
+}
+
+.heading-responsive {
+  font-size: clamp(18px, 4vw, 24px);
 }
 
 .text-success {
@@ -97,12 +234,56 @@ textarea {
     display: contents;
 }
 
+/* Responsive Gaps */
 $gaps: (1,2,3,4,5,6);
 
 @each $gap in $gaps {
     .gap-#{$gap} {
-        gap: #{$gap}rem; 
+        gap: #{$gap}rem;
+        @include media-breakpoint-down(md) {
+          gap: #{$gap * 0.75}rem;
+        }
+        @include media-breakpoint-down(sm) {
+          gap: #{$gap * 0.5}rem;
+        }
     }
+}
+
+/* Responsive Padding Classes */
+.p-responsive {
+  padding: 2rem;
+  @include media-breakpoint-down(md) {
+    padding: 1.5rem;
+  }
+  @include media-breakpoint-down(sm) {
+    padding: 1rem;
+  }
+}
+
+.px-responsive {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  @include media-breakpoint-down(md) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @include media-breakpoint-down(sm) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.py-responsive {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @include media-breakpoint-down(md) {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  @include media-breakpoint-down(sm) {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 
 $widths: (
@@ -127,11 +308,47 @@ $widths: (
     width: 5em;
 }
 
+/* Responsive Table Styles */
 .table-content {
     height: 250px !important;
     display: flex;
     align-items: center;
     justify-content: center;
+    @include media-breakpoint-down(md) {
+      height: 200px !important;
+    }
+    @include media-breakpoint-down(sm) {
+      height: 150px !important;
+    }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  @include media-breakpoint-down(lg) {
+    font-size: 14px;
+  }
+  
+  @include media-breakpoint-down(md) {
+    font-size: 12px;
+  }
+}
+
+/* Mobile Table Adjustments */
+@include media-breakpoint-down(md) {
+  .ant-table {
+    font-size: 12px;
+    
+    .ant-table-thead > tr > th {
+      padding: 8px 4px;
+      font-size: 11px;
+    }
+    
+    .ant-table-tbody > tr > td {
+      padding: 8px 4px;
+    }
+  }
 }
 
 html[dir="rtl"] {
@@ -146,12 +363,19 @@ html[dir="rtl"] {
     }
 }
 
+/* Responsive Form Styles */
 form {
     .create__form__section {
         header {
             font-family: Roboto;
             font-size: 22px;
             font-weight: 600;
+            @include media-breakpoint-down(md) {
+              font-size: 20px;
+            }
+            @include media-breakpoint-down(sm) {
+              font-size: 18px;
+            }
         }
         .ant-card-head {
             background-color: #F1F1F1;
@@ -168,6 +392,12 @@ form {
         .ant-select-single:not(.ant-select-customize-input) .ant-select-selector, .ant-input, .ant-input-number-input,
         .ant-picker {
             height: 48px;
+            @include media-breakpoint-down(md) {
+              height: 44px;
+            }
+            @include media-breakpoint-down(sm) {
+              height: 40px;
+            }
         }
         .ant-select-single .ant-select-selector {
             .ant-select-selection-placeholder, .ant-select-selection-item {
@@ -177,7 +407,13 @@ form {
         .ant-form-item-label > label, .ant-btn.ant-btn-primary {
             font-family: Roboto;
             font-size: 16px;
-            font-weight: 400;            
+            font-weight: 400;
+            @include media-breakpoint-down(md) {
+              font-size: 14px;
+            }
+            @include media-breakpoint-down(sm) {
+              font-size: 13px;
+            }
         }
     
         .ant-collapse-header {
@@ -185,6 +421,12 @@ form {
             font-size: 18px;
             font-family: Roboto;
             color: $dark-black-font !important;
+            @include media-breakpoint-down(md) {
+              font-size: 16px;
+            }
+            @include media-breakpoint-down(sm) {
+              font-size: 14px;
+            }
             .ng-required::before {
                 color: $required-red;
                 content: '*';
@@ -254,12 +496,66 @@ html[dir="rtl"] {
 
 
 
+/* Responsive Table Margins */
 .inner-table-align-margin-left-class {
     margin-left: 10rem;
+    @include media-breakpoint-down(lg) {
+      margin-left: 5rem;
+    }
+    @include media-breakpoint-down(md) {
+      margin-left: 2rem;
+    }
+    @include media-breakpoint-down(sm) {
+      margin-left: 1rem;
+    }
 }
   
 .inner-table-align-margin-right-class {
     margin-right: 13rem;
+    @include media-breakpoint-down(lg) {
+      margin-right: 6rem;
+    }
+    @include media-breakpoint-down(md) {
+      margin-right: 2rem;
+    }
+    @include media-breakpoint-down(sm) {
+      margin-right: 1rem;
+    }
+}
+
+/* Global Responsive Overrides */
+@include media-breakpoint-down(md) {
+  .ant-btn {
+    padding: 4px 12px;
+    font-size: 14px;
+    height: auto;
+    min-height: 32px;
+  }
+  
+  .ant-modal {
+    margin: 20px;
+    max-width: calc(100vw - 40px);
+  }
+  
+  .ant-drawer {
+    .ant-drawer-content-wrapper {
+      width: 90vw !important;
+      max-width: 400px;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ant-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-height: 28px;
+  }
+  
+  .ant-modal {
+    margin: 10px;
+    max-width: calc(100vw - 20px);
+  }
 }
 
 
@@ -270,6 +566,78 @@ html[dir="rtl"] {
 .required-field::after {
     content: " *";
     color: red;
+}
+
+/* Responsive Grid System */
+.responsive-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  
+  @include media-breakpoint-down(md) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.responsive-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive Card Layout */
+.card-responsive {
+  padding: 1.5rem;
+  
+  @include media-breakpoint-down(md) {
+    padding: 1rem;
+  }
+  
+  @include media-breakpoint-down(sm) {
+    padding: 0.75rem;
+  }
+}
+
+/* Touch-friendly Interactive Elements - Sidebar */
+@media (hover: none) and (pointer: coarse) {
+  .ant-layout-sider .ant-btn, 
+  .ant-layout-sider button, 
+  .ant-layout-sider [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Touch-friendly Interactive Elements - Content Area */
+@media (hover: none) and (pointer: coarse) {
+  .ant-layout-content .ant-btn:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn), 
+  .ant-layout-content button:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn), 
+  .ant-layout-content [role="button"]:not(.ant-switch):not(.trash-btn-emergency):not(.cr-minus-btn):not(.cr-add-btn):not(.trash-btn) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .ant-input, .ant-select-selector {
+    min-height: 44px;
+  }
+  
+  /* Keep toggles normal size */
+  .ant-switch {
+    width: 44px !important;
+    height: 22px !important;
+    min-height: unset !important;
+    min-width: unset !important;
+  }
 }
 // /* Allow ngx-spinner to control show/hide. Don't force display or position. */
 // ngx-spinner,
@@ -877,6 +1245,26 @@ html[dir="rtl"] {
   color: #ffffff !important;
 }
 
+/* Language toggle spacing - All screen sizes */
+::ng-deep .language-toggle .ant-btn-group .ant-btn,
+::ng-deep .language-toggle .ant-btn,
+::ng-deep .language-toggle button {
+  margin-right: 4px !important;
+  padding: 4px 8px !important;
+}
+
+::ng-deep .language-toggle .ant-btn-group .ant-btn:last-child,
+::ng-deep .language-toggle .ant-btn:last-child,
+::ng-deep .language-toggle button:last-child {
+  margin-right: 0 !important;
+}
+
+::ng-deep .language-toggle .ant-btn span,
+::ng-deep .language-toggle button span {
+  padding: 0 2px !important;
+  display: inline-block !important;
+}
+
 [data-theme="dark"] .copy-right-container label {
   color: #c9d1d9 !important;
 }
@@ -951,4 +1339,9 @@ html[dir="rtl"] {
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: #595959;
+}
+@media (max-width: 1024px) {
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0 !important;
+  }
 }
