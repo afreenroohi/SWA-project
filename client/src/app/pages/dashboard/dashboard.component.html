@@ -1,8 +1,8 @@
-<div class="dashboard">
-    <div class="dashboard-options">
+<div class="dashboard responsive-container">
+    <div class="dashboard-options responsive-flex between wrap">
         <div class="option">
             <nz-form-item>
-                <nz-form-label>
+                <nz-form-label class="text-responsive body">
                     {{ 'Dashboard.Financial Year' | translate }}
                 </nz-form-label>
                 <nz-form-control>
@@ -12,17 +12,26 @@
                 </nz-form-control>
             </nz-form-item>
         </div> 
-        <div class="scroll-buttons">
-            <button nz-button class="back-button" nzShape="circle" (click)="scrollCards('left')">
+        <div class="scroll-buttons hide-mobile">
+            <button nz-button class="back-button touch-friendly" nzShape="circle" (click)="scrollCards('left')">
                 <i class="icon-fill" nz-icon nzType="arrow-left" nzTheme="outline"></i>
             </button>
-            <button nz-button class="forward-button" nzShape="circle" (click)="scrollCards('right')">
+            <button nz-button class="forward-button touch-friendly" nzShape="circle" (click)="scrollCards('right')">
                 <i class="icon-fill" nz-icon nzType="arrow-right" nzTheme="outline"></i>
             </button>
         </div>
     </div>
     <ng-container *ngIf="showCards">
-        <div class="dashboard-cards row">
+        <div class="dashboard-cards">
+            <!-- Mobile scroll buttons -->
+            <div class="scroll-buttons show-mobile" style="margin-bottom: 1rem; justify-content: center;">
+                <button nz-button class="back-button touch-friendly" nzShape="circle" (click)="scrollCards('left')">
+                    <i class="icon-fill" nz-icon nzType="arrow-left" nzTheme="outline"></i>
+                </button>
+                <button nz-button class="forward-button touch-friendly" nzShape="circle" (click)="scrollCards('right')">
+                    <i class="icon-fill" nz-icon nzType="arrow-right" nzTheme="outline"></i>
+                </button>
+            </div>
             <!-- Scrollable Card Container -->
             <div #scrollContainer class="card-scroll-container">
                 <!-- * Total Number of RFPs -->
@@ -63,7 +72,7 @@
 
             <!-- Dashboard Table Below -->
             <ng-container *ngIf="viewTableDetailsToggle">
-                <div class="col-12 dashboard-table" id="dashboardTable">
+                <div class="dashboard-table table-responsive-wrapper" id="dashboardTable">
                     <dashboard-table [title]="tableTitle" [columns]="tableColumns" [data]="tableData"
                         [isLoading]="isLoading" [total]="totalItems" [searchPlaceholder]="searchPlaceholder"
                         [pageIndex]="pageIndex" (currentPage)="pageChange($event)" (download)="downloadExcel($event)"
@@ -74,51 +83,50 @@
         </div>
     </ng-container>
     <ng-container *ngIf="showCharts">
-        <div class="dashboard-charts row">
+        <div class="dashboard-charts responsive-grid cols-2">
             <!-- * Top 5 Vendors -->
-            <div *ngIf="cardList.TopVndrs" class="col-6">
+            <div *ngIf="cardList.TopVndrs" class="chart-item card-responsive">
                 <dashboard-bar-chart [barChartHeading]="'Dashboard.Top 5 Vendors' | translate"
- 
                   [barChartData]="topVendorsChartData" [barChartOptions]="topVendorsChartOptions">
                 </dashboard-bar-chart>
             </div>
             <!-- * Number of Tenders by Committee -->
-            <div *ngIf="cardList.TotTndrByCmt" class="col-6">
+            <div *ngIf="cardList.TotTndrByCmt" class="chart-item card-responsive">
                 <dashboard-pie-chart [filterSet]="tenderFilterSet"
                   [pieChartHeading]="'Dashboard.Tender Breakdown by Committee' | translate"
                   [pieChartData]="tenderByCommitteeChartData" (selectedFilters)="tenderByCommitteeFilter($event)">
                 </dashboard-pie-chart>
             </div>
              <!-- * Number of RFPs by org unit -->
-            <div *ngIf="cardList.TotRfpByDpt" class="col-6">
+            <div *ngIf="cardList.TotRfpByDpt" class="chart-item card-responsive">
                 <dashboard-bar-chart [filterSet]="rfpByDeptFilterSet"
                     [barChartHeading]="'Dashboard.RFPs Distribution by Department' | translate"
                     [barChartData]="rfpByOrgUnitChartData" (selectedFilters)="rfpByOrgUnitFilter($event)">
                 </dashboard-bar-chart>
             </div>
             <!-- * Number of RFPs by month  -->
-            <div *ngIf="cardList.TotRfpByMonth" class="col-6">
+            <div *ngIf="cardList.TotRfpByMonth" class="chart-item card-responsive">
                 <dashboard-line-chart [filterSet]="rfpFilterSet"
                     [lineChartHeading]="'Dashboard.Monthly RFP Trends' | translate"
                     [lineChartData]="rfpByMonthsChartData" (selectedFilters)="rfpByMonthFilter($event)">
                 </dashboard-line-chart>
             </div>
             <!-- * Number of Tenders by month -->
-            <div *ngIf="cardList.TotTndrByMonth" class="col-6">
+            <div *ngIf="cardList.TotTndrByMonth" class="chart-item card-responsive">
                 <dashboard-line-chart [filterSet]="tenderFilterSet"
                     [lineChartHeading]="'Dashboard.Monthly Tender Trends' | translate"
                     [lineChartData]="tenderByMonthsChartData" (selectedFilters)="tenderByMonthFilter($event)">
                 </dashboard-line-chart>
             </div>
             <!-- * Number of Contracts by month -->
-            <div *ngIf="cardList.TotContByMonth" class="col-6">
+            <div *ngIf="cardList.TotContByMonth" class="chart-item card-responsive">
                 <dashboard-line-chart [filterSet]="contractFilterSet"
                     [lineChartHeading]="'Dashboard.Monthly Contract Trends' | translate"
                     [lineChartData]="contractByMonthsChartData" (selectedFilters)="contractByMonthFilter($event)">
                 </dashboard-line-chart>
             </div>
             <!-- * Spend Analysis by month -->
-            <div *ngIf="cardList.TotAmtByMonth" class="col-6">
+            <div *ngIf="cardList.TotAmtByMonth" class="chart-item card-responsive">
                 <dashboard-line-chart [filterSet]="spendAnalysisFilterSet"
                     [lineChartHeading]="'Dashboard.Monthly CoC Expenditure Insights' | translate"
                     [lineChartData]="spendAnalysisByMonthsChartData" (selectedFilters)="spendAnalysisFilter($event)">
