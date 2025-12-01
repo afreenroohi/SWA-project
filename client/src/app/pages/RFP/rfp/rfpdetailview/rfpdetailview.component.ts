@@ -169,6 +169,8 @@ export class RfpdetailviewComponent implements OnInit {
     return parseInt(value);
   }
 
+  activePanels: boolean[] = [true, false, false, false, false];
+
   ngOnInit(): void {
     this.spinner.show();
     
@@ -2354,6 +2356,10 @@ getGrandVatAmount(data: readonly any[]): number {
 
 
 
+
+  scrollToSection(index: number): void {
+    this.activePanels = this.activePanels.map((_, i) => i === index);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -16,23 +16,23 @@
     <!-- Vertical Stepper hhhhhh -->
     <div class="col-md-2">
       <div class="vertical-stepper">
-        <div class="stepper-item active">
+        <div class="stepper-item" [class.active]="activePanels[0]" (click)="scrollToSection(0)">
           <div class="stepper-circle">1</div>
           <div class="stepper-label">{{ "RFP.Basic Information" | translate }}</div>
         </div>
-        <div class="stepper-item">
+        <div class="stepper-item" [class.active]="activePanels[1]" (click)="scrollToSection(1)">
           <div class="stepper-circle">2</div>
           <div class="stepper-label">{{ "RFP.SCOPE OF WORK" | translate }}</div>
         </div>
-        <div class="stepper-item">
+        <div class="stepper-item" [class.active]="activePanels[2]" (click)="scrollToSection(2)">
           <div class="stepper-circle">3</div>
           <div class="stepper-label">{{ "RFP.Technical Evaluation Criteria" | translate }}</div>
         </div>
-        <div class="stepper-item">
+        <div class="stepper-item" [class.active]="activePanels[3]" (click)="scrollToSection(3)">
           <div class="stepper-circle">4</div>
           <div class="stepper-label">{{ "RFP.Bill of Quantity" | translate }}</div>
         </div>
-        <div class="stepper-item">
+        <div class="stepper-item" [class.active]="activePanels[4]" (click)="scrollToSection(4)">
           <div class="stepper-circle">5</div>
           <div class="stepper-label">{{ "RFP.Attachments" | translate }}</div>
         </div>
@@ -41,12 +41,11 @@
 
     <!-- Main Content -->
     <div class="col-md-10">
-      <!-- Basic Information Card -->
-      <div class="info-card">
-        <div class="card-header">
-          <h3>{{ "RFP.Basic Information" | translate }}</h3>
-        </div>
-        <div class="card-body">
+      <nz-collapse>
+        <!-- Basic Information Card -->
+        <nz-collapse-panel [nzHeader]="'RFP.Basic Information' | translate" [(nzActive)]="activePanels[0]">
+          <div class="info-card">
+            <div class="card-body">
           <div class="row w-100 my-2">
             <div class="col-4 my-1">
               <nz-form-label nzRequired>{{ "RFP.Project Name" | translate }}</nz-form-label>
@@ -249,15 +248,14 @@
               <div class="field-value">{{ detArray.JustfProj }}</div>
             </div>
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
 
-      <!-- Scope of Work Card -->
-      <div class="info-card mt-4">
-        <div class="card-header">
-          <h3>{{ "RFP.SCOPE OF WORK" | translate }}</h3>
-        </div>
-        <div class="card-body">
+        <!-- Scope of Work Card -->
+        <nz-collapse-panel [nzHeader]="'RFP.SCOPE OF WORK' | translate" [(nzActive)]="activePanels[1]">
+          <div class="info-card">
+            <div class="card-body">
           <div class="row">
             <div class="col-md-12 mb-3" *ngIf="detArray.DefinitionOfCompetition">
               <label class="field-label">{{ "RFP.Definition of Competition" | translate }}</label>
@@ -419,116 +417,14 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Bill of Quantity Card -->
-      <div class="info-card mt-4" *ngIf="false">
-        <div class="card-header">
-          <h3>{{ "RFP.Bill of Quantity" | translate }}</h3>
-        </div>
-        <div class="card-body">
-          <!-- Competition Fragmentation -->
-          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentation !== undefined">
-            <div class="col-12">
-              <label class="field-label">{{ "RFP.Competition Fragmentation" | translate }}</label>
-              <div class="field-value">
-                <nz-switch [ngModel]="detArray.CompetitionFragmentation" nzDisabled></nz-switch>
-              </div>
             </div>
           </div>
+        </nz-collapse-panel>
 
-          <!-- No of Years -->
-          <div class="row mb-3" *ngIf="detArray.NoOfYears">
-            <div class="col-md-4">
-              <label class="field-label">{{ "RFP.No of Years" | translate }}</label>
-              <div class="field-value">{{ detArray.NoOfYears }}</div>
-            </div>
-          </div>
-
-          <!-- Competition Fragmentation Details Table -->
-          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentationItems && detArray.CompetitionFragmentationItems.length > 0">
-            <div class="col-12">
-              <label class="field-label">{{ "RFP.Competition Fragmentation Details" | translate }}</label>
-              <nz-table #fragTable [nzData]="detArray.CompetitionFragmentationItems" [nzShowPagination]="false" [nzBordered]="true">
-                <thead>
-                  <tr>
-                    <th>{{ "RFP.S.No" | translate }}</th>
-                    <th>{{ "RFP.Package" | translate }}</th>
-                    <th>{{ "RFP.Description" | translate }}</th>
-                    <th>{{ "RFP.Classification Field" | translate }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of fragTable.data; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ item.Package }}</td>
-                    <td>{{ item.Description }}</td>
-                    <td>{{ item.ClassificationField }}</td>
-                  </tr>
-                </tbody>
-              </nz-table>
-            </div>
-          </div>
-
-          <!-- BOQ Tables by Year -->
-          <div class="row mt-4" *ngIf="groupBOQItemsBasedonBudgetingYears">
-            <div class="col-12">
-              <label class="field-label">{{ "RFP.Quantity Tables" | translate }}</label>
-              <nz-collapse [nzBordered]="true">
-                <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
-                  [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key">
-                  <nz-table #boqTable [nzData]="group.value" [nzShowPagination]="false" [nzBordered]="true">
-                    <thead>
-                      <tr>
-                        <th>{{ "RFP.slNo" | translate }}</th>
-                        <th>{{ "RFP.MatDes" | translate }}</th>
-                        <th>{{ "RFP.itemDesc" | translate }}</th>
-                        <th>{{ "RFP.QTY" | translate }}</th>
-                        <th>{{ "RFP.UOM" | translate }}</th>
-                        <ng-container *ngIf="visibleFinancialDetails">
-                          <th>{{ "RFP.Price" | translate }}</th>
-                          <th>{{ "RFP.TotalPrice" | translate }}</th>
-                          <th>{{ "RFP.VATAmount" | translate }}</th>
-                          <th>{{ "RFP.TotalWithVAT" | translate }}</th>
-                        </ng-container>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let data of boqTable.data; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ data.MaterialText }}</td>
-                        <td>{{ data.ItemDescription }}</td>
-                        <td>{{ data.Quantity }}</td>
-                        <td>{{ data.Uom }}</td>
-                        <ng-container *ngIf="visibleFinancialDetails">
-                          <td>{{ data.Price }}</td>
-                          <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
-                          <td>{{ getVatAmountRow(data) | number: '1.2-2' }}</td>
-                          <td>{{ getTotalWithVatRow(data) | number: '1.2-2' }}</td>
-                        </ng-container>
-                      </tr>
-                      <tr *ngIf="visibleFinancialDetails">
-                        <td colspan="6" style="text-align: right;">{{ "COM.Total" | translate }}:</td>
-                        <td>{{ getGrandTotalPrice(boqTable.data) | number: '1.2-2' }}</td>
-                        <td>{{ getGrandVatAmount(boqTable.data) | number: '1.2-2' }}</td>
-                        <td>{{ getGrandTotalWithVat(boqTable.data) | number: '1.2-2' }}</td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </nz-collapse-panel>
-              </nz-collapse>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Technical Evaluation Criteria Card -->
-      <div class="info-card mt-4" *ngIf="false">
-        <div class="card-header">
-          <h3>{{ "RFP.Technical Evaluation Criteria" | translate }}</h3>
-        </div>
-        <div class="card-body">
+          <!-- Technical Evaluation Criteria Card -->
+        <nz-collapse-panel [nzHeader]="'RFP.Technical Evaluation Criteria' | translate" [(nzActive)]="activePanels[2]">
+          <div class="info-card">
+            <div class="card-body">
           <!-- 1. Criteria for evaluating the offers -->
           <div class="row" *ngIf="ReqToTreqNavg && ReqToTreqNavg.length > 0">
             <div class="col-12 mb-4">
@@ -632,15 +528,114 @@
               <div class="field-value">{{ detArray.TotTechEval || 70 }}%</div>
             </div>
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
 
-      <!-- Attachments Card -->
-      <div class="info-card mt-4">
-        <div class="card-header">
-          <h3>{{ "RFP.Attachments" | translate }}</h3>
-        </div>
-        <div class="card-body">
+        <!-- Bill of Quantity Card -->
+        <nz-collapse-panel [nzHeader]="'RFP.Bill of Quantity' | translate" [(nzActive)]="activePanels[3]">
+          <div class="info-card">
+            <div class="card-body">
+          <!-- Competition Fragmentation -->
+          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentation !== undefined">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Competition Fragmentation" | translate }}</label>
+              <div class="field-value">
+                <nz-switch [ngModel]="detArray.CompetitionFragmentation" nzDisabled></nz-switch>
+              </div>
+            </div>
+          </div>
+
+          <!-- No of Years -->
+          <div class="row mb-3" *ngIf="detArray.NoOfYears">
+            <div class="col-md-4">
+              <label class="field-label">{{ "RFP.No of Years" | translate }}</label>
+              <div class="field-value">{{ detArray.NoOfYears }}</div>
+            </div>
+          </div>
+
+          <!-- Competition Fragmentation Details Table -->
+          <div class="row mb-3" *ngIf="detArray.CompetitionFragmentationItems && detArray.CompetitionFragmentationItems.length > 0">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Competition Fragmentation Details" | translate }}</label>
+              <nz-table #fragTable [nzData]="detArray.CompetitionFragmentationItems" [nzShowPagination]="false" [nzBordered]="true">
+                <thead>
+                  <tr>
+                    <th>{{ "RFP.S.No" | translate }}</th>
+                    <th>{{ "RFP.Package" | translate }}</th>
+                    <th>{{ "RFP.Description" | translate }}</th>
+                    <th>{{ "RFP.Classification Field" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of fragTable.data; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.Package }}</td>
+                    <td>{{ item.Description }}</td>
+                    <td>{{ item.ClassificationField }}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+
+          <!-- BOQ Tables by Year -->
+          <div class="row mt-4" *ngIf="groupBOQItemsBasedonBudgetingYears">
+            <div class="col-12">
+              <label class="field-label">{{ "RFP.Quantity Tables" | translate }}</label>
+              <nz-collapse [nzBordered]="true">
+                <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
+                  [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key">
+                  <nz-table #boqTable [nzData]="group.value" [nzShowPagination]="false" [nzBordered]="true">
+                    <thead>
+                      <tr>
+                        <th>{{ "RFP.slNo" | translate }}</th>
+                        <th>{{ "RFP.MatDes" | translate }}</th>
+                        <th>{{ "RFP.itemDesc" | translate }}</th>
+                        <th>{{ "RFP.QTY" | translate }}</th>
+                        <th>{{ "RFP.UOM" | translate }}</th>
+                        <ng-container *ngIf="visibleFinancialDetails">
+                          <th>{{ "RFP.Price" | translate }}</th>
+                          <th>{{ "RFP.TotalPrice" | translate }}</th>
+                          <th>{{ "RFP.VATAmount" | translate }}</th>
+                          <th>{{ "RFP.TotalWithVAT" | translate }}</th>
+                        </ng-container>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of boqTable.data; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ data.MaterialText }}</td>
+                        <td>{{ data.ItemDescription }}</td>
+                        <td>{{ data.Quantity }}</td>
+                        <td>{{ data.Uom }}</td>
+                        <ng-container *ngIf="visibleFinancialDetails">
+                          <td>{{ data.Price }}</td>
+                          <td>{{ getTotalPriceRow(data) | number: '1.2-2' }}</td>
+                          <td>{{ getVatAmountRow(data) | number: '1.2-2' }}</td>
+                          <td>{{ getTotalWithVatRow(data) | number: '1.2-2' }}</td>
+                        </ng-container>
+                      </tr>
+                      <tr *ngIf="visibleFinancialDetails">
+                        <td colspan="6" style="text-align: right;">{{ "COM.Total" | translate }}:</td>
+                        <td>{{ getGrandTotalPrice(boqTable.data) | number: '1.2-2' }}</td>
+                        <td>{{ getGrandVatAmount(boqTable.data) | number: '1.2-2' }}</td>
+                        <td>{{ getGrandTotalWithVat(boqTable.data) | number: '1.2-2' }}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+          </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+
+        <!-- Attachments Card -->
+        <nz-collapse-panel [nzHeader]="'RFP.Attachments' | translate" [(nzActive)]="activePanels[4]">
+          <div class="info-card">
+            <div class="card-body">
           <div class="attachment-body">
             <label class="field-label">{{ "RFP.Attachments" | translate }}</label>
             
@@ -675,8 +670,10 @@
               </li>
             </ul>
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
     </div>
   </div>
 
