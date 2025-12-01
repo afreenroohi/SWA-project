@@ -928,6 +928,18 @@ deleteCriteria(index: number) {
     console.log(value, 'valueeeeeeeeeeee')
   }
 
+  submitAttachments() {
+    // Only validate if files are uploaded (optional validation)
+    // if (!this.fileList || this.fileList.length === 0) {
+    //   this.cs.createMessage('warning', 'Please upload at least one attachment.');
+    //   return;
+    // }
+
+    // Show success popup
+    this.submitConfirmation = true;
+    this.responseMessage = 'RFP Created Successfully';
+  }
+
   toggleTooltip(): void {
     this.tooltipVisible = !this.tooltipVisible;
   }
@@ -1315,7 +1327,7 @@ buildMainFormGroup(): void {
     prequalificationRequired: [false, [Validators.required]],
     qualificationReference: [''],
     qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(200)]],
+    competitionName: ['', [Validators.required, Validators.maxLength(20)]],
     dividedIntoLots: [false, [Validators.required]],
     contractDuration: ['', [Validators.required]],
     MatGrpId: ['', [Validators.required]],

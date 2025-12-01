@@ -617,7 +617,8 @@
     "Package":"Package",
     "Role":"Role",
     "Name":"Name",
-    "Extension No.":"Extension No."
+    "Extension No.":"Extension No.",
+    "Max of 20 Characters":"Max of 20 Characters"
     
     
   },

@@ -237,6 +237,11 @@
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
               <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate" formControlName="competitionName" />
+              <small
+                *ngIf="rfpForm.controls.competitionName.touched && rfpForm.controls.competitionName.hasError('maxlength') "
+                style="margin-top: 8px; color: red">
+                {{ 'RFP.Max of 20 Characters' | translate }}
+              </small>
             </div>
 
             
@@ -2620,7 +2625,7 @@
               <button nz-button nzType="primary" class="btn-save-draft" nzSize="default" (click)="saveAsDraft()">
                 {{ "RFP.Save As Draft" | translate }}
               </button>
-              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="submitCase()">
+              <button nz-button nzType="primary" class="btn-save-continue" nzSize="default" (click)="submitAttachments()">
                 {{ "RFP.Submit" | translate }}
               </button>
             </div>
