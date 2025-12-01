@@ -109,66 +109,71 @@
         <div class="rfp-header-content">
           <i nz-icon nzType="file-add" nzTheme="outline" class="rfp-header-icon"></i>
 
-          <div>
-            <h1 class="rfp-header-title">{{ "RFP.NewRFP" | translate }}</h1>
-          </div>
-        </div>
-      </div>
+    <div>
+      <h1 class="rfp-header-title">{{ "RFP.NewRFP" | translate }}</h1>
+    </div>
+  </div>
+</div>
       <div class="stepper-card mt-4">
-        <div class="custom-stepper">
-          <div class="stepper-container">
-
-            <!-- Step 1 -->
-            <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
-              <div class="step-box">
-                <i nz-icon nzType="info-circle" style="font-size: 28px;"></i>
-              </div>
-              <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
-            </div>
-
-            <div class="step-line" [class.completed]="step > 0"></div>
-
-            <!-- Step 2 -->
-            <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" (click)="goto(1)">
-              <div class="step-box">
-                <i nz-icon nzType="file-done" style="font-size: 28px;"></i>
-              </div>
-              <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
-            </div>
-
-            <div class="step-line" [class.completed]="step > 1"></div>
-
-            <!-- Step 3 -->
-            <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" (click)="goto(2)">
-              <div class="step-box">
-                <i nz-icon nzType="profile" style="font-size: 28px;"></i>
-              </div>
-              <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
-            </div>
-
-            <div class="step-line" [class.completed]="step > 2"></div>
-
-            <!-- Step 4 -->
-            <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" (click)="goto(3)">
-              <div class="step-box">
-                <i nz-icon nzType="database" style="font-size: 28px;"></i>
-              </div>
-              <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
-            </div>
-
-            <div class="step-line" [class.completed]="step > 3"></div>
-
-            <!-- Step 5 -->
-            <div class="step-item" [class.active]="step === 4">
-              <div class="step-box">
-                <i nz-icon nzType="paper-clip" style="font-size: 28px;"></i>
-              </div>
-              <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
-            </div>
-
-          </div>
+       <div class="custom-stepper">
+    <div class="stepper-container">
+ 
+      <!-- Step 1 -->
+      <div class="step-item" [class.active]="step === 0" [class.completed]="step > 0" (click)="goto(0)">
+        <div class="step-box">
+          <span *ngIf="step <= 0">1</span>
+          <i *ngIf="step > 0" nz-icon nzType="check" nzTheme="outline"></i>
         </div>
+        <div class="step-title">{{ 'RFP.Basic Information' | translate }}</div>
       </div>
+ 
+      <div class="step-line" [class.completed]="step > 0"></div>
+ 
+      <!-- Step 2 -->
+      <div class="step-item" [class.active]="step === 1" [class.completed]="step > 1" (click)="goto(1)">
+        <div class="step-box">
+          <span *ngIf="step <= 1">2</span>
+          <i *ngIf="step > 1" nz-icon nzType="check" nzTheme="outline"></i>
+        </div>
+        <div class="step-title">{{ 'RFP.Scope of Work' | translate }}</div>
+      </div>
+ 
+      <div class="step-line" [class.completed]="step > 1"></div>
+ 
+      <!-- Step 3 -->
+      <div class="step-item" [class.active]="step === 2" [class.completed]="step > 2" (click)="goto(2)">
+        <div class="step-box">
+          <span *ngIf="step <= 2">3</span>
+          <i *ngIf="step > 2" nz-icon nzType="check" nzTheme="outline"></i>
+        </div>
+        <div class="step-title">{{ 'RFP.Technical Evaluation Criteria' | translate }}</div>
+      </div>
+ 
+      <div class="step-line" [class.completed]="step > 2"></div>
+ 
+      <!-- Step 4 -->
+      <div class="step-item" [class.active]="step === 3" [class.completed]="step > 3" (click)="goto(3)">
+        <div class="step-box">
+          <span *ngIf="step <= 3">4</span>
+          <i *ngIf="step > 3" nz-icon nzType="check" nzTheme="outline"></i>
+        </div>
+        <div class="step-title">{{ 'RFP.Bill of Quantity' | translate }}</div>
+      </div>
+ 
+      <div class="step-line" [class.completed]="step > 3"></div>
+ 
+      <!-- Step 5 -->
+      <div class="step-item" [class.active]="step === 4">
+        <div class="step-box">
+          5
+        </div>
+        <div class="step-title">{{ 'RFP.Attachments' | translate }}</div>
+      </div>
+ 
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -220,14 +225,8 @@
   </div>
 
 </div> -->
-            <!-- * Competition Name -->
-            <div class="col-4 my-1">
-              <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate"
-                formControlName="competitionName" />
-            </div>
-
-            <div class="col-4 my-1">
+ <!-- * Competition Name -->
+          <div class="col-4 my-1">
               <nz-form-label nzRequired for="uom">{{ "RFP.Type of Competition" | translate }}</nz-form-label>
               <nz-form-control>
                 <nz-select formControlName="competitionType" style="width: 100%" nzAllowClear
@@ -241,6 +240,12 @@
                   " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
               </nz-form-control>
             </div>
+            <div class="col-4 my-1">
+              <nz-form-label nzRequired for="competitionName">{{ "RFP.Project Name" | translate }}</nz-form-label>
+              <input nz-input [placeholder]="'RFP.Enter Competition Name'| translate" formControlName="competitionName" />
+            </div>
+
+            
             <!-- * Estimated Cost -->
             <div class="col-4 my-1">
               <nz-form-label nzRequired for="estimatedCost">{{ "RFP.Estimated Cost (SAR)" | translate }}</nz-form-label>
@@ -714,7 +719,7 @@
             <!-- * Site Visit Contact Details -->
             <div class="col-4 my-1" *ngIf="rfpForm.get('requiresSiteVisit')?.value">
               <nz-form-label nzRequired>{{ "RFP.userId" | translate }}</nz-form-label>
-              <input nz-input placeholder="Enter Email" formControlName="userId" />
+              <input nz-input placeholder="Enter UID" formControlName="userId" />
             </div>
 
             <!-- * Site Visit Contact Details -->
@@ -749,12 +754,44 @@
                 style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
             </div>
 
+             <div class="col-4 my-1" *ngIf="isFacilityActivity && !rfpForm.get('prequalificationRequired')?.value">
+              <nz-form-label nzRequired>{{ "RFP.Cancellation documents" | translate }}</nz-form-label>
+
+              <div class="upload-row">
+                <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
+                  nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-inline-box">
+                  <div class="upload-inline-content">
+                    <i nz-icon nzType="upload" class="upload-inline-icon"></i>
+                    <span class="upload-inline-text">Click or drag files to upload</span>
+                  </div>
+                </nz-upload>
+
+                <button nz-button nzType="default" nzShape="circle" class="trash-btn">
+                  <i nz-icon nzType="delete"></i>
+                </button>
+              </div>
+            </div>
+
             <!-- * Project Justification -->
             <div class="col-12 my-1">
-              <nz-form-label nzRequired>{{ "RFP.Project Justification / Necessity / Impact of Not Proceeding" |
+              <nz-form-label nzRequired>{{ "RFP.Project Justification" |
                 translate
                 }}</nz-form-label>
-              <textarea nz-input rows="3" placeholder="Describe the justification and impact..."
+              <textarea nz-input rows="3" placeholder="Describe the justification..."
+                formControlName="projectJustification"></textarea>
+            </div>
+            <div class="col-12 my-1">
+              <nz-form-label nzRequired>{{ "RFP.Project JustificationNec" |
+                translate
+                }}</nz-form-label>
+              <textarea nz-input rows="3" placeholder="Describe the Necessity..."
+                formControlName="projectJustification"></textarea>
+            </div>
+            <div class="col-12 my-1">
+              <nz-form-label nzRequired>{{ "RFP.Project Impact" |
+                translate
+                }}</nz-form-label>
+              <textarea nz-input rows="3" placeholder="Describe the Impact..."
                 formControlName="projectJustification"></textarea>
             </div>
 
@@ -1662,7 +1699,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="jobTitle" placeholder="Enter job title" /></td>
                     <td><input nz-input formControlName="minQualification" placeholder="Enter qualification" /></td>
-                    <td><input nz-input formControlName="minExperience" placeholder="Enter years" /></td>
+                    <td>
+                      <input nz-input type="number" formControlName="minExperience" placeholder="Enter years" min="0" />
+                      <small *ngIf="item.get('minExperience')?.touched && item.get('minExperience')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only numbers are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === laborItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
@@ -1708,7 +1751,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="material" placeholder="Enter material" /></td>
                     <td><input nz-input formControlName="specifications" placeholder="Enter specifications" /></td>
-                    <td><input nz-input formControlName="unit" placeholder="Enter unit" /></td>
+                    <td>
+                      <input nz-input formControlName="unit" placeholder="Enter unit" />
+                      <small *ngIf="item.get('unit')?.touched && item.get('unit')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only alphabets are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === materialItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
@@ -1754,7 +1803,13 @@
                     <td>{{ i + 1 }}</td>
                     <td><input nz-input formControlName="machine" placeholder="Enter machine" /></td>
                     <td><input nz-input formControlName="specifications" placeholder="Enter specifications" /></td>
-                    <td><input nz-input formControlName="unit" placeholder="Enter unit" /></td>
+                    <td>
+                      <input nz-input formControlName="unit" placeholder="Enter unit" />
+                      <small *ngIf="item.get('unit')?.touched && item.get('unit')?.hasError('pattern')" 
+                        style="margin-top: 8px; color: red; display: block;">
+                        Only alphabets are allowed
+                      </small>
+                    </td>
                     <td class="text-center">
                       <ng-container *ngIf="i === equipmentItems.length - 1">
                         <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"

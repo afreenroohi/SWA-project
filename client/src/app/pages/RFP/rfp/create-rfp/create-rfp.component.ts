@@ -345,11 +345,46 @@ export class CreateRFPComponent implements OnInit {
   // Form validation getters
   get basicInfoValid(): boolean {
     if (!this.rfpForm) return false;
-    const requiredFields = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
-    return requiredFields.every(field => {
+    
+    // Base required fields
+    const baseRequiredFields = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity', 'projectJustification'];
+    
+    // Check base fields
+    const baseValid = baseRequiredFields.every(field => {
       const control = this.rfpForm.get(field);
       return control && control.valid && control.value;
     });
+    
+    if (!baseValid) return false;
+    
+    // Check conditional fields based on toggle states
+    const requiresSiteVisit = this.rfpForm.get('requiresSiteVisit')?.value;
+    if (requiresSiteVisit) {
+      const siteVisitFields = ['userId', 'email', 'contactNumber'];
+      const siteVisitValid = siteVisitFields.every(field => {
+        const control = this.rfpForm.get(field);
+        return control && control.valid && control.value;
+      });
+      if (!siteVisitValid) return false;
+    }
+    
+    const prequalificationRequired = this.rfpForm.get('prequalificationRequired')?.value;
+    if (prequalificationRequired) {
+      const prequalControl = this.rfpForm.get('prequalificationDetails');
+      if (!prequalControl || !prequalControl.valid || !prequalControl.value) {
+        return false;
+      }
+    }
+    
+    const projectRelaunched = this.rfpForm.get('projectRelaunched')?.value;
+    if (projectRelaunched) {
+      const numberControl = this.rfpForm.get('number');
+      if (!numberControl || !numberControl.valid || !numberControl.value) {
+        return false;
+      }
+    }
+    
+    return true;
   }
 
   // Track if user has explicitly saved and continued from each step
@@ -875,6 +910,8 @@ deleteCriteria(index: number) {
   trackByIndex(index: number, item: any): number {
     return index;
   }
+  isFacilityActivity = false;
+
   onPrequalificationChange(value: boolean) {
     console.log(value, 'valueeeeeeeeeeee')
     const detailsControl = this.rfpForm.get('prequalificationDetails');
@@ -962,17 +999,20 @@ toggleExpand(index: number): void {
 
     if (selectedActivityId === 'ACT_FAC') {
       console.log('yes===');
+      this.isFacilityActivity = true;
 
       // Force toggle ON and make it read-only
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.setValue(true, { emitEvent: false });
-      prequalRequired?.disable({ emitEvent: false });
+      //prequalRequired?.disable({ emitEvent: false });
 
       // Make prequalificationDetails required
       const prequalDetails = this.rfpForm.get('prequalificationDetails');
       prequalDetails?.setValidators([Validators.required]);
       prequalDetails?.updateValueAndValidity();
     } else {
+      this.isFacilityActivity = false;
+      
       // Allow toggle again and clear required validator
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
@@ -1064,7 +1104,7 @@ toggleExpand(index: number): void {
     return this.fb.group({
       jobTitle: ['', Validators.required],
       minQualification: ['', Validators.required],
-      minExperience: ['', Validators.required]
+      minExperience: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]]
     });
   }
 
@@ -1083,7 +1123,7 @@ toggleExpand(index: number): void {
     return this.fb.group({
       material: ['', Validators.required],
       specifications: ['', Validators.required],
-      unit: ['', Validators.required]
+      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]]
     });
   }
 
@@ -1102,7 +1142,7 @@ toggleExpand(index: number): void {
     return this.fb.group({
       machine: ['', Validators.required],
       specifications: ['', Validators.required],
-      unit: ['', Validators.required]
+      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]]
     });
   }
 
@@ -1706,6 +1746,17 @@ get progressWidth(): number {
     // Initial validation sync
     this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
 
+    // Add conditional validation for project relaunched toggle
+    this.rfpForm
+      .get('projectRelaunched')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.toggleProjectRelaunchedValidators(value);
+      });
+
+    // Initial validation sync for project relaunched
+    this.toggleProjectRelaunchedValidators(this.rfpForm.get('projectRelaunched')?.value);
+
     // Listen to estimated cost and activity changes to update evaluation weights
     this.rfpForm.get('estimatedCost')?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateEvaluationWeights());
@@ -1803,21 +1854,41 @@ get progressWidth(): number {
   toggleSiteVisitValidators(requiresVisit: boolean): void {
     const emailControl = this.rfpForm.get('email');
     const contactControl = this.rfpForm.get('contactNumber');
+    const userIdControl = this.rfpForm.get('userId');
 
     if (requiresVisit) {
       // When ON, make fields required
       emailControl?.setValidators([Validators.required, Validators.email]);
       contactControl?.setValidators([Validators.required]);
+      userIdControl?.setValidators([Validators.required]);
     } else {
       // When OFF, clear values and remove validators
       emailControl?.setValue('');
       contactControl?.setValue('');
+      userIdControl?.setValue('');
       emailControl?.clearValidators();
       contactControl?.clearValidators();
+      userIdControl?.clearValidators();
     }
 
     emailControl?.updateValueAndValidity();
     contactControl?.updateValueAndValidity();
+    userIdControl?.updateValueAndValidity();
+  }
+
+  toggleProjectRelaunchedValidators(isRelaunched: boolean): void {
+    const numberControl = this.rfpForm.get('number');
+
+    if (isRelaunched) {
+      // When ON, make previous project number required
+      numberControl?.setValidators([Validators.required, Validators.min(1)]);
+    } else {
+      // When OFF, clear value and remove validators
+      numberControl?.setValue('');
+      numberControl?.clearValidators();
+    }
+
+    numberControl?.updateValueAndValidity();
   }
 
   listenDeliveryDateChange() {
