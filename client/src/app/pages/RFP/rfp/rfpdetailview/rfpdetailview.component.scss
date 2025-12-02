@@ -41,9 +41,14 @@ h6 {
 }
 
 ::ng-deep .ant-collapse-header {
-  background: #F1F1F1 !important;
+  background: #0c5a9e !important;
+  color: #ffffff !important;
   font-weight: 700;
   font-family: 'Roboto';
+}
+
+::ng-deep .ant-collapse-header .ant-collapse-header-text {
+  color: #ffffff !important;
 }
 
 th {
