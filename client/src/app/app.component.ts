@@ -44,7 +44,7 @@ export class AppComponent {
 
   private readonly _destroy = new Subject<void>();
 
-  currentYear = new Date().getFullYear();
+  currentYear = 2026
 
   isUserLoggedIn = false;
   enableproxy = false;
@@ -131,6 +131,12 @@ export class AppComponent {
     } else {
       this.onChangeLang('en');
     }
+  }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+    this.headerLeftWidth = this.isCollapsed ? this.collapsedWidth + 'px' : this.expandedWidth + 'px';
+    this.layoutContentMarginLeft = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
   }
   //   public openParentsForActive(): void {
   //   try {

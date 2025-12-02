@@ -1,4 +1,9 @@
 @import '../_variables.scss';
+$sider-expanded: 250px;
+$sider-collapsed: 80px;
+$header-height: 80px;
+$transition-speed: 0.28s;
+
 
 .trigger {
   font-size: 18px;
@@ -12,19 +17,27 @@
   color: #1890ff;
 }
 
+// nz-header {
+//   background: #fff;
+//   padding: 0;
+//   position: fixed;
+//   width: 100%;
+//   top: 0 !important;
+//   display: flex;
+//   align-items: center;
+// }
 nz-header {
   background: #fff;
   padding: 0;
   position: fixed;
   width: 100%;
   top: 0 !important;
-  display: flex;
-  align-items: center;
+  z-index: 20;
 }
 
 nz-content {
   overflow-y: auto;
-  transition: filter 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 nz-breadcrumb {
@@ -74,13 +87,11 @@ nz-breadcrumb {
 
 nz-sider {
   position: fixed !important;
-  width: 190px !important;
-  max-width: 190px !important;
   overflow-y: auto;
   top: 80px !important;
   height: calc(100vh - 80px);
   box-sizing: border-box;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .menu-sidebar {
@@ -93,6 +104,8 @@ nz-sider {
   background-position: 100% 100%;
   border-inline-end: 4px solid #f7f8fa;
   overflow-x: hidden;
+  min-width:220px;
+  max-width:220px;
 }
 
 .menu {
@@ -108,20 +121,30 @@ nz-sider {
   bottom: 1rem;
 }
 
-.logo-container {
-  width: 199px;
+.header-sidebar-section {
+  position: fixed;
+  left: 0;
+  top: 0;
   height: 80px;
   border-inline-end: 4px solid #f7f8fa;
   border-bottom: 4px solid #f7f8fa;
   transition: width 0.3s ease;
   display: flex;
   align-items: center;
+  background: white;
+  z-index: 21;
+}
+
+.logo-container {
+  flex: 1;
+  height: 80px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .logo-container.collapsed {
-  width: 70px;
-  border-inline-end: 4px solid #f7f8fa;
+  display: none;
 }
 
 .lang-toggle {
@@ -186,14 +209,6 @@ nz-sider {
 .label.en {
   z-index: 3 !important;
   /* FIXES YOUR ISSUE */
-}
-
-.ant-right-layout {
-  margin-left: 190px
-}
-
-.ant-left-layout {
-  margin-right: 190px
 }
 
 .ant-full-layout {
@@ -348,46 +363,32 @@ h6 {
   border-radius: 50%;
 }
 
-/* Sidebar collapse button */
-.sidebar-toggle {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
+/* Header toggle button */
+.header-toggle {
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 20px;
 }
 
-.collapse-btn {
-  background: #f0f0f0 !important;
-  border: 1px solid #d9d9d9 !important;
-  border-radius: 4px !important;
+.header-toggle-btn {
+  background: transparent !important;
+  border: none !important;
   width: 32px !important;
   height: 32px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.3s ease !important;
+  font-size: 20px !important;
 }
 
-.collapse-btn:hover {
+.header-toggle-btn:hover {
   background: #e6f7ff !important;
-  border-color: #1890ff !important;
   color: #1890ff !important;
 }
 
-.menu-with-toggle {
-  padding-top: 50px !important;
-}
-
-/* Floating toggle button */
-.floating-toggle {
-  position: fixed;
-  top: 100px;
-  left: 20px;
-  z-index: 1001;
-}
-
-.floating-toggle button {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.header-toggle-btn .anticon {
+  font-size: 20px !important;
 }
 
 
@@ -456,6 +457,36 @@ h6 {
   padding: 4px 15px !important;
   min-width: auto !important;
   white-space: nowrap;
+}
+
+/* Menu icon sizes */
+.menu-items .anticon,
+.menu-items app-icon {
+  font-size: 20px !important;
+}
+
+.menu-items .ant-menu-submenu-title .anticon,
+.menu-items .ant-menu-submenu-title app-icon {
+  font-size: 20px !important;
+}
+
+/* Push RFP-Requestor label 1px to the left */
+::ng-deep .ant-menu-submenu-title span {
+  margin-left: -1px !important;
+}
+
+/* Remove blur on mobile and tablet globally */
+@media (max-width: 1024px) {
+  html, body, *, *::before, *::after {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  ::ng-deep ngx-spinner {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -574,17 +605,7 @@ h6 {
     padding: 4px 8px !important;
   }
 
-  /* Floating toggle button */
-  .floating-toggle {
-    position: fixed;
-    top: 100px;
-    left: 20px;
-    z-index: 1001;
-  }
 
-  .floating-toggle button {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
 
 
 
@@ -1201,6 +1222,7 @@ h6 {
 
         nz-sider {
           z-index: 1000 !important;
+          background-color: #6dade8;
         }
 
         .hide-on-mobile-open {
@@ -1225,3 +1247,4 @@ h6 {
     }
   }
 }
+
