@@ -1340,8 +1340,8 @@ html[dir="rtl"] {
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: #595959;
 }
-@media (max-width: 1024px) {
-  .ant-collapse-content > .ant-collapse-content-box {
-    padding: 0 !important;
-  }
-}
+// @media (max-width: 1024px) {
+//   .ant-collapse-content > .ant-collapse-content-box {
+//     padding: 0 !important;
+//   }
+// }
