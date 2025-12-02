@@ -1,9 +1,4 @@
-import {
-  ElementRef,
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { ElementRef, Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormArray,
@@ -11,7 +6,7 @@ import {
   FormControl,
   Validators,
   ValidatorFn,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 // import { HttpClient } from '@angular/common/http';
 // import { Observable, of } from 'rxjs';
@@ -20,7 +15,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { CommonService } from 'src/app/service/common.service';
 import { Attac } from 'src/app/shared/attach';
-import { caseStatus, dtypes, ptypes, durationTypes, contractTypes, competitionTypes, classificationTypes, sopData } from 'src/app/shared/shared';
+import {
+  caseStatus,
+  dtypes,
+  ptypes,
+  durationTypes,
+  contractTypes,
+  competitionTypes,
+  classificationTypes,
+  sopData,
+} from 'src/app/shared/shared';
 import { activities } from 'src/app/shared/activity';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, combineLatest, forkJoin } from 'rxjs';
@@ -38,12 +42,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 
-
-
 type FormOption = {
-  key: string;     // value used by the select
-  label: string;   // shown to user
-  path: string;    // path under assets/ or a full URL
+  key: string; // value used by the select
+  label: string; // shown to user
+  path: string; // path under assets/ or a full URL
   filename?: string; // optional download filename override
 };
 
@@ -53,24 +55,24 @@ type FormOption = {
   styleUrls: ['./create-rfp.component.scss'],
 })
 export class CreateRFPComponent implements OnInit {
-  showUrgent:boolean = false;
-  showExcept:boolean = false;
-  showConsultative:boolean = false;
+  showUrgent: boolean = false;
+  showExcept: boolean = false;
+  showConsultative: boolean = false;
   showEmergencyDocs: boolean = false;
   showGovernmentDocs: boolean = false;
   showSupplierDocs: boolean = false;
   showSensitiveDocs: boolean = false;
-  step:number=0;
+  step: number = 0;
   //showScope=false;
   directCompetitionId: any = null;
   limitedCompetitionId: any = null;
   showInvite: boolean = false;
-  userName: string = ''
+  userName: string = '';
   uploading = false;
   showAttachments = false;
   showScope = false;
   attachmentsActive = false;
-  
+
   // Collapse panel states
   basicInfoActive = true;
   scopeOfWorkActive = false;
@@ -89,83 +91,135 @@ export class CreateRFPComponent implements OnInit {
   tooltipVisible: boolean = false;
   value = '';
   title = 'Input a number';
-  listOfColumnBOQ = ["RFP.slNo", "RFP.MatDes", "RFP.QTY", "RFP.Uom", "RFP.Price", "RFP.TotalPrice", "RFP.VATAmount", "RFP.TotalWithVAT", "RFP.Action"]
-  listOfColumnEvalCriteria = ['RFP.slNo', 'RFP.Headline', "RFP.Weightage", "RFP.Action"]
-  listOfSubCatColumnEvalCriteria = ['RFP.slNo', 'RFP.Des', "RFP.Weightage", "RFP.Action"]
-  listOfColumnTechReq = ['RFP.slNo', 'RFP.Des', 'RFP.Action']
-  listOfColumnPay = ['RFP.slNo', 'RFP.Payment Description', 'RFP.Percentage', 'RFP.Action']
-  listOfColumnMan = ['RFP.slNo', 'RFP.JobTitle', 'RFP.QTY', 'RFP.Qualification', 'RFP.Specialization', 'RFP.ExperienceText', 'RFP.Action']
-  listOfColumnConsult = ['RFP.slNo', 'RFP.Phase', 'RFP.ListOfDels', 'RFP.DelDate', 'RFP.Des', 'RFP.Action']
-  private basicRequiredControls = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity'];
+  listOfColumnBOQ = [
+    'RFP.slNo',
+    'RFP.MatDes',
+    'RFP.QTY',
+    'RFP.Uom',
+    'RFP.Price',
+    'RFP.TotalPrice',
+    'RFP.VATAmount',
+    'RFP.TotalWithVAT',
+    'RFP.Action',
+  ];
+  listOfColumnEvalCriteria = [
+    'RFP.slNo',
+    'RFP.Headline',
+    'RFP.Weightage',
+    'RFP.Action',
+  ];
+  listOfSubCatColumnEvalCriteria = [
+    'RFP.slNo',
+    'RFP.Des',
+    'RFP.Weightage',
+    'RFP.Action',
+  ];
+  listOfColumnTechReq = ['RFP.slNo', 'RFP.Des', 'RFP.Action'];
+  listOfColumnPay = [
+    'RFP.slNo',
+    'RFP.Payment Description',
+    'RFP.Percentage',
+    'RFP.Action',
+  ];
+  listOfColumnMan = [
+    'RFP.slNo',
+    'RFP.JobTitle',
+    'RFP.QTY',
+    'RFP.Qualification',
+    'RFP.Specialization',
+    'RFP.ExperienceText',
+    'RFP.Action',
+  ];
+  listOfColumnConsult = [
+    'RFP.slNo',
+    'RFP.Phase',
+    'RFP.ListOfDels',
+    'RFP.DelDate',
+    'RFP.Des',
+    'RFP.Action',
+  ];
+  private basicRequiredControls = [
+    'competitionType',
+    'competitionName',
+    'estimatedCost',
+    'DurationType',
+    'ProjDur',
+    'workLocation',
+    'activity',
+    'subactivity',
+  ];
   directPurchaseOptions = [
     // { value: 'below100k', label: 'Less than 100k' },
     { value: 'Emergency', label: 'Emergency' },
     { value: 'GovernmentToG', label: 'Government Contract​' },
     { value: 'oneSupplier', label: 'One Supplier' },
-    { value: 'sensitiveSecurity', label: 'Sensitive security project' }
+    { value: 'sensitiveSecurity', label: 'Sensitive security project' },
   ];
 
   limitedOptions = [
     // { value: 'below500k', label: 'Less than 500k' },
     { value: 'urgent', label: 'Urgent' },
     { value: 'Except', label: 'Except' },
-    { value: 'Consultative​', label: 'Consultative' }
+    { value: 'Consultative​', label: 'Consultative' },
   ];
 
   // threshold constant
   DIRECT_COST_THRESHOLD = 1_000_00;
   DIRECT_COST_THRESHOLD2 = 500000;
 
-
-  formOptions: Array<{ key: string; label: string; path: string; filename?: string }> = [
-
+  formOptions: Array<{
+    key: string;
+    label: string;
+    path: string;
+    filename?: string;
+  }> = [
     {
       key: 'الشروط الخاصة المواد والمعدات',
       label: 'الشروط الخاصة المواد والمعدات.docx',
-      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx',         // or rename and remove spaces
-      filename: 'الشروط الخاصة المواد والمعدات.docx'
+      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx', // or rename and remove spaces
+      filename: 'الشروط الخاصة المواد والمعدات.docx',
     },
     {
       key: 'نموذج اتفاقية إطارية',
       label: 'نموذج اتفاقية إطارية.docx',
-      path: 'assets/forms/نموذج اتفاقية إطارية.docx',         // or rename and remove spaces
-      filename: 'نموذج اتفاقية إطارية.docx'
+      path: 'assets/forms/نموذج اتفاقية إطارية.docx', // or rename and remove spaces
+      filename: 'نموذج اتفاقية إطارية.docx',
     },
     {
       key: 'الشروط الخاصة بالعمالة',
       label: 'الشروط الخاصة بالعمالة.docx',
-      path: 'assets/forms/الشروط الخاصة بالعمالة.docx',         // or rename and remove spaces
-      filename: 'الشروط الخاصة بالعمالة.docx'
+      path: 'assets/forms/الشروط الخاصة بالعمالة.docx', // or rename and remove spaces
+      filename: 'الشروط الخاصة بالعمالة.docx',
     },
     {
       key: 'الملحق الاسترشادي',
       label: 'الملحق الاسترشادي.docx',
-      path: 'assets/forms/الملحق الاسترشادي.docx',         // or rename and remove spaces
-      filename: 'الملحق الاسترشادي.docx'
+      path: 'assets/forms/الملحق الاسترشادي.docx', // or rename and remove spaces
+      filename: 'الملحق الاسترشادي.docx',
     },
     {
       key: 'آلية تقديم العطاء وخطاب تقديم العروض',
       label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
-      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx',         // or rename and remove spaces
-      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx'
+      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx', // or rename and remove spaces
+      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
     },
     {
       key: 'شـهادة زيـارة الموقع 2024',
       label: 'شـهادة زيـارة الموقع 2024.docx',
-      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx',         // or rename and remove spaces
-      filename: 'شـهادة زيـارة الموقع 2024.docx'
+      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx', // or rename and remove spaces
+      filename: 'شـهادة زيـارة الموقع 2024.docx',
     },
     {
       key: 'كيفية تنفيذ الأعمال والخدمات',
       label: 'كيفية تنفيذ الأعمال والخدمات.docx',
-      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx',         // or rename and remove spaces
-      filename: 'كيفية تنفيذ الأعمال والخدمات.docx'
+      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx', // or rename and remove spaces
+      filename: 'كيفية تنفيذ الأعمال والخدمات.docx',
     },
     {
       key: 'معايير تقييم العروض الفنية _',
       label: 'معايير تقييم العروض الفنية _.docx',
-      path: 'assets/forms/معايير تقييم العروض الفنية _.docx',         // or rename and remove spaces
-      filename: 'معايير تقييم العروض الفنية _.docx'
+      path: 'assets/forms/معايير تقييم العروض الفنية _.docx', // or rename and remove spaces
+      filename: 'معايير تقييم العروض الفنية _.docx',
     },
   ];
 
@@ -274,8 +328,6 @@ export class CreateRFPComponent implements OnInit {
   invalidFileType = false;
   certificatedet = false;
 
-
-
   expcriteria = false;
   concriteria = false;
   hrcriteria = false;
@@ -293,7 +345,6 @@ export class CreateRFPComponent implements OnInit {
   procurementCheckListData: any = [];
 
   boqTabelList: any = [];
- 
 
   managerSubId: string = '';
 
@@ -302,35 +353,28 @@ export class CreateRFPComponent implements OnInit {
   editTotTechEval: boolean = true;
 
   isSubCriteria: boolean = false;
-  isSubCriteriaToggle: boolean = false
+  isSubCriteriaToggle: boolean = false;
 
   isSubCriteriaEdit: boolean = false;
-  listOfBudgetingYears: number[] = []
-  groupBOQItemsBasedonBudgetingYears: any[] = []
-  selectedBOQItemForLookUp: any
-
+  listOfBudgetingYears: number[] = [];
+  groupBOQItemsBasedonBudgetingYears: any[] = [];
+  selectedBOQItemForLookUp: any;
 
   subCriteriaForm: FormGroup = this.fb.group({
-    subCriterias: this.fb.array([
-      this.initialSubCriteria
-    ])
-  })
+    subCriterias: this.fb.array([this.initialSubCriteria]),
+  });
 
   qualificationList: QualificationListFullResponse = {
     d: {
-      results: []  // Initialize results as an empty array
-    }
+      results: [], // Initialize results as an empty array
+    },
   };
 
   private readonly destroy$ = new Subject<void>();
 
-
-
   get billOFQtyFA(): FormArray {
     return this.rfpForm?.get('billOFQty') as FormArray;
   }
-
-
 
   constructor(
     public cs: CommonService,
@@ -345,43 +389,55 @@ export class CreateRFPComponent implements OnInit {
     private http: HttpClient
   ) {
     this.buildMainFormGroup();
-    console.log(activities, 'activities====')
+    console.log(activities, 'activities====');
   }
 
   // Form validation getters
   get basicInfoValid(): boolean {
     if (!this.rfpForm) return false;
-    
+
     // Base required fields
-    const baseRequiredFields = ['competitionType', 'competitionName', 'estimatedCost', 'DurationType', 'ProjDur', 'workLocation', 'activity', 'subactivity', 'projectJustification'];
-    
+    const baseRequiredFields = [
+      'competitionType',
+      'competitionName',
+      'estimatedCost',
+      'DurationType',
+      'ProjDur',
+      'workLocation',
+      'activity',
+      'subactivity',
+      'projectJustification',
+    ];
+
     // Check base fields
-    const baseValid = baseRequiredFields.every(field => {
+    const baseValid = baseRequiredFields.every((field) => {
       const control = this.rfpForm.get(field);
       return control && control.valid && control.value;
     });
-    
+
     if (!baseValid) return false;
-    
+
     // Check conditional fields based on toggle states
     const requiresSiteVisit = this.rfpForm.get('requiresSiteVisit')?.value;
     if (requiresSiteVisit) {
       const siteVisitFields = ['userId', 'email', 'contactNumber'];
-      const siteVisitValid = siteVisitFields.every(field => {
+      const siteVisitValid = siteVisitFields.every((field) => {
         const control = this.rfpForm.get(field);
         return control && control.valid && control.value;
       });
       if (!siteVisitValid) return false;
     }
-    
-    const prequalificationRequired = this.rfpForm.get('prequalificationRequired')?.value;
+
+    const prequalificationRequired = this.rfpForm.get(
+      'prequalificationRequired'
+    )?.value;
     if (prequalificationRequired) {
       const prequalControl = this.rfpForm.get('prequalificationDetails');
       if (!prequalControl || !prequalControl.valid || !prequalControl.value) {
         return false;
       }
     }
-    
+
     const projectRelaunched = this.rfpForm.get('projectRelaunched')?.value;
     if (projectRelaunched) {
       const numberControl = this.rfpForm.get('number');
@@ -389,7 +445,7 @@ export class CreateRFPComponent implements OnInit {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -401,8 +457,17 @@ export class CreateRFPComponent implements OnInit {
 
   get scopeOfWorkValid(): boolean {
     if (!this.rfpForm) return false;
-    const requiredFields = ['definationCompetition', 'ProjJust', 'SOP', 'labor', 'materials', 'equipment', 'qualitySpecifications', 'safetySpecifications'];
-    return requiredFields.every(field => {
+    const requiredFields = [
+      'definationCompetition',
+      'ProjJust',
+      'SOP',
+      'labor',
+      'materials',
+      'equipment',
+      'qualitySpecifications',
+      'safetySpecifications',
+    ];
+    return requiredFields.every((field) => {
       const control = this.rfpForm.get(field);
       return control && control.valid && control.value;
     });
@@ -428,7 +493,13 @@ export class CreateRFPComponent implements OnInit {
   }
 
   private getCollapseSection(stepIndex: number): string {
-    const sections = ['basicInfo', 'scopeOfWork', 'standards', 'billOfQuantity', 'attachments'];
+    const sections = [
+      'basicInfo',
+      'scopeOfWork',
+      'standards',
+      'billOfQuantity',
+      'attachments',
+    ];
     return sections[stepIndex] || 'basicInfo';
   }
 
@@ -438,7 +509,7 @@ export class CreateRFPComponent implements OnInit {
     this.standardsActive = section === 'standards';
     this.billOfQuantityActive = section === 'billOfQuantity';
     this.attachmentsCollapseActive = section === 'attachments';
-    
+
     // Scroll to the section after a brief delay to ensure DOM is updated
     setTimeout(() => {
       const element = document.getElementById(section);
@@ -478,12 +549,39 @@ export class CreateRFPComponent implements OnInit {
 
   canNavigateToStep(stepIndex: number): boolean {
     switch (stepIndex) {
-      case 0: return true;
-      case 1: return this.basicInfoValid && this.basicInfoSaved;
-      case 2: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved;
-      case 3: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved && this.standardsValid && this.standardsSaved;
-      case 4: return this.basicInfoValid && this.basicInfoSaved && this.scopeOfWorkValid && this.scopeOfWorkSaved && this.standardsValid && this.standardsSaved && this.billOfQuantityValid && this.billOfQuantitySaved;
-      default: return false;
+      case 0:
+        return true;
+      case 1:
+        return this.basicInfoValid && this.basicInfoSaved;
+      case 2:
+        return (
+          this.basicInfoValid &&
+          this.basicInfoSaved &&
+          this.scopeOfWorkValid &&
+          this.scopeOfWorkSaved
+        );
+      case 3:
+        return (
+          this.basicInfoValid &&
+          this.basicInfoSaved &&
+          this.scopeOfWorkValid &&
+          this.scopeOfWorkSaved &&
+          this.standardsValid &&
+          this.standardsSaved
+        );
+      case 4:
+        return (
+          this.basicInfoValid &&
+          this.basicInfoSaved &&
+          this.scopeOfWorkValid &&
+          this.scopeOfWorkSaved &&
+          this.standardsValid &&
+          this.standardsSaved &&
+          this.billOfQuantityValid &&
+          this.billOfQuantitySaved
+        );
+      default:
+        return false;
     }
   }
 
@@ -518,7 +616,7 @@ export class CreateRFPComponent implements OnInit {
       this.step = 3;
       this.activateCollapse('billOfQuantity');
       this.showBillOfQuantity = true;
-       this.showStandards = false;
+      this.showStandards = false;
     }
   }
 
@@ -531,18 +629,18 @@ export class CreateRFPComponent implements OnInit {
       this.showBillOfQuantity = false;
     }
   }
-//   get attachmentsValid(): boolean {
-//   if (!this.rfpForm) {
-//     return false;
-//   }
+  //   get attachmentsValid(): boolean {
+  //   if (!this.rfpForm) {
+  //     return false;
+  //   }
 
-//   const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
-//   if (!attachmentsGroup) {
-//     return false;
-//   }
+  //   const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+  //   if (!attachmentsGroup) {
+  //     return false;
+  //   }
 
-//   return attachmentsGroup.valid;
-// }
+  //   return attachmentsGroup.valid;
+  // }
   // get basicInfoValid(): boolean {
   //   if (!this.rfpForm) {
   //     return false;
@@ -579,106 +677,119 @@ export class CreateRFPComponent implements OnInit {
       }
     }
   }
-// goto(stepNumber: number): void {
+  // goto(stepNumber: number): void {
 
-//   // prevent skipping ahead without validation
-//   if (stepNumber > this.step) {
-//     if (!this.isCurrentStepValid()) {
-//       this.cs.createMessage('error', "Please complete the required fields");
-//       return;
-//     }
-//   }
+  //   // prevent skipping ahead without validation
+  //   if (stepNumber > this.step) {
+  //     if (!this.isCurrentStepValid()) {
+  //       this.cs.createMessage('error', "Please complete the required fields");
+  //       return;
+  //     }
+  //   }
 
-//   // set the new step
-//   this.step = stepNumber;
+  //   // set the new step
+  //   this.step = stepNumber;
 
-//   // open only correct collapse
-//   this.openCollapse(this.step);
-// }
-// toggleTooltip(): void {
-//   this.tooltipVisible = !this.tooltipVisible;
-// }
-// isCurrentStepValid(): boolean {
-//   switch (this.step) {
-//     case 0:
-//       return this.basicInfoValid;
+  //   // open only correct collapse
+  //   this.openCollapse(this.step);
+  // }
+  // toggleTooltip(): void {
+  //   this.tooltipVisible = !this.tooltipVisible;
+  // }
+  // isCurrentStepValid(): boolean {
+  //   switch (this.step) {
+  //     case 0:
+  //       return this.basicInfoValid;
 
-//     case 1:
-//       return this.attachmentsValid;
+  //     case 1:
+  //       return this.attachmentsValid;
 
-//     case 2:
-//       //return this.scopeValid;  // add your scope validation
+  //     case 2:
+  //       //return this.scopeValid;  // add your scope validation
 
-//     case 3:
-//       //return this.boqValid;    // add BOQ validation
+  //     case 3:
+  //       //return this.boqValid;    // add BOQ validation
 
-//     default:
-//       return true;
-//   }
-// }
+  //     default:
+  //       return true;
+  //   }
+  // }
   showError(): void {
-    this.cs.createMessage('error','Please complete the previous steps before proceeding.');
+    this.cs.createMessage(
+      'error',
+      'Please complete the previous steps before proceeding.'
+    );
   }
   /** Save & Continue: validate basic info and reveal attachments */
 
-// openCollapse(step: number) {
-//   //this.showBasic = (step === 0);
-//   this.showAttachments = (step === 1);
-//   this.showScope = (step === 2);
-//   // continue for all remaining steps
-// }
+  // openCollapse(step: number) {
+  //   //this.showBasic = (step === 0);
+  //   this.showAttachments = (step === 1);
+  //   this.showScope = (step === 2);
+  //   // continue for all remaining steps
+  // }
 
-// openCollapse(step: number) {
-//   // FIRST: RESET all collapses
-//   //this.showBasic = false;
-//   this.showAttachments = false;
-//   this.showScope = false;
-//   //this.showBoq = false;
-//   //this.showTerms = false;
+  // openCollapse(step: number) {
+  //   // FIRST: RESET all collapses
+  //   //this.showBasic = false;
+  //   this.showAttachments = false;
+  //   this.showScope = false;
+  //   //this.showBoq = false;
+  //   //this.showTerms = false;
 
-//   // THEN: Open based on step
-//   switch (step) {
-//     case 0:
-//      // this.showBasic = true;
-//       break;
+  //   // THEN: Open based on step
+  //   switch (step) {
+  //     case 0:
+  //      // this.showBasic = true;
+  //       break;
 
-//     case 1:
-//       this.showAttachments = true;
-//       break;
+  //     case 1:
+  //       this.showAttachments = true;
+  //       break;
 
-//     case 2:
-//       this.showScope = true;
-//       break;
+  //     case 2:
+  //       this.showScope = true;
+  //       break;
 
-//     case 3:
-//       //this.showBoq = true;
-//       break;
+  //     case 3:
+  //       //this.showBoq = true;
+  //       break;
 
-//     case 4:
-//       //this.showTerms = true;
-//       break;
+  //     case 4:
+  //       //this.showTerms = true;
+  //       break;
 
-//     default:
-//       //this.showBasic = true;
-//   }
-// }
-
-
+  //     default:
+  //       //this.showBasic = true;
+  //   }
+  // }
 
   get initialSubCriteria() {
     return this.fb.group({
-      SubItemNo: new FormControl({ value: 1, disabled: true }, Validators.required),
+      SubItemNo: new FormControl(
+        { value: 1, disabled: true },
+        Validators.required
+      ),
       Percentage: new FormControl('', Validators.required),
-      Descr: new FormControl('', [Validators.required, Validators.maxLength(600)])
-    })
+      Descr: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(600),
+      ]),
+    });
   }
 
   createSubCriteria(data: any) {
     return this.fb.group({
-      SubItemNo: new FormControl({ value: data.SubItemNo, disabled: true }, Validators.required),
+      SubItemNo: new FormControl(
+        { value: data.SubItemNo, disabled: true },
+        Validators.required
+      ),
       Percentage: new FormControl(data.Percentage, Validators.required),
-      Descr: new FormControl(data.Descr, [Validators.required, Validators.maxLength(600)])
-    })
+      Descr: new FormControl(data.Descr, [
+        Validators.required,
+        Validators.maxLength(600),
+      ]),
+    });
   }
 
   get subCriterias() {
@@ -733,18 +844,24 @@ export class CreateRFPComponent implements OnInit {
     }
   }
 
-
-
   addSubCriteria() {
     const totalPercentage = this.checkEvalPer(true);
-    if (totalPercentage <
-      (this.isSubCriteria ?
-        this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value :
-        this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value)) {
+    if (
+      totalPercentage <
+      (this.isSubCriteria
+        ? this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value
+        : this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value)
+    ) {
       const subCriteria = this.fb.group({
-        SubItemNo: new FormControl({ value: this.subCriterias.length + 1, disabled: true }, Validators.required),
+        SubItemNo: new FormControl(
+          { value: this.subCriterias.length + 1, disabled: true },
+          Validators.required
+        ),
         Percentage: new FormControl('', Validators.required),
-        Descr: new FormControl('', [Validators.required, Validators.maxLength(600)])
+        Descr: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(600),
+        ]),
       });
       this.subCriterias.push(subCriteria);
     } else {
@@ -755,21 +872,21 @@ export class CreateRFPComponent implements OnInit {
     }
     console.log(this.subCriterias);
   }
-deleteCriteria(index: number) {
-  this.modal.confirm({
-    nzTitle: 'Are you sure you want to delete this criteria?',
-    nzOkText: 'Yes',
-    nzOkType: 'primary',
-    nzOnOk: () => {
-      this.evalCriteriaItems.removeAt(index);
-    },
-    nzCancelText: 'No'
-  });
-}
+  deleteCriteria(index: number) {
+    this.modal.confirm({
+      nzTitle: 'Are you sure you want to delete this criteria?',
+      nzOkText: 'Yes',
+      nzOkType: 'primary',
+      nzOnOk: () => {
+        this.evalCriteriaItems.removeAt(index);
+      },
+      nzCancelText: 'No',
+    });
+  }
   deleteSubCriteria(index: number) {
     this.subCriterias.removeAt(index);
     this.subCriterias.controls.slice(index).forEach((subCriteria, i) => {
-      subCriteria.get('SubItemNo')?.setValue(index + i + 1)
+      subCriteria.get('SubItemNo')?.setValue(index + i + 1);
     });
   }
 
@@ -784,9 +901,7 @@ deleteCriteria(index: number) {
     this.isSubCriteriaEdit = false;
   }
 
-  onReannounceChange(value: string) {
-
-  }
+  onReannounceChange(value: string) {}
   onCompetitionChange(value: string) {
     console.log(value, 'afreen =========');
 
@@ -804,7 +919,7 @@ deleteCriteria(index: number) {
 
     // Handle Limited Competition
     if (value === 'L') {
-      console.log(this.showLimitedField)
+      console.log(this.showLimitedField);
       // this.showLimitedField = true;
       this.showInvite = true;
       this.isPrivateSelected = false;
@@ -825,7 +940,6 @@ deleteCriteria(index: number) {
     this.rfpForm.get('limitedType')?.updateValueAndValidity();
   }
 
-
   onInviteTypeChange(value: string) {
     // console.log(value,'afreen=========')
     this.isPrivateSelected = value === 'private';
@@ -838,15 +952,14 @@ deleteCriteria(index: number) {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below100k') {
-      this.costvalue = 100
+      this.costvalue = 100;
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(100)   // ⛔ max value 100
+        Validators.max(100), // ⛔ max value 100
       ]);
     } else {
       estimatedCostControl?.clearValidators();
     }
-    
 
     estimatedCostControl?.updateValueAndValidity();
   }
@@ -855,10 +968,10 @@ deleteCriteria(index: number) {
     const estimatedCostControl = this.rfpForm.get('estimatedCost');
 
     if (value === 'below500k') {
-      this.costvalue = 500
+      this.costvalue = 500;
       estimatedCostControl?.setValidators([
         Validators.required,
-        Validators.max(500)   // ⛔ max value 500
+        Validators.max(500), // ⛔ max value 500
       ]);
     } else {
       estimatedCostControl?.clearValidators();
@@ -872,7 +985,7 @@ deleteCriteria(index: number) {
       return;
     }
 
-    const form = this.formOptions.find(f => f.key === this.selectedFormKey);
+    const form = this.formOptions.find((f) => f.key === this.selectedFormKey);
     if (!form) {
       this.cs.createMessage('error', 'Selected form not found.');
       return;
@@ -883,8 +996,7 @@ deleteCriteria(index: number) {
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (blob) => {
         const filename =
-          form.filename ||
-          (form.path.split('/').pop() ?? 'download.pdf');
+          form.filename || (form.path.split('/').pop() ?? 'download.pdf');
 
         saveAs(blob, filename);
         this.cs.createMessage('success', 'Downloaded successfully.');
@@ -892,7 +1004,7 @@ deleteCriteria(index: number) {
       error: (err) => {
         console.error('Download failed:', err);
         this.cs.createMessage('error', 'Unable to download the selected form.');
-      }
+      },
     });
   }
   // easy getter for the FormArray
@@ -902,10 +1014,12 @@ deleteCriteria(index: number) {
 
   // methods to add/remove
   addCrNumber() {
-    this.crNumberArray.push(this.fb.group({
-      crNumber: ['', Validators.required],
-      companyName: ['', Validators.required]
-    }));
+    this.crNumberArray.push(
+      this.fb.group({
+        crNumber: ['', Validators.required],
+        companyName: ['', Validators.required],
+      })
+    );
   }
 
   removeCrNumber(index: number) {
@@ -919,7 +1033,7 @@ deleteCriteria(index: number) {
   isFacilityActivity = false;
 
   onPrequalificationChange(value: boolean) {
-    console.log(value, 'valueeeeeeeeeeee')
+    console.log(value, 'valueeeeeeeeeeee');
     const detailsControl = this.rfpForm.get('prequalificationDetails');
     if (value) {
       detailsControl?.setValidators([Validators.required]);
@@ -931,7 +1045,7 @@ deleteCriteria(index: number) {
   }
 
   test(value: boolean) {
-    console.log(value, 'valueeeeeeeeeeee')
+    console.log(value, 'valueeeeeeeeeeee');
   }
 
   submitAttachments() {
@@ -950,69 +1064,70 @@ deleteCriteria(index: number) {
     this.tooltipVisible = !this.tooltipVisible;
   }
   get attachmentsValid(): boolean {
-  if (!this.rfpForm) {
-    return false;
-  }
- 
-  const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
-  if (!attachmentsGroup) {
-    return false;
-  }
- 
-  return attachmentsGroup.valid;
-}
-  isCurrentStepValid(): boolean {
-  switch (this.step) {
-    case 0:
-      return this.basicInfoValid;
- 
-    case 1:
-      return this.attachmentsValid;
- 
-    case 2:
-      //return this.scopeValid;  // add your scope validation
- 
-    case 3:
-      //return this.boqValid;    // add BOQ validation
- 
-    default:
-      return true;
-  }
-}
+    if (!this.rfpForm) {
+      return false;
+    }
 
-openCollapse(step: number) {
-  // FIRST: RESET all collapses
-  //this.showBasic = false;
-  this.showAttachments = false;
-  this.showScope = false;
-  //this.showBoq = false;
-  //this.showTerms = false;
- 
-  // THEN: Open based on step
-  switch (step) {
-    case 0:
-     // this.showBasic = true;
-      break;
- 
-    case 1:
-      this.showAttachments = true;
-      break;
- 
-    case 2:
-      this.showScope = true;
-      break;
+    const attachmentsGroup = this.rfpForm.get('attachments') as FormGroup;
+    if (!attachmentsGroup) {
+      return false;
+    }
+
+    return attachmentsGroup.valid;
   }
-}
-toggleExpand(index: number): void {
-  if (!this.EvalListData || !this.EvalListData[index]) return;
-  this.EvalListData[index].expand = !this.EvalListData[index].expand;
-  // force change detection if needed:
-  // this.EvalListData = [...this.EvalListData];
-}
+  isCurrentStepValid(): boolean {
+    switch (this.step) {
+      case 0:
+        return this.basicInfoValid;
+
+      case 1:
+        return this.attachmentsValid;
+
+      case 2:
+      //return this.scopeValid;  // add your scope validation
+
+      case 3:
+      //return this.boqValid;    // add BOQ validation
+
+      default:
+        return true;
+    }
+  }
+
+  openCollapse(step: number) {
+    // FIRST: RESET all collapses
+    //this.showBasic = false;
+    this.showAttachments = false;
+    this.showScope = false;
+    //this.showBoq = false;
+    //this.showTerms = false;
+
+    // THEN: Open based on step
+    switch (step) {
+      case 0:
+        // this.showBasic = true;
+        break;
+
+      case 1:
+        this.showAttachments = true;
+        break;
+
+      case 2:
+        this.showScope = true;
+        break;
+    }
+  }
+  toggleExpand(index: number): void {
+    if (!this.EvalListData || !this.EvalListData[index]) return;
+    this.EvalListData[index].expand = !this.EvalListData[index].expand;
+    // force change detection if needed:
+    // this.EvalListData = [...this.EvalListData];
+  }
 
   onActivityChange(selectedActivityId: string): void {
     const selectedActivity = this.activityList.find(
-      (act: any) => act.id === selectedActivityId || act.value === selectedActivityId
+      (act: any) =>
+        act.id === selectedActivityId || act.value === selectedActivityId
     );
 
     if (selectedActivityId === 'ACT_FAC') {
@@ -1030,7 +1145,7 @@ toggleExpand(index: number): void {
       prequalDetails?.updateValueAndValidity();
     } else {
       this.isFacilityActivity = false;
-      
+
       // Allow toggle again and clear required validator
       const prequalRequired = this.rfpForm.get('prequalificationRequired');
       prequalRequired?.enable({ emitEvent: false });
@@ -1040,7 +1155,6 @@ toggleExpand(index: number): void {
       prequalDetails?.clearValidators();
       prequalDetails?.updateValueAndValidity();
     }
-
 
     if (selectedActivity) {
       this.filteredSubactivities = selectedActivity.subactivities.map(
@@ -1057,7 +1171,7 @@ toggleExpand(index: number): void {
 
     // Reset subactivity when activity changes
     this.rfpForm.patchValue({ subactivity: '' });
-    
+
     // Update evaluation weights based on activity and estimated cost
     this.updateEvaluationWeights();
   }
@@ -1092,7 +1206,6 @@ toggleExpand(index: number): void {
     { role: 'Committee Member', name: '', jobTitle: '', extension: '' },
   ];
 
-
   // Add new row Technical Committee Members
   addMember(index: number): void {
     if (this.members.length < 15) {
@@ -1122,7 +1235,10 @@ toggleExpand(index: number): void {
     return this.fb.group({
       jobTitle: ['', Validators.required],
       minQualification: ['', Validators.required],
-      minExperience: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]]
+      minExperience: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]+$/)],
+      ],
     });
   }
 
@@ -1141,7 +1257,7 @@ toggleExpand(index: number): void {
     return this.fb.group({
       material: ['', Validators.required],
       specifications: ['', Validators.required],
-      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]]
+      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
     });
   }
 
@@ -1160,7 +1276,7 @@ toggleExpand(index: number): void {
     return this.fb.group({
       machine: ['', Validators.required],
       specifications: ['', Validators.required],
-      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]]
+      unit: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
     });
   }
 
@@ -1177,11 +1293,14 @@ toggleExpand(index: number): void {
   createEvalCriteriaRow(): FormGroup {
     return this.fb.group({
       Headline: ['', Validators.required],
-      Percentage: [0, [Validators.required, Validators.min(1), Validators.max(100)]],
+      Percentage: [
+        0,
+        [Validators.required, Validators.min(1), Validators.max(100)],
+      ],
       SubCriFlg: ['y', Validators.required],
       Descr: ['', Validators.required],
       subCriteriaList: [[]],
-      showSubCriteria: [true]
+      showSubCriteria: [true],
     });
   }
 
@@ -1189,12 +1308,15 @@ toggleExpand(index: number): void {
     return this.fb.group({
       package: ['', Validators.required],
       description: ['', Validators.required],
-      classificationField: ['', Validators.required]
+      classificationField: ['', Validators.required],
     });
   }
 
   addCompetitionFragmentationItem(index: number): void {
-    this.competitionFragmentationItems.insert(index + 1, this.createCompetitionFragmentationRow());
+    this.competitionFragmentationItems.insert(
+      index + 1,
+      this.createCompetitionFragmentationRow()
+    );
   }
 
   deleteCompetitionFragmentationItem(index: number): void {
@@ -1211,10 +1333,12 @@ toggleExpand(index: number): void {
     } else {
       noOfYearsControl?.clearValidators();
       this.selectedBundleIndex = null;
-      
+
       // Keep only 1 row when toggle is disabled
       while (this.competitionFragmentationItems.length > 1) {
-        this.competitionFragmentationItems.removeAt(this.competitionFragmentationItems.length - 1);
+        this.competitionFragmentationItems.removeAt(
+          this.competitionFragmentationItems.length - 1
+        );
       }
     }
     noOfYearsControl?.updateValueAndValidity();
@@ -1292,20 +1416,19 @@ toggleExpand(index: number): void {
    * Builds the main for group for create RFP
    */
 
+  // Updated buildMainFormGroup() with correct ItemNo reset after delete
+  buildMainFormGroup(): void {
+    this.rfpForm = this.fb.group({
+      limitedType: new FormControl(''),
+      directPurchaseType: new FormControl(''),
+      invite: new FormControl('', [Validators.required]),
 
- // Updated buildMainFormGroup() with correct ItemNo reset after delete
-buildMainFormGroup(): void {
-  this.rfpForm = this.fb.group({
-    limitedType: new FormControl(''),
-    directPurchaseType: new FormControl(''),
-    invite: new FormControl('', [Validators.required]),
-
-    crNumber: this.fb.array([
-      this.fb.group({
-        crNumber: ['', Validators.required],
-        companyName: ['', Validators.required]
-      })
-    ]),
+      crNumber: this.fb.array([
+        this.fb.group({
+          crNumber: ['', Validators.required],
+          companyName: ['', Validators.required],
+        }),
+      ]),
 
       // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
@@ -1316,48 +1439,53 @@ buildMainFormGroup(): void {
       coordinatorNumber: new FormControl(''),
       coordinatorEmail: new FormControl(''),
 
+      activity: [''],
+      subactivity: [''],
 
-    activity: [''],
-    subactivity: [''],
+      requiresSiteVisit: [false, [Validators.required]],
+      email: new FormControl('', [Validators.email]),
+      contactNumber: new FormControl(''),
+      userId: new FormControl(''),
+      projectRelaunched: [false, [Validators.required]],
+      number: new FormControl('', [Validators.min(1)]),
 
-    requiresSiteVisit: [false, [Validators.required]],
-    email: new FormControl('', [Validators.email]),
-    contactNumber: new FormControl(''),
-    userId: new FormControl(''),
-    projectRelaunched: [false, [Validators.required]],
-    number: new FormControl('', [Validators.min(1)]),
+      requestStatus: ['', [Validators.required]],
+      estimatedCost: [0, [Validators.required, Validators.min(0)]],
+      includeFrameworkItems: ['', [Validators.required]],
+      prequalificationRequired: [false, [Validators.required]],
+      qualificationReference: [''],
+      qualificationLink: [''],
+      competitionName: ['', [Validators.required, Validators.maxLength(20)]],
+      dividedIntoLots: [false, [Validators.required]],
+      contractDuration: ['', [Validators.required]],
+      MatGrpId: ['', [Validators.required]],
+      DeliveryDate: ['', [Validators.required]],
+      ProjJust: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(300),
+      ]),
+      ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
+      DurationType: new FormControl('', [Validators.required]),
+      workLocation: new FormControl([], [Validators.required]),
+      workExecutionLocation: ['', [Validators.required]],
+      reAnnounced: [false, [Validators.required]],
+      cancellationReport: [''],
+      projectJustification: [
+        '',
+        [Validators.required, Validators.maxLength(500)],
+      ],
+      projectContinuous: [false, [Validators.required]],
 
-    requestStatus: ['', [Validators.required]],
-    estimatedCost: [0, [Validators.required, Validators.min(0)]],
-    includeFrameworkItems: ['', [Validators.required]],
-    prequalificationRequired: [false, [Validators.required]],
-    qualificationReference: [''],
-    qualificationLink: [''],
-    competitionName: ['', [Validators.required, Validators.maxLength(20)]],
-    dividedIntoLots: [false, [Validators.required]],
-    contractDuration: ['', [Validators.required]],
-    MatGrpId: ['', [Validators.required]],
-    DeliveryDate: ['', [Validators.required]],
-    ProjJust: new FormControl('', [Validators.required, Validators.maxLength(300)]),
-    ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
-    DurationType: new FormControl('', [Validators.required]),
-    workLocation: new FormControl([], [Validators.required]),
-    workExecutionLocation: ['', [Validators.required]],
-    reAnnounced: [false, [Validators.required]],
-    cancellationReport: [''],
-    projectJustification: ['', [Validators.required, Validators.maxLength(500)]],
-    projectContinuous: [false, [Validators.required]],
-
-    members: this.fb.array(
-      this.committeeMembers.map((m) =>
-        this.fb.group({
-          role: [{ value: m.role, disabled: true }, Validators.required],
-          name: ['', Validators.required],
-          extension: ['', Validators.required],
-          jobTitle: ['', Validators.required]
-        })
-      )
-    ),
+      members: this.fb.array(
+        this.committeeMembers.map((m) =>
+          this.fb.group({
+            role: [{ value: m.role, disabled: true }, Validators.required],
+            name: ['', Validators.required],
+            extension: ['', Validators.required],
+            jobTitle: ['', Validators.required],
+          })
+        )
+      ),
 
       laborItems: this.fb.array([this.createLaborRow()]),
       materialItems: this.fb.array([this.createMaterialRow()]),
@@ -1365,62 +1493,73 @@ buildMainFormGroup(): void {
       evalCriteriaItems: this.fb.array([this.createEvalCriteriaRow()]),
       competitionFragmentation: [false],
       noOfYears: ['1'],
-      competitionFragmentationItems: this.fb.array([this.createCompetitionFragmentationRow()]),
+      competitionFragmentationItems: this.fb.array([
+        this.createCompetitionFragmentationRow(),
+      ]),
 
-    // scope of work
-    MemName: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(6)]),
-    MemManagerName: new FormControl('', [Validators.required]),
-    SOP: new FormControl('', [Validators.required]),
-    labor: new FormControl(''),
-    materials: new FormControl(''),
-    equipment: new FormControl(''),
-    qualitySpecifications: new FormControl(''),
-    safetySpecifications: new FormControl(''),
-    definationCompetition: new FormControl(''),
+      // scope of work
+      MemName: new FormControl(
+        [],
+        [Validators.required, Validators.minLength(1), Validators.maxLength(6)]
+      ),
+      MemManagerName: new FormControl('', [Validators.required]),
+      SOP: new FormControl('', [Validators.required]),
+      labor: new FormControl(''),
+      materials: new FormControl(''),
+      equipment: new FormControl(''),
+      qualitySpecifications: new FormControl(''),
+      safetySpecifications: new FormControl(''),
+      definationCompetition: new FormControl(''),
 
-    EvalCriteria: this.fb.group({
-      RfpNo: [''],
-      ItemNo: [{ value: (this.slel).toString(), disabled: true }],
-      Descr: ['', [Validators.maxLength(600)]],
-      Percentage: ['0'],
-      Headline: ['', Validators.required],
-      SubCriFlg: ['', Validators.required]
-    }),
+      EvalCriteria: this.fb.group({
+        RfpNo: [''],
+        ItemNo: [{ value: this.slel.toString(), disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+        Percentage: ['0'],
+        Headline: ['', Validators.required],
+        SubCriFlg: ['', Validators.required],
+      }),
 
-    EvalCriteriaEdit: this.fb.group({
-      RfpNo: [''],
-      ItemNo: [{ value: '', disabled: true }],
-      Descr: ['', [Validators.maxLength(600)]],
-      Percentage: ['0'],
-      Headline: [''],
-      SubCriFlg: ['']
-    }),
+      EvalCriteriaEdit: this.fb.group({
+        RfpNo: [''],
+        ItemNo: [{ value: '', disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+        Percentage: ['0'],
+        Headline: [''],
+        SubCriFlg: [''],
+      }),
 
-    TotTechEval: new FormControl(''),
+      TotTechEval: new FormControl(''),
 
-    // Technical Requirements form groups
-    TechReq: this.fb.group({
-      RfpNo: [''],
-      RfpVersion: [''],
-      ItemNo: [{ value: this.srNoTechReq.toString(), disabled: true }],
-      Descr: ['', [Validators.maxLength(600)]]
-    }),
+      // Technical Requirements form groups
+      TechReq: this.fb.group({
+        RfpNo: [''],
+        RfpVersion: [''],
+        ItemNo: [{ value: this.srNoTechReq.toString(), disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+      }),
 
-    TechReqEdit: this.fb.group({
-      RfpNo: [''],
-      RfpVersion: [''],
-      ItemNo: [{ value: '', disabled: true }],
-      Descr: ['', [Validators.maxLength(600)]]
-    }),
+      TechReqEdit: this.fb.group({
+        RfpNo: [''],
+        RfpVersion: [''],
+        ItemNo: [{ value: '', disabled: true }],
+        Descr: ['', [Validators.maxLength(600)]],
+      }),
 
-    vendorEvaluationWeightage: this.fb.group({
-      technicalEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]],
-      financialEvaluationWeightage: [0, [Validators.required, Validators.min(1), Validators.max(99)]]
-    })
-  });
+      vendorEvaluationWeightage: this.fb.group({
+        technicalEvaluationWeightage: [
+          0,
+          [Validators.required, Validators.min(1), Validators.max(99)],
+        ],
+        financialEvaluationWeightage: [
+          0,
+          [Validators.required, Validators.min(1), Validators.max(99)],
+        ],
+      }),
+    });
 
     this.rfpForm.get('TotTechEval')?.setValue(100);
-    
+
     // this.rfpForm = this.fb.group({
     //   RfpName: new FormControl('', [Validators.required, Validators.pattern(/^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF ]+$/)]),
     //   CostCenter1: new FormControl(
@@ -1461,7 +1600,6 @@ buildMainFormGroup(): void {
     //   limitedType: new FormControl('', [Validators.required]),
     //   //
 
-
     //   ProjDur: new FormControl('', [Validators.required, Validators.min(1)]),
 
     //   Payment: this.fb.array([]),
@@ -1473,8 +1611,6 @@ buildMainFormGroup(): void {
     //     Percentage: ['0'],
     //   }),
     //   CC: new FormControl(''),
-
-
 
     //   TechRFP: new FormControl('N'),
 
@@ -1520,7 +1656,6 @@ buildMainFormGroup(): void {
     //     Descr: ['', [Validators.maxLength(600)]]
     //   }),
 
-
     //   Attachments: this.fb.array([]),
     //   ManPower: this.fb.array([]),
     //   ManPowerForm: this.fb.group({
@@ -1545,17 +1680,17 @@ buildMainFormGroup(): void {
     //   procurementChecklist: this.fb.group({})
     // });
     // Direct purchase change listener
-  this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
-    this.showEmergencyDocs = value === 'Emergency';
-    this.showGovernmentDocs = value === 'GovernmentToG';
-    this.showSupplierDocs = value === 'oneSupplier';
-    this.showSensitiveDocs = value === 'sensitiveSecurity';
-  });
-  this.rfpForm.get('limitedType')?.valueChanges.subscribe(value => {
-    this.showUrgent = value === 'urgent';
-    this.showExcept = value === 'Except';
-    this.showConsultative= value === 'Consultative';
-  });
+    this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe((value) => {
+      this.showEmergencyDocs = value === 'Emergency';
+      this.showGovernmentDocs = value === 'GovernmentToG';
+      this.showSupplierDocs = value === 'oneSupplier';
+      this.showSensitiveDocs = value === 'sensitiveSecurity';
+    });
+    this.rfpForm.get('limitedType')?.valueChanges.subscribe((value) => {
+      this.showUrgent = value === 'urgent';
+      this.showExcept = value === 'Except';
+      this.showConsultative = value === 'Consultative';
+    });
   }
 
   beforeUpload = (file: NzUploadFile): boolean => {
@@ -1565,7 +1700,10 @@ buildMainFormGroup(): void {
     const isLt10M = (file.size || 0) / 1024 / 1024 <= 10;
 
     if (!isAllowed) {
-      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      this.cs.createMessage(
+        'error',
+        'Allowed: pdf, doc, docx, xlsx, png, jpg.'
+      );
       return false;
     }
     if (!isLt10M) {
@@ -1588,7 +1726,10 @@ buildMainFormGroup(): void {
     const isLt10M = file.size / 1024 / 1024 <= 10;
 
     if (!isAllowed) {
-      this.cs.createMessage('error', 'Allowed: pdf, doc, docx, xlsx, png, jpg.');
+      this.cs.createMessage(
+        'error',
+        'Allowed: pdf, doc, docx, xlsx, png, jpg.'
+      );
       input.value = '';
       return;
     }
@@ -1604,7 +1745,7 @@ buildMainFormGroup(): void {
       status: 'done',
       size: file.size,
       type: file.type,
-      originFileObj: file as any
+      originFileObj: file as any,
     };
 
     this.fileList = [...this.fileList, nzFile];
@@ -1612,12 +1753,26 @@ buildMainFormGroup(): void {
     input.value = '';
   }
 
-  downloadTemplate(section: 'workforce' | 'materials' | 'equipment' | 'service'): void {
+  downloadTemplate(
+    section: 'workforce' | 'materials' | 'equipment' | 'service'
+  ): void {
     const templates = {
-      workforce: { path: 'assets/general-model/workforce.xlsx', filename: 'workforce.xlsx' },
-      materials: { path: 'assets/general-model/material.xlsx', filename: 'material.xlsx' },
-      equipment: { path: 'assets/general-model/equipment and devices.xlsx', filename: 'equipment and devices.xlsx' },
-      service: { path: 'assets/general-model/services and outputs.xlsx', filename: 'services and outputs.xlsx' }
+      workforce: {
+        path: 'assets/general-model/workforce.xlsx',
+        filename: 'workforce.xlsx',
+      },
+      materials: {
+        path: 'assets/general-model/material.xlsx',
+        filename: 'material.xlsx',
+      },
+      equipment: {
+        path: 'assets/general-model/equipment and devices.xlsx',
+        filename: 'equipment and devices.xlsx',
+      },
+      service: {
+        path: 'assets/general-model/services and outputs.xlsx',
+        filename: 'services and outputs.xlsx',
+      },
     };
 
     const template = templates[section];
@@ -1631,81 +1786,89 @@ buildMainFormGroup(): void {
       error: (err) => {
         console.error('Download failed:', err);
         this.cs.createMessage('error', 'Unable to download the template.');
-      }
+      },
     });
   }
 
   handleRemove = (file: NzUploadFile): boolean => {
-    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+    this.fileList = this.fileList.filter((f) => f.uid !== file.uid);
     return true;
   };
-  
+
   removeFile(file: NzUploadFile): void {
-    this.fileList = this.fileList.filter(f => f.uid !== file.uid);
+    this.fileList = this.fileList.filter((f) => f.uid !== file.uid);
   }
 
-   onDirectPurchaseEmergency(value: any) {
-  // Example: show only when user selects "cancel"
-  this.showEmergencyDocs = value === 'Emergency';  
-  this.showGovernmentDocs = value === 'GovernmentToG';
-   this.showSupplierDocs = value === 'oneSupplier';
+  onDirectPurchaseEmergency(value: any) {
+    // Example: show only when user selects "cancel"
+    this.showEmergencyDocs = value === 'Emergency';
+    this.showGovernmentDocs = value === 'GovernmentToG';
+    this.showSupplierDocs = value === 'oneSupplier';
     this.showSensitiveDocs = value === 'sensitiveSecurity';
-}
- 
-get technicalDocs(): FormArray {
-  return this.rfpForm.get('technicalDocs') as FormArray;
-}
- 
-createTechnicalDocRow(): FormGroup {
-  return this.fb.group({
-    documentNumber: ['']
-  });
-}
- 
-addTechnicalDoc(index: number): void {
-  this.technicalDocs.insert(index + 1, this.createTechnicalDocRow());
-}
- 
-deleteTechnicalDoc(index: number): void {
-  if (this.technicalDocs.length > 1) {
-    this.technicalDocs.removeAt(index);
   }
-}
- 
-get progressPx(): number {
-  const segment = 890 / 4; // 222.5px per segment
-  return this.step * segment;
-}
- 
- 
- 
-get progressWidth(): number {
-  return (this.step / 4) * 100;
-}
 
+  get technicalDocs(): FormArray {
+    return this.rfpForm.get('technicalDocs') as FormArray;
+  }
+
+  createTechnicalDocRow(): FormGroup {
+    return this.fb.group({
+      documentNumber: [''],
+    });
+  }
+
+  addTechnicalDoc(index: number): void {
+    this.technicalDocs.insert(index + 1, this.createTechnicalDocRow());
+  }
+
+  deleteTechnicalDoc(index: number): void {
+    if (this.technicalDocs.length > 1) {
+      this.technicalDocs.removeAt(index);
+    }
+  }
+
+  get progressPx(): number {
+    const segment = 890 / 4; // 222.5px per segment
+    return this.step * segment;
+  }
+
+  get progressWidth(): number {
+    return (this.step / 4) * 100;
+  }
 
   // beforeUpload = (file: NzUploadFile): boolean => {
   //   this.fileList = this.fileList.concat(file);
   //   return false;
   // };
 
-  setManagerList() {  
+  setManagerList() {
     if (
       this.rfpForm.controls['MemName'].value.length > 0 &&
-      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
-      )) {
+      this.rfpForm.controls['MemName'].value.includes(
+        this.rfpForm.controls['MemManagerName'].value
+      )
+    ) {
       this.cs.createMessage(
         'error',
         this.translate.instant('RFP.TechMemError')
-      )
+      );
     }
     this.managerList = this.userList.filter((user: any) =>
-      this.rfpForm.controls['MemName']?.value.includes(user.EmpUsrid))
+      this.rfpForm.controls['MemName']?.value.includes(user.EmpUsrid)
+    );
     this.managerList = this.managerList.filter((user, index, self) => {
-      return user.TmUserid !== ""
-        && index === self.findIndex((u) => u.TmUserid === user.TmUserid)
-    })
-    if (this.managerList.length === 0 || this.managerList.findIndex((manager) => manager.TmUserid === this.rfpForm.controls['MemManagerName'].value) < 0) {
+      return (
+        user.TmUserid !== '' &&
+        index === self.findIndex((u) => u.TmUserid === user.TmUserid)
+      );
+    });
+    if (
+      this.managerList.length === 0 ||
+      this.managerList.findIndex(
+        (manager) =>
+          manager.TmUserid === this.rfpForm.controls['MemManagerName'].value
+      ) < 0
+    ) {
       this.rfpForm.controls['MemManagerName'].setValue('');
       this.rfpForm.controls['MemManagerName'].updateValueAndValidity();
     }
@@ -1719,50 +1882,59 @@ get progressWidth(): number {
     this.autoPopulateSopFields();
     const compCtrl = this.rfpForm.get('competitionType')!;
     const costCtrl = this.rfpForm.get('estimatedCost')!;
-    this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe(value => {
-    this.showEmergencyDocs = value === 'Emergency';   // <-- check actual value!
-    this.showGovernmentDocs = value === 'GovernmentToG';
-     this.showSupplierDocs = value === 'oneSupplier';
-    this.showSensitiveDocs = value === 'sensitiveSecurity';
-  });
-    this.rfpForm.get('limitedType')?.valueChanges.subscribe(value => {
-    this.showUrgent = value === 'urgent';
-    this.showExcept = value === 'Except';
-    this.showConsultative= value === 'Consultative';
-  });
+    this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe((value) => {
+      this.showEmergencyDocs = value === 'Emergency'; // <-- check actual value!
+      this.showGovernmentDocs = value === 'GovernmentToG';
+      this.showSupplierDocs = value === 'oneSupplier';
+      this.showSensitiveDocs = value === 'sensitiveSecurity';
+    });
+    this.rfpForm.get('limitedType')?.valueChanges.subscribe((value) => {
+      this.showUrgent = value === 'urgent';
+      this.showExcept = value === 'Except';
+      this.showConsultative = value === 'Consultative';
+    });
 
-    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
-      .subscribe(v => console.log('DBG competitionType emitted:', v));
+    compCtrl.valueChanges
+      .pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe((v) => console.log('DBG competitionType emitted:', v));
 
     // If competitionTypes is an array like [{ id: 'direct', value: 'Direct Purchase', valueAr: '...' }, ...]
     if (Array.isArray(this.competitionTypes)) {
-      const direct = this.competitionTypes.find(o =>
-        (o.value && o.value.toString().toLowerCase().includes('direct')) ||
-        (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
-        (String(o.id).toLowerCase().includes('direct'))
+      const direct = this.competitionTypes.find(
+        (o) =>
+          (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+          (o.valueAr &&
+            o.valueAr.toString().toLowerCase().includes('direct')) ||
+          String(o.id).toLowerCase().includes('direct')
       );
-      const limited = this.competitionTypes.find(o =>
-        (o.value && o.value.toString().toLowerCase().includes('limited')) ||
-        (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
-        (String(o.id).toLowerCase().includes('limited'))
+      const limited = this.competitionTypes.find(
+        (o) =>
+          (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+          (o.valueAr &&
+            o.valueAr.toString().toLowerCase().includes('limited')) ||
+          String(o.id).toLowerCase().includes('limited')
       );
 
       this.directCompetitionId = direct ? direct.id : null;
       this.limitedCompetitionId = limited ? limited.id : null;
 
       // OPTIONAL debug to confirm what ids we detected:
-      console.log('DBG: directCompetitionId=', this.directCompetitionId, 'limitedCompetitionId=', this.limitedCompetitionId);
+      console.log(
+        'DBG: directCompetitionId=',
+        this.directCompetitionId,
+        'limitedCompetitionId=',
+        this.limitedCompetitionId
+      );
     }
 
-
-
     // debug so you can see exactly what competitionType emits (remove later)
-    compCtrl.valueChanges.pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
-      .subscribe(v => console.log('DBG competitionType emitted:', v));
+    compCtrl.valueChanges
+      .pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
+      .subscribe((v) => console.log('DBG competitionType emitted:', v));
 
     combineLatest([
       compCtrl.valueChanges.pipe(startWith(compCtrl.value)),
-      costCtrl.valueChanges.pipe(startWith(costCtrl.value))
+      costCtrl.valueChanges.pipe(startWith(costCtrl.value)),
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
@@ -1781,7 +1953,9 @@ get progressWidth(): number {
       });
 
     // Initial validation sync
-    this.toggleSiteVisitValidators(this.rfpForm.get('requiresSiteVisit')?.value);
+    this.toggleSiteVisitValidators(
+      this.rfpForm.get('requiresSiteVisit')?.value
+    );
 
     // Add conditional validation for project relaunched toggle
     this.rfpForm
@@ -1792,12 +1966,18 @@ get progressWidth(): number {
       });
 
     // Initial validation sync for project relaunched
-    this.toggleProjectRelaunchedValidators(this.rfpForm.get('projectRelaunched')?.value);
+    this.toggleProjectRelaunchedValidators(
+      this.rfpForm.get('projectRelaunched')?.value
+    );
 
     // Listen to estimated cost and activity changes to update evaluation weights
-    this.rfpForm.get('estimatedCost')?.valueChanges.pipe(takeUntil(this.destroy$))
+    this.rfpForm
+      .get('estimatedCost')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateEvaluationWeights());
-    this.rfpForm.get('activity')?.valueChanges.pipe(takeUntil(this.destroy$))
+    this.rfpForm
+      .get('activity')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateEvaluationWeights());
 
     let usernameBtoa = localStorage.getItem('ID');
@@ -1808,8 +1988,12 @@ get progressWidth(): number {
     this.toggleDescrValidatorTechEval();
 
     combineLatest([
-      this.rfpForm.get('ProjDur')!.valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
-      this.rfpForm.get('DurationType')!.valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value))
+      this.rfpForm
+        .get('ProjDur')!
+        .valueChanges.pipe(startWith(this.rfpForm.get('ProjDur')!.value)),
+      this.rfpForm
+        .get('DurationType')!
+        .valueChanges.pipe(startWith(this.rfpForm.get('DurationType')!.value)),
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
@@ -1817,47 +2001,55 @@ get progressWidth(): number {
       });
 
     this.listenDeliveryDateChange();
-    this.rfpForm.get("SubCriFlg")?.setValue('X');
-
+    this.rfpForm.get('SubCriFlg')?.setValue('X');
   }
   private isDirectCompetitionSelected(): boolean {
     const compVal = this.rfpForm.get('competitionType')?.value;
     if (compVal == null) return false;
     // `compVal` may be id or object — normalize:
-    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
-    return this.directCompetitionId != null && String(val) === String(this.directCompetitionId);
+    const val = typeof compVal === 'object' ? compVal.id ?? compVal : compVal;
+    return (
+      this.directCompetitionId != null &&
+      String(val) === String(this.directCompetitionId)
+    );
   }
 
   private isLimitedCompetitionSelected(): boolean {
     const compVal = this.rfpForm.get('competitionType')?.value;
     if (compVal == null) return false;
-    const val = (typeof compVal === 'object') ? (compVal.id ?? compVal) : compVal;
-    return this.limitedCompetitionId != null && String(val) === String(this.limitedCompetitionId);
+    const val = typeof compVal === 'object' ? compVal.id ?? compVal : compVal;
+    return (
+      this.limitedCompetitionId != null &&
+      String(val) === String(this.limitedCompetitionId)
+    );
   }
-
-
 
   private updatePurchaseVisibility(): void {
     const costVal = Number(this.rfpForm.get('estimatedCost')?.value) || 0;
     const directSelected = this.isDirectCompetitionSelected();
     const limitedSelected = this.isLimitedCompetitionSelected();
 
-    this.showDirectPurchaseField = directSelected && costVal > this.DIRECT_COST_THRESHOLD;
-    this.showLimitedField = limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
-    this.showErrorField= limitedSelected && costVal <= this.DIRECT_COST_THRESHOLD2;
+    this.showDirectPurchaseField =
+      directSelected && costVal > this.DIRECT_COST_THRESHOLD;
+    this.showLimitedField =
+      limitedSelected && costVal > this.DIRECT_COST_THRESHOLD2;
+    this.showErrorField =
+      limitedSelected && costVal <= this.DIRECT_COST_THRESHOLD2;
 
     // Clear values when panels are hidden
     if (!this.showDirectPurchaseField) {
       const ctrl = this.rfpForm.get('directPurchaseType');
-      if (ctrl?.value) { ctrl.setValue(null); }
+      if (ctrl?.value) {
+        ctrl.setValue(null);
+      }
     }
     if (!this.showLimitedField) {
       const ctrl = this.rfpForm.get('limitedType');
-      if (ctrl?.value) { ctrl.setValue(null); }
+      if (ctrl?.value) {
+        ctrl.setValue(null);
+      }
     }
   }
-
-
 
   // async downloadSelectedForm(): Promise<void> { sampath commentted
   //   if (!this.selectedFormKey) {
@@ -1929,98 +2121,148 @@ get progressWidth(): number {
   }
 
   listenDeliveryDateChange() {
-    this.rfpForm.get('DeliveryDate')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.listOfBudgetingYears = this.getInvolvedYears(this.rfpForm.controls['DeliveryDate'].value, this.rfpForm.controls['ProjDur'].value, this.rfpForm.controls['DurationType'].value);
-    });
+    this.rfpForm
+      .get('DeliveryDate')!
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.listOfBudgetingYears = this.getInvolvedYears(
+          this.rfpForm.controls['DeliveryDate'].value,
+          this.rfpForm.controls['ProjDur'].value,
+          this.rfpForm.controls['DurationType'].value
+        );
+      });
   }
 
   /**
    * Loads and Handles all the Look Up data
    */
   loadLookUpData(): void {
-
     const costCenter = this.api.post('F4CostCntrSet', this.cs.getUserData());
     const usersList = this.api.post('F4UsrListSet', this.cs.getUserData());
-    const purchaseGroup = this.api.post('F4PurGrpSet', { userName: this.cs.getUserData().userid });
+    const purchaseGroup = this.api.post('F4PurGrpSet', {
+      userName: this.cs.getUserData().userid,
+    });
     const unitOfMeasure = this.api.post('F4UomSet', { Uom: '' });
     const itCheckList = this.api.post('getChecklist', { checklist_type: '01' });
-    const procurementCheckList = this.api.post('getChecklist', { checklist_type: '02' });
-    const qualificationList = this.api.get('qualification-list')
-
+    const procurementCheckList = this.api.post('getChecklist', {
+      checklist_type: '02',
+    });
+    const qualificationList = this.api.get('qualification-list');
 
     this.getDeps();
 
     this.spinner.show();
 
-    forkJoin([costCenter, usersList, purchaseGroup, unitOfMeasure, itCheckList, procurementCheckList, qualificationList])
-      .pipe(takeUntil(this.destroy$)).subscribe((
-        [costCenterRes, usersListRes, purchaseGroupRes, unitOfMeasureRes, itCheckListRes,
-          procurementCheckListRes, qualificationListRes]) => {
-        this.spinner.hide();
+    forkJoin([
+      costCenter,
+      usersList,
+      purchaseGroup,
+      unitOfMeasure,
+      itCheckList,
+      procurementCheckList,
+      qualificationList,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        ([
+          costCenterRes,
+          usersListRes,
+          purchaseGroupRes,
+          unitOfMeasureRes,
+          itCheckListRes,
+          procurementCheckListRes,
+          qualificationListRes,
+        ]) => {
+          this.spinner.hide();
 
-        // * Cost Center List
-        if (costCenterRes.d.results) {
-          this.Costctr = costCenterRes.d.results;
-        }
-
-        // * Users List
-        if (usersListRes.d.results) {
-          this.userList = usersListRes.d.results;
-          this.setManagerList()
-        }
-
-        // * Get the purchase group
-        if (purchaseGroupRes.d.results) {
-          this.allPurGrp = purchaseGroupRes.d.results
-          this.purGp = purchaseGroupRes.d.results.filter((purchanseGroupItem: any) => purchanseGroupItem.PurGrpId.indexOf(localStorage.getItem('DepTxt')) > -1);
-        }
-
-        // * Get the Unit of Measure List
-        if (unitOfMeasureRes.d.results) {
-          this.uOM = unitOfMeasureRes.d.results;
-        }
-
-        // * Get IT Check List
-        if (itCheckListRes.d.results) {
-          this.ITCheckList = {
-            parentCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id === '000'),
-            childCheckList: itCheckListRes.d.results.filter((checklistItem: any) => checklistItem.parent_checklist_id !== '000')
+          // * Cost Center List
+          if (costCenterRes.d.results) {
+            this.Costctr = costCenterRes.d.results;
           }
-          // this.setITCheklist();
+
+          // * Users List
+          if (usersListRes.d.results) {
+            this.userList = usersListRes.d.results;
+            this.setManagerList();
+          }
+
+          // * Get the purchase group
+          if (purchaseGroupRes.d.results) {
+            this.allPurGrp = purchaseGroupRes.d.results;
+            this.purGp = purchaseGroupRes.d.results.filter(
+              (purchanseGroupItem: any) =>
+                purchanseGroupItem.PurGrpId.indexOf(
+                  localStorage.getItem('DepTxt')
+                ) > -1
+            );
+          }
+
+          // * Get the Unit of Measure List
+          if (unitOfMeasureRes.d.results) {
+            this.uOM = unitOfMeasureRes.d.results;
+          }
+
+          // * Get IT Check List
+          if (itCheckListRes.d.results) {
+            this.ITCheckList = {
+              parentCheckList: itCheckListRes.d.results.filter(
+                (checklistItem: any) =>
+                  checklistItem.parent_checklist_id === '000'
+              ),
+              childCheckList: itCheckListRes.d.results.filter(
+                (checklistItem: any) =>
+                  checklistItem.parent_checklist_id !== '000'
+              ),
+            };
+            // this.setITCheklist();
+          }
+
+          // * Get Procurement Check List
+          if (procurementCheckListRes.d.results) {
+            this.procurementCheckListData =
+              procurementCheckListRes.d.results.filter((data: any) => {
+                if (
+                  (data.checklist_applicapable ==
+                    this.cs.getUserData().DeptId ||
+                    data.checklist_applicapable == '') &&
+                  data.checklist_access == 'R'
+                ) {
+                  return true;
+                }
+                return false;
+              });
+            let parentGroup = this.rfpForm.get(
+              'procurementChecklist'
+            ) as FormGroup;
+
+            this.procurementCheckListData.forEach((list: any) => {
+              if (list.to_ChkLstDts.results.length > 1) {
+                parentGroup.addControl(
+                  'procu' + list.checklist_id,
+                  this.fb.control('')
+                );
+                parentGroup.addControl(
+                  'procu' + list.checklist_id + 'Comment',
+                  this.fb.control('')
+                );
+              } else {
+                parentGroup.addControl(
+                  'procu' + list.checklist_id,
+                  this.fb.control('')
+                );
+              }
+            });
+          }
+
+          this.qualificationList = qualificationListRes;
+
+          console.log(this.qualificationList, 'this.qualificationList');
+        },
+        (error) => {
+          this.spinner.hide();
+          this.cs.createMessage('error', error.statusText);
         }
-
-        // * Get Procurement Check List
-        if (procurementCheckListRes.d.results) {
-          this.procurementCheckListData = procurementCheckListRes.d.results.filter((data: any) => {
-            if ((data.checklist_applicapable == this.cs.getUserData().DeptId || data.checklist_applicapable == '') && data.checklist_access == 'R') {
-              return true;
-            }
-            return false;
-          });
-          let parentGroup = this.rfpForm.get('procurementChecklist') as FormGroup;
-
-          this.procurementCheckListData.forEach((list: any) => {
-            if (list.to_ChkLstDts.results.length > 1) {
-              parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
-              parentGroup.addControl('procu' + list.checklist_id + 'Comment', this.fb.control(''));
-            } else {
-              parentGroup.addControl('procu' + list.checklist_id, this.fb.control(''));
-            }
-          });
-        }
-
-        this.qualificationList = qualificationListRes
-
-
-
-        console.log(this.qualificationList, 'this.qualificationList')
-
-
-      }, (error) => {
-        this.spinner.hide();
-        this.cs.createMessage('error', error.statusText);
-      });
-
+      );
   }
 
   /**
@@ -2032,36 +2274,45 @@ get progressWidth(): number {
     let parentGroup = arrayControl.at(0) as FormGroup;
 
     this.ITCheckList.parentCheckList.forEach((element: any) => {
-
       parentGroup.addControl(element.checklist_name_en, this.fb.control(false));
       const req: any = {};
 
       req[element.checklist_name_en + 'Group'] = [];
       req['groupName'] = element.checklist_name_en;
 
-
       this.ITCheckList.childCheckList.forEach((childList: any) => {
         if (element.checklist_id == childList.parent_checklist_id) {
-          req[element.checklist_name_en + 'Group'].push(childList)
+          req[element.checklist_name_en + 'Group'].push(childList);
         }
       });
       this.childCheckList.push(req);
 
-
-      parentGroup.addControl(element.checklist_name_en + 'Group', this.fb.group({}));
+      parentGroup.addControl(
+        element.checklist_name_en + 'Group',
+        this.fb.group({})
+      );
 
       this.ITCheckList.childCheckList.forEach((childList: any) => {
         if (element.checklist_id == childList.parent_checklist_id) {
-          let newGroup = parentGroup.get(element.checklist_name_en + 'Group') as FormGroup;
-          newGroup.addControl(element.checklist_name_en + childList.checklist_id, this.fb.control(''));
-          newGroup.addControl(element.checklist_name_en + childList.checklist_id + 'Comment', this.fb.control(''));
-          newGroup.addControl(element.checklist_name_en + childList.checklist_id + 'OtherComment', this.fb.control(''));
+          let newGroup = parentGroup.get(
+            element.checklist_name_en + 'Group'
+          ) as FormGroup;
+          newGroup.addControl(
+            element.checklist_name_en + childList.checklist_id,
+            this.fb.control('')
+          );
+          newGroup.addControl(
+            element.checklist_name_en + childList.checklist_id + 'Comment',
+            this.fb.control('')
+          );
+          newGroup.addControl(
+            element.checklist_name_en + childList.checklist_id + 'OtherComment',
+            this.fb.control('')
+          );
         }
       });
-
     });
   }
-
 
   checkProcRadio(evt: any, procList: any) {
     // let parentGroup = this.rfpForm.get('procurementChecklist') as FormGroup;
@@ -2075,47 +2326,78 @@ get progressWidth(): number {
   }
 
   getQualification(qualificationID: string) {
-    const qualification = this.qualificationList.d.results.find((qualification) => qualification.QualtypeID === qualificationID)
-    return this.cs.userLanguage === "en" ? qualification?.QualtypeDesc : qualification?.QualtypeDescAR
+    const qualification = this.qualificationList.d.results.find(
+      (qualification) => qualification.QualtypeID === qualificationID
+    );
+    return this.cs.userLanguage === 'en'
+      ? qualification?.QualtypeDesc
+      : qualification?.QualtypeDescAR;
   }
-
 
   checkSelected(evt: any, checklist_name_en: any, index: any) {
     if (evt) {
-      Object.keys((((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-        .get(checklist_name_en + 'Group') as FormGroup).controls).forEach((element: any) => {
-          if (element.indexOf('Comment') == -1) {
-            (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-              .get(checklist_name_en + 'Group') as FormGroup).controls[element].addValidators([Validators.required]);
-            (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-              .get(checklist_name_en + 'Group') as FormGroup).controls[element].updateValueAndValidity();
-          }
-        });
+      Object.keys(
+        (
+          (
+            (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+          ).get(checklist_name_en + 'Group') as FormGroup
+        ).controls
+      ).forEach((element: any) => {
+        if (element.indexOf('Comment') == -1) {
+          (
+            (
+              (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+            ).get(checklist_name_en + 'Group') as FormGroup
+          ).controls[element].addValidators([Validators.required]);
+          (
+            (
+              (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+            ).get(checklist_name_en + 'Group') as FormGroup
+          ).controls[element].updateValueAndValidity();
+        }
+      });
     } else {
-      Object.keys((((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-        .get(checklist_name_en + 'Group') as FormGroup).controls).forEach((element: any) => {
-          (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-            .get(checklist_name_en + 'Group') as FormGroup).controls[element].removeValidators([Validators.required]);
-          (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-            .get(checklist_name_en + 'Group') as FormGroup).controls[element].updateValueAndValidity();
-        });
+      Object.keys(
+        (
+          (
+            (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+          ).get(checklist_name_en + 'Group') as FormGroup
+        ).controls
+      ).forEach((element: any) => {
+        (
+          (
+            (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+          ).get(checklist_name_en + 'Group') as FormGroup
+        ).controls[element].removeValidators([Validators.required]);
+        (
+          (
+            (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup
+          ).get(checklist_name_en + 'Group') as FormGroup
+        ).controls[element].updateValueAndValidity();
+      });
     }
-
   }
-
 
   changeRadioValue(evt: any, groupName: any, commentControl: any) {
     if (evt.indexOf('Other') > -1) {
-      (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-        .get(groupName) as FormGroup).controls[commentControl].addValidators([Validators.required]);
+      (
+        ((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup).get(
+          groupName
+        ) as FormGroup
+      ).controls[commentControl].addValidators([Validators.required]);
     } else {
-      (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-        .get(groupName) as FormGroup).controls[commentControl].removeValidators([Validators.required]);
+      (
+        ((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup).get(
+          groupName
+        ) as FormGroup
+      ).controls[commentControl].removeValidators([Validators.required]);
     }
-    (((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup)
-      .get(groupName) as FormGroup).controls[commentControl].updateValueAndValidity();
+    (
+      ((this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup).get(
+        groupName
+      ) as FormGroup
+    ).controls[commentControl].updateValueAndValidity();
   }
-
 
   getChecklistMapped(data: any) {
     data.ReqToBoqNavg.forEach((element: any, index: any) => {
@@ -2123,17 +2405,17 @@ get progressWidth(): number {
       this.ITCheckList.parentCheckList.forEach((node: any) => {
         if (element[node.checklist_name_en]) {
           element['BoqToITChkLstNavg'].push({
-            "RfpNo": "",
-            "RfpVersion": "",
-            "ItemNo": (index + 1).toString(),
-            "ChecklistId": node.checklist_id,
-            "ChecklistValId": '',
-            "OtherTxt": "",
-            "ChecklistCmnts": "",
-            "CreatedBy": "",
-            "CreatedAt": "",
-            "ChangedBy": "",
-            "ChangedAt": ""
+            RfpNo: '',
+            RfpVersion: '',
+            ItemNo: (index + 1).toString(),
+            ChecklistId: node.checklist_id,
+            ChecklistValId: '',
+            OtherTxt: '',
+            ChecklistCmnts: '',
+            CreatedBy: '',
+            CreatedAt: '',
+            ChangedBy: '',
+            ChangedAt: '',
           });
 
           let selectedList: any = [];
@@ -2145,20 +2427,29 @@ get progressWidth(): number {
 
           selectedList.forEach((childList: any) => {
             element['BoqToITChkLstNavg'].push({
-              "RfpNo": "",
-              "RfpVersion": "",
-              "ItemNo": (index + 1).toString(),
-              "ChecklistId": childList.checklist_id,
-              "ChecklistValId": element[node.checklist_name_en + 'Group'][node.checklist_name_en + childList.checklist_id].substr(0, 3),
-              "OtherTxt": element[node.checklist_name_en + 'Group'][node.checklist_name_en + childList.checklist_id + 'OtherComment'],
-              "ChecklistCmnts": element[node.checklist_name_en + 'Group'][node.checklist_name_en + childList.checklist_id + 'Comment'],
-              "CreatedBy": "",
-              "CreatedAt": "",
-              "ChangedBy": "",
-              "ChangedAt": ""
+              RfpNo: '',
+              RfpVersion: '',
+              ItemNo: (index + 1).toString(),
+              ChecklistId: childList.checklist_id,
+              ChecklistValId: element[node.checklist_name_en + 'Group'][
+                node.checklist_name_en + childList.checklist_id
+              ].substr(0, 3),
+              OtherTxt:
+                element[node.checklist_name_en + 'Group'][
+                  node.checklist_name_en +
+                    childList.checklist_id +
+                    'OtherComment'
+                ],
+              ChecklistCmnts:
+                element[node.checklist_name_en + 'Group'][
+                  node.checklist_name_en + childList.checklist_id + 'Comment'
+                ],
+              CreatedBy: '',
+              CreatedAt: '',
+              ChangedBy: '',
+              ChangedAt: '',
             });
           });
-
         }
         element['ItemNo'] = (index + 1).toString();
         delete element[node.checklist_name_en];
@@ -2175,36 +2466,38 @@ get progressWidth(): number {
     this.procurementCheckListData.forEach((procList: any) => {
       if (procList.to_ChkLstDts.results.length > 1) {
         data['ReqToPMChklstNavg'].push({
-          "RfpNo": "",
-          "RfpVersion": "",
-          "ChecklistId": procList.checklist_id,
-          "ChecklistValId": parentGroup.value['procu' + procList.checklist_id].substr(0, 3),
-          "TextValue": "",
-          "ChecklistCmnts": parentGroup.value['procu' + procList.checklist_id + 'Comment'],
-          "CreatedBy": "",
-          "CreatedAt": "",
-          "ChangedBy": "",
-          "ChangedAt": ""
-        })
+          RfpNo: '',
+          RfpVersion: '',
+          ChecklistId: procList.checklist_id,
+          ChecklistValId: parentGroup.value[
+            'procu' + procList.checklist_id
+          ].substr(0, 3),
+          TextValue: '',
+          ChecklistCmnts:
+            parentGroup.value['procu' + procList.checklist_id + 'Comment'],
+          CreatedBy: '',
+          CreatedAt: '',
+          ChangedBy: '',
+          ChangedAt: '',
+        });
       } else {
         data['ReqToPMChklstNavg'].push({
-          "RfpNo": "",
-          "RfpVersion": "",
-          "ChecklistId": procList.checklist_id,
-          "ChecklistValId": '',
-          "TextValue": parentGroup.value['procu' + procList.checklist_id],
-          "ChecklistCmnts": '',
-          "CreatedBy": "",
-          "CreatedAt": "",
-          "ChangedBy": "",
-          "ChangedAt": ""
-        })
+          RfpNo: '',
+          RfpVersion: '',
+          ChecklistId: procList.checklist_id,
+          ChecklistValId: '',
+          TextValue: parentGroup.value['procu' + procList.checklist_id],
+          ChecklistCmnts: '',
+          CreatedBy: '',
+          CreatedAt: '',
+          ChangedBy: '',
+          ChangedAt: '',
+        });
       }
     });
 
     return data;
   }
-
 
   transformComma(event: any, index: number) {
     const amountVal = event?.target?.value;
@@ -2227,26 +2520,28 @@ get progressWidth(): number {
    * Estimate the Budget and add the BOQ
    */
   estimateAndAddBoq() {
-
     this.calculateEstimatedPrice().then((value) => {
       this.getBudgetAPI(value);
     });
   }
 
   getBudgetAPI(priceDetails: {
-    estimatedPrice: number,
-    totalEstimatedPrice: number,
-    totalEstimatedPriceVAT: number
+    estimatedPrice: number;
+    totalEstimatedPrice: number;
+    totalEstimatedPriceVAT: number;
   }): void {
     this.updateBOQTableList();
   }
 
   async calculateEstimatedPrice(): Promise<{
-    estimatedPrice: number,
-    totalEstimatedPrice: number,
-    totalEstimatedPriceVAT: number
+    estimatedPrice: number;
+    totalEstimatedPrice: number;
+    totalEstimatedPriceVAT: number;
   }> {
-    let estimatedPrice = parseFloat(this.cs.removeCommas(this.boqFormGroup?.getRawValue()[0].Price)) * parseFloat(this.boqFormGroup?.getRawValue()[0].Quantity);
+    let estimatedPrice =
+      parseFloat(
+        this.cs.removeCommas(this.boqFormGroup?.getRawValue()[0].Price)
+      ) * parseFloat(this.boqFormGroup?.getRawValue()[0].Quantity);
     let totalEstimatedPrice: any;
     let totalEstimatedPriceVAT: number;
     if (this.boqTabelList.length) {
@@ -2255,30 +2550,46 @@ get progressWidth(): number {
         //console.log(index + 1);
         if (this.selectedBOQIndex !== index) {
           //console.log(index + 1);
-          totalEstimatedPrice += parseFloat(this.cs.removeCommas(boqItem.Price)) * parseFloat(boqItem.Quantity);
+          totalEstimatedPrice +=
+            parseFloat(this.cs.removeCommas(boqItem.Price)) *
+            parseFloat(boqItem.Quantity);
         }
       });
     } else {
       totalEstimatedPrice = estimatedPrice;
     }
-    totalEstimatedPriceVAT = totalEstimatedPrice + (0.15 * totalEstimatedPrice);
-    return { 'estimatedPrice': estimatedPrice, 'totalEstimatedPrice': totalEstimatedPrice, 'totalEstimatedPriceVAT': totalEstimatedPriceVAT };
+    totalEstimatedPriceVAT = totalEstimatedPrice + 0.15 * totalEstimatedPrice;
+    return {
+      estimatedPrice: estimatedPrice,
+      totalEstimatedPrice: totalEstimatedPrice,
+      totalEstimatedPriceVAT: totalEstimatedPriceVAT,
+    };
   }
 
   /**
    * Update the Form Group based on the total estimated value.
    * @param totalEstimatedPrice
    */
-  updateFormGroup(totalEstimatedPrice: number, totalEstimatedPriceVAT: number): void {
+  updateFormGroup(
+    totalEstimatedPrice: number,
+    totalEstimatedPriceVAT: number
+  ): void {
     //console.log("Total Estimated Price", totalEstimatedPrice);
-    this.rfpForm.controls['estPrice'].setValue(this.currenyPipe.transform(totalEstimatedPrice.toFixed(2).toString()));
+    this.rfpForm.controls['estPrice'].setValue(
+      this.currenyPipe.transform(totalEstimatedPrice.toFixed(2).toString())
+    );
     this.rfpForm.controls['estPrice'].updateValueAndValidity();
 
-    this.rfpForm.controls['estPriceVAT'].setValue(this.currenyPipe.transform(totalEstimatedPriceVAT.toFixed(2).toString()));
+    this.rfpForm.controls['estPriceVAT'].setValue(
+      this.currenyPipe.transform(totalEstimatedPriceVAT.toFixed(2).toString())
+    );
     this.rfpForm.controls['estPriceVAT'].updateValueAndValidity();
 
-    this.rfpForm.controls['vatAmount'].setValue(this.currenyPipe.
-      transform((totalEstimatedPriceVAT - totalEstimatedPrice).toFixed(2).toString()));
+    this.rfpForm.controls['vatAmount'].setValue(
+      this.currenyPipe.transform(
+        (totalEstimatedPriceVAT - totalEstimatedPrice).toFixed(2).toString()
+      )
+    );
     this.rfpForm.controls['vatAmount'].updateValueAndValidity();
 
     // if (totalEstimatedPriceVAT === 0) {
@@ -2288,96 +2599,93 @@ get progressWidth(): number {
     // }
 
     const msg =
-      this.translate.instant('RFP.Estimated price is') + '  ' + totalEstimatedPriceVAT;
+      this.translate.instant('RFP.Estimated price is') +
+      '  ' +
+      totalEstimatedPriceVAT;
     this.cs.createMessage('success', msg);
 
-
-
-
-    this.rfpForm.controls['TechRFP'].setValidators([
-      Validators.required,
-    ]);
+    this.rfpForm.controls['TechRFP'].setValidators([Validators.required]);
     this.rfpForm.controls['TechRFP'].updateValueAndValidity();
 
-
-
-
-
-
-
-
-
-    this.rfpForm.controls['TotTechEval'].setValidators([
-      Validators.required,
-    ]);
+    this.rfpForm.controls['TotTechEval'].setValidators([Validators.required]);
     this.rfpForm.controls['TotTechEval'].updateValueAndValidity();
 
-
-
-
-
     if (!this.TechReqListData.length) {
-      this.rfpForm.controls['TechReq'].get('Descr')?.setValidators([
-        Validators.required,
-      ]);
+      this.rfpForm.controls['TechReq']
+        .get('Descr')
+        ?.setValidators([Validators.required]);
       this.rfpForm.controls['TechReq'].get('Descr')?.updateValueAndValidity();
     }
     if (!this.ManPowerListData?.length) {
-      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('JobTitle')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('JobTitle')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['ManPowerForm'].get('Amount')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('Amount')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('Amount')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('Amount')
+        ?.updateValueAndValidity();
 
+      this.rfpForm.controls['ManPowerForm']
+        .get('Specilization')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('Specilization')
+        ?.updateValueAndValidity();
 
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.updateValueAndValidity();
 
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeExp')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeExp')
+        ?.updateValueAndValidity();
 
-
-      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.updateValueAndValidity();
-
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
-
-      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.updateValueAndValidity();
-
-
-
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.updateValueAndValidity();
     }
 
     if (!this.EvalListData.length) {
-      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Percentage')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Percentage')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['EvalCriteria'].get('Descr')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Descr')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteria'].get('Headline')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Headline')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Descr')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Descr')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Headline')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Headline')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('SubCriFlg')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('SubCriFlg')
+        ?.updateValueAndValidity();
 
       if (!this.QualList?.length) {
         this.addQual();
@@ -2386,9 +2694,9 @@ get progressWidth(): number {
   }
 
   /**
- * Update the BOQ Table List
- *
- */
+   * Update the BOQ Table List
+   *
+   */
   selectedBOQIndex: any = null;
 
   updateBOQTableList() {
@@ -2414,9 +2722,10 @@ get progressWidth(): number {
         });
       } else {
         // Update single item
-        const flatIndex = this.boqTabelList.findIndex((item: any) =>
-          item.budgetYear === this.selectedBOQItemForLookUp.budgetYear &&
-          item.ItemNo === this.selectedBOQItemForLookUp.ItemNo
+        const flatIndex = this.boqTabelList.findIndex(
+          (item: any) =>
+            item.budgetYear === this.selectedBOQItemForLookUp.budgetYear &&
+            item.ItemNo === this.selectedBOQItemForLookUp.ItemNo
         );
 
         if (flatIndex !== -1) {
@@ -2441,11 +2750,13 @@ get progressWidth(): number {
     // Refresh list and reset form
     this.boqTabelList = [...this.boqTabelList];
     const totalEstimatedPrice = this.boqTabelList.reduce(
-      (sum: any, item: any) => sum + (parseFloat(item.Quantity) * parseFloat(item.Price)),
+      (sum: any, item: any) =>
+        sum + parseFloat(item.Quantity) * parseFloat(item.Price),
       0
     );
 
-    const totalEstimatedPriceVAT = totalEstimatedPrice + (0.15 * totalEstimatedPrice);
+    const totalEstimatedPriceVAT =
+      totalEstimatedPrice + 0.15 * totalEstimatedPrice;
 
     this.updateFormGroup(totalEstimatedPrice, totalEstimatedPriceVAT);
     this.groupBoqItemsByYear();
@@ -2454,24 +2765,27 @@ get progressWidth(): number {
     boqFormArray.push(this.createBoQ());
   }
 
-
   groupBoqItemsByYear() {
-    this.groupBOQItemsBasedonBudgetingYears = this.boqTabelList.reduce((acc: any, item: any) => {
-      const year = item.budgetYear;
-      if (!acc[year]) acc[year] = [];
-      acc[year].push(item);
-      return acc;
-    }, {} as { [year: number]: any[] });
+    this.groupBOQItemsBasedonBudgetingYears = this.boqTabelList.reduce(
+      (acc: any, item: any) => {
+        const year = item.budgetYear;
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(item);
+        return acc;
+      },
+      {} as { [year: number]: any[] }
+    );
   }
 
-
   deleteBOQItem(budgetYear: number, index: number) {
-    const itemToDelete = this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
+    const itemToDelete =
+      this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
 
     // Find index in flat list
-    const flatIndex = this.boqTabelList.findIndex((item: any) =>
-      item.budgetYear === itemToDelete.budgetYear &&
-      item.ItemNo === itemToDelete.ItemNo
+    const flatIndex = this.boqTabelList.findIndex(
+      (item: any) =>
+        item.budgetYear === itemToDelete.budgetYear &&
+        item.ItemNo === itemToDelete.ItemNo
     );
 
     if (flatIndex !== -1) {
@@ -2483,25 +2797,31 @@ get progressWidth(): number {
     let totalEstimatedPriceVAT = 0;
     if (this.boqTabelList.length) {
       this.boqTabelList.forEach((boqItem: any) => {
-        totalEstimatedPrice += parseFloat(this.cs.removeCommas(boqItem.Price)) * parseFloat(boqItem.Quantity);
+        totalEstimatedPrice +=
+          parseFloat(this.cs.removeCommas(boqItem.Price)) *
+          parseFloat(boqItem.Quantity);
       });
     }
     if (totalEstimatedPrice != 0) {
-      totalEstimatedPriceVAT = totalEstimatedPrice + (0.15 * totalEstimatedPrice)
+      totalEstimatedPriceVAT = totalEstimatedPrice + 0.15 * totalEstimatedPrice;
     }
     this.updateFormGroup(totalEstimatedPrice, totalEstimatedPriceVAT);
-    const BOQFormGroup = (this.rfpForm.get('billOFQty') as FormArray).at(0) as FormGroup;
-    BOQFormGroup.patchValue({ ItemNo: this.boqTabelList.length })
+    const BOQFormGroup = (this.rfpForm.get('billOFQty') as FormArray).at(
+      0
+    ) as FormGroup;
+    BOQFormGroup.patchValue({ ItemNo: this.boqTabelList.length });
   }
 
-
   editBOQItem(budgetYear: number, index: number) {
-    const selectedBOQItem = this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
+    const selectedBOQItem =
+      this.groupBOQItemsBasedonBudgetingYears[budgetYear][index];
     console.log('Selected for edit:', selectedBOQItem);
 
     this.selectedBOQItemForLookUp = selectedBOQItem; // Save full item for lookup during update
 
-    const parentGroup = (this.rfpForm.get('billOFQty') as FormArray).at(0) as FormGroup;
+    const parentGroup = (this.rfpForm.get('billOFQty') as FormArray).at(
+      0
+    ) as FormGroup;
 
     parentGroup.patchValue({
       Quantity: selectedBOQItem.Quantity.toString(),
@@ -2515,7 +2835,6 @@ get progressWidth(): number {
 
     parentGroup.updateValueAndValidity();
   }
-
 
   // updateBOQTableList(): void {
   //   this.boqList = this.rfpForm.controls.billOFQty as FormArray;
@@ -2573,7 +2892,6 @@ get progressWidth(): number {
   //   this.ITCheckList.parentCheckList.forEach((list: any) => {
   //     parentGroup.get(list.checklist_name_en)?.patchValue(selectedBOQItem[list.checklist_name_en]);
 
-
   //     if (selectedBOQItem[list.checklist_name_en]) {
   //       this.ITCheckList.childCheckList.forEach((childList: any) => {
   //         if (list.checklist_id == childList.parent_checklist_id) {
@@ -2593,10 +2911,12 @@ get progressWidth(): number {
 
   // // add payment from group
   async addQual() {
-    this.QualList?.push(this.createQual(
-      this.translate.instant('RFP.Previousexperience'),
-      'الخبرات السابقة'
-    ));
+    this.QualList?.push(
+      this.createQual(
+        this.translate.instant('RFP.Previousexperience'),
+        'الخبرات السابقة'
+      )
+    );
     this.QualList?.push(
       this.createQual(
         this.translate.instant('RFP.NoYearsExp'),
@@ -2650,155 +2970,153 @@ get progressWidth(): number {
 
     // this.checkQualPer();
   }
-// ------------ RENUMBER & SYNC FUNCTION (MOST IMPORTANT) ------------ //
+  // ------------ RENUMBER & SYNC FUNCTION (MOST IMPORTANT) ------------ //
 
-private renumberTechReq(): void {
-  this.TechReqListData = this.TechReqListData.map((item, index) => ({
-    ...item,
-    ItemNo: (index + 1).toString()
-  }));
+  private renumberTechReq(): void {
+    this.TechReqListData = this.TechReqListData.map((item, index) => ({
+      ...item,
+      ItemNo: (index + 1).toString(),
+    }));
 
-  this.srNoTechReq = this.TechReqListData.length + 1;
+    this.srNoTechReq = this.TechReqListData.length + 1;
 
-  // update list control
-  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+    // update list control
+    this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
 
-  // update the SL.No input at the top
-  this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
-}
+    // update the SL.No input at the top
+    this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+  }
 
+  // ------------ ADD ROW ------------ //
 
-// ------------ ADD ROW ------------ //
+  //  addTechReq(cond: 'add' | 'save' | any) {
 
-//  addTechReq(cond: 'add' | 'save' | any) {
+  //   // read the TechReq form group value (not the whole form)
+  //   const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+  //   if (!techReqGroup) { return; }
 
-//   // read the TechReq form group value (not the whole form)
-//   const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
-//   if (!techReqGroup) { return; }
+  //   if (techReqGroup.invalid) {
+  //     // mark touched so errors show if any
+  //     techReqGroup.markAllAsTouched();
+  //     return;
+  //   }
 
-//   if (techReqGroup.invalid) {
-//     // mark touched so errors show if any
-//     techReqGroup.markAllAsTouched();
-//     return;
-//   }
+  //   // clone to avoid reference problems
+  //   const data = {
+  //     RfpNo: techReqGroup.get('RfpNo')?.value || '',
+  //     RfpVersion: techReqGroup.get('RfpVersion')?.value || '',
+  //     ItemNo: techReqGroup.get('ItemNo')?.value?.toString() || (this.srNoTechReq).toString(),
+  //     Descr: techReqGroup.get('Descr')?.value || ''
+  //   };
 
-//   // clone to avoid reference problems
-//   const data = {
-//     RfpNo: techReqGroup.get('RfpNo')?.value || '',
-//     RfpVersion: techReqGroup.get('RfpVersion')?.value || '',
-//     ItemNo: techReqGroup.get('ItemNo')?.value?.toString() || (this.srNoTechReq).toString(),
-//     Descr: techReqGroup.get('Descr')?.value || ''
-//   };
+  //   // push new entry
+  //   this.TechReqListData.push(data);
+  //   // create a new array reference so change detection picks it up
+  //   this.TechReqListData = [...this.TechReqListData];
 
-//   // push new entry
-//   this.TechReqListData.push(data);
-//   // create a new array reference so change detection picks it up
-//   this.TechReqListData = [...this.TechReqListData];
+  //   // update any other storage you use (avoid writing into rfpForm.value directly)
+  //   // for example set a property or call an API payload builder. If you must keep in form,
+  //   // keep it in a separate control RfpTreq:
+  //   if (this.rfpForm.get('RfpTreq')) {
+  //     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+  //   }
 
-//   // update any other storage you use (avoid writing into rfpForm.value directly)
-//   // for example set a property or call an API payload builder. If you must keep in form,
-//   // keep it in a separate control RfpTreq:
-//   if (this.rfpForm.get('RfpTreq')) {
-//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
-//   }
+  //   if (cond === 'add') {
+  //     // increment serial and reset the input group for the next entry
+  //     this.srNoTechReq++;
+  //     techReqGroup.reset();
+  //     techReqGroup.patchValue({
+  //       RfpNo: '',
+  //       RfpVersion: '',
+  //       ItemNo: this.srNoTechReq.toString(),
+  //       Descr: ''
+  //     });
+  //   }
+  // }
 
-//   if (cond === 'add') {
-//     // increment serial and reset the input group for the next entry
-//     this.srNoTechReq++;
-//     techReqGroup.reset();
-//     techReqGroup.patchValue({
-//       RfpNo: '',
-//       RfpVersion: '',
-//       ItemNo: this.srNoTechReq.toString(),
-//       Descr: ''
-//     });
-//   }
-// }
+  // removeTechReq(index: number) {
+  //   // index is 1-based in your current calls, convert:
+  //   const idx = index - 1;
+  //   if (idx < 0 || idx >= this.TechReqListData.length) { return; }
 
-// removeTechReq(index: number) {
-//   // index is 1-based in your current calls, convert:
-//   const idx = index - 1;
-//   if (idx < 0 || idx >= this.TechReqListData.length) { return; }
+  //   this.TechReqListData.splice(idx, 1);
+  //   // renumber serials if you want to keep sequential
+  //   this.TechReqListData = this.TechReqListData.map((item, i) => ({
+  //     ...item,
+  //     ItemNo: (i + 1).toString()
+  //   }));
+  //   this.srNoTechReq = this.TechReqListData.length + 1;
 
-//   this.TechReqListData.splice(idx, 1);
-//   // renumber serials if you want to keep sequential
-//   this.TechReqListData = this.TechReqListData.map((item, i) => ({
-//     ...item,
-//     ItemNo: (i + 1).toString()
-//   }));
-//   this.srNoTechReq = this.TechReqListData.length + 1;
+  //   if (this.rfpForm.get('RfpTreq')) {
+  //     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+  //   }
 
-//   if (this.rfpForm.get('RfpTreq')) {
-//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
-//   }
+  //   // if the edit panel was open for a removed index, close it
+  //   if (this.techReqEditIndex === idx) {
+  //     this.showEditTechReq = false;
+  //   }
+  // }
 
-//   // if the edit panel was open for a removed index, close it
-//   if (this.techReqEditIndex === idx) {
-//     this.showEditTechReq = false;
-//   }
-// }
+  // editTechReq(index: number) {
+  //   // index is 0-based in table loop (your template uses index as i)
+  //   const data = this.TechReqListData[index];
+  //   if (!data) { return; }
 
-// editTechReq(index: number) {
-//   // index is 0-based in table loop (your template uses index as i)
-//   const data = this.TechReqListData[index];
-//   if (!data) { return; }
+  //   this.techReqEditIndex = index;
+  //   this.showEditTechReq = true;
 
-//   this.techReqEditIndex = index;
-//   this.showEditTechReq = true;
+  //   // populate the edit group
+  //   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+  //   editG.reset();
+  //   editG.patchValue({
+  //     RfpNo: data.RfpNo || '',
+  //     RfpVersion: data.RfpVersion || '',
+  //     ItemNo: (index + 1).toString(),
+  //     Descr: data.Descr || ''
+  //   });
 
-//   // populate the edit group
-//   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
-//   editG.reset();
-//   editG.patchValue({
-//     RfpNo: data.RfpNo || '',
-//     RfpVersion: data.RfpVersion || '',
-//     ItemNo: (index + 1).toString(),
-//     Descr: data.Descr || ''
-//   });
+  //   // ensure required validator is applied for edit description while editing
+  //   editG.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
+  //   editG.get('Descr')?.updateValueAndValidity();
+  // }
 
-//   // ensure required validator is applied for edit description while editing
-//   editG.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
-//   editG.get('Descr')?.updateValueAndValidity();
-// }
+  // saveEditTechReq() {
+  //   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
+  //   if (!editG || editG.invalid) {
+  //     editG?.markAllAsTouched();
+  //     return;
+  //   }
 
-// saveEditTechReq() {
-//   const editG = this.rfpForm.get('TechReqEdit') as FormGroup;
-//   if (!editG || editG.invalid) {
-//     editG?.markAllAsTouched();
-//     return;
-//   }
+  //   const data = {
+  //     RfpNo: editG.get('RfpNo')?.value || '',
+  //     RfpVersion: editG.get('RfpVersion')?.value || '',
+  //     ItemNo: editG.get('ItemNo')?.value?.toString() || (this.techReqEditIndex + 1).toString(),
+  //     Descr: editG.get('Descr')?.value || ''
+  //   };
 
-//   const data = {
-//     RfpNo: editG.get('RfpNo')?.value || '',
-//     RfpVersion: editG.get('RfpVersion')?.value || '',
-//     ItemNo: editG.get('ItemNo')?.value?.toString() || (this.techReqEditIndex + 1).toString(),
-//     Descr: editG.get('Descr')?.value || ''
-//   };
+  //   // replace in the array
+  //   this.TechReqListData[this.techReqEditIndex] = data;
+  //   this.TechReqListData = [...this.TechReqListData];
 
-//   // replace in the array
-//   this.TechReqListData[this.techReqEditIndex] = data;
-//   this.TechReqListData = [...this.TechReqListData];
+  //   // reflect in the full list control if you have one
+  //   if (this.rfpForm.get('RfpTreq')) {
+  //     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+  //   }
 
-//   // reflect in the full list control if you have one
-//   if (this.rfpForm.get('RfpTreq')) {
-//     this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
-//   }
-
-//   // hide edit panel and clear the edit group
-//   this.showEditTechReq = false;
-//   editG.reset();
-//   editG.get('Descr')?.clearValidators();
-//   editG.get('Descr')?.updateValueAndValidity();
-// }
-
-
+  //   // hide edit panel and clear the edit group
+  //   this.showEditTechReq = false;
+  //   editG.reset();
+  //   editG.get('Descr')?.clearValidators();
+  //   editG.get('Descr')?.updateValueAndValidity();
+  // }
 
   // add teachnical evaluation criteria from group
   addEval(cond: any) {
     if (cond === 'sub') {
       const totalEval = this.checkEvalPer(true);
-      const percentage = this.rfpForm.controls.EvalCriteria.get('Percentage')?.value;
-      
+      const percentage =
+        this.rfpForm.controls.EvalCriteria.get('Percentage')?.value;
+
       if (totalEval != percentage) {
         this.cs.createMessage(
           'error',
@@ -2806,26 +3124,28 @@ private renumberTechReq(): void {
         );
         return;
       }
-      
-      const subCriteriaData = this.subCriterias.value.map((subCriteria: any, index: number) => {
-        return {
-          SubItemNo: (index + 1).toString(),
-          Percentage: subCriteria.Percentage.toString(),
-          Descr: subCriteria.Descr
-        };
-      });
-      
+
+      const subCriteriaData = this.subCriterias.value.map(
+        (subCriteria: any, index: number) => {
+          return {
+            SubItemNo: (index + 1).toString(),
+            Percentage: subCriteria.Percentage.toString(),
+            Descr: subCriteria.Descr,
+          };
+        }
+      );
+
       const item = this.evalCriteriaItems.at(this.evalEditIndex);
       item.patchValue({
-        subCriteriaList: subCriteriaData
+        subCriteriaList: subCriteriaData,
       });
-      
+
       this.isSubCriteria = false;
       this.subCriterias.clear();
       this.subCriterias.push(this.initialSubCriteria);
       return;
     }
-   
+
     const data = this.rfpForm.getRawValue().EvalCriteria;
     data.Percentage = data.Percentage.toString();
     if (cond === 'sub') {
@@ -2838,21 +3158,21 @@ private renumberTechReq(): void {
         return;
       } else {
         data.expand = true;
-        data.TechToTechSub = this.subCriterias.value.map((subCriteria: any, index: number) => {
-          return {
-            ...subCriteria,
-            Percentage: subCriteria.Percentage.toString(),
-            ItemNo: data.ItemNo,
-            SubItemNo: (index + 1).toString(),
-           
-          };
-          
-        })
+        data.TechToTechSub = this.subCriterias.value.map(
+          (subCriteria: any, index: number) => {
+            return {
+              ...subCriteria,
+              Percentage: subCriteria.Percentage.toString(),
+              ItemNo: data.ItemNo,
+              SubItemNo: (index + 1).toString(),
+            };
+          }
+        );
       }
     }
     if (cond === 'add') {
       data.expand = false;
-      data.TechToTechSub = []
+      data.TechToTechSub = [];
     }
     if (this.EvalListData.length == this.slel) {
       this.EvalListData[this.EvalListData.length - 1] = data;
@@ -2872,11 +3192,11 @@ private renumberTechReq(): void {
         Descr: '',
         Percentage: '0',
         Headline: '',
-        SubCriFlg: 'X'
+        SubCriFlg: 'X',
       });
       this.isSubCriteria = false;
     } else {
-      this.EvalListData.pop()
+      this.EvalListData.pop();
     }
   }
   // private renumberTechReq(): void {
@@ -2885,112 +3205,107 @@ private renumberTechReq(): void {
   //   ItemNo: (index + 1).toString()
   // }));
 
-  
- 
-//   this.srNoTechReq = this.TechReqListData.length + 1;
- 
-//   // update list control
-//   this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
- 
-//   // update the SL.No input at the top
-//   this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
-// }
- 
- 
-// ------------ ADD ROW ------------ //
- 
-addTechReq(cond: 'add' | 'save' | any) {
-  const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
-  if (techReqGroup.invalid) {
-    techReqGroup.markAllAsTouched();
-    return;
+  //   this.srNoTechReq = this.TechReqListData.length + 1;
+
+  //   // update list control
+  //   this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+
+  //   // update the SL.No input at the top
+  //   this.rfpForm.get('TechReq.ItemNo')?.setValue(this.srNoTechReq.toString());
+  // }
+
+  // ------------ ADD ROW ------------ //
+
+  addTechReq(cond: 'add' | 'save' | any) {
+    const techReqGroup = this.rfpForm.get('TechReq') as FormGroup;
+    if (techReqGroup.invalid) {
+      techReqGroup.markAllAsTouched();
+      return;
+    }
+
+    const row = {
+      ItemNo: this.srNoTechReq.toString(),
+      Descr: techReqGroup.get('Descr')?.value || '',
+      RfpNo: techReqGroup.get('RfpNo')?.value || '',
+      RfpVersion: techReqGroup.get('RfpVersion')?.value || '',
+    };
+
+    this.TechReqListData.push(row);
+
+    this.renumberTechReq();
+
+    if (cond === 'add') {
+      techReqGroup.reset();
+      techReqGroup.patchValue({
+        ItemNo: this.srNoTechReq.toString(),
+      });
+    }
   }
- 
-  const row = {
-    ItemNo: this.srNoTechReq.toString(),
-    Descr: techReqGroup.get('Descr')?.value || '',
-    RfpNo: techReqGroup.get('RfpNo')?.value || '',
-    RfpVersion: techReqGroup.get('RfpVersion')?.value || ''
-  };
- 
-  this.TechReqListData.push(row);
- 
-  this.renumberTechReq();
- 
-  if (cond === 'add') {
-    techReqGroup.reset();
-    techReqGroup.patchValue({
-      ItemNo: this.srNoTechReq.toString()
+
+  // ------------ DELETE ROW ------------ //
+
+  removeTechReq(index: number) {
+    const idx = index - 1;
+    if (idx < 0 || idx >= this.TechReqListData.length) return;
+
+    this.TechReqListData.splice(idx, 1);
+
+    this.renumberTechReq();
+
+    if (this.techReqEditIndex === idx) {
+      this.showEditTechReq = false;
+    }
+  }
+
+  // ------------ EDIT ROW ------------ //
+
+  editTechReq(index: number) {
+    const row = this.TechReqListData[index];
+    if (!row) return;
+
+    this.techReqEditIndex = index;
+    this.showEditTechReq = true;
+
+    const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+
+    editGroup.reset({
+      ItemNo: row.ItemNo,
+      Descr: row.Descr,
+      RfpNo: row.RfpNo,
+      RfpVersion: row.RfpVersion,
     });
+
+    editGroup
+      .get('Descr')
+      ?.setValidators([Validators.required, Validators.maxLength(600)]);
+    editGroup.get('Descr')?.updateValueAndValidity();
   }
-}
- 
- 
-// ------------ DELETE ROW ------------ //
- 
-removeTechReq(index: number) {
-  const idx = index - 1;
-  if (idx < 0 || idx >= this.TechReqListData.length) return;
- 
-  this.TechReqListData.splice(idx, 1);
- 
-  this.renumberTechReq();
- 
-  if (this.techReqEditIndex === idx) {
+
+  // ------------ SAVE EDIT ------------ //
+
+  saveEditTechReq() {
+    const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
+    if (editGroup.invalid) {
+      editGroup.markAllAsTouched();
+      return;
+    }
+
+    const updated = {
+      ItemNo: (this.techReqEditIndex + 1).toString(),
+      Descr: editGroup.value.Descr,
+      RfpNo: editGroup.value.RfpNo,
+      RfpVersion: editGroup.value.RfpVersion,
+    };
+
+    this.TechReqListData[this.techReqEditIndex] = updated;
+
+    this.TechReqListData = [...this.TechReqListData];
+
+    this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
+
     this.showEditTechReq = false;
+    editGroup.reset();
   }
-}
- 
- 
-// ------------ EDIT ROW ------------ //
- 
-editTechReq(index: number) {
-  const row = this.TechReqListData[index];
-  if (!row) return;
- 
-  this.techReqEditIndex = index;
-  this.showEditTechReq = true;
- 
-  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
- 
-  editGroup.reset({
-    ItemNo: row.ItemNo,
-    Descr: row.Descr,
-    RfpNo: row.RfpNo,
-    RfpVersion: row.RfpVersion
-  });
- 
-  editGroup.get('Descr')?.setValidators([Validators.required, Validators.maxLength(600)]);
-  editGroup.get('Descr')?.updateValueAndValidity();
-}
- 
- 
-// ------------ SAVE EDIT ------------ //
- 
-saveEditTechReq() {
-  const editGroup = this.rfpForm.get('TechReqEdit') as FormGroup;
-  if (editGroup.invalid) {
-    editGroup.markAllAsTouched();
-    return;
-  }
- 
-  const updated = {
-    ItemNo: (this.techReqEditIndex + 1).toString(),
-    Descr: editGroup.value.Descr,
-    RfpNo: editGroup.value.RfpNo,
-    RfpVersion: editGroup.value.RfpVersion
-  };
- 
-  this.TechReqListData[this.techReqEditIndex] = updated;
- 
-  this.TechReqListData = [...this.TechReqListData];
- 
-  this.rfpForm.get('RfpTreq')?.setValue(this.TechReqListData);
- 
-  this.showEditTechReq = false;
-  editGroup.reset();
-}
- 
 
   // remove evaluation criteria from group
   removeEval(index: number) {
@@ -3003,7 +3318,7 @@ saveEditTechReq() {
       this.slel--;
       this.rfpForm.controls.EvalCriteria.patchValue({
         ItemNo: this.slel.toString(),
-      })
+      });
     } else {
       this.rfpForm.controls.EvalCriteria.reset();
       this.rfpForm.controls.EvalCriteria.setValue({
@@ -3012,7 +3327,7 @@ saveEditTechReq() {
         Descr: '',
         Percentage: '0',
         Headline: '',
-        SubCriFlg: 'X'
+        SubCriFlg: 'X',
       });
     }
   }
@@ -3026,7 +3341,7 @@ saveEditTechReq() {
       Descr: '',
       Percentage: '0',
       Headline: '',
-      SubCriFlg: 'y'
+      SubCriFlg: 'y',
     });
   }
 
@@ -3036,41 +3351,44 @@ saveEditTechReq() {
       this.editEval(index);
     }
   }
-getTotalWeightage(): number {
-  return this.evalCriteriaItems.controls
-    .map(ctrl => Number(ctrl.get('Percentage')?.value || 0))
-    .reduce((acc, v) => acc + v, 0);
-}
-openSubCriteriaForRow(index: number) {
-  const total = this.getTotalWeightage();
-
-  // If total > 100 -> block and show message
-  if (total > 100) {
-    this.cs.createMessage('error', `Total Weightage exceeds 100 (current: ${total}). Please adjust values.`);
-    this.isSubCriteria = false;
-    this.subCriterias.clear();
-    return;
+  getTotalWeightage(): number {
+    return this.evalCriteriaItems.controls
+      .map((ctrl) => Number(ctrl.get('Percentage')?.value || 0))
+      .reduce((acc, v) => acc + v, 0);
   }
+  openSubCriteriaForRow(index: number) {
+    const total = this.getTotalWeightage();
 
-  const item = this.evalCriteriaItems.at(index);
-  const subCriFlg = "X"; // your existing logic
+    // If total > 100 -> block and show message
+    if (total > 100) {
+      this.cs.createMessage(
+        'error',
+        `Total Weightage exceeds 100 (current: ${total}). Please adjust values.`
+      );
+      this.isSubCriteria = false;
+      this.subCriterias.clear();
+      return;
+    }
 
-  if (subCriFlg === 'X') {
-    this.evalEditIndex = index;
-    const percentage = Number(item.get('Percentage')?.value || 0);
+    const item = this.evalCriteriaItems.at(index);
+    const subCriFlg = 'X'; // your existing logic
 
-    this.rfpForm.controls.EvalCriteria.patchValue({
-      Percentage: percentage,
-      ItemNo: (index + 1).toString()
-    });
+    if (subCriFlg === 'X') {
+      this.evalEditIndex = index;
+      const percentage = Number(item.get('Percentage')?.value || 0);
 
-    this.subCriterias.clear();
-    this.subCriterias.push(this.initialSubCriteria);
-    this.isSubCriteria = true;
-  } else {
-    this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
+      this.rfpForm.controls.EvalCriteria.patchValue({
+        Percentage: percentage,
+        ItemNo: (index + 1).toString(),
+      });
+
+      this.subCriterias.clear();
+      this.subCriterias.push(this.initialSubCriteria);
+      this.isSubCriteria = true;
+    } else {
+      this.cs.createMessage('warning', 'Please select "Yes" for Sub Criteria');
+    }
   }
-}
   // edit evaluation criteria from group
   editEval(index: number) {
     this.evalEditIndex = index;
@@ -3083,57 +3401,73 @@ openSubCriteriaForRow(index: number) {
       Descr: data.Descr,
       Percentage: data.Percentage.toString(),
       Headline: data.Headline,
-      SubCriFlg: data.SubCriFlg
+      SubCriFlg: data.SubCriFlg,
     });
     if (data.TechToTechSub.length > 0) {
       this.subCriterias.removeAt(0);
 
       data.TechToTechSub.forEach(({ ItemNo, ...rest }: any) =>
-        this.subCriterias.push(this.createSubCriteria(rest)))
+        this.subCriterias.push(this.createSubCriteria(rest))
+      );
     } else {
-      this.subCriterias.setValue([this.initialSubCriteria])
+      this.subCriterias.setValue([this.initialSubCriteria]);
     }
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Percentage')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Percentage')
+      ?.updateValueAndValidity();
 
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.updateValueAndValidity();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.updateValueAndValidity();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Descr')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Descr')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('SubCriFlg')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('SubCriFlg')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.updateValueAndValidity();
   }
-
 
   // * Cancel Edit Technical Criteria
   cancelEditEval() {
     this.showEditEval = false;
     this.rfpForm.controls.EvalCriteriaEdit.reset();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Percentage')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Percentage')
+      ?.updateValueAndValidity();
 
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.updateValueAndValidity();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.updateValueAndValidity();
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Descr')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Descr')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('SubCriFlg')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('SubCriFlg')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.updateValueAndValidity();
   }
 
   // save edit part evaluation criteria from group
@@ -3150,27 +3484,28 @@ openSubCriteriaForRow(index: number) {
         return;
       } else {
         data.expand = true;
-        data.TechToTechSub = this.subCriterias.value.map((subCriteria: any, index: number) => {
-          return {
-            ...subCriteria,
-            Percentage: subCriteria.Percentage.toString(),
-            ItemNo: data.ItemNo,
-            SubItemNo: (index + 1).toString()
-          };
-        });
+        data.TechToTechSub = this.subCriterias.value.map(
+          (subCriteria: any, index: number) => {
+            return {
+              ...subCriteria,
+              Percentage: subCriteria.Percentage.toString(),
+              ItemNo: data.ItemNo,
+              SubItemNo: (index + 1).toString(),
+            };
+          }
+        );
       }
     }
     this.EvalListData[this.evalEditIndex] = data;
     if (this.slel == this.evalEditIndex + 1) {
-
       this.rfpForm.controls.EvalCriteria.patchValue({
         Descr: data.Descr,
         Percentage: data.Percentage.toString(),
-      })
+      });
     }
     this.rfpForm.value.Evalcrt.value = this.EvalListData;
     this.EvalListData = [...this.EvalListData];
-    this.EvalListData.forEach(item => {
+    this.EvalListData.forEach((item) => {
       if (!item.TechToTechSub) {
         item.TechToTechSub = [];
       }
@@ -3180,33 +3515,39 @@ openSubCriteriaForRow(index: number) {
     if (totalEval <= 100) {
       this.showEditEval = false;
       this.rfpForm.controls.EvalCriteriaEdit.reset();
-      this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.setValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteriaEdit'].get('Percentage')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('SubCriFlg')
+        ?.setValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('SubCriFlg')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('Percentage')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('Percentage')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteriaEdit'].get('Descr')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('Descr')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('Descr')
+        ?.updateValueAndValidity();
     }
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')?.updateValueAndValidity();
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['EvalCriteriaEdit']
+      .get('Headline')
+      ?.updateValueAndValidity();
     this.isSubCriteriaEdit = false;
-
   }
 
   // add manpower from group
   addMan(cond: any) {
     const data = this.rfpForm.getRawValue().ManPowerForm;
     data.Amount = data.Amount.toString();
-
 
     if (this.ManPowerListData.length == this.slman) {
       this.ManPowerListData[this.ManPowerListData.length - 1] = data;
@@ -3226,13 +3567,14 @@ openSubCriteriaForRow(index: number) {
         SpeQualf: '',
         Specilization: '',
         SpeExp: '',
-
       });
     }
   }
 
   removeMan(index: number) {
-    this.ManPowerListData = this.ManPowerListData.filter((item, i) => i !== index - 1);
+    this.ManPowerListData = this.ManPowerListData.filter(
+      (item, i) => i !== index - 1
+    );
     this.ManPowerListData = [...this.ManPowerListData];
     this.rfpForm.value.ManPower.value = this.ManPowerListData;
 
@@ -3240,7 +3582,7 @@ openSubCriteriaForRow(index: number) {
       this.slman--;
       this.rfpForm.controls.ManPowerForm.patchValue({
         ItemNo: this.slman.toString(),
-      })
+      });
     } else {
       this.rfpForm.controls.ManPowerForm.reset();
       this.rfpForm.controls.ManPowerForm.setValue({
@@ -3250,7 +3592,6 @@ openSubCriteriaForRow(index: number) {
         SpeQualf: '',
         Specilization: '',
         SpeExp: '',
-
       });
     }
   }
@@ -3267,98 +3608,91 @@ openSubCriteriaForRow(index: number) {
       SpeQualf: data.SpeQualf,
       Specilization: data.Specilization,
       SpeExp: data.SpeExp,
-
     });
-    this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('JobTitle')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('JobTitle')
+      ?.updateValueAndValidity();
 
-    this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Amount')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Amount')
+      ?.updateValueAndValidity();
 
-
-
-
-
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.updateValueAndValidity();
-    this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.updateValueAndValidity();
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.setValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.updateValueAndValidity();
-
-
-
-
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeExp')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeExp')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Specilization')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Specilization')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeQualf')
+      ?.setValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeQualf')
+      ?.updateValueAndValidity();
   }
 
   saveEditMan() {
     const data = this.rfpForm.getRawValue().ManPowerFormEdit;
     data.Amount = data.Amount.toString();
 
-
     this.ManPowerListData[this.manEditIndex] = data;
     if (this.slman == this.manEditIndex + 1) {
-
       this.rfpForm.controls.ManPowerForm.patchValue({
         JobTitle: data.JobTitle,
         Amount: data.Amount,
 
-
         SpeExp: data.SpeExp,
-
-      })
+      });
     }
     this.ManPowerListData = [...this.ManPowerListData];
     this.rfpForm.value.ManPower.value = this.ManPowerListData;
     this.showEditMan = false;
     this.rfpForm.controls.ManPowerFormEdit.reset();
-    this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('JobTitle')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('JobTitle')
+      ?.updateValueAndValidity();
 
-    this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Amount')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Amount')
+      ?.updateValueAndValidity();
 
-
-
-
-
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.updateValueAndValidity();
-    this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.updateValueAndValidity();
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.removeValidators([
-      Validators.required,
-    ]);
-    this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.updateValueAndValidity();
-
-
-
-
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeExp')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeExp')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Specilization')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('Specilization')
+      ?.updateValueAndValidity();
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeQualf')
+      ?.removeValidators([Validators.required]);
+    this.rfpForm.controls['ManPowerFormEdit']
+      .get('SpeQualf')
+      ?.updateValueAndValidity();
   }
-
-
-
-
-
-
 
   // remove pay from group
   removeQual(index: number) {
@@ -3372,16 +3706,14 @@ openSubCriteriaForRow(index: number) {
   get boqFormGroup() {
     return this.rfpForm.get('billOFQty') as FormArray;
   }
- get Attachments(): boolean {
-  const fg = this.rfpForm.get('attachments') as FormGroup;
-  return fg ? fg.valid : false;
-}
-
+  get Attachments(): boolean {
+    const fg = this.rfpForm.get('attachments') as FormGroup;
+    return fg ? fg.valid : false;
+  }
 
   get Evalcrt() {
     return this.rfpForm.get('Evalcrt') as FormArray;
   }
-
 
   get Payment() {
     return this.rfpForm.get('Payment') as FormArray;
@@ -3395,20 +3727,23 @@ openSubCriteriaForRow(index: number) {
     return this.rfpForm.get('ConsultWork') as FormArray;
   }
 
-
   handleManagerChange() {
-    this.managerSubId = this.managerList.find((manager) => manager.TmUserid === this.rfpForm.controls['MemManagerName'].value)?.EmpUsrid
+    this.managerSubId = this.managerList.find(
+      (manager) =>
+        manager.TmUserid === this.rfpForm.controls['MemManagerName'].value
+    )?.EmpUsrid;
     if (
       this.rfpForm.controls['MemManagerName'].value &&
-      (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
-      )) {
+      this.rfpForm.controls['MemName'].value.includes(
+        this.rfpForm.controls['MemManagerName'].value
+      )
+    ) {
       this.cs.createMessage(
         'error',
         this.translate.instant('RFP.TechMemError')
-      )
+      );
     }
   }
-
 
   handleChange({ file, fileList }: NzUploadChangeParam): void {
     const status = file.status;
@@ -3428,30 +3763,33 @@ openSubCriteriaForRow(index: number) {
       formData.append('files[]', file);
     });
     this.uploading = true;
-    this.api.post('uploadfile', formData).pipe(takeUntil(this.destroy$)).subscribe(
-      (res: any) => {
-        if (res.messageId == 'S') {
-          res.paths.forEach((res: any) => {
-            this.uploadedfiles.push(res);
-            this.attList?.push(this.createAttachs(res));
-          });
+    this.api
+      .post('uploadfile', formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res: any) => {
+          if (res.messageId == 'S') {
+            res.paths.forEach((res: any) => {
+              this.uploadedfiles.push(res);
+              this.attList?.push(this.createAttachs(res));
+            });
+            this.uploading = false;
+            this.fileList = [];
+            this.cs.createMessage(
+              'success',
+              this.translate.instant('RFP.UploadSuccess')
+            );
+          }
+        },
+        (error) => {
           this.uploading = false;
-          this.fileList = [];
+          this.cs.createMessage('error', error);
           this.cs.createMessage(
-            'success',
-            this.translate.instant('RFP.UploadSuccess')
+            'error',
+            this.translate.instant('RFP.UploadFailed')
           );
         }
-      },
-      (error) => {
-        this.uploading = false;
-        this.cs.createMessage("error", error)
-        this.cs.createMessage(
-          'error',
-          this.translate.instant('RFP.UploadFailed')
-        );
-      }
-    );
+      );
   }
 
   createBoQ(): FormGroup {
@@ -3469,7 +3807,7 @@ openSubCriteriaForRow(index: number) {
       Uom: ['', [Validators.required]],
       Price: ['', [Validators.required, Validators.min(0.1)]],
       budgetYear: ['', [Validators.required]],
-      applyForAllBudgetYears: [false]
+      applyForAllBudgetYears: [false],
     });
   }
 
@@ -3518,9 +3856,12 @@ openSubCriteriaForRow(index: number) {
     let itnoel = this.slel++;
     return this.fb.group({
       RfpNo: [''],
-      ItemNo: [{ value: itnoel.toString(), disabled: true }, [Validators.required]],
+      ItemNo: [
+        { value: itnoel.toString(), disabled: true },
+        [Validators.required],
+      ],
       Descr: ['', [Validators.required, Validators.maxLength(600)]],
-      Percentage: ['0', [Validators.required]]
+      Percentage: ['0', [Validators.required]],
     });
   }
 
@@ -3550,7 +3891,6 @@ openSubCriteriaForRow(index: number) {
       SpeQualf: ['', [Validators.required]],
       Specilization: ['', [Validators.required]],
       SpeExp: ['', Validators.maxLength(300)],
-
     });
   }
 
@@ -3591,13 +3931,20 @@ openSubCriteriaForRow(index: number) {
     for (let i = 0; i < data?.length; i++) {
       totEvalPer += parseFloat(data[i].Percentage);
     }
-    if (totEvalPer > (subCriteria ? this.isSubCriteria ?
-      this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value :
-      this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value :
-      100)) {
+    if (
+      totEvalPer >
+      (subCriteria
+        ? this.isSubCriteria
+          ? this.rfpForm.controls.EvalCriteria?.get('Percentage')?.value
+          : this.rfpForm.controls.EvalCriteriaEdit?.get('Percentage')?.value
+        : 100)
+    ) {
       this.cs.createMessage(
         'error',
-        totEvalPer + (subCriteria ? this.translate.instant('RFP.SubCritval') : this.translate.instant('RFP.EvalCritVal'))
+        totEvalPer +
+          (subCriteria
+            ? this.translate.instant('RFP.SubCritval')
+            : this.translate.instant('RFP.EvalCritVal'))
       );
 
       return totEvalPer;
@@ -3605,13 +3952,9 @@ openSubCriteriaForRow(index: number) {
     return totEvalPer;
   }
 
-
-
-
   handleProjTyChange(value: any) {
     this.rfpForm.controls['tyProc'].setValue(value.target.value);
   }
-
 
   handleConSwt(value: any) {
     this.isConsult = value;
@@ -3703,16 +4046,15 @@ openSubCriteriaForRow(index: number) {
     this.isTechRFP = value;
   }
 
-
   handleSingleVendor(value: any) {
     this.isSingleVendor = value;
   }
 
-
   removeValidations() {
     if (this.boqTabelList.length) {
-
-      let boqGroup = (this.rfpForm?.get('billOFQty') as FormArray).at(0) as FormGroup;
+      let boqGroup = (this.rfpForm?.get('billOFQty') as FormArray).at(
+        0
+      ) as FormGroup;
       boqGroup.get('ItemNo')?.removeValidators([Validators.required]);
       boqGroup.get('ItemNo')?.updateValueAndValidity();
 
@@ -3732,55 +4074,64 @@ openSubCriteriaForRow(index: number) {
       boqGroup.get('Price')?.updateValueAndValidity();
       boqGroup.get('budgetYear')?.removeValidators([Validators.required]);
       boqGroup.get('budgetYear')?.updateValueAndValidity();
-
     }
 
     if (this.TechReqListData.length) {
-      this.rfpForm.controls['TechReq'].get('Descr')?.removeValidators([
-        Validators.required,
-      ]);
+      this.rfpForm.controls['TechReq']
+        .get('Descr')
+        ?.removeValidators([Validators.required]);
       this.rfpForm.controls['TechReq'].get('Descr')?.updateValueAndValidity();
-      this.rfpForm.controls['TechReqEdit'].get('Descr')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['TechReqEdit'].get('Descr')?.updateValueAndValidity();
+      this.rfpForm.controls['TechReqEdit']
+        .get('Descr')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['TechReqEdit']
+        .get('Descr')
+        ?.updateValueAndValidity();
       this.rfpForm.controls['TotTechEval'].removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['TotTechEval'].updateValueAndValidity();
     }
 
-
     if (this.EvalListData.length) {
-      this.rfpForm.controls['EvalCriteria'].get('Descr')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Descr')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Percentage')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteria'].get('Headline')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('Headline')?.updateValueAndValidity();
-      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['EvalCriteria'].get('SubCriFlg')?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Descr')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Descr')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Percentage')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Percentage')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('Headline')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('Headline')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['EvalCriteria']
+        .get('SubCriFlg')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['EvalCriteria']
+        .get('SubCriFlg')
+        ?.updateValueAndValidity();
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('SubCriFlg')
         ?.removeValidators([Validators.required]);
-      this.rfpForm.controls['EvalCriteriaEdit'].get('SubCriFlg')
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('SubCriFlg')
         ?.updateValueAndValidity();
-      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
+      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'));
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Descr')
         ?.removeValidators([Validators.required]);
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Descr')
         ?.updateValueAndValidity();
-      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'))
+      console.log(this.rfpForm.controls['EvalCriteriaEdit'].get('Descr'));
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Percentage')
         ?.removeValidators([Validators.required]);
@@ -3790,114 +4141,136 @@ openSubCriteriaForRow(index: number) {
       this.rfpForm.controls['EvalCriteriaEdit']
         .get('Headline')
         ?.removeValidators([Validators.required]);
-      this.rfpForm.controls['EvalCriteriaEdit'].get('Headline')
+      this.rfpForm.controls['EvalCriteriaEdit']
+        .get('Headline')
         ?.updateValueAndValidity();
     }
 
     if (this.ManPowerListData.length || !this.isManPow) {
-      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('JobTitle')?.updateValueAndValidity();
-      this.rfpForm.controls['ManPowerForm'].get('Amount')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('Amount')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('JobTitle')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('JobTitle')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('Amount')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('Amount')
+        ?.updateValueAndValidity();
 
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeExp')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeExp')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('SpeExp')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('Specilization')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('Specilization')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('Specilization')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerForm']
+        .get('SpeQualf')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('JobTitle')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('JobTitle')
+        ?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('Amount')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('Amount')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerForm'].get('SpeQualf')?.updateValueAndValidity();
-      this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerFormEdit'].get('JobTitle')?.updateValueAndValidity();
-      this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerFormEdit'].get('Amount')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('SpeExp')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('SpeExp')
+        ?.updateValueAndValidity();
 
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('Specilization')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('Specilization')
+        ?.updateValueAndValidity();
 
-      this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerFormEdit'].get('SpeExp')?.updateValueAndValidity();
-
-      this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerFormEdit'].get('Specilization')?.updateValueAndValidity();
-
-      this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.removeValidators([
-        Validators.required,
-      ]);
-      this.rfpForm.controls['ManPowerFormEdit'].get('SpeQualf')?.updateValueAndValidity();
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('SpeQualf')
+        ?.removeValidators([Validators.required]);
+      this.rfpForm.controls['ManPowerFormEdit']
+        .get('SpeQualf')
+        ?.updateValueAndValidity();
       this.rfpForm.controls['ManPower']?.removeValidators([
         Validators.required,
       ]);
       this.rfpForm.controls['ManPower']?.updateValueAndValidity();
     }
-
-
-
   }
 
   submitCase() {
-
     this.expcriteria = false;
     this.concriteria = false;
     this.hrcriteria = false;
 
-    if (this.rfpForm.getRawValue().CostCenter1 === '' || this.rfpForm.getRawValue().CostCenter1 === null) {
-      this.cs.createMessage("error", this.translate.instant('RFP.CCEmpty'))
+    if (
+      this.rfpForm.getRawValue().CostCenter1 === '' ||
+      this.rfpForm.getRawValue().CostCenter1 === null
+    ) {
+      this.cs.createMessage('error', this.translate.instant('RFP.CCEmpty'));
       this.isSubmitClick = false;
       return;
     }
 
-    if (this.rfpForm.getRawValue().Dept === '' || this.rfpForm.getRawValue().Dept === null) {
-      this.cs.createMessage("error", this.translate.instant('RFP.DeptEmpty'))
+    if (
+      this.rfpForm.getRawValue().Dept === '' ||
+      this.rfpForm.getRawValue().Dept === null
+    ) {
+      this.cs.createMessage('error', this.translate.instant('RFP.DeptEmpty'));
       this.isSubmitClick = false;
       return;
     }
 
     let inval = false;
 
-    let icon = 0, ipay = 0, itreq = 0, ieval = 0, iman = 0;
+    let icon = 0,
+      ipay = 0,
+      itreq = 0,
+      ieval = 0,
+      iman = 0;
 
     this.ConsultListData.forEach((el: any) => {
       el.DeliveryDate = this.cs.getCurrentDateInApiFormat(el.DeliveryDate);
-      el.ItemNo = (++icon).toString()
-    })
-
-
+      el.ItemNo = (++icon).toString();
+    });
 
     this.TechReqListData.forEach((el: any) => {
-      el.ItemNo = (++itreq).toString()
-    })
+      el.ItemNo = (++itreq).toString();
+    });
 
     this.EvalListData.forEach((el: any) => {
-      el.ItemNo = (++ieval).toString()
-    })
+      el.ItemNo = (++ieval).toString();
+    });
 
     this.ManPowerListData.forEach((el: any) => {
-      el.ItemNo = (++iman).toString()
-    })
+      el.ItemNo = (++iman).toString();
+    });
 
     this.removeValidations();
 
     this.rfpForm.markAllAsTouched();
-
 
     if (this.rfpForm.invalid) {
       inval = true;
@@ -3910,66 +4283,87 @@ openSubCriteriaForRow(index: number) {
         nzComponentParams: { errorList: errors, sectionHeight: '325px' },
         nzWidth: 600,
         nzBodyStyle: { height: 'auto', borderTop: `4px solid #005c99` },
-        nzFooter: null
+        nzFooter: null,
       });
-      modalRef.afterClose
-        .subscribe(() => {
-          this.isSubmitClick = false;
-        });
+      modalRef.afterClose.subscribe(() => {
+        this.isSubmitClick = false;
+      });
     } else {
       let data: any = {};
       if (this.step2 && this.step3) {
-
         if (this.expcriteria) {
-          this.cs.createMessage("error", this.translate.instant('RFP.ExpCrtRangError'))
-        }
-        else if (this.concriteria) {
-          this.cs.createMessage("error", this.translate.instant('RFP.ConCrtRangError'))
-        }
-        else if (this.hrcriteria) {
-          this.cs.createMessage("error", this.translate.instant('RFP.HrCrtRangError'))
-        }
-
-        else if (this.rfpForm.controls['TotTechEval'].value == "" || this.rfpForm.controls['TotTechEval'].value == undefined || this.rfpForm.controls['TotTechEval'].value == null) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.ExpCrtRangError')
+          );
+        } else if (this.concriteria) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.ConCrtRangError')
+          );
+        } else if (this.hrcriteria) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.HrCrtRangError')
+          );
+        } else if (
+          this.rfpForm.controls['TotTechEval'].value == '' ||
+          this.rfpForm.controls['TotTechEval'].value == undefined ||
+          this.rfpForm.controls['TotTechEval'].value == null
+        ) {
           this.cs.createMessage(
             'error',
             this.translate.instant('RFP.TechPassReq')
           );
-        }
-
-        else if (this.checkEvalPer(false) > 100 || this.checkEvalPer(false) < 100) {
+        } else if (
+          this.checkEvalPer(false) > 100 ||
+          this.checkEvalPer(false) < 100
+        ) {
           this.cs.createMessage(
             'error',
             this.translate.instant('RFP.EvalError')
           );
-        }
-
-        else if (
+        } else if (
           this.rfpForm.controls['MemManagerName'].value &&
-          (this.rfpForm.controls['MemName'].value.includes(this.rfpForm.controls['MemManagerName'].value)
-          )) {
+          this.rfpForm.controls['MemName'].value.includes(
+            this.rfpForm.controls['MemManagerName'].value
+          )
+        ) {
           this.cs.createMessage(
             'error',
             this.translate.instant('RFP.TechMemError')
-          )
-        }
-        else if (!this.boqTabelList.length) {
-          this.cs.createMessage('error', this.translate.instant('RFP.BoqListAdd'))
-        }
-        else if (!this.TechReqListData.length) {
-          this.cs.createMessage('error', this.translate.instant('RFP.TechReqListAdd'))
-        }
-        else if (!this.EvalListData.length) {
-          this.cs.createMessage('error', this.translate.instant('RFP.EvalListAdd'))
-        }
-        else if (this.isManPow && !this.ManPowerListData.length) {
-          this.cs.createMessage('error', this.translate.instant('RFP.ManpowerListAdd'))
-        }
-        else {
+          );
+        } else if (!this.boqTabelList.length) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.BoqListAdd')
+          );
+        } else if (!this.TechReqListData.length) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.TechReqListAdd')
+          );
+        } else if (!this.EvalListData.length) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.EvalListAdd')
+          );
+        } else if (this.isManPow && !this.ManPowerListData.length) {
+          this.cs.createMessage(
+            'error',
+            this.translate.instant('RFP.ManpowerListAdd')
+          );
+        } else {
           for (let i = 0; i < this.boqTabelList.length; i++) {
-            this.boqTabelList[i].Quantity = this.boqTabelList[i].Quantity.toString();
-            this.boqTabelList[i].Price = this.cs.removeCommas(this.boqTabelList[i].Price);
-            this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1 ? this.rfpForm.getRawValue().CostCenter1 : '';
+            this.boqTabelList[i].Quantity =
+              this.boqTabelList[i].Quantity.toString();
+            this.boqTabelList[i].Price = this.cs.removeCommas(
+              this.boqTabelList[i].Price
+            );
+            this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue()
+              .CostCenter1
+              ? this.rfpForm.getRawValue().CostCenter1
+              : '';
             this.boqTabelList[i].PurGrpId = '';
           }
 
@@ -4024,13 +4418,14 @@ openSubCriteriaForRow(index: number) {
               );
           }
 
-
           data = {
             ExproAgrmnt: '',
             DeptId: this.cs.getUserData().DeptId,
             CostCenter: this.rfpForm.getRawValue().CostCenter1 ?? '',
             MatGrpId: this.rfpForm.getRawValue().MatGrpId ?? '',
-            DeliveryDate: this.cs.getCurrentDateInApiFormat(this.rfpForm.getRawValue().DeliveryDate),
+            DeliveryDate: this.cs.getCurrentDateInApiFormat(
+              this.rfpForm.getRawValue().DeliveryDate
+            ),
             RfpName: this.rfpForm.controls['RfpName'].value
               ? this.rfpForm.controls['RfpName'].value
               : '',
@@ -4042,14 +4437,25 @@ openSubCriteriaForRow(index: number) {
               ? this.rfpForm.controls['SOP'].value
               : '',
             PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
-            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
-            ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(
+              this.boqTabelList
+            ),
+            ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(
+              this.boqTabelList
+            ),
+            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(
+              this.boqTabelList
+            ),
             DocTypeId: '',
-            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
-              this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
+            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
+              ? this.cs.removeCommas(
+                  this.rfpForm.controls['estPrice'].value.toString()
+                )
+              : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
-              ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
+              ? this.cs.removeCommas(
+                  this.rfpForm.controls['estPriceVAT'].value.toString()
+                )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4061,11 +4467,8 @@ openSubCriteriaForRow(index: number) {
             CertReq: this.certificatedet === true ? 'X' : 'N',
             TecMemId: '',
 
-
             TechRfp: this.isTechRFP === true ? 'X' : 'N',
             UrgntRfp: '',
-
-
 
             TotTechEval: this.rfpForm.controls['TotTechEval'].value
               ? this.rfpForm.controls['TotTechEval'].value.toString()
@@ -4081,26 +4484,36 @@ openSubCriteriaForRow(index: number) {
             ProjManpower: this.rfpForm.controls['ProjManpower'].value
               ? 'X'
               : 'N',
-            ReqToMpwrNavg: this.isManPow
-              ? this.ManPowerListData
-              : [],
-            ReqToWorkNavg: this.isConsult
-              ? this.ConsultListData
-              : [],
+            ReqToMpwrNavg: this.isManPow ? this.ManPowerListData : [],
+            ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
             ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
               ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-                ...rest,
-                SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
-              }))
+                  ...rest,
+                  SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+                }))
               : [],
             ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
               ? this.TechReqListData
               : [],
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-              ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
-            TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
-            FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
+              ? this.rfpService.getTechnicalMemberFormat(
+                  this.rfpForm.controls['MemName'].value,
+                  this.managerSubId
+                )
+              : [],
+            TechEvalWatage: this.rfpForm
+              .get([
+                'vendorEvaluationWeightage',
+                'technicalEvaluationWeightage',
+              ])
+              ?.value.toString(),
+            FinEvalWatage: this.rfpForm
+              .get([
+                'vendorEvaluationWeightage',
+                'financialEvaluationWeightage',
+              ])
+              ?.value.toString(),
           };
 
           data = this.getChecklistMapped(data);
@@ -4108,51 +4521,55 @@ openSubCriteriaForRow(index: number) {
           data = this.getProclistMapped(data);
 
           if (data) {
-            this.spinner.show()
-            this.api.post('RfpHeaderSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-              (res: any) => {
-
-                if (res.d.MessageId === 'S') {
+            this.spinner.show();
+            this.api
+              .post('RfpHeaderSet', data)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(
+                (res: any) => {
+                  if (res.d.MessageId === 'S') {
+                    this.spinner.hide();
+                    // this.cs.createMessage(
+                    //   'success',
+                    //   this.cs.userLanguage === 'en'
+                    //     ? res.d.MessageEn
+                    //     : res.d.MessageAr
+                    // );
+                    this.submitConfirmation = true;
+                    this.responseMessage =
+                      this.cs.userLanguage === 'en'
+                        ? res.d.MessageEn
+                        : res.d.MessageAr;
+                    this.router.navigate(['rfp/myrfp'], {
+                      state: { ActiveTab: 'myrfp' },
+                    });
+                    this.cs.activeMenu = 'myrfp';
+                  } else {
+                    this.spinner.hide();
+                    // this.cs.createMessage(
+                    //   'error',
+                    //   this.cs.userLanguage === 'en'
+                    //     ? res.d.MessageEn
+                    //     : res.d.MessageAr
+                    // );
+                    this.submitConfirmationFailure = true;
+                    this.responseMessage =
+                      this.cs.userLanguage === 'en'
+                        ? res.d.MessageEn
+                        : res.d.MessageAr;
+                    this.spinner.hide();
+                  }
+                },
+                (error) => {
                   this.spinner.hide();
-                  // this.cs.createMessage(
-                  //   'success',
-                  //   this.cs.userLanguage === 'en'
-                  //     ? res.d.MessageEn
-                  //     : res.d.MessageAr
-                  // );
-                  this.submitConfirmation = true;
-                  this.responseMessage = this.cs.userLanguage === 'en' ? res.d.MessageEn : res.d.MessageAr
-                  this.router.navigate(['rfp/myrfp'], {
-                    state: { ActiveTab: 'myrfp' },
-                  });
-                  this.cs.activeMenu = 'myrfp';
-                } else {
-                  this.spinner.hide();
-                  // this.cs.createMessage(
-                  //   'error',
-                  //   this.cs.userLanguage === 'en'
-                  //     ? res.d.MessageEn
-                  //     : res.d.MessageAr
-                  // );
+                  // this.cs.createMessage('error', error);
                   this.submitConfirmationFailure = true;
-                  this.responseMessage = this.cs.userLanguage === 'en' ? res.d.MessageEn : res.d.MessageAr
-                  this.spinner.hide();
+                  this.responseMessage = error.statusText;
                 }
-              },
-              (error) => {
-                this.spinner.hide();
-                // this.cs.createMessage('error', error);
-                this.submitConfirmationFailure = true;
-                this.responseMessage = error.statusText
-
-              }
-
-
-            );
+              );
           }
         }
-      }
-      else if (this.step2) {
+      } else if (this.step2) {
         if (this.checkPayPer() > 100 || this.checkPayPer() < 100) {
           this.cs.createMessage(
             'error',
@@ -4160,9 +4577,15 @@ openSubCriteriaForRow(index: number) {
           );
         } else {
           for (let i = 0; i < this.boqTabelList.length; i++) {
-            this.boqTabelList[i].Quantity = this.boqTabelList[i].Quantity.toString();
-            this.boqTabelList[i].Price = this.cs.removeCommas(this.boqTabelList[i].Price);
-            this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1 ? this.rfpForm.getRawValue().CostCenter1 : '';
+            this.boqTabelList[i].Quantity =
+              this.boqTabelList[i].Quantity.toString();
+            this.boqTabelList[i].Price = this.cs.removeCommas(
+              this.boqTabelList[i].Price
+            );
+            this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue()
+              .CostCenter1
+              ? this.rfpForm.getRawValue().CostCenter1
+              : '';
             this.boqTabelList[i].PurGrpId = '';
           }
 
@@ -4178,7 +4601,9 @@ openSubCriteriaForRow(index: number) {
             DeptId: this.cs.getUserData().DeptId,
             CostCenter: this.rfpForm.getRawValue().CostCenter1 ?? '',
             MatGrpId: this.rfpForm.getRawValue().MatGrpId ?? '',
-            DeliveryDate: this.cs.getCurrentDateInApiFormat(this.rfpForm.getRawValue().DeliveryDate),
+            DeliveryDate: this.cs.getCurrentDateInApiFormat(
+              this.rfpForm.getRawValue().DeliveryDate
+            ),
             RfpName: this.rfpForm.controls['RfpName'].value
               ? this.rfpForm.controls['RfpName'].value
               : '',
@@ -4190,14 +4615,25 @@ openSubCriteriaForRow(index: number) {
               ? this.rfpForm.controls['SOP'].value
               : '',
             PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
-            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
-            ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+            ReqToBoqNavg: this.rfpService.transformToMasterBOQ(
+              this.boqTabelList
+            ),
+            ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(
+              this.boqTabelList
+            ),
+            ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(
+              this.boqTabelList
+            ),
             DocTypeId: '',
-            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
-              this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
+            EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
+              ? this.cs.removeCommas(
+                  this.rfpForm.controls['estPrice'].value.toString()
+                )
+              : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
-              ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
+              ? this.cs.removeCommas(
+                  this.rfpForm.controls['estPriceVAT'].value.toString()
+                )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4234,9 +4670,23 @@ openSubCriteriaForRow(index: number) {
             ReqToTechNavg: [],
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-              ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
-            TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
-            FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
+              ? this.rfpService.getTechnicalMemberFormat(
+                  this.rfpForm.controls['MemName'].value,
+                  this.managerSubId
+                )
+              : [],
+            TechEvalWatage: this.rfpForm
+              .get([
+                'vendorEvaluationWeightage',
+                'technicalEvaluationWeightage',
+              ])
+              ?.value.toString(),
+            FinEvalWatage: this.rfpForm
+              .get([
+                'vendorEvaluationWeightage',
+                'financialEvaluationWeightage',
+              ])
+              ?.value.toString(),
           };
 
           data = this.getChecklistMapped(data);
@@ -4244,37 +4694,38 @@ openSubCriteriaForRow(index: number) {
           data = this.getProclistMapped(data);
 
           if (data) {
-            this.spinner.show()
-            this.api.post('RfpHeaderSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-              (res: any) => {
-
-                if (res.d.MessageId === 'S') {
-                  this.cs.createMessage(
-                    'success',
-                    this.cs.userLanguage === 'en'
-                      ? res.d.MessageEn
-                      : res.d.MessageAr
-                  );
-                  this.router.navigate(['rfp/myrfp'], {
-                    state: { ActiveTab: 'myrfp' },
-                  });
-                  this.cs.activeMenu = 'myrfp';
-                } else {
-                  this.cs.createMessage(
-                    'error',
-                    this.cs.userLanguage === 'en'
-                      ? res.d.MessageEn
-                      : res.d.MessageAr
-                  );
+            this.spinner.show();
+            this.api
+              .post('RfpHeaderSet', data)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(
+                (res: any) => {
+                  if (res.d.MessageId === 'S') {
+                    this.cs.createMessage(
+                      'success',
+                      this.cs.userLanguage === 'en'
+                        ? res.d.MessageEn
+                        : res.d.MessageAr
+                    );
+                    this.router.navigate(['rfp/myrfp'], {
+                      state: { ActiveTab: 'myrfp' },
+                    });
+                    this.cs.activeMenu = 'myrfp';
+                  } else {
+                    this.cs.createMessage(
+                      'error',
+                      this.cs.userLanguage === 'en'
+                        ? res.d.MessageEn
+                        : res.d.MessageAr
+                    );
+                    this.spinner.hide();
+                  }
+                },
+                (error) => {
                   this.spinner.hide();
+                  this.cs.createMessage('error', error);
                 }
-              },
-              (error) => {
-                this.spinner.hide();
-                this.cs.createMessage('error', error);
-
-              }
-            );
+              );
           }
         }
       }
@@ -4285,9 +4736,8 @@ openSubCriteriaForRow(index: number) {
     const invalid = [];
     const controls = this.rfpForm.controls;
     for (const name in controls) {
-
       if (controls[name].invalid) {
-        console.log('invaild rfp controls', this.translate.instant(name))
+        console.log('invaild rfp controls', this.translate.instant(name));
         invalid.push(this.translate.instant(name));
       }
     }
@@ -4295,44 +4745,57 @@ openSubCriteriaForRow(index: number) {
   }
 
   submitDraft() {
-
-    if (this.rfpForm.getRawValue().CostCenter1 === '' || this.rfpForm.getRawValue().CostCenter1 === null) {
-      this.cs.createMessage("error", this.translate.instant('RFP.CCEmpty'))
+    if (
+      this.rfpForm.getRawValue().CostCenter1 === '' ||
+      this.rfpForm.getRawValue().CostCenter1 === null
+    ) {
+      this.cs.createMessage('error', this.translate.instant('RFP.CCEmpty'));
       return;
     }
 
-    if (this.rfpForm.getRawValue().Dept === '' || this.rfpForm.getRawValue().Dept === null) {
-      this.cs.createMessage("error", this.translate.instant('RFP.DeptEmpty'))
+    if (
+      this.rfpForm.getRawValue().Dept === '' ||
+      this.rfpForm.getRawValue().Dept === null
+    ) {
+      this.cs.createMessage('error', this.translate.instant('RFP.DeptEmpty'));
       return;
     }
 
     let data: any = {};
 
-    let icon = 0, ipay = 0, itreq = 0, ieval = 0, iman = 0;
+    let icon = 0,
+      ipay = 0,
+      itreq = 0,
+      ieval = 0,
+      iman = 0;
 
     this.ConsultListData.forEach((el: any) => {
       el.DeliveryDate = this.cs.getCurrentDateInApiFormat(el.DeliveryDate);
-      el.ItemNo = (++icon).toString()
-    })
-
+      el.ItemNo = (++icon).toString();
+    });
 
     this.TechReqListData.forEach((el: any) => {
-      el.ItemNo = (++itreq).toString()
-    })
+      el.ItemNo = (++itreq).toString();
+    });
 
     this.EvalListData.forEach((el: any) => {
-      el.ItemNo = (++ieval).toString()
-    })
+      el.ItemNo = (++ieval).toString();
+    });
 
     this.ManPowerListData.forEach((el: any) => {
-      el.ItemNo = (++iman).toString()
-    })
+      el.ItemNo = (++iman).toString();
+    });
 
     if (this.step2 && this.step3) {
       for (let i = 0; i < this.boqTabelList.length; i++) {
-        this.boqTabelList[i].Quantity = this.boqTabelList[i].Quantity.toString();
-        this.boqTabelList[i].Price = this.cs.removeCommas(this.boqTabelList[i].Price);
-        this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1 ? this.rfpForm.getRawValue().CostCenter1 : '';
+        this.boqTabelList[i].Quantity =
+          this.boqTabelList[i].Quantity.toString();
+        this.boqTabelList[i].Price = this.cs.removeCommas(
+          this.boqTabelList[i].Price
+        );
+        this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1
+          ? this.rfpForm.getRawValue().CostCenter1
+          : '';
         this.boqTabelList[i].PurGrpId = '';
       }
 
@@ -4378,13 +4841,14 @@ openSubCriteriaForRow(index: number) {
           ?.patchValue(this.rfpForm.value.Evalcrt.at(i).Percentage.toString());
       }
 
-
       data = {
         ExproAgrmnt: '',
         DeptId: this.cs.getUserData().DeptId,
         CostCenter: this.rfpForm.getRawValue().CostCenter1 ?? '',
         MatGrpId: this.rfpForm.getRawValue().MatGrpId ?? '',
-        DeliveryDate: this.cs.getCurrentDateInApiFormat(this.rfpForm.getRawValue().DeliveryDate),
+        DeliveryDate: this.cs.getCurrentDateInApiFormat(
+          this.rfpForm.getRawValue().DeliveryDate
+        ),
         RfpName: this.rfpForm.controls['RfpName'].value
           ? this.rfpForm.controls['RfpName'].value
           : '',
@@ -4397,13 +4861,22 @@ openSubCriteriaForRow(index: number) {
           : '',
         PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
         ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
-        ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-        ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+        ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(
+          this.boqTabelList
+        ),
+        ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(
+          this.boqTabelList
+        ),
         DocTypeId: '',
-        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
-          this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
+        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
+          ? this.cs.removeCommas(
+              this.rfpForm.controls['estPrice'].value.toString()
+            )
+          : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
-          ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
+          ? this.cs.removeCommas(
+              this.rfpForm.controls['estPriceVAT'].value.toString()
+            )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4415,14 +4888,8 @@ openSubCriteriaForRow(index: number) {
         CertReq: this.certificatedet === true ? 'X' : 'N',
         TecMemId: '',
 
-
-
         TechRfp: this.isTechRFP === true ? 'X' : 'N',
         UrgntRfp: '',
-
-
-
-
 
         TotTechEval: this.rfpForm.controls['TotTechEval'].value
           ? this.rfpForm.controls['TotTechEval'].value.toString()
@@ -4436,23 +4903,29 @@ openSubCriteriaForRow(index: number) {
         RfpNo: '',
         ProjManpower: this.rfpForm.controls['ProjManpower'].value ? 'X' : 'N',
         ReqToMpwrNavg: this.isManPow ? this.ManPowerListData : [],
-        ReqToWorkNavg: this.isConsult
-          ? this.ConsultListData
-          : [],
+        ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
         ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
           ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-            ...rest,
-            SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg
-          }))
+              ...rest,
+              SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+            }))
           : [],
         ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
           ? this.TechReqListData
           : [],
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-          ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
-        TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
-        FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
+          ? this.rfpService.getTechnicalMemberFormat(
+              this.rfpForm.controls['MemName'].value,
+              this.managerSubId
+            )
+          : [],
+        TechEvalWatage: this.rfpForm
+          .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
+          ?.value.toString(),
+        FinEvalWatage: this.rfpForm
+          .get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])
+          ?.value.toString(),
       };
 
       data = this.getChecklistMapped(data);
@@ -4460,43 +4933,50 @@ openSubCriteriaForRow(index: number) {
       data = this.getProclistMapped(data);
 
       if (data) {
-        this.spinner.show()
-        this.api.post('RfpHeaderSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-          (res: any) => {
-            if (res.d.MessageId === 'S') {
+        this.spinner.show();
+        this.api
+          .post('RfpHeaderSet', data)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            (res: any) => {
+              if (res.d.MessageId === 'S') {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'success',
+                  this.cs.userLanguage === 'en'
+                    ? res.d.MessageEn
+                    : res.d.MessageAr
+                );
+                this.router.navigate(['rfp/myrfp'], {
+                  state: { ActiveTab: 'create' },
+                });
+                this.cs.activeMenu = 'myrfp';
+              } else {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'error',
+                  this.cs.userLanguage === 'en'
+                    ? res.d.MessageEn
+                    : res.d.MessageAr
+                );
+              }
+            },
+            (error) => {
               this.spinner.hide();
-              this.cs.createMessage(
-                'success',
-                this.cs.userLanguage === 'en'
-                  ? res.d.MessageEn
-                  : res.d.MessageAr
-              );
-              this.router.navigate(['rfp/myrfp'], {
-                state: { ActiveTab: 'create' },
-              });
-              this.cs.activeMenu = 'myrfp';
-            } else {
-              this.spinner.hide();
-              this.cs.createMessage(
-                'error',
-                this.cs.userLanguage === 'en'
-                  ? res.d.MessageEn
-                  : res.d.MessageAr
-              );
+              this.cs.createMessage('error', error.statusText);
             }
-          },
-          (error) => {
-            this.spinner.hide();
-            this.cs.createMessage('error', error.statusText);
-
-          }
-        );
+          );
       }
     } else if (this.step2) {
       for (let i = 0; i < this.boqTabelList.length; i++) {
-        this.boqTabelList[i].Quantity = this.boqTabelList[i].Quantity.toString();
-        this.boqTabelList[i].Price = this.cs.removeCommas(this.boqTabelList[i].Price);
-        this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1 ? this.rfpForm.getRawValue().CostCenter1 : '';
+        this.boqTabelList[i].Quantity =
+          this.boqTabelList[i].Quantity.toString();
+        this.boqTabelList[i].Price = this.cs.removeCommas(
+          this.boqTabelList[i].Price
+        );
+        this.boqTabelList[i].CostCenter = this.rfpForm.getRawValue().CostCenter1
+          ? this.rfpForm.getRawValue().CostCenter1
+          : '';
         this.boqTabelList[i].PurGrpId = '';
       }
 
@@ -4510,7 +4990,9 @@ openSubCriteriaForRow(index: number) {
         DeptId: this.cs.getUserData().DeptId,
         CostCenter: this.rfpForm.getRawValue().CostCenter1 ?? '',
         MatGrpId: this.rfpForm.getRawValue().MatGrpId ?? '',
-        DeliveryDate: this.cs.getCurrentDateInApiFormat(this.rfpForm.getRawValue().DeliveryDate),
+        DeliveryDate: this.cs.getCurrentDateInApiFormat(
+          this.rfpForm.getRawValue().DeliveryDate
+        ),
         RfpName: this.rfpForm.controls['RfpName'].value
           ? this.rfpForm.controls['RfpName'].value
           : '',
@@ -4523,13 +5005,22 @@ openSubCriteriaForRow(index: number) {
           : '',
         PurGrpId: this.rfpForm.controls['PurGrpId'].value ?? '',
         ReqToBoqNavg: this.rfpService.transformToMasterBOQ(this.boqTabelList),
-        ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(this.boqTabelList),
-        ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(this.boqTabelList),
+        ReqToBuddrNavg: this.rfpService.transformToReqToBuddrNavg(
+          this.boqTabelList
+        ),
+        ReqToBudsrNavg: this.rfpService.transformToReqToBudsrNavg(
+          this.boqTabelList
+        ),
         DocTypeId: '',
-        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value ?
-          this.cs.removeCommas(this.rfpForm.controls['estPrice'].value.toString()) : '',
+        EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
+          ? this.cs.removeCommas(
+              this.rfpForm.controls['estPrice'].value.toString()
+            )
+          : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
-          ? this.cs.removeCommas(this.rfpForm.controls['estPriceVAT'].value.toString())
+          ? this.cs.removeCommas(
+              this.rfpForm.controls['estPriceVAT'].value.toString()
+            )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4540,8 +5031,6 @@ openSubCriteriaForRow(index: number) {
 
         CertReq: 'N',
         TecMemId: '',
-
-
 
         TechRfp: this.isTechRFP === true ? 'X' : 'N',
         UrgntRfp: '',
@@ -4565,9 +5054,17 @@ openSubCriteriaForRow(index: number) {
         ReqToTechNavg: [],
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
-          ? this.rfpService.getTechnicalMemberFormat(this.rfpForm.controls['MemName'].value, this.managerSubId) : [],
-        TechEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])?.value.toString(),
-        FinEvalWatage: this.rfpForm.get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])?.value.toString()
+          ? this.rfpService.getTechnicalMemberFormat(
+              this.rfpForm.controls['MemName'].value,
+              this.managerSubId
+            )
+          : [],
+        TechEvalWatage: this.rfpForm
+          .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
+          ?.value.toString(),
+        FinEvalWatage: this.rfpForm
+          .get(['vendorEvaluationWeightage', 'financialEvaluationWeightage'])
+          ?.value.toString(),
       };
 
       data = this.getChecklistMapped(data);
@@ -4575,37 +5072,39 @@ openSubCriteriaForRow(index: number) {
       data = this.getProclistMapped(data);
 
       if (data) {
-        this.spinner.show()
-        this.api.post('RfpHeaderSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-          (res: any) => {
-            if (res.d.MessageId === 'S') {
-              this.spinner.hide()
-              this.cs.createMessage(
-                'success',
-                this.cs.userLanguage === 'en'
-                  ? res.d.MessageEn
-                  : res.d.MessageAr
-              );
-              this.router.navigate(['rfp/myrfp'], {
-                state: { ActiveTab: 'create' },
-              });
-              this.cs.activeMenu = 'myrfp';
-            } else {
+        this.spinner.show();
+        this.api
+          .post('RfpHeaderSet', data)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            (res: any) => {
+              if (res.d.MessageId === 'S') {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'success',
+                  this.cs.userLanguage === 'en'
+                    ? res.d.MessageEn
+                    : res.d.MessageAr
+                );
+                this.router.navigate(['rfp/myrfp'], {
+                  state: { ActiveTab: 'create' },
+                });
+                this.cs.activeMenu = 'myrfp';
+              } else {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'error',
+                  this.cs.userLanguage === 'en'
+                    ? res.d.MessageEn
+                    : res.d.MessageAr
+                );
+              }
+            },
+            (error) => {
               this.spinner.hide();
-              this.cs.createMessage(
-                'error',
-                this.cs.userLanguage === 'en'
-                  ? res.d.MessageEn
-                  : res.d.MessageAr
-              );
+              this.cs.createMessage('error', error.statusText);
             }
-          },
-          (error) => {
-            this.spinner.hide();
-            this.cs.createMessage('error', error.statusText);
-
-          }
-        );
+          );
       }
     }
   }
@@ -4623,52 +5122,49 @@ openSubCriteriaForRow(index: number) {
    * Handles the Document Type change and reset the related form fields.
    */
   onDocumentTypeChangeResetFormControl(): void {
-    this.rfpForm?.get('MatGrpId')
-      ?.reset();
+    this.rfpForm?.get('MatGrpId')?.reset();
   }
 
   handleDocTypeBoq(value: any) {
-
-    this.getMatgp(value)
+    this.getMatgp(value);
   }
-
 
   allMatGroups: any;
   getMatgp(value?: any) {
     if (value) {
       let data = {
-        "DocTypeId": ''
-      }
-      this.api.post('F4MatGrpSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-        (res: any) => {
-          this.matGp = res.d.results;
-
-        },
-        (error) => {
-          this.spinner.hide();
-          this.cs.createMessage('error', error.statusText);
-
-        }
-      );
-    }
-    else {
+        DocTypeId: '',
+      };
+      this.api
+        .post('F4MatGrpSet', data)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res: any) => {
+            this.matGp = res.d.results;
+          },
+          (error) => {
+            this.spinner.hide();
+            this.cs.createMessage('error', error.statusText);
+          }
+        );
+    } else {
       let data = {
-        "DocTypeId": ""
-      }
-      this.api.post('F4MatGrpSet', data).pipe(takeUntil(this.destroy$)).subscribe(
-        (res: any) => {
-          this.matGp = res.d.results;
-          this.allMatGroups = res.d.results;
-        },
-        (error) => {
-          this.spinner.hide();
-          this.cs.createMessage('error', error.statusText);
-
-        }
-      );
+        DocTypeId: '',
+      };
+      this.api
+        .post('F4MatGrpSet', data)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res: any) => {
+            this.matGp = res.d.results;
+            this.allMatGroups = res.d.results;
+          },
+          (error) => {
+            this.spinner.hide();
+            this.cs.createMessage('error', error.statusText);
+          }
+        );
     }
-
-
   }
 
   departmentType = localStorage.getItem('DepTxt');
@@ -4689,12 +5185,15 @@ openSubCriteriaForRow(index: number) {
     };
   }
 
-
   resetDeliveryDate() {
-    this.rfpForm.controls['DeliveryDate'].setValue('')
+    this.rfpForm.controls['DeliveryDate'].setValue('');
   }
 
-  getInvolvedYears(deliveryDate: Date, duration: number, unit: moment.unitOfTime.DurationConstructor): number[] {
+  getInvolvedYears(
+    deliveryDate: Date,
+    duration: number,
+    unit: moment.unitOfTime.DurationConstructor
+  ): number[] {
     const endDate = moment(deliveryDate);
     const startDate = moment(deliveryDate).subtract(duration, unit);
 
@@ -4710,7 +5209,7 @@ openSubCriteriaForRow(index: number) {
     return years;
   }
 
-  upload() { }
+  upload() {}
 
   deleteFile(value: any) {
     this.spinner.show();
@@ -4722,58 +5221,69 @@ openSubCriteriaForRow(index: number) {
       RfpVersion: value.RfpVersion,
       ItemNo: value.ItemNo.toString(),
     };
-    this.api.post('RfpAttchSet', datad).pipe(takeUntil(this.destroy$)).subscribe(
-      (res: any) => {
-
-        if (res == 204) {
-          this.api.post('deletefile', data).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-
-            if (res) {
-              this.spinner.hide();
-            }
-          });
+    this.api
+      .post('RfpAttchSet', datad)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res: any) => {
+          if (res == 204) {
+            this.api
+              .post('deletefile', data)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe((res: any) => {
+                if (res) {
+                  this.spinner.hide();
+                }
+              });
+          }
+        },
+        (error: any) => {
+          this.spinner.hide();
         }
-      },
-      (error: any) => {
-        this.spinner.hide();
-
-      }
-    );
+      );
   }
 
   filenetUpload(evt: any) {
     let itnatt = this.slatt++;
-    console.log('rfp attachments', evt)
+    console.log('rfp attachments', evt);
 
     this.fileNetList.push({
       RfpNo: '',
       ItemNo: itnatt.toString(),
-      FilenetID: evt.createDocWithContentResponse.fileNetCreatedDocument.ID.replace('{', '').replace('}', ''),
-      FileName: evt.createDocWithContentResponse.fileNetCreatedDocument.docTitle,
+      FilenetID:
+        evt.createDocWithContentResponse.fileNetCreatedDocument.ID.replace(
+          '{',
+          ''
+        ).replace('}', ''),
+      FileName:
+        evt.createDocWithContentResponse.fileNetCreatedDocument.docTitle,
       // CommitteeId: this.CommitteeID,
       // CommitteeRole: this.role,
       // CommitteeUser: this.CommitteeName,
-    })
+    });
   }
 
   fileSapUpload(evt: any) {
-    console.log(evt, 'rfp attachment ')
+    console.log(evt, 'rfp attachment ');
     let itnatt = this.slatt++;
     this.fileNetList.push({
-      RfpNo: "",
+      RfpNo: '',
       ItemNo: itnatt.toString(),
       FilenetID: evt.Fileid,
-      FileName: evt.Filename
-    })
+      FileName: evt.Filename,
+    });
   }
 
   filenetDelete(evt: any) {
-    this.fileNetList = this.fileNetList.filter((file: any) => evt.FilenetID !== file.FilenetID);
+    this.fileNetList = this.fileNetList.filter(
+      (file: any) => evt.FilenetID !== file.FilenetID
+    );
   }
 
-
   fileSapDelete(evt: any) {
-    this.fileNetList = this.fileNetList.filter((file: any) => evt.FilenetID != file.FilenetID);
+    this.fileNetList = this.fileNetList.filter(
+      (file: any) => evt.FilenetID != file.FilenetID
+    );
   }
 
   // * Getter Methods
@@ -4789,7 +5299,6 @@ openSubCriteriaForRow(index: number) {
       } else {
         return '';
       }
-
     }
 
     return '';
@@ -4825,15 +5334,16 @@ openSubCriteriaForRow(index: number) {
 
   getUnitOfMeasureDesc(UnitId: string): string {
     if (this.uOM) {
-      const unitOfMeasureGroup = this.uOM.filter((unitOfMeasure: any) => unitOfMeasure.Uom === UnitId);
+      const unitOfMeasureGroup = this.uOM.filter(
+        (unitOfMeasure: any) => unitOfMeasure.Uom === UnitId
+      );
       if (unitOfMeasureGroup) {
         if (this.cs.userLanguage === 'en') {
           return unitOfMeasureGroup[0].Uom + '-' + unitOfMeasureGroup[0].UomTxt;
         } else {
           return unitOfMeasureGroup[0].Data1 + '-' + unitOfMeasureGroup[0].Uom;
         }
-      }
-      else {
+      } else {
         return '';
       }
     }
@@ -4847,20 +5357,23 @@ openSubCriteriaForRow(index: number) {
 
   enableTotTechEval() {
     if (this.editTotTechEval) {
-      this.rfpForm.controls.TotTechEval.enable()
+      this.rfpForm.controls.TotTechEval.enable();
     } else {
-      this.rfpForm.controls.TotTechEval.disable()
+      this.rfpForm.controls.TotTechEval.disable();
     }
   }
 
-
   ontechnicalEvaluationWeightageChange() {
-    console.log('change working')
+    console.log('change working');
 
-    let technicalEvaluationWeightageValue = this.rfpForm.get('vendorEvaluationWeightage')?.get('technicalEvaluationWeightage')?.value
-    console.log(technicalEvaluationWeightageValue)
+    let technicalEvaluationWeightageValue = this.rfpForm
+      .get('vendorEvaluationWeightage')
+      ?.get('technicalEvaluationWeightage')?.value;
+    console.log(technicalEvaluationWeightageValue);
     const financialWeightage = 100 - technicalEvaluationWeightageValue;
-    const financialControl = this.rfpForm.get('vendorEvaluationWeightage.financialEvaluationWeightage');
+    const financialControl = this.rfpForm.get(
+      'vendorEvaluationWeightage.financialEvaluationWeightage'
+    );
     financialControl!.setValue(financialWeightage, { emitEvent: false });
   }
 
@@ -4868,7 +5381,7 @@ openSubCriteriaForRow(index: number) {
   updateEvaluationWeights(): void {
     const estimatedCost = this.rfpForm.get('estimatedCost')?.value;
     const activityId = this.rfpForm.get('activity')?.value;
-    
+
     if (!estimatedCost || !activityId) {
       return;
     }
@@ -4880,26 +5393,32 @@ openSubCriteriaForRow(index: number) {
 
     if (costInMillions > 25) {
       // More than 25 million SAR
-      if (activityId === 'ACT_CON') { // Contracting
+      if (activityId === 'ACT_CON') {
+        // Contracting
         financialWeight = 80;
         technicalWeight = 20;
-      } else if (activityId === 'ACT_CONS') { // Consultancy
+      } else if (activityId === 'ACT_CONS') {
+        // Consultancy
         financialWeight = 30;
         technicalWeight = 70;
-      } else if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+      } else if (activityId === 'ACT_FAC') {
+        // Facility Operation, Maintenance, and Cleaning
         financialWeight = 65;
         technicalWeight = 35;
       }
       // For all other activities: use default 80, 20, 70
     } else {
       // Less than 25 million SAR
-      if (activityId === 'ACT_FAC') { // Facility Operation, Maintenance, and Cleaning
+      if (activityId === 'ACT_FAC') {
+        // Facility Operation, Maintenance, and Cleaning
         financialWeight = 70;
         technicalWeight = 30;
-      } else if (activityId === 'ACT_CONS') { // Consultancy
+      } else if (activityId === 'ACT_CONS') {
+        // Consultancy
         financialWeight = 35;
         technicalWeight = 65;
-      } else if (activityId === 'ACT_CON') { // Contracting
+      } else if (activityId === 'ACT_CON') {
+        // Contracting
         financialWeight = 85;
         technicalWeight = 15;
       }
@@ -4908,13 +5427,18 @@ openSubCriteriaForRow(index: number) {
 
     // Update the form controls
     const vendorEvaluationGroup = this.rfpForm.get('vendorEvaluationWeightage');
-    vendorEvaluationGroup?.get('financialEvaluationWeightage')?.setValue(financialWeight, { emitEvent: false });
-    vendorEvaluationGroup?.get('technicalEvaluationWeightage')?.setValue(technicalWeight, { emitEvent: false });
-    
-    // Update technical pass rate
-    this.rfpForm.get('TotTechEval')?.setValue(technicalPassRate, { emitEvent: false });
-  }
+    vendorEvaluationGroup
+      ?.get('financialEvaluationWeightage')
+      ?.setValue(financialWeight, { emitEvent: false });
+    vendorEvaluationGroup
+      ?.get('technicalEvaluationWeightage')
+      ?.setValue(technicalWeight, { emitEvent: false });
 
+    // Update technical pass rate
+    this.rfpForm
+      .get('TotTechEval')
+      ?.setValue(technicalPassRate, { emitEvent: false });
+  }
 
   getTotalPriceRow(item: any): number {
     const qty = parseFloat(item.Quantity) || 0;
@@ -4943,7 +5467,6 @@ openSubCriteriaForRow(index: number) {
     return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
   }
 
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -4958,17 +5481,13 @@ openSubCriteriaForRow(index: number) {
         { value: itnoel.toString(), disabled: true },
         [Validators.required],
       ],
-      Descr: ['', [Validators.required, Validators.maxLength(600)]]
+      Descr: ['', [Validators.required, Validators.maxLength(600)]],
     });
   }
   restrictZero(event: any) {
-
-
-    if (event.target.value.length === 0 && event.key <= "0") {
-
+    if (event.target.value.length === 0 && event.key <= '0') {
       event.preventDefault();
     }
-
   }
 
   showHideSubmit() {
@@ -4991,40 +5510,38 @@ openSubCriteriaForRow(index: number) {
   //*tech eval
   toggleDescrValidatorTechEval() {
     // Subscribe to valueChanges for EvalCriteria.SubCriFlg
-    this.rfpForm?.get('EvalCriteria.SubCriFlg')?.valueChanges.subscribe((value) => {
-      console.log(value);
-      const descrControl = this.rfpForm.get('EvalCriteria.Descr');
+    this.rfpForm
+      ?.get('EvalCriteria.SubCriFlg')
+      ?.valueChanges.subscribe((value) => {
+        console.log(value);
+        const descrControl = this.rfpForm.get('EvalCriteria.Descr');
 
-      if (value === 'X') {
-        descrControl?.clearValidators();
-      } else {
-        descrControl?.setValidators([Validators.required]);
-      }
+        if (value === 'X') {
+          descrControl?.clearValidators();
+        } else {
+          descrControl?.setValidators([Validators.required]);
+        }
 
-      descrControl?.updateValueAndValidity();
-    });
+        descrControl?.updateValueAndValidity();
+      });
 
     // Subscribe to valueChanges for EvalCriteriaEdit.SubCriFlg
-    this.rfpForm?.get('EvalCriteriaEdit.SubCriFlg')?.valueChanges.subscribe((value) => {
-      console.log(value);
-      const descrControlEdit = this.rfpForm.get('EvalCriteriaEdit.Descr');
+    this.rfpForm
+      ?.get('EvalCriteriaEdit.SubCriFlg')
+      ?.valueChanges.subscribe((value) => {
+        console.log(value);
+        const descrControlEdit = this.rfpForm.get('EvalCriteriaEdit.Descr');
 
-      if (value === 'X') {
-        descrControlEdit?.clearValidators();
-      } else {
-        descrControlEdit?.setValidators([Validators.required]);
-      }
+        if (value === 'X') {
+          descrControlEdit?.clearValidators();
+        } else {
+          descrControlEdit?.setValidators([Validators.required]);
+        }
 
-      descrControlEdit?.updateValueAndValidity();
-    });
+        descrControlEdit?.updateValueAndValidity();
+      });
   }
-
-
-
 }
-
-
-
 
 export function dateValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
@@ -5040,9 +5557,6 @@ export function dateValidator(): ValidatorFn {
       ? { invalidDate: 'You cannot use future dates' }
       : null;
   };
-
-
-
 }
 function downloadSelectedForm() {
   throw new Error('Function not implemented.');
