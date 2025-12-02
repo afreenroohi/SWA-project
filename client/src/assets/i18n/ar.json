@@ -602,7 +602,12 @@
     "Draft":"مسودة",
     "Project JustificationNec": " الضرور",
     "Project Impact": "أثر عدم التنفيذ",
-    "Max of 20 Characters": "الحد الأقصى 20 حرفًا"
+    "Max of 20 Characters": "الحد الأقصى 20 حرفًا",
+      "Attachmentss": "5. المرفقات",
+  "Bill ofQuantity": "4. جدول الكميات",
+  "Technical EvaluationCriteria": "3. معايير التقييم الفني",
+  "Scope ofWork": "2. نطاق العمل",
+  "BasicInformation": "1. المعلومات الأساسية"
 
     
     

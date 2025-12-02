@@ -618,7 +618,12 @@
     "Role":"Role",
     "Name":"Name",
     "Extension No.":"Extension No.",
-    "Max of 20 Characters":"Max of 20 Characters"
+    "Max of 20 Characters":"Max of 20 Characters",
+    "Attachmentss":"5. Attachments",
+    "Bill ofQuantity":"4. Bill of Quantity",
+    "Technical EvaluationCriteria":"3. Technical Evaluation Criteria",
+    "Scope ofWork":"2. Scope of Work",
+    "BasicInformation":"1. Basic Information"
     
     
   },
