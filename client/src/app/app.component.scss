@@ -1,152 +1,489 @@
-@import '../_variables.scss';
-$sider-expanded: 250px;
-$sider-collapsed: 80px;
-$header-height: 80px;
-$transition-speed: 0.28s;
+// Sidebar Modernized Styling
+// Reference: Dark theme with blue accents
 
+$sidebar-dark: #1a1f2e;
+$sidebar-light: #2d3748;
+$accent-blue: #3b82f6;
+$accent-blue-hover: #2563eb;
+$text-primary: #ffffff;
+$text-secondary: #cbd5e1;
+$transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-.trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.trigger:hover {
-  color: #1890ff;
-}
-
-// nz-header {
-//   background: #fff;
-//   padding: 0;
-//   position: fixed;
-//   width: 100%;
-//   top: 0 !important;
-//   display: flex;
-//   align-items: center;
-// }
-nz-header {
-  background: #fff;
-  padding: 0;
-  position: fixed;
-  width: 100%;
-  top: 0 !important;
-  z-index: 20;
-}
-
-nz-content {
-  overflow-y: auto;
-  transition: all 0.3s ease;
-}
-
-nz-breadcrumb {
-  margin: 16px 0;
-}
-
-.inner-content {
-  padding: 20px;
-  margin-top: 1.2rem;
-  transition: filter 0.3s ease;
-  max-width: 100%;
-  width: 100%;
-}
-
-.ant-menu-inline,
-.ant-menu-vertical,
-.ant-menu-vertical-left {
-
-  border-right: none;
-}
-
-.ant-menu {
-  background-color: #ffffff !important;
-}
-
-.ant-menu-submenu-open {
-  background-color: $primary !important;
-  color: white !important;
-}
-
-::ng-deep.ant-menu-light .ant-menu-submenu-open .ant-menu-submenu-title:hover {
-  color: white;
-}
-
-
-
-.ant-layout {
-
-  height: 100vh;
-  background: #f7f8fa
-}
-
-.ant-layout-header {
-  height: 80px;
-  border-bottom: 4px solid #f7f8fa;
-}
-
+// Reset and base styles
 nz-sider {
   position: fixed !important;
-  overflow-y: auto;
-  top: 80px !important;
-  height: calc(100vh - 80px);
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  background: white !important;
+  z-index: 1001 !important;
+  overflow-y: auto;
+  transition: all $transition-smooth !important;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  border-right: 3px solid #005c99;
+
+  [dir="rtl"] & {
+    left: auto !important;
+    right: 0 !important;
+    border-right: none;
+    border-left: 3px solid #005c99;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
 
 .menu-sidebar {
-  position: relative;
-  background: white;
-  background-image: url('../assets/logo/menu-background.svg');
-  background-size: cover;
-  //background-size: contain;
-  background-repeat: no-repeat;
-  background-position: 100% 100%;
-  border-inline-end: 4px solid #f7f8fa;
+  background: transparent;
+  border-inline-end: none;
   overflow-x: hidden;
-  min-width:220px;
-  max-width:220px;
+  min-width: 220px;
+  max-width: 220px;
+  transition: all $transition-smooth;
+
+  &.collapsed {
+    min-width: 80px;
+    max-width: 80px;
+  }
 }
 
-.menu {
-  color: #7d947d;
-
-  // .menu-items {
-  // border-top: 1px solid $primary;
-  // }
-}
-
-.copy-right-container {
-  position: absolute;
-  bottom: 1rem;
-}
-
-.header-sidebar-section {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 80px;
-  border-inline-end: 4px solid #f7f8fa;
-  border-bottom: 4px solid #f7f8fa;
-  transition: width 0.3s ease;
-  display: flex;
-  align-items: center;
-  background: white;
-  z-index: 21;
-}
-
+// Logo container styling
 .logo-container {
-  flex: 1;
-  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all $transition-smooth;
+  position: relative;
+  margin-top: 48px;
+
+  a.logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-smooth;
+
+    img {
+      transition: all $transition-smooth;
+      filter: brightness(1);
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
+
+  &.collapsed {
+    height: 100px;
+    padding: 24px 0;
+
+    a.logo-link {
+      img {
+        width: 44px !important;
+        height: 44px !important;
+      }
+    }
+  }
 }
 
-.logo-container.collapsed {
-  display: none;
+// Header toggle button
+.header-toggle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  transition: all $transition-smooth;
+
+  .header-toggle-btn {
+    background: transparent !important;
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: $text-secondary !important;
+    font-size: 18px !important;
+    padding: 0 !important;
+    transition: all $transition-smooth !important;
+    cursor: pointer;
+    border-radius: 6px;
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.15) !important;
+      color: $accent-blue !important;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
 }
 
+// Menu styling
+.menu {
+  background: transparent;
+  color: $text-secondary;
+  margin-top: 0;
+  // padding: 0 8px;
+  transition: all $transition-smooth;
+
+  // Menu items base styling
+  ::ng-deep {
+    .ant-menu {
+      background: transparent !important;
+      border-right: none !important;
+    }
+
+    .ant-menu-light {
+      background: transparent !important;
+    }
+
+    .ant-menu-item {
+      color: #666 !important;
+      background: transparent !important;
+      transition: all $transition-smooth !important;
+      // margin: 4px 8px !important;
+      border-radius: 8px !important;
+      height: 50px !important;
+      line-height: 50px !important;
+      display: flex !important;
+      align-items: center !important;
+      padding-left: 0 !important;
+
+      &:hover {
+        color: #005c99 !important;
+        background: rgba(0, 92, 153, 0.1) !important;
+      }
+
+      &.ant-menu-item-selected {
+        background: #005c99 !important;
+        color: white !important;
+        border-radius: 8px 0 0 8px !important;
+        margin: 4px 0 4px 8px !important;
+        margin-right: -3px !important;
+        box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3);
+        padding-left: 0 !important;
+
+        &:hover {
+          background: #004a7a !important;
+        }
+      }
+    }
+
+    .ant-menu-inline-collapsed .ant-menu-item {
+      margin: 4px 0 !important;
+      margin-right: -3px !important;
+      border-radius: 8px 0 0 8px !important;
+      
+      &.ant-menu-item-selected {
+        margin: 4px 0 !important;
+        margin-right: -3px !important;
+      }
+    }
+
+    .ant-menu-submenu {
+      color: #666 !important;
+
+      .ant-menu-submenu-title {
+        color: #666 !important;
+        transition: all $transition-smooth !important;
+        border-radius: 8px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        // margin: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important;
+
+        &:hover {
+          color: #005c99 !important;
+          background: rgba(0, 92, 153, 0.1) !important;
+        }
+      }
+
+      &.ant-menu-submenu-open {
+        .ant-menu-submenu-title {
+          background: #005c99 !important;
+          color: white !important;
+          border-radius: 8px 0 0 8px !important;
+          margin: 4px 0 4px 8px !important;
+          margin-right: -3px !important;
+        }
+      }
+    }
+
+    .ant-menu-inline-collapsed .ant-menu-submenu {
+      .ant-menu-submenu-title {
+        margin: 4px 0 !important;
+        margin-right: -3px !important;
+        border-radius: 8px 0 0 8px !important;
+      }
+
+      &.ant-menu-submenu-open .ant-menu-submenu-title {
+        margin: 4px 0 !important;
+        margin-right: -3px !important;
+      }
+
+      .ant-menu-submenu-arrow {
+        color: $text-secondary !important;
+        transition: all $transition-smooth !important;
+      }
+
+      &.ant-menu-submenu-open .ant-menu-submenu-arrow {
+        color: $accent-blue !important;
+      }
+    }
+
+    .ant-menu-inline {
+      background: transparent !important;
+      border-right: none !important;
+
+      .ant-menu-item {
+        padding-left: 32px !important;
+        padding-right: 16px !important;
+        font-size: 13px !important;
+
+        &.ant-menu-item-selected {
+          background: rgba(59, 130, 246, 0.2) !important;
+          color: $accent-blue !important;
+        }
+      }
+    }
+  }
+}
+
+// Menu items icon sizing
+.menu-items {
+  .anticon,
+  app-icon {
+    font-size: 1.5rem !important;
+    transition: all $transition-smooth;
+  }
+
+  .ant-menu-submenu-title {
+    .anticon,
+    app-icon {
+      font-size: 1.5rem !important;
+    }
+  }
+}
+
+// Copyright container styling
+.copy-right-container {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all $transition-smooth;
+
+  label {
+    color: $text-secondary;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0;
+  }
+}
+
+// Responsive behavior
+@media (max-width: 1024px) {
+  nz-sider {
+    position: fixed !important;
+    z-index: 1000 !important;
+    height: 100vh;
+  }
+
+  .menu-sidebar {
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@media (max-width: 768px) {
+  nz-sider {
+    width: 80px !important;
+    min-width: 80px !important;
+  }
+
+  .menu-sidebar {
+    min-width: 80px !important;
+    max-width: 80px !important;
+  }
+
+  .logo-container {
+    height: 80px !important;
+    padding: 16px 0 !important;
+  }
+
+  .header-toggle {
+    top: 12px !important;
+    left: 12px !important;
+  }
+
+  .copy-right-container {
+    display: none;
+  }
+
+  .menu {
+    padding: 12px 4px;
+
+    ::ng-deep {
+      .ant-menu-item {
+        margin: 8px 0 !important;
+        height: 40px !important;
+        line-height: 40px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .ant-menu-submenu .ant-menu-submenu-title {
+        margin: 8px 0 !important;
+        // padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 40px !important;
+        line-height: 40px !important;
+      }
+
+      .ant-menu-inline .ant-menu-item {
+        padding-left: 0 !important;
+      }
+    }
+  }
+}
+
+// Smooth animations and transitions
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+nz-sider {
+  animation: slideIn $transition-smooth ease-out;
+}
+
+.menu-items {
+  animation: fadeIn $transition-smooth ease-out;
+}
+
+// Dark theme support
+[data-theme="dark"] {
+  nz-sider {
+    background: linear-gradient(135deg, #{darken($sidebar-dark, 5%)} 0%, #{darken($sidebar-light, 5%)} 100%);
+  }
+}
+
+// Focus and accessibility
+::ng-deep {
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    outline-offset: 2px;
+
+    &:focus {
+      outline: 2px solid $accent-blue;
+    }
+  }
+}
+
+/* Header styling */
+nz-header {
+  background: white !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  height: 80px !important;
+}
+
+/* Content area top margin to prevent header overlap */
+nz-content {
+  margin-top: 80px !important;
+}
+
+/* Sidebar border fix */
+::ng-deep .ant-layout-sider {
+  border-right: 3px solid #005c99 !important;
+}
+
+[dir="rtl"] ::ng-deep .ant-layout-sider {
+  border-right: none !important;
+  border-left: 3px solid #005c99 !important;
+}
+
+/* Right header section positioning */
+.right-header-section {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/* Left header section positioning */
+.left-header-section {
+  transition: left 0.3s ease !important;
+}
+
+[dir="rtl"] .left-header-section {
+  left: auto !important;
+  transition: right 0.3s ease !important;
+}
+
+@media (max-width: 768px) {
+  .left-header-section {
+    left: 80px !important;
+  }
+}
+
+/* Language toggle styling */
 .lang-toggle {
   width: 150px;
   height: 45px;
@@ -161,7 +498,6 @@ nz-sider {
   transition: background 0.3s ease;
 }
 
-/* BLUE MOVING TOGGLE BUTTON */
 .toggle-btn {
   width: 70px;
   height: 35px;
@@ -172,15 +508,12 @@ nz-sider {
   left: 5px;
   transition: all 0.3s ease;
   z-index: 1;
-  /* BELOW THE TEXT */
 }
 
-/* MOVES RIGHT IN ARABIC MODE */
 .toggle-btn.move-right {
   left: 75px;
 }
 
-/* TEXT LABELS */
 .label {
   flex: 1;
   text-align: center;
@@ -194,1057 +527,33 @@ nz-sider {
   margin: 0 2px;
 }
 
-/* ACTIVE LANGUAGE HIGHLIGHT */
 .label.active {
   color: #ffffff;
   font-weight: 500;
 }
 
-/* SPECIAL FIX — ARABIC TEXT MUST STAY ON TOP */
 .label.ar {
   z-index: 3 !important;
-  /* FIXES YOUR ISSUE */
 }
 
 .label.en {
   z-index: 3 !important;
-  /* FIXES YOUR ISSUE */
 }
 
-.ant-full-layout {
-  margin-left: 0;
-  margin-right: 0;
+:host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-item,
+:host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-submenu-title {
+  padding: 0 !important;
 }
-
-.ant-top-layout {
-  margin-top: 80px
+:host ::ng-deep span[nz-icon][ng-reflect-nz-type="line-chart"] {
+  padding-left: 20px !important;
 }
-
-nz-footer {
-  text-align: center;
+:host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-submenu-title {
+  padding: 0 !important;
 }
-
-h6 {
-  font-size: 2rem !important;
+:host ::ng-deep .ant-menu-submenu-title {
+  padding: 0 !important;
 }
-
-[dir="ltr"] .ant-layout-footer {
-
-  background: none;
-  text-align: left;
+:host ::ng-deep .ant-menu-item,
+:host ::ng-deep .ant-menu-submenu-title {
+  padding: 0 0 0 20px !important;
 }
-
-[dir="rtl"] .ant-layout-footer {
-
-  background: none;
-  text-align: right;
-}
-
-::ng-deep .ant-table-pagination>* {
-  margin-inline: 5px !important;
-}
-
-
-::ng-deep [dir="rtl"] .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
-.ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
-  padding-right: 0px !important;
-}
-
-::ng-deep [dir="rtl"] .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow {
-  margin-inline-start: 75% !important;
-}
-
-::ng-deep .ant-menu-submenu-arrow {
-  margin-inline-start: 75% !important;
-}
-
-// user logged in icon re-size
-.user-info-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-inline-end: 0.3rem;
-}
-
-.user-info-container .ant-avatar {
-  height: 40px !important;
-  width: 40px !important;
-  line-height: 40px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0;
-}
-
-.user-info-container .ant-avatar.ant-avatar-icon {
-  font-size: 22px !important;
-}
-
-.user-info-container .ant-avatar .anticon,
-.user-info-container .ant-avatar i.anticon {
-  font-size: 22px !important;
-  color: white !important;
-  display: inline-block !important;
-}
-
-::ng-deep .user-info-container .ant-avatar .anticon,
-::ng-deep .user-info-container .ant-avatar i.anticon {
-  font-size: 22px !important;
-  color: white !important;
-  display: inline-block !important;
-}
-
-::ng-deep .ant-menu-submenu .ant-menu-submenu-arrow {
-  color: $primary !important;
-}
-
-::ng-deep .ant-menu-submenu-open .ant-menu-submenu-arrow {
-  color: white !important;
-}
-
-::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
-::ng-deep .ant-menu-item:active {
-  background-color: #f1f1f1;
-}
-
-::ng-deep .ant-modal.change-role {
-  .ant-modal-header {
-    border-bottom: 0;
-
-    .title {
-      font-family: Roboto;
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 35px;
-      text-align: left;
-      color: #000000;
-    }
-
-    .anticon-close {
-      height: 16.41px;
-
-      svg {
-        width: 16.41px;
-        height: 16.4px;
-        color: #E1E1E1;
-      }
-    }
-  }
-
-  .ant-modal-content {
-    border-top: 5px solid $primary;
-
-    .ant-modal-body {
-      padding-top: 0;
-    }
-  }
-}
-
-::ng-deep .ant-select-multiple .ant-select-selector {
-  height: 4rem;
-  align-items: baseline;
-}
-
-::ng-deep .custom-spinner .spinner {
-  border-radius: 50%;
-  /* Makes the container circular */
-  width: 120px !important;
-  /* Adjust size as needed */
-  height: 120px !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Optional: inner circular background */
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-}
-
-::ng-deep .custom-spinner {
-  border-radius: 50%;
-}
-
-/* Header toggle button */
-.header-toggle {
-  display: flex;
-  align-items: center;
-  padding: 0 0 0 20px;
-}
-
-.header-toggle-btn {
-  background: transparent !important;
-  border: none !important;
-  width: 32px !important;
-  height: 32px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease !important;
-  font-size: 20px !important;
-}
-
-.header-toggle-btn:hover {
-  background: #e6f7ff !important;
-  color: #1890ff !important;
-}
-
-.header-toggle-btn .anticon {
-  font-size: 20px !important;
-}
-
-
-
-
-
-/* Custom Dropdown Styles */
-.user-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  min-width: 190px;
-  margin-top: 4px;
-}
-
-.dropdown-item {
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: default;
-}
-
-.theme-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-[data-theme="dark"] .dropdown-menu {
-  background: #1f1f1f;
-  border-color: #303030;
-}
-
-[data-theme="dark"] .dropdown-item {
-  color: #ffffff;
-}
-
-.test-login-container {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.test-login-container input {
-  width: 150px !important;
-  height: 32px !important;
-  font-size: 14px !important;
-  padding: 4px 11px !important;
-}
-
-.test-login-container button {
-  height: 32px !important;
-  font-size: 14px !important;
-  padding: 4px 15px !important;
-  min-width: auto !important;
-  white-space: nowrap;
-}
-
-/* Menu icon sizes */
-.menu-items .anticon,
-.menu-items app-icon {
-  font-size: 20px !important;
-}
-
-.menu-items .ant-menu-submenu-title .anticon,
-.menu-items .ant-menu-submenu-title app-icon {
-  font-size: 20px !important;
-}
-
-/* Push RFP-Requestor label 1px to the left */
-::ng-deep .ant-menu-submenu-title span {
-  margin-left: -1px !important;
-}
-
-/* Remove blur on mobile and tablet globally */
-@media (max-width: 1024px) {
-  html, body, *, *::before, *::after {
-    filter: none !important;
-    backdrop-filter: none !important;
-    -webkit-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  ::ng-deep ngx-spinner {
-    display: none !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .test-login-container {
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .test-login-container input {
-    width: 100px !important;
-    font-size: 12px !important;
-  }
-
-  .test-login-container button {
-    font-size: 12px !important;
-    padding: 4px 8px !important;
-  }
-
-  .logo-container {
-    position: relative !important;
-    top: 0 !important;
-    height: 80px !important;
-    min-height: 80px !important;
-  }
-
-  nz-header {
-    height: 80px !important;
-    min-height: 80px !important;
-  }
-
-  .inner-content {
-    padding: 15px !important;
-    margin-top: 0.5rem !important;
-  }
-
-  nz-content {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .scope-of-work-labels,
-  nz-form-label {
-    display: block !important;
-    order: 2 !important;
-    margin-top: 15px !important;
-    margin-bottom: 5px !important;
-    width: 100% !important;
-  }
-
-  .default-text {
-    order: 1 !important;
-    margin-bottom: 10px !important;
-  }
-
-  .scope-of-work-container {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .labour-label {
-    order: 3 !important;
-    margin-top: 15px !important;
-    display: block !important;
-    width: 100% !important;
-  }
-
-  .scope-button {
-    order: 2 !important;
-    margin-bottom: 20px !important;
-    margin-top: 15px !important;
-  }
-
-  .default-text-btn {
-    font-size: 12px !important;
-    padding: 4px 8px !important;
-    height: auto !important;
-    min-width: auto !important;
-  }
-
-  /* Create RFP Component Responsive */
-  .create-rfp-container {
-    padding: 10px !important;
-  }
-
-  .create-rfp-form .ant-form-item {
-    margin-bottom: 16px !important;
-  }
-
-  .create-rfp-form .ant-form-item-label {
-    padding-bottom: 4px !important;
-  }
-
-  .create-rfp-form .ant-input,
-  .create-rfp-form .ant-select,
-  .create-rfp-form .ant-picker {
-    width: 100% !important;
-  }
-
-  .create-rfp-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-
-  .create-rfp-buttons button {
-    width: 100% !important;
-    margin-bottom: 8px !important;
-  }
-
-  /* All buttons responsive */
-  button[nz-button] {
-    width: 100% !important;
-    margin-bottom: 8px !important;
-    font-size: 12px !important;
-    padding: 4px 8px !important;
-  }
-
-
-
-
-
-
-
-  /* Custom Dropdown Styles */
-  .user-dropdown {
-    position: relative;
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    min-width: 190px;
-    margin-top: 4px;
-  }
-
-  .dropdown-item {
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: default;
-  }
-
-  .theme-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-  }
-
-  [data-theme="dark"] .dropdown-menu {
-    background: #1f1f1f;
-    border-color: #303030;
-  }
-
-  [data-theme="dark"] .dropdown-item {
-    color: #ffffff;
-  }
-
-  .test-login-container {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .test-login-container input {
-    width: 150px !important;
-    height: 32px !important;
-    font-size: 14px !important;
-    padding: 4px 11px !important;
-  }
-
-  .test-login-container button {
-    height: 32px !important;
-    font-size: 14px !important;
-    padding: 4px 15px !important;
-    min-width: auto !important;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 768px) {
-    .test-login-container {
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .test-login-container input {
-      width: 100px !important;
-      font-size: 12px !important;
-    }
-
-    .test-login-container button {
-      font-size: 12px !important;
-      padding: 4px 8px !important;
-    }
-
-    .logo-container {
-      position: relative !important;
-      top: 0 !important;
-      height: 80px !important;
-      min-height: 80px !important;
-    }
-
-    nz-header {
-      height: 80px !important;
-      min-height: 80px !important;
-    }
-
-    .inner-content {
-      padding: 15px !important;
-      margin-top: 0.5rem !important;
-    }
-
-    nz-content {
-      width: 100% !important;
-      max-width: 100% !important;
-    }
-
-    .scope-of-work-labels,
-    nz-form-label {
-      display: block !important;
-      order: 2 !important;
-      margin-top: 15px !important;
-      margin-bottom: 5px !important;
-      width: 100% !important;
-    }
-
-    .default-text {
-      order: 1 !important;
-      margin-bottom: 10px !important;
-    }
-
-    .scope-of-work-container {
-      display: flex !important;
-      flex-direction: column !important;
-    }
-
-    .labour-label {
-      order: 3 !important;
-      margin-top: 15px !important;
-      display: block !important;
-      width: 100% !important;
-    }
-
-    .scope-button {
-      order: 2 !important;
-      margin-bottom: 20px !important;
-      margin-top: 15px !important;
-    }
-
-    .default-text-btn {
-      font-size: 12px !important;
-      padding: 4px 8px !important;
-      height: auto !important;
-      min-width: auto !important;
-    }
-
-    /* Create RFP Component Responsive */
-    .create-rfp-container {
-      padding: 10px !important;
-    }
-
-    .create-rfp-form .ant-form-item {
-      margin-bottom: 16px !important;
-    }
-
-    .create-rfp-form .ant-form-item-label {
-      padding-bottom: 4px !important;
-    }
-
-    .create-rfp-form .ant-input,
-    .create-rfp-form .ant-select,
-    .create-rfp-form .ant-picker {
-      width: 100% !important;
-    }
-
-    .create-rfp-buttons {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 10px !important;
-    }
-
-    .create-rfp-buttons button {
-      width: 100% !important;
-      margin-bottom: 8px !important;
-    }
-
-    /* All buttons responsive */
-    button[nz-button] {
-      width: 100% !important;
-      margin-bottom: 8px !important;
-      font-size: 12px !important;
-      padding: 4px 8px !important;
-    }
-
-    /* Scope of work buttons */
-    .scope-of-work button {
-      top: 100px;
-      left: 20px;
-      z-index: 1001;
-    }
-
-    .floating-toggle button {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-
-
-
-
-    /* Custom Dropdown Styles */
-    .user-dropdown {
-      position: relative;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: white;
-      border: 1px solid #d9d9d9;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      min-width: 190px;
-      margin-top: 4px;
-    }
-
-    .dropdown-item {
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: default;
-    }
-
-    .theme-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-    }
-
-    [data-theme="dark"] .dropdown-menu {
-      background: #1f1f1f;
-      border-color: #303030;
-    }
-
-    [data-theme="dark"] .dropdown-item {
-      color: #ffffff;
-    }
-
-    .test-login-container {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .test-login-container input {
-      width: 150px !important;
-      height: 32px !important;
-      font-size: 14px !important;
-      padding: 4px 11px !important;
-    }
-
-    .test-login-container button {
-      height: 32px !important;
-      font-size: 14px !important;
-      padding: 4px 15px !important;
-      min-width: auto !important;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 768px) {
-      .test-login-container {
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .test-login-container input {
-        width: 100px !important;
-        font-size: 12px !important;
-      }
-
-      .test-login-container button {
-        font-size: 12px !important;
-        padding: 4px 8px !important;
-      }
-
-      .logo-container {
-        position: relative !important;
-        top: 0 !important;
-        height: 80px !important;
-        min-height: 80px !important;
-      }
-
-      nz-header {
-        height: 80px !important;
-        min-height: 80px !important;
-      }
-
-      .inner-content {
-        padding: 15px !important;
-        margin-top: 0.5rem !important;
-      }
-
-      nz-content {
-        width: 100% !important;
-        max-width: 100% !important;
-      }
-
-      .scope-of-work-labels,
-      nz-form-label {
-        display: block !important;
-        order: 2 !important;
-        margin-top: 15px !important;
-        margin-bottom: 5px !important;
-        width: 100% !important;
-      }
-
-      .default-text {
-        order: 1 !important;
-        margin-bottom: 10px !important;
-      }
-
-      .scope-of-work-container {
-        display: flex !important;
-        flex-direction: column !important;
-      }
-
-      .labour-label {
-        order: 3 !important;
-        margin-top: 15px !important;
-        display: block !important;
-        width: 100% !important;
-      }
-
-      .scope-button {
-        order: 2 !important;
-        margin-bottom: 20px !important;
-        margin-top: 15px !important;
-      }
-
-      .default-text-btn {
-        font-size: 12px !important;
-        padding: 4px 8px !important;
-        height: auto !important;
-        min-width: auto !important;
-      }
-
-      /* Create RFP Component Responsive */
-      .create-rfp-container {
-        padding: 10px !important;
-      }
-
-      .create-rfp-form .ant-form-item {
-        margin-bottom: 16px !important;
-      }
-
-      .create-rfp-form .ant-form-item-label {
-        padding-bottom: 4px !important;
-      }
-
-      .create-rfp-form .ant-input,
-      .create-rfp-form .ant-select,
-      .create-rfp-form .ant-picker {
-        width: 100% !important;
-      }
-
-      .create-rfp-buttons {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-      }
-
-      .create-rfp-buttons button {
-        width: 100% !important;
-        margin-bottom: 8px !important;
-      }
-
-      /* All buttons responsive */
-      button[nz-button] {
-        width: 100% !important;
-        margin-bottom: 8px !important;
-        font-size: 12px !important;
-        padding: 4px 8px !important;
-      }
-
-      /* Scope of work buttons */
-      .scope-of-work button {
-        width: 70% !important;
-        margin-bottom: 10px !important;
-        max-width: 200px !important;
-      }
-
-      /* Technical evaluation tables horizontal scroll */
-      .technical-evaluation-table,
-      .evaluation-criteria-table {
-        overflow-x: auto !important;
-        width: 100% !important;
-      }
-
-      /* Custom Dropdown Styles */
-      .user-dropdown {
-        position: relative;
-      }
-
-      .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: white;
-        border: 1px solid #d9d9d9;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
-        min-width: 190px;
-        margin-top: 4px;
-      }
-
-      .dropdown-item {
-        padding: 12px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: default;
-      }
-
-      .theme-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-      }
-
-      [data-theme="dark"] .dropdown-menu {
-        background: #1f1f1f;
-        border-color: #303030;
-      }
-
-      [data-theme="dark"] .dropdown-item {
-        color: #ffffff;
-      }
-
-      .test-login-container {
-        display: flex;
-        gap: 4px;
-        align-items: center;
-        flex-shrink: 0;
-      }
-
-      .test-login-container input {
-        width: 150px !important;
-        height: 32px !important;
-        font-size: 14px !important;
-        padding: 4px 11px !important;
-      }
-
-      .test-login-container button {
-        height: 32px !important;
-        font-size: 14px !important;
-        padding: 4px 15px !important;
-        min-width: auto !important;
-        white-space: nowrap;
-      }
-
-      @media (max-width: 768px) {
-        .test-login-container {
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .test-login-container input {
-          width: 100px !important;
-          font-size: 12px !important;
-        }
-
-        .test-login-container button {
-          font-size: 12px !important;
-          padding: 4px 8px !important;
-        }
-
-        .logo-container {
-          position: relative !important;
-          top: 0 !important;
-          height: 80px !important;
-          min-height: 80px !important;
-        }
-
-        nz-header {
-          height: 80px !important;
-          min-height: 80px !important;
-        }
-
-        .inner-content {
-          padding: 15px !important;
-          margin-top: 0.5rem !important;
-        }
-
-        nz-content {
-          width: 100% !important;
-          max-width: 100% !important;
-        }
-
-        .scope-of-work-labels,
-        nz-form-label {
-          display: block !important;
-          order: 2 !important;
-          margin-top: 15px !important;
-          margin-bottom: 5px !important;
-          width: 100% !important;
-        }
-
-        .default-text {
-          order: 1 !important;
-          margin-bottom: 10px !important;
-        }
-
-        .scope-of-work-container {
-          display: flex !important;
-          flex-direction: column !important;
-        }
-
-        .labour-label {
-          order: 3 !important;
-          margin-top: 15px !important;
-          display: block !important;
-          width: 100% !important;
-        }
-
-        .scope-button {
-          order: 2 !important;
-          margin-bottom: 20px !important;
-          margin-top: 15px !important;
-        }
-
-        .default-text-btn {
-          font-size: 12px !important;
-          padding: 4px 8px !important;
-          height: auto !important;
-          min-width: auto !important;
-        }
-
-        /* Create RFP Component Responsive */
-        .create-rfp-container {
-          padding: 10px !important;
-        }
-
-        .create-rfp-form .ant-form-item {
-          margin-bottom: 16px !important;
-        }
-
-        .create-rfp-form .ant-form-item-label {
-          padding-bottom: 4px !important;
-        }
-
-        .create-rfp-form .ant-input,
-        .create-rfp-form .ant-select,
-        .create-rfp-form .ant-picker {
-          width: 100% !important;
-        }
-
-        .create-rfp-buttons {
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 10px !important;
-        }
-
-        .create-rfp-buttons button {
-          width: 100% !important;
-          margin-bottom: 8px !important;
-        }
-
-        /* All buttons responsive */
-        button[nz-button] {
-          width: 100% !important;
-          margin-bottom: 8px !important;
-          font-size: 12px !important;
-          padding: 4px 8px !important;
-        }
-
-        /* Scope of work buttons */
-        .scope-of-work button {
-          width: 70% !important;
-          margin-bottom: 10px !important;
-          max-width: 200px !important;
-        }
-
-        /* Technical evaluation tables horizontal scroll */
-        .technical-evaluation-table,
-        .evaluation-criteria-table {
-          overflow-x: auto !important;
-          width: 100% !important;
-        }
-
-        .technical-evaluation-table table,
-        .evaluation-criteria-table table {
-          min-width: 600px !important;
-        }
-
-        /* Language toggle positioning for mobile/tablet */
-        .lang-toggle {
-          position: fixed !important;
-          top: 85px !important;
-          right: 15px !important;
-          z-index: 10001 !important;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-        }
-
-        /* RTL (Arabic) - position on top-left */
-        :host-context([dir="rtl"]) .lang-toggle {
-          right: auto !important;
-          left: 15px !important;
-        }
-
-        .ant-right-layout,
-        .ant-left-layout {
-          margin-left: 0 !important;
-          margin-right: 0 !important;
-        }
-
-        nz-sider {
-          z-index: 1000 !important;
-          background-color: #6dade8;
-        }
-
-        .hide-on-mobile-open {
-          display: none !important;
-        }
-
-        nz-content:not(.ant-full-layout) {
-          filter: blur(3px) !important;
-          pointer-events: auto !important;
-          cursor: pointer !important;
-        }
-
-        nz-content:not(.ant-full-layout) .inner-content {
-          filter: blur(3px) !important;
-        }
-
-        .dashboard-wrapper {
-          filter: blur(3px) !important;
-          transition: filter 0.3s ease;
-        }
-      }
-    }
-  }
-}
-

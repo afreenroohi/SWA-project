@@ -609,14 +609,14 @@ export class AppComponent {
             {
               name: 'create',
               iconName: IconList.create,
-              text: 'Create',
+              text: 'Create RFP',
               textAr: 'انشاء منافسة',
               link: 'rfp/create',
             },
             {
               name: 'myrfp',
               iconName: IconList.myRequest,
-              text: 'My Request',
+              text: 'My RFP Requests',
               textAr: 'منافساتي',
               link: 'rfp/myrfp',
             }
@@ -802,14 +802,14 @@ export class AppComponent {
               {
                 name: 'create',
                 iconName: IconList.create,
-                text: 'Create',
+                text: 'Create RFP',
                 textAr: 'انشاء منافسة',
                 link: 'rfp/create',
               },
               {
                 name: 'myrfp',
                 iconName: IconList.myRequest,
-                text: 'My Request',
+                text: 'My RFP Requests',
                 textAr: 'منافساتي',
                 link: 'rfp/myrfp',
               }

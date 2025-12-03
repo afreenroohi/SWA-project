@@ -1,15 +1,16 @@
-
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner>  ------>
 
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
- <!-- <ngx-spinner
+<!-- <ngx-spinner
   bdColor="rgba(51, 51, 51, 0.8)"
   size="small"
   color="#1fcecb"
   type="line-scale"
 ></ngx-spinner> -->
-<ngx-spinner bdColor = "rgb(25,113,229)" size = "default" color = "#1fcecb" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
- <!-- <ngx-spinner
+<ngx-spinner bdColor="rgb(25,113,229)" size="default" color="#1fcecb" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<!-- <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.8)"
   size="medium"
   color="#fff"
@@ -24,68 +25,54 @@
 <!-- <nz-layout style="height: 100vh"
   style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
 <nz-layout>
- 
 
- <nz-header>
-  
-    <!-- Header Sidebar Section -->
-    <div class="header-sidebar-section" [ngStyle]="{
-      'width': isCollapsed ? '80px' : '200px'
-    }">
-      <div class="header-toggle" *ngIf="isUserLoggedIn && navItems && navItems.length > 0">
-        <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
-          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
-        </button>
-      </div>
-      <div class="logo-container" [class.collapsed]="isCollapsed">
-        <a href="/">
-          <img *ngIf="!isCollapsed" [src]="logoSrc" width="80px" height="77px" alt="logo" />
-          <img *ngIf="isCollapsed" src="./assets/logo/swa-logo-dark.svg" width="70px" height="77px" alt="logo" />
-        </a>
-      </div>
-    </div>
 
+  <nz-header>
     <!-- Left Section: Language Toggle and Test Login -->
     <div class="left-header-section" [ngStyle]="{
-      'position': 'fixed',
-      'left': isCollapsed ? '80px' : '200px',
-      'top': '0',
-      'height': '80px',
-      'display': 'flex',
-      'align-items': 'center',
-      'gap': '16px',
-      'padding-left': '1rem'
-    }">
+    'position': 'fixed',
+    'left': isCollapsed ? '80px' : '200px',
+    'top': '0',
+    'height': '80px',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+    'gap': '16px',
+    'padding-left': '1rem'
+  }">
+      <!-- ...existing content unchanged... -->
       <div class="lang-toggle" (click)="toggleLang()">
         <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
         <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
         <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
       </div>
 
-      <div *ngIf="enableTestLogon" class="test-login-container">
+      <div *ngIf="enableTestLogon" class="test-login-container" style="margin-right: 3px;">
         <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto" />
         <button nz-button nzType="primary" [ngStyle]="{
-            'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
-          }" (click)="getNavItem(ProxyUserId)">
+          'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+        }" (click)="getNavItem(ProxyUserId)">
           {{ "RFP.TestLogin" | translate }}
         </button>
       </div>
     </div>
 
-    <!-- Right Section: Proxy Button and User Info -->
+    <!-- Right Section: Proxy Button and User Info (UNCHANGED) -->
     <div class="right-header-section" [ngStyle]="{
-      'position': 'fixed',
-      'right': '0',
-      'top': '0',
-      'height': '80px',
-      'display': 'flex',
-      'align-items': 'center',
-      'gap': '16px',
-      'padding-right': '1rem'
-    }">
+    'position': 'fixed',
+    'right': '0',
+    'top': '0',
+    'height': '80px',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+    'gap': '16px',
+    'padding-right': '1rem'
+  }">
+      <!-- ...existing content unchanged... -->
       <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
-          'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
-        }" (click)="openUsrMdl()">
+        'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+      }" (click)="openUsrMdl()">
         {{ "COM.ChangeUsr" | translate }}
       </button>
 
@@ -93,14 +80,14 @@
         <div style="display: flex; align-items: center; gap: 10px;">
           <div class="user-dropdown" (click)="toggleDropdown()">
             <nz-avatar nzIcon="user" style="
-                background-color:#005c99;
-                color: #3277ee;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 22px;
-                cursor: pointer;
-              "></nz-avatar>
+              background-color:#005c99;
+              color: #3277ee;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 22px;
+              cursor: pointer;
+            "></nz-avatar>
             <div class="dropdown-menu" *ngIf="showDropdown">
               <div class="dropdown-item">
                 <span class="theme-label">
@@ -122,21 +109,39 @@
         </div>
       </div>
     </div>
- 
- 
-      <!-- ✅ End Header User Section -->
-   
+
   </nz-header>
 
 
 
 
-<nz-layout class="ant-top-layout">
-   <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzWidth]="isCollapsed ? 80 : 200" [ngStyle]="{ 'background-color': 'white' }">
+  <nz-layout class="ant-top-layout">
+    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
+      [nzWidth]="isCollapsed ? 80 : 200" [ngStyle]="{ 'background-color': 'white' }">
+
+      <!-- Toggle button at top-left -->
+      <div class="header-toggle" *ngIf="navItems && navItems.length > 0">
+        <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
+          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+        </button>
+      </div>
+
+      <!-- Logo container centered below toggle -->
+      <div class="logo-container" [class.collapsed]="isCollapsed">
+        <a href="/" class="logo-link" title="Home">
+          <!-- expanded logo -->
+          <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
+          <!-- collapsed logo -->
+          <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="44" height="44"
+            alt="logo-collapsed" />
+        </a>
+      </div>
+
       <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
         <ng-container *ngFor="let item of navItems">
           <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
-            <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="submenuTitle" [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
+            <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="submenuTitle"
+              [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
               <ng-template #submenuTitle>
                 <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalSubmenuIcon">
                   <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
@@ -239,12 +244,10 @@
         'ant-right-layout': cs.userLanguage === 'en' && isUserLoggedIn,
         'ant-left-layout': cs.userLanguage === 'ar' && isUserLoggedIn,
         'ant-full-layout': !isUserLoggedIn
-      }"
-      [ngStyle]="{
+      }" [ngStyle]="{
         'margin-left': (cs.userLanguage === 'en' && isUserLoggedIn) ? (isCollapsed ? '80px' : '200px') : '0',
         'margin-right': (cs.userLanguage === 'ar' && isUserLoggedIn) ? (isCollapsed ? '80px' : '200px') : '0'
-      }"
-      style="background-color: white">
+      }" style="background-color: white">
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>
