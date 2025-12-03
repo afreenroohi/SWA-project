@@ -1,15 +1,16 @@
-
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner>  ------>
 
 <!-- <ngx-spinner type="ball-scale-multiple"></ngx-spinner> -->
- <!-- <ngx-spinner
+<!-- <ngx-spinner
   bdColor="rgba(51, 51, 51, 0.8)"
   size="small"
   color="#1fcecb"
   type="line-scale"
 ></ngx-spinner> -->
-<ngx-spinner bdColor = "rgb(25,113,229)" size = "default" color = "#1fcecb" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
- <!-- <ngx-spinner
+<ngx-spinner bdColor="rgb(25,113,229)" size="default" color="#1fcecb" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<!-- <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.8)"
   size="medium"
   color="#fff"
@@ -23,188 +24,172 @@
 
 <!-- <nz-layout style="height: 100vh"
   style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
-<nz-layout>
-  <!-- <nz-header>
-    <div nz-row nzJustify="space-between" nzAlign="middle">
-      <div nz-col nzSpan="12">
-        <div nz-row nzAlign="middle">
-          <div class="logo-container">
-            <a href="/">
-              <img [src]="logoSrc" width="220px" height="77px" alt="logo" />
-            </a>
-          </div>
-          &nbsp; &nbsp;
-          <button
-            nz-button
-            nzType="primary"
-            *ngIf="cs.userLanguage === 'ar'"
-            (click)="onChangeLang('en')"
-          >
-            <span> English</span>
-          </button>
+<nz-layout [class.rtl-layout]="cs.userLanguage === 'ar'">
 
-          <button
-            nz-button
-            nzType="primary"
-            *ngIf="cs.userLanguage === 'en'"
-            (click)="onChangeLang('ar')"
-          >
-            <span> العربیة </span>
-          </button>
 
-          Test login input + button
-          <ng-container *ngIf="enableTestLogon">
-            <input
-              placeholder="Userid"
-              [(ngModel)]="ProxyUserId"
-              class="userid-input"
-            />
-            <button nz-button nzType="primary" (click)="getNavItem(ProxyUserId)">
-              {{ "RFP.TestLogin" | translate }}
-            </button>
-          </ng-container>
-
-          <!-- proxy / change user -->
-          <!-- <button
-            *ngIf="enableproxy"
-            nz-button
-            nzType="primary"
-            (click)="openUsrMdl()"
-          >
-            {{ "COM.ChangeUsr" | translate }}
-          </button>
-        </div> -->
-      <!-- </div>
-      <div nz-col nzSpan="4">
-        <div style="text-align: center" *ngIf="isUserLoggedIn">
-          &nbsp;
-          <nz-avatar
-            nzIcon="user"
-            *ngIf="isUserLoggedIn"
-            style="background-color: var(--primary-color)"
-          ></nz-avatar>
-          &nbsp;
-          <span *ngIf="dispname" style="color: black">{{ dispname }}</span>
-        </div>
+  <nz-header>
+    <!-- Left Section: Language Toggle and Test Login -->
+    <div class="left-header-section" [ngStyle]="{
+    'position': 'fixed',
+    'left': cs.userLanguage === 'en' ? (isCollapsed ? '80px' : '200px') : 'auto',
+    'right': cs.userLanguage === 'ar' ? (isCollapsed ? '80px' : '200px') : 'auto',
+    'top': '0',
+    'height': '80px',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+    'gap': '16px',
+    'padding-left': cs.userLanguage === 'en' ? '1rem' : '0',
+    'padding-right': cs.userLanguage === 'ar' ? '1rem' : '0'
+  }">
+      <!-- ...existing content unchanged... -->
+      <div class="lang-toggle" (click)="toggleLang()">
+        <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
+        <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
+        <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
       </div>
- 
- 
-      <!-- ✅ End Header User Section -->
-    <!-- </div>
-  </nz-header> --> 
 
-
-
-  
- <nz-header>
-  
-    <div nz-row nzJustify="space-between" nzAlign="middle">
-      <div nz-col nzSpan="12">
-        <div nz-row nzAlign="middle">
-          <div class="logo-container" [class.collapsed]="isCollapsed">
-            <a href="/">
-              <img *ngIf="!isCollapsed" [src]="logoSrc" width="220px" height="77px" alt="logo" />
-              <img *ngIf="isCollapsed" src="./assets/logo/swa-header-logo.svg" width="70px" height="77px" alt="logo" />
-            </a>
-          </div>
-          &nbsp; &nbsp;
-          <!-- <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'ar'" (click)="onChangeLang('en')" >
-            <span> English</span>
-          </button>
-          
- 
-          <button nz-button nzType="primary" *ngIf="cs.userLanguage === 'en'" (click)="onChangeLang('ar')">
-            <span> العربیة </span> &nbsp; &nbsp;
-          </button> -->
-<div class="lang-toggle" (click)="toggleLang()">
-  <div class="toggle-btn" [class.active]="cs.userLanguage === 'ar'"></div>
-
-  <span class="label en" [class.active]="cs.userLanguage === 'en'">English</span>
-  <span class="label ar" [class.active]="cs.userLanguage === 'ar'">العربیة</span>
-</div>
-
-          &nbsp; &nbsp;
- 
-          <ng-container *ngIf="enableTestLogon">
-            <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto" />
-            &nbsp; &nbsp;
-            <button nz-button nzType="primary" [ngStyle]="{
-                'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
-              }" (click)="getNavItem(ProxyUserId)">
-              {{ "RFP.TestLogin" | translate }}
-            </button>
-            &nbsp; &nbsp;
-          </ng-container>
-       
-
-          <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
-              'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
-            }" (click)="openUsrMdl()">
-            {{ "COM.ChangeUsr" | translate }}
-          </button>
-        </div>
+      <div *ngIf="enableTestLogon" class="test-login-container" style="margin-right: 3px;">
+        <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto; margin-right: 8px;" />
+        <button nz-button nzType="primary" [ngStyle]="{
+          'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+        }" (click)="getNavItem(ProxyUserId)">
+          {{ "RFP.TestLogin" | translate }}
+        </button>
       </div>
- 
-      <!-- ✅ Fixed Header User Section -->
-      <div nz-col nzSpan="12" class="right-header-section">
-        <div nz-row nzJustify="end" nzAlign="middle">
-          <div nz-col class="user-info-container">
-            <div style="display: flex; align-items: center; gap: 10px;" *ngIf="isUserLoggedIn && dispname">
-              <!-- Avatar with custom dropdown -->
-              <div class="user-dropdown" (click)="toggleDropdown()">
-                <nz-avatar nzIcon="user" style="
-                    background-color:#005c99;
-                    color: #3277ee;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 22px;
-                    cursor: pointer;
-                  "></nz-avatar>
-                <div class="dropdown-menu" *ngIf="showDropdown">
-                  <div class="dropdown-item">
-                    <span class="theme-label">
-                      <span nz-icon [nzType]="isDarkMode ? 'moon' : 'sun'"></span>
-                      {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
-                    </span>
-                    <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
-                  </div>
-                </div>
-              </div>
-              <div style="display:flex;flex-direction:column;line-height:1.2;">
-                <span style="color: black; font-weight: 500;">
-                  {{ dispname }}
+    </div>
+
+    <!-- Right Section: Proxy Button and User Info -->
+    <div class="right-header-section" [ngStyle]="{
+    'position': 'fixed',
+    'right': cs.userLanguage === 'en' ? '0' : 'auto',
+    'left': cs.userLanguage === 'ar' ? '0' : 'auto',
+    'top': '0',
+    'height': '80px',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'flex-start',
+    'flex-direction': cs.userLanguage === 'ar' ? 'row-reverse' : 'row',
+    'gap': '16px',
+    'padding-right': cs.userLanguage === 'en' ? '1rem' : '0',
+    'padding-left': cs.userLanguage === 'ar' ? '1rem' : '0'
+  }">
+      <!-- Profile first for Arabic, proxy button first for English -->
+      <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'ar'">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-dropdown" (click)="toggleDropdown()">
+            <nz-avatar nzIcon="user" class="animated-avatar" style="
+              background-color:#005c99;
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 22px;
+              cursor: pointer;
+            "></nz-avatar>
+            <div class="dropdown-menu" *ngIf="showDropdown">
+              <div class="dropdown-item">
+                <span class="theme-label">
+                  <span nz-icon [nzType]="isDarkMode ? 'moon' : 'sun'"></span>
+                  {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
                 </span>
-                <span style="color: gray; font-size: 13px;">
-                  IT / Operations
-                </span>
+                <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
               </div>
             </div>
           </div>
+          <div style="display:flex;flex-direction:column;line-height:1.2;">
+            <span style="color: black; font-weight: 500;">
+              {{ dispname }}
+            </span>
+            <span style="color: gray; font-size: 13px;">
+              IT / Operations
+            </span>
+          </div>
         </div>
       </div>
- 
- 
-      <!-- ✅ End Header User Section -->
+
+      <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
+        'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
+      }" (click)="openUsrMdl()">
+        {{ "COM.ChangeUsr" | translate }}
+      </button>
+
+      <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'en'">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-dropdown" (click)="toggleDropdown()">
+            <nz-avatar nzIcon="user" class="animated-avatar" style="
+              background-color:#005c99;
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 22px;
+              cursor: pointer;
+            "></nz-avatar>
+            <div class="dropdown-menu" *ngIf="showDropdown">
+              <div class="dropdown-item">
+                <span class="theme-label">
+                  <span nz-icon [nzType]="isDarkMode ? 'moon' : 'sun'"></span>
+                  {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
+                </span>
+                <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;line-height:1.2;">
+            <span style="color: black; font-weight: 500;">
+              {{ dispname }}
+            </span>
+            <span style="color: gray; font-size: 13px;">
+              Information Technology / Operations
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
+
   </nz-header>
 
 
 
 
-<nz-layout class="ant-top-layout">
-    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn && !isCollapsed" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" style="background-color: white;">
-      <div class="sidebar-toggle" *ngIf="navItems && navItems.length > 0" style="padding: 10px; margin-bottom: 10px;">
-        <button nz-button nzType="text" nzSize="small" (click)="isCollapsed = !isCollapsed" class="collapse-btn">
+  <nz-layout class="ant-top-layout">
+    <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
+      [nzWidth]="isCollapsed ? 80 : 200" [ngStyle]="{ 'background-color': 'white' }">
+
+      <!-- Toggle button at top-left -->
+      <div class="header-toggle" *ngIf="navItems && navItems.length > 0">
+        <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
           <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
         </button>
       </div>
-      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngClass]="{'menu-with-toggle': isUserLoggedIn}">
+
+      <!-- Logo container centered below toggle -->
+      <div class="logo-container" [class.collapsed]="isCollapsed">
+        <a href="/" class="logo-link" title="Home">
+          <!-- expanded logo -->
+          <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
+          <!-- collapsed logo -->
+          <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="44" height="44"
+            alt="logo-collapsed" />
+        </a>
+      </div>
+
+      <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
         <ng-container *ngFor="let item of navItems">
           <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
-            <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="
-                cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr
-              " [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
+            <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="submenuTitle"
+              [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
+              <ng-template #submenuTitle>
+                <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalSubmenuIcon">
+                  <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
+                </ng-container>
+                <ng-template #normalSubmenuIcon>
+                  <span nz-icon [nzType]="item.ModuleIcon" style="font-size: 16px;"></span>
+                </ng-template>
+                &nbsp;&nbsp;
+                <span>{{ cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr }}</span>
+              </ng-template>
               <ul>
                 <li style="font-size: 0.8rem" [ngStyle]="{
                   'padding-left': cs.userLanguage === 'en' ? '20px' : '',
@@ -261,10 +246,10 @@
           <ng-template #noSubMenu>
             <li nz-menu-item class="menu-items" style="font-size: 0.8rem" (click)="navigate(item)">
               <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalIcon">
-                <app-icon style="line-height: 0px !important" [icon]="item.ModuleIcon"></app-icon>
+                <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
               </ng-container>
               <ng-template #normalIcon>
-                <span nz-icon [nzType]="item.ModuleIcon"></span>
+                <span nz-icon [nzType]="item.ModuleIcon" style="font-size: 16px;"></span>
               </ng-template>
               <span style="font-size: 0.8rem" [ngStyle]="{
                     'max-width': '100%',
@@ -284,33 +269,23 @@
         </ng-container>
       </ul>
 
-      <div class="copy-right-container row">
+      <div class="copy-right-container row" *ngIf="!isCollapsed">
         <label>© {{ currentYear }}
           {{ "COMMON.CopyrightAllRightsReserved" | translate }}</label>
         <label>{{ "COMMON.Version" | translate }} - {{ applicationVersion }}</label>
       </div>
     </nz-sider>
 
-    <!-- Floating toggle button when sidebar is collapsed -->
-    <div class="floating-toggle" *ngIf="isUserLoggedIn && isCollapsed" [ngStyle]="{
-      'left': cs.userLanguage === 'en' ? '20px' : 'auto',
-      'right': cs.userLanguage === 'ar' ? '20px' : 'auto'
-    }">
-      <button nz-button nzType="primary" nzShape="circle" (click)="isCollapsed = !isCollapsed">
-        <span nz-icon nzType="menu-unfold"></span>
-      </button>
-    </div>
+
 
     <nz-content [ngClass]="{
-        'ant-right-layout': cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed,
-        'ant-left-layout': cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed,
-        'ant-full-layout': !isUserLoggedIn || isCollapsed
-      }"
-      [ngStyle]="{
-        'margin-left': (cs.userLanguage === 'en' && isUserLoggedIn && !isCollapsed) ? '200px' : '0',
-        'margin-right': (cs.userLanguage === 'ar' && isUserLoggedIn && !isCollapsed) ? '200px' : '0'
-      }"
-      style="background-color: white">
+        'ant-right-layout': cs.userLanguage === 'en' && isUserLoggedIn,
+        'ant-left-layout': cs.userLanguage === 'ar' && isUserLoggedIn,
+        'ant-full-layout': !isUserLoggedIn
+      }" [ngStyle]="{
+        'margin-left': (cs.userLanguage === 'en' && isUserLoggedIn) ? (isCollapsed ? '80px' : '200px') : '0',
+        'margin-right': (cs.userLanguage === 'ar' && isUserLoggedIn) ? (isCollapsed ? '80px' : '200px') : '0'
+      }" style="background-color: white">
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>

@@ -44,7 +44,7 @@ export class AppComponent {
 
   private readonly _destroy = new Subject<void>();
 
-  currentYear = new Date().getFullYear();
+  currentYear = 2026
 
   isUserLoggedIn = false;
   enableproxy = false;
@@ -131,6 +131,12 @@ export class AppComponent {
     } else {
       this.onChangeLang('en');
     }
+  }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+    this.headerLeftWidth = this.isCollapsed ? this.collapsedWidth + 'px' : this.expandedWidth + 'px';
+    this.layoutContentMarginLeft = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
   }
   //   public openParentsForActive(): void {
   //   try {
@@ -521,7 +527,7 @@ export class AppComponent {
         {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'line-chart',
+          ModuleIcon: 'dashboard',
           link: 'rfp/dashboard'
         },
       )
@@ -610,20 +616,20 @@ export class AppComponent {
         {
           Module: 'RFP - Requester',
           ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'mail',
+          ModuleIcon: 'file-text',
           isOpen: false,
           navItem: [
             {
               name: 'create',
               iconName: IconList.create,
-              text: 'Create',
+              text: 'Create RFP',
               textAr: 'انشاء منافسة',
               link: 'rfp/create',
             },
             {
               name: 'myrfp',
               iconName: IconList.myRequest,
-              text: 'My Request',
+              text: 'My RFP Requests',
               textAr: 'منافساتي',
               link: 'rfp/myrfp',
             }
@@ -809,14 +815,14 @@ export class AppComponent {
               {
                 name: 'create',
                 iconName: IconList.create,
-                text: 'Create',
+                text: 'Create RFP',
                 textAr: 'انشاء منافسة',
                 link: 'rfp/create',
               },
               {
                 name: 'myrfp',
                 iconName: IconList.myRequest,
-                text: 'My Request',
+                text: 'My RFP Requests',
                 textAr: 'منافساتي',
                 link: 'rfp/myrfp',
               }
@@ -2712,16 +2718,20 @@ export class AppComponent {
     this.cs.setCurrentUserLanguage(lang);
     this.translate.use(lang);
     const htmlElement = document.getElementsByTagName('html')[0];
+    const bodyElement = document.getElementsByTagName('body')[0];
+    
     if (
       lang !== 'ar' &&
       htmlElement.hasAttribute('dir')
     ) {
       htmlElement.removeAttribute('dir');
+      bodyElement.removeAttribute('dir');
     } else if (
       lang === 'ar' &&
       !htmlElement.hasAttribute('dir')
     ) {
       htmlElement.setAttribute('dir', 'rtl');
+      bodyElement.setAttribute('dir', 'rtl');
     }
 
     if (
@@ -2735,6 +2745,20 @@ export class AppComponent {
     ) {
       htmlElement.setAttribute('lang', lang);
     }
+
+    // Force sidebar repositioning after language change
+    setTimeout(() => {
+      const siderElement = document.querySelector('.ant-layout-sider');
+      if (siderElement) {
+        if (lang === 'ar') {
+          (siderElement as HTMLElement).style.left = 'auto';
+          (siderElement as HTMLElement).style.right = '0';
+        } else {
+          (siderElement as HTMLElement).style.left = '0';
+          (siderElement as HTMLElement).style.right = 'auto';
+        }
+      }
+    }, 100);
   }
 
   /**

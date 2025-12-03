@@ -325,6 +325,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="competitionType"
+                  [nzPlaceHolder]="'RFP.Types of Competition'|translate"
                   style="width: 100%"
                   nzAllowClear
                   (ngModelChange)="onCompetitionChange($event)"
@@ -394,6 +395,17 @@
               >
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
+              <!-- Negative Value Validation -->
+              <small
+                *ngIf="
+                  rfpForm.controls.estimatedCost.touched &&
+                  (rfpForm.controls.estimatedCost.hasError('min') || 
+                   rfpForm.controls.estimatedCost.value < 0)
+                "
+                style="margin-top: 8px; color: red"
+              >
+                Value cannot be negative or zero
+              </small>
               <!-- Warning message -->
               <small
                 *ngIf="showDirectPurchaseField"
@@ -405,12 +417,6 @@
                 style="margin-top: 8px; color: #1890ff"
                 >Estimated cost is more than 500K SAR</small
               >
-              <small
-                *ngIf="showErrorField"
-                style="margin-top: 8px; color: #d71a05"
-                >Values Must not be Negative or Zero SAR</small
-              >
-
               <!-- Max Value Validation -->
               <small
                 *ngIf="
@@ -726,6 +732,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="DurationType"
+                  [nzPlaceHolder]="'RFP.Select Duration Type'|translate"
                   style="width: 100%"
                   nzAllowClear
                 >
@@ -765,6 +772,7 @@
                 <nz-input-number
                   nz-input
                   formControlName="ProjDur"
+                  [nzPlaceHolder]="'RFP.Enter Project Duration'|translate"
                   style="width: 100%"
                   (keydown)="restrictZero($event)"
                 ></nz-input-number>
@@ -816,9 +824,45 @@
                 [nzPlaceHolder]="'RFP.Select work locations' | translate"
                 [nzMaxTagCount]="3"
               >
-                <nz-option nzValue="riyadh" nzLabel="Riyadh"></nz-option>
-                <nz-option nzValue="jeddah" nzLabel="Jeddah"></nz-option>
-                <nz-option nzValue="dammam" nzLabel="Dammam"></nz-option>
+                <nz-option nzValue="riyadh/Al-Rin" [nzLabel]="'RFP.Riyadh Region/Al-Rin'| translate"></nz-option>
+                <nz-option nzValue="riyadh/Khurayman" [nzLabel]="'RFP.Riyadh Region/Khurayman' | translate"></nz-option>
+                <nz-option nzValue="riyadh/Al-Sahnah" [nzLabel]="'RFP.Riyadh Region/Al-Sahnah' | translate"></nz-option>
+                <nz-option nzValue="makkah/Al-Shaiba" [nzLabel]="'RFP.Makkah Region/Al-Shaiba' | translate"></nz-option>
+                <nz-option nzValue="makkah/Bahrah" [nzLabel]="'RFP.Makkah Region/Bahrah' | translate"></nz-option>
+                <nz-option nzValue="makkah/Asfan" [nzLabel]="'RFP.Makkah Region/Asfan' | translate"></nz-option>
+                <nz-option nzValue="Al-Madinah/Mahd Al-Dhahab" [nzLabel]="'RFP.Al-Madinah Region/Mahd Al-Dhahab' | translate"></nz-option>
+                <nz-option nzValue="Al-Madinah/Al-Furaysh" [nzLabel]="'RFP.Al-Madinah Region/Al-Furaysh' | translate "></nz-option>
+                <nz-option nzValue="Al-Madinah/Abyar Al-Mashi" [nzLabel]="'RFP.Al-Madinah Region/Abyar Al-Mashi' | translate"></nz-option>
+                <nz-option nzValue="Al-Qassim/Shari – Al-Qassim" [nzLabel]="'RFP.Al-Qassim Region/Shari – Al-Qassim' | translate"></nz-option>
+                <nz-option nzValue="Al-Qassim/Al-Dhybiyah – Al-Qassim" [nzLabel]="'RFP.Al-Qassim Region/Al-Dhybiyah – Al-Qassim' | translate"></nz-option>
+                <nz-option nzValue="Al-Qassim/Al-Khurma" [nzLabel]="'RFP.Al-Qassim Region/Al-Khurma' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Tarout" [nzLabel]="'RFP.Eastern Region/Tarout' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Al-Ju’aymah" [nzLabel]="'RFP.Eastern Region/Al-Ju’aymah' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Shedgum" [nzLabel]="'RFP.Eastern Region/Shedgum' | translate"></nz-option>
+                <nz-option nzValue="Asir Region/Rijal Alma" [nzLabel]="'RFP.Asir Region/Rijal Alma' | translate"></nz-option>
+                <nz-option nzValue="Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar" [nzLabel]="'RFP.Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar' | translate"></nz-option>
+                <nz-option nzValue="Asir Region/Al-Majardah" [nzLabel]="'RFP.Asir Region/Al-Majardah'| translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Bajdah" [nzLabel]="'RFP.Tabuk Region/Bajdah' | translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Halat Ammar" [nzLabel]="'RFP.Tabuk Region/Halat Ammar'| translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Al-Fouhah" [nzLabel]="'RFP.Tabuk Region/Al-Fouhah'| translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Miyah" [nzLabel]="'RFP.Hail Region/Al-Miyah'| translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Sulaymi" [nzLabel]="'RFP.Hail Region/Al-Sulaymi'| translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Rawdah" [nzLabel]="'RFP.Hail Region/Al-Rawdah'| translate"></nz-option>
+                <nz-option nzValue="Northern Borders Region/Jadidat Arar" [nzLabel]="'RFP.Northern Borders Region/Jadidat Arar'| translate"></nz-option>
+                <nz-option nzValue="Northern Borders Region/Rafha" [nzLabel]="'RFP.Northern Borders Region/Rafha' | translate"></nz-option>
+                <nz-option nzValue="Northern Borders Region/Al-Sha'bah" [nzLabel]="'RFP.Northern Borders Region/Al-Shabah'| translate"></nz-option>
+                <nz-option nzValue="Jazan Region/Atwood" [nzLabel]="'RFP.Jazan Region/Atwood' | translate"></nz-option>
+                <nz-option nzValue="Jazan Region/Masliyah" [nzLabel]="'RFP.Jazan Region/Masliyah'| translate"></nz-option>
+                <nz-option nzValue="Jazan Region/Munajid" [nzLabel]="'RFP.Jazan Region/Munajid' | translate"></nz-option>
+                <nz-option nzValue="Najran Region/Al-Mujamma" [nzLabel]="'RFP.Najran Region/Al-Mujamma' | translate"></nz-option>
+                <nz-option nzValue="Najran Region/Hubona" [nzLabel]="'RFP.Najran Region/Hubona'| translate"></nz-option>
+                <nz-option nzValue="Najran Region/Badr Al-Janoub" [nzLabel]="'RFP.Najran Region/Badr Al-Janoub'| translate"></nz-option>
+                <nz-option nzValue="Al-Baha Region/Bani Adwan and Bani Harir" [nzLabel]="'RFP.Al-Baha Region/Bani Adwan and Bani Harir' | translate"></nz-option>
+                <nz-option nzValue="Al-Baha Region/Yabs" [nzLabel]="'RFP.Al-Baha Region/Yabs' | translate"></nz-option>
+                <nz-option nzValue="Al-Baha Region/Zinad Al-Batat" [nzLabel]="'RFP.Al-Baha Region/Zinad Al-Batat' | translate"></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Abu Ajram" [nzLabel]="'RFP.Al-Jouf Region/Abu Ajram' | translate"></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Thaniyat Umm Nakhilah" [nzLabel]="'RFP.Al-Jouf Region/Thaniyat Umm Nakhilah' | translate"></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Mayqou" [nzLabel]="'RFP.Al-Jouf Region/Mayqou' | translate"></nz-option>
               </nz-select>
             </div>
 
@@ -1098,7 +1142,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter UID"
+                [placeholder]="'RFP.Enter UID'|translate"
                 formControlName="userId"
               />
             </div>
@@ -1113,7 +1157,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Email"
+                [placeholder]="'RFP.Enter Email'|translate"
                 formControlName="email"
               />
             </div>
@@ -1128,7 +1172,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Contact Number"
+                [placeholder]="'RFP.Enter Contact Number'|translate"
                 formControlName="contactNumber"
               />
             </div>
@@ -1156,7 +1200,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Reference Number"
+                [placeholder]="'RFP.Enter Reference Number'|translate"
                 formControlName="prequalificationDetails"
               />
               <small
