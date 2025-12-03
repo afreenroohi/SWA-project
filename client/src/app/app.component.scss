@@ -16,7 +16,7 @@ nz-sider {
   left: 0 !important;
   height: 100vh;
   box-sizing: border-box;
-  background: white !important;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%) !important;
   z-index: 1001 !important;
   overflow-y: auto;
   transition: all $transition-smooth !important;
@@ -36,6 +36,32 @@ nz-sider {
     border-bottom-right-radius: 0;
     box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
   }
+}
+
+// Force RTL positioning with class-based approach
+.rtl-layout nz-sider {
+  left: auto !important;
+  right: 0 !important;
+  border-right: none !important;
+  border-left: 3px solid #005c99 !important;
+  border-top-left-radius: 24px !important;
+  border-bottom-left-radius: 24px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+// Force RTL positioning
+[dir="rtl"] nz-sider {
+  left: auto !important;
+  right: 0 !important;
+  border-right: none !important;
+  border-left: 3px solid #005c99 !important;
+  border-top-left-radius: 24px !important;
+  border-bottom-left-radius: 24px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3) !important;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -54,6 +80,7 @@ nz-sider {
     }
   }
 }
+
 
 .menu-sidebar {
   background: transparent;
@@ -199,6 +226,14 @@ nz-sider {
       }
     }
 
+    // RTL menu item styling
+    [dir="rtl"] .ant-menu-item.ant-menu-item-selected,
+    .rtl-layout .ant-menu-item.ant-menu-item-selected {
+      border-radius: 0 8px 8px 0 !important;
+      margin: 4px 0 4px 8px !important;
+      margin-left: -3px !important;
+    }
+
     .ant-menu-inline-collapsed .ant-menu-item {
       margin: 4px 0 !important;
       margin-right: -3px !important;
@@ -240,6 +275,49 @@ nz-sider {
       }
     }
 
+    // RTL submenu styling
+    [dir="rtl"] .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title,
+    .rtl-layout .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title {
+      border-radius: 0 8px 8px 0 !important;
+      margin: 4px 8px 4px 0 !important;
+      margin-left: -3px !important;
+      margin-right: 8px !important;
+    }
+
+    [dir="rtl"] .ant-menu-inline-collapsed .ant-menu-item,
+    .rtl-layout .ant-menu-inline-collapsed .ant-menu-item {
+      border-radius: 0 8px 8px 0 !important;
+      margin-left: -3px !important;
+      margin-right: 0 !important;
+    }
+
+    [dir="rtl"] .ant-menu-inline-collapsed .ant-menu-submenu .ant-menu-submenu-title,
+    .rtl-layout .ant-menu-inline-collapsed .ant-menu-submenu .ant-menu-submenu-title {
+      border-radius: 0 8px 8px 0 !important;
+      margin-left: -3px !important;
+      margin-right: 0 !important;
+    }
+
+    .ant-menu-submenu {
+      color: #666 !important;
+
+      .ant-menu-submenu-title {
+        color: #666 !important;
+        transition: all $transition-smooth !important;
+        border-radius: 8px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        // margin: 4px 8px !important;
+        display: flex !important;
+        align-items: center !important;
+
+        &:hover {
+          color: #005c99 !important;
+          background: rgba(0, 92, 153, 0.1) !important;
+        }
+      }
+    }
+
     .ant-menu-inline-collapsed .ant-menu-submenu {
       .ant-menu-submenu-title {
         margin: 4px 0 !important;
@@ -277,8 +355,16 @@ nz-sider {
         }
       }
     }
+
+    // RTL submenu item padding
+    [dir="rtl"] .ant-menu-inline .ant-menu-item,
+    .rtl-layout .ant-menu-inline .ant-menu-item {
+      padding-left: 16px !important;
+      padding-right: 20px !important;
+    }
+    }
   }
-}
+
 
 // Menu items icon sizing and animations
 .menu-items {
@@ -298,6 +384,21 @@ nz-sider {
       animation: bounce 0.6s ease-in-out;
     }
   }
+}
+
+// RTL icon padding for sidebar menu items
+[dir="rtl"] .menu-items .anticon,
+[dir="rtl"] .menu-items app-icon,
+.rtl-layout .menu-items .anticon,
+.rtl-layout .menu-items app-icon {
+  padding-right: 20px !important;
+}
+
+[dir="rtl"] .menu-items .ant-menu-submenu-title .anticon,
+[dir="rtl"] .menu-items .ant-menu-submenu-title app-icon,
+.rtl-layout .menu-items .ant-menu-submenu-title .anticon,
+.rtl-layout .menu-items .ant-menu-submenu-title app-icon {
+  padding-right: 20px !important;
 }
 
 // Avatar animation
@@ -322,6 +423,31 @@ nz-sider {
   min-width: 180px;
   z-index: 1050;
   margin-top: 8px;
+}
+
+// RTL dropdown positioning
+[dir="rtl"] .dropdown-menu,
+.rtl-layout .dropdown-menu {
+  right: auto;
+  left: 0;
+}
+
+// Force profile to left corner in Arabic using absolute positioning
+.rtl-layout .user-info-container {
+  position: absolute !important;
+  left: 0 !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.rtl-layout .right-header-section {
+  position: relative !important;
+}
+
+[dir="rtl"] .user-info-container > div,
+.rtl-layout .user-info-container > div {
+  flex-direction: row-reverse;
 }
 
 .dropdown-item {
