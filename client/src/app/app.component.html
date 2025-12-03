@@ -24,21 +24,23 @@
 
 <!-- <nz-layout style="height: 100vh"
   style="background: url('./assets/logo/pages_bg.png'); background-size: cover; height: 100vh; background-repeat:repeat-y ;"> -->
-<nz-layout>
+<nz-layout [class.rtl-layout]="cs.userLanguage === 'ar'">
 
 
   <nz-header>
     <!-- Left Section: Language Toggle and Test Login -->
     <div class="left-header-section" [ngStyle]="{
     'position': 'fixed',
-    'left': isCollapsed ? '80px' : '200px',
+    'left': cs.userLanguage === 'en' ? (isCollapsed ? '80px' : '200px') : 'auto',
+    'right': cs.userLanguage === 'ar' ? (isCollapsed ? '80px' : '200px') : 'auto',
     'top': '0',
     'height': '80px',
     'display': 'flex',
     'align-items': 'center',
     'justify-content': 'center',
     'gap': '16px',
-    'padding-left': '1rem'
+    'padding-left': cs.userLanguage === 'en' ? '1rem' : '0',
+    'padding-right': cs.userLanguage === 'ar' ? '1rem' : '0'
   }">
       <!-- ...existing content unchanged... -->
       <div class="lang-toggle" (click)="toggleLang()">
@@ -57,26 +59,62 @@
       </div>
     </div>
 
-    <!-- Right Section: Proxy Button and User Info (UNCHANGED) -->
+    <!-- Right Section: Proxy Button and User Info -->
     <div class="right-header-section" [ngStyle]="{
     'position': 'fixed',
-    'right': '0',
+    'right': cs.userLanguage === 'en' ? '0' : 'auto',
+    'left': cs.userLanguage === 'ar' ? '0' : 'auto',
     'top': '0',
     'height': '80px',
     'display': 'flex',
     'align-items': 'center',
-    'justify-content': 'center',
+    'justify-content': 'flex-start',
+    'flex-direction': cs.userLanguage === 'ar' ? 'row-reverse' : 'row',
     'gap': '16px',
-    'padding-right': '1rem'
+    'padding-right': cs.userLanguage === 'en' ? '1rem' : '0',
+    'padding-left': cs.userLanguage === 'ar' ? '1rem' : '0'
   }">
-      <!-- ...existing content unchanged... -->
+      <!-- Profile first for Arabic, proxy button first for English -->
+      <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'ar'">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-dropdown" (click)="toggleDropdown()">
+            <nz-avatar nzIcon="user" class="animated-avatar" style="
+              background-color:#005c99;
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 22px;
+              cursor: pointer;
+            "></nz-avatar>
+            <div class="dropdown-menu" *ngIf="showDropdown">
+              <div class="dropdown-item">
+                <span class="theme-label">
+                  <span nz-icon [nzType]="isDarkMode ? 'moon' : 'sun'"></span>
+                  {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
+                </span>
+                <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;line-height:1.2;">
+            <span style="color: black; font-weight: 500;">
+              {{ dispname }}
+            </span>
+            <span style="color: gray; font-size: 13px;">
+              IT / Operations
+            </span>
+          </div>
+        </div>
+      </div>
+
       <button *ngIf="enableproxy" nz-button nzType="primary" [ngStyle]="{
         'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
       }" (click)="openUsrMdl()">
         {{ "COM.ChangeUsr" | translate }}
       </button>
 
-      <div class="user-info-container" *ngIf="isUserLoggedIn && dispname">
+      <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'en'">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div class="user-dropdown" (click)="toggleDropdown()">
             <nz-avatar nzIcon="user" class="animated-avatar" style="
