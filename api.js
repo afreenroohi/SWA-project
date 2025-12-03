@@ -3,6 +3,7 @@ const config = require("config");
 const SAP_PL_ALIAS = process.env.SAP_PL_ALIAS ? ";o=" + process.env.SAP_PL_ALIAS : config.SAP_PL_ALIAS ?? '';
 
 const RFP_SRV = "ZMM_RFP_PRCS_SRV" + SAP_PL_ALIAS;
+const RFP_LOGIN_SRV = "ZP2P_RFP_SRV" + SAP_PL_ALIAS;
 const COC_SRV = "ZMM_COC_PRCS_SRV" + SAP_PL_ALIAS;
 const COM_SRV = "ZMM_CMT_PRCS_SRV" + SAP_PL_ALIAS;
 const CON_SRV = "ZMM_CONT_PRCS_SRV" + SAP_PL_ALIAS;
@@ -23,6 +24,9 @@ module.exports.apiList = () => {
     // * <--------*********************--------> *//
     // **************** / RFP / ***************** //
     // * <--------*********************--------> *//
+
+    // * Login User Details
+    LoginUserDetails: config.URL + RFP_LOGIN_SRV + "/LoginUserDetailsSet",
 
     // * Crete RFP
     projsGet: config.URL + RFP_SRV + "/F4ProjIdSet",

@@ -8,6 +8,26 @@ var apisJson = {};
 
 apisJson = JSON.parse(api.apiList());
 
+// get login user details
+router.get("/LoginUserDetails/:userId", (req, res) => {
+  let userId = req.params.userId;
+  console.log('API URL:', apisJson.LoginUserDetails + `('${userId}')?$format=json`);
+  axios({
+    method: "get",
+    url: apisJson.LoginUserDetails + `('${userId}')?$format=json`,
+    headers: {
+      Authorization: req.headers.authorization,
+    },
+  })
+    .then((response) => {
+      res.status(200).json(response.data);
+    })
+    .catch((err) => {
+      console.error('Error:', err.message);
+      res.status(500).json({ message: err.message, error: err.response?.data });
+    });
+});
+
 // get project
 router.post("/F4ProjIdSet", (req, res) => {
   axios({

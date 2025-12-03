@@ -19,6 +19,29 @@ export class ApiService {
 
   httpOptions = new HttpHeaders().set("Authorization", `Basic ${environment.token}`)
 
+
+  // RFP FLOW
+  login(username: any): Observable<any> {
+    console.log(username, 'resrrrrrrrrr')
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    // KAAR-758
+    return this.http.get(`/sap/opu/odata/sap/ZP2P_RFP_SRV/LoginUserDetailsSet('${username}')`, { headers });
+    // return this.http.get(this.baseurl + `sap/opu/odata/sap/ZP2P_RFP_SRV/LoginUserDetailsSet('KAAR-758')`, { headers });
+  }
+
+  getLoginUserDetails(userId: string) {
+    // KAAR-758
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    return this.http.get(this.baseurl + `api/LoginUserDetails/${userId}`, { headers });
+  }
+
+
+  // END 
+
   // Documnet APIS
   docUpload(data: any): Observable<any> {
     return this.http.post(this.baseurl + 'api/F4ProjIdSet', data)
@@ -65,7 +88,7 @@ export class ApiService {
     return this.http.post(this.baseurl + 'api/sap-file', req);
   }
 
-  downloadPDF(action:any, data:any): Observable<any> {
+  downloadPDF(action: any, data: any): Observable<any> {
     var headers = new HttpHeaders();
     headers.append('Content-Type', 'application/pdf');
     return this.http.post(this.baseurl + 'api/' + action, data, {
@@ -73,7 +96,7 @@ export class ApiService {
       responseType: 'arraybuffer'
     });
   }
-  getQualificationList(){
+  getQualificationList() {
     return this.http.get(this.baseurl + 'api/qualification-list')
   }
 
