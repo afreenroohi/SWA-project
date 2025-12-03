@@ -382,13 +382,17 @@ export class AppComponent {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
-    // this.api.getLoginUserDetails(userName).subscribe(
-    //   (response:any) => {
-        // console.log(response, '=========RFPLoginApi=======');
-        // console.log(response?.d?.Uname, '=========username=======');
-        // if(response.d.Uname !== 'KAAR-758'){
-        //     this.cs.createMessage("error", 'User Not Found');
-        // }
+    this.api.getLoginUserDetails(userName).subscribe(
+      (response:any) => {
+        console.log(response, '=========RFPLoginApi=======');
+        console.log(response?.d?.Uname, '=========username=======');
+        
+        if(!response?.d?.Uname){
+            this.cs.createMessage("error", 'User Not Found');
+            console.log('Error message triggered: User Not Found');
+            return;
+        }
+        
         this.isUserLoggedIn = true;
         this.dispname = userName.toUpperCase();
         this.ProxyUserId = userName.toUpperCase();
@@ -407,7 +411,7 @@ export class AppComponent {
           },
         )
         // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-        if (userName === 'testrfp') {
+        if (userName === 'KAAR-758') {
           this.roleTest('Requestor');
 
           // ensure Dashboard is the active/selected menu key
@@ -419,11 +423,11 @@ export class AppComponent {
           // navigate to dashboard
           this.router.navigate(['rfp/dashboard']);
         }
-        if (userName === 'SALSUBKI') {
+        else if (userName === 'SALSUBKI') {
           this.roleTest('Approver')
           this.router.navigate(['rfp/myinbox']);
         }
-        if (userName === 'AALSALEM') {
+        else if (userName === 'AALSALEM') {
 
           this.constructCOCmenu({ RoleId: 'FI' })
 
@@ -452,11 +456,11 @@ export class AppComponent {
           // Budallocator Manager Approver&Manager
           this.router.navigate(['rfp/myinbox']);
         }
-    //   },
-    //   error => {
-    //     console.error(error)
-    //   }
-    // );
+      },
+      error => {
+        console.error(error)
+      }
+    );
    
 
     //     this.cs.activeMenu = 'Dashboard';

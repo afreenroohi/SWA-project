@@ -33,6 +33,7 @@ export class ApiService {
 
   getLoginUserDetails(userId: string) {
     // KAAR-758
+    console.log(userId, '=====userId')
     const headers = new HttpHeaders({
       'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
     });
