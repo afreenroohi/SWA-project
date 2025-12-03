@@ -1880,6 +1880,7 @@ export class CreateRFPComponent implements OnInit {
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
     this.autoPopulateSopFields();
+    this.getCommunicationDetailsList();
     const compCtrl = this.rfpForm.get('competitionType')!;
     const costCtrl = this.rfpForm.get('estimatedCost')!;
     this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe((value) => {
@@ -5130,6 +5131,9 @@ export class CreateRFPComponent implements OnInit {
   }
 
   allMatGroups: any;
+  communicationDetailsList: any[] = [];
+  filteredCommunicationList: any[] = [];
+
   getMatgp(value?: any) {
     if (value) {
       let data = {
@@ -5465,6 +5469,50 @@ export class CreateRFPComponent implements OnInit {
 
   getGrandVatAmount(data: readonly any[]): number {
     return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
+  }
+
+  getCommunicationDetailsList(): void {
+    this.spinner.show();
+    this.api.get('CommunicationDetailsSet')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          console.log('======Communication Details:', response?.d?.results);
+          if (response?.d?.results) {
+            this.communicationDetailsList = response.d.results;
+            this.filteredCommunicationList = response.d.results;
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          console.error('Error fetching communication details:', error);
+          this.cs.createMessage('error', 'Failed to load communication details');
+        }
+      );
+  }
+
+  onCoordinatorSearch(value: string): void {
+    if (!value) {
+      this.filteredCommunicationList = this.communicationDetailsList;
+    } else {
+      this.filteredCommunicationList = this.communicationDetailsList.filter(
+        (item: any) => item.Uname?.toLowerCase().includes(value.toLowerCase())
+      );
+    }
+  }
+
+  onCoordinatorSelect(value: string): void {
+    const selectedItem = this.communicationDetailsList.find(
+      (item: any) => item.Uname === value
+    );
+    if (selectedItem) {
+      this.rfpForm.patchValue({
+        coordinatorName: selectedItem.Uname,
+        coordinatorNumber: selectedItem.Pernr || '',
+        coordinatorEmail: selectedItem.Subty || ''
+      });
+    }
   }
 
   ngOnDestroy(): void {

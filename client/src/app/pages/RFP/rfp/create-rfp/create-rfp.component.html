@@ -915,11 +915,21 @@
               <nz-form-label>{{
                 "RFP.coordinator name" | translate
               }}</nz-form-label>
-              <input
-                nz-input
-                [placeholder]="'RFP.Enter Cordinator Name' | translate"
+              <nz-select
+                nzShowSearch
+                nzAllowClear
                 formControlName="coordinatorName"
-              />
+                [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate"
+                style="width: 100%"
+                (nzOnSearch)="onCoordinatorSearch($event)"
+                (ngModelChange)="onCoordinatorSelect($event)"
+              >
+                <nz-option
+                  *ngFor="let item of filteredCommunicationList"
+                  [nzValue]="item.Uname"
+                  [nzLabel]="item.Uname"
+                ></nz-option>
+              </nz-select>
             </div>
 
             <!-- * coordinator number -->

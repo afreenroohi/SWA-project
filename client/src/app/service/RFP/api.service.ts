@@ -21,15 +21,6 @@ export class ApiService {
 
 
   // RFP FLOW
-  login(username: any): Observable<any> {
-    console.log(username, 'resrrrrrrrrr')
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
-    });
-    // KAAR-758
-    return this.http.get(`/sap/opu/odata/sap/ZP2P_RFP_SRV/LoginUserDetailsSet('${username}')`, { headers });
-    // return this.http.get(this.baseurl + `sap/opu/odata/sap/ZP2P_RFP_SRV/LoginUserDetailsSet('KAAR-758')`, { headers });
-  }
 
   getLoginUserDetails(userId: string) {
     // KAAR-758
@@ -40,6 +31,19 @@ export class ApiService {
     return this.http.get(this.baseurl + `api/LoginUserDetails/${userId}`, { headers });
   }
 
+  get(action: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    return this.http.get(this.baseurl + 'api/' + action, { headers });
+  }
+  post(action: any, data: any): Observable<any> {
+    return this.http.post(this.baseurl + 'api/' + action, data)
+  }
+
+  patch(action: any, data: any): Observable<any> {
+    return this.http.put(this.baseurl + 'api/' + action, data)
+  }
 
   // END 
 
@@ -57,16 +61,7 @@ export class ApiService {
   }
 
   // RFP APIS
-  get(action: any): Observable<any> {
-    return this.http.get(this.baseurl + 'api/' + action)
-  }
-  post(action: any, data: any): Observable<any> {
-    return this.http.post(this.baseurl + 'api/' + action, data)
-  }
 
-  patch(action: any, data: any): Observable<any> {
-    return this.http.put(this.baseurl + 'api/' + action, data)
-  }
 
   downloadFromFilenet(req: any): Observable<any> {
     // * Filenet Download URL

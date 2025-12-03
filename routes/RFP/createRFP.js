@@ -583,5 +583,21 @@ router.get("/get-available-budget", (req, res) => {
   });
 });
 
+// * Get Communication Details List
+router.get("/CommunicationDetailsSet", (req, res) => {
+  axios({
+    method: "get",
+    url: apisJson.CommunicationDetailsSet + "?$format=json",
+    headers: {
+      Authorization: req.headers.authorization
+    }
+  })
+  .then((response) => {
+    res.status(200).json(response.data);
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message || err });
+  });
+});
 
 module.exports = router;

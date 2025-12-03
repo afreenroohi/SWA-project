@@ -60,6 +60,9 @@ module.exports.apiList = () => {
     // * DownloadRFP -  Estimated Price PDF
     RfpEstmPriceSet : config.URL + RFP_SRV + "/RfpEstmPriceSet",
 
+    // * Communication Details List
+    CommunicationDetailsSet: config.URL + RFP_LOGIN_SRV + "/CommunicationDetailsSet",
+
     // * Delete RFP ITEM TABLES
     RfpBoqSet: config.URL + RFP_SRV + "/RfpBoqSet",
     RfpMpwrSet: config.URL + RFP_SRV + "/RfpMpwrSet",
