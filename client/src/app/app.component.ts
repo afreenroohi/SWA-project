@@ -514,7 +514,7 @@ export class AppComponent {
         {
           Module: 'Dashboard',
           ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'line-chart',
+          ModuleIcon: 'dashboard',
           link: 'rfp/dashboard'
         },
       )
@@ -603,7 +603,7 @@ export class AppComponent {
         {
           Module: 'RFP - Requester',
           ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'mail',
+          ModuleIcon: 'file-text',
           isOpen: false,
           navItem: [
             {

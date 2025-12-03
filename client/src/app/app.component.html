@@ -48,7 +48,7 @@
       </div>
 
       <div *ngIf="enableTestLogon" class="test-login-container" style="margin-right: 3px;">
-        <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto" />
+        <input placeholder="Userid" [(ngModel)]="ProxyUserId" style="display: inline; height: 32px; width: auto; margin-right: 8px;" />
         <button nz-button nzType="primary" [ngStyle]="{
           'text-align': cs.userLanguage === 'en' ? 'right' : 'left'
         }" (click)="getNavItem(ProxyUserId)">
@@ -79,9 +79,9 @@
       <div class="user-info-container" *ngIf="isUserLoggedIn && dispname">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div class="user-dropdown" (click)="toggleDropdown()">
-            <nz-avatar nzIcon="user" style="
+            <nz-avatar nzIcon="user" class="animated-avatar" style="
               background-color:#005c99;
-              color: #3277ee;
+              color: white;
               display: flex;
               align-items: center;
               justify-content: center;
