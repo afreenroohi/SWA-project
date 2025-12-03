@@ -104,6 +104,7 @@ export class AppComponent {
 
   dispname = ''
   email = ''
+  department = ''
 
   applicationVersion = '1.0.0';
 
@@ -394,7 +395,8 @@ export class AppComponent {
         }
         
         this.isUserLoggedIn = true;
-        this.dispname = userName.toUpperCase();
+        this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+        this.department = response?.d?.Planstxt ? response?.d?.Planstxt : 'undefined'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
         this.isCollapsed = true;
