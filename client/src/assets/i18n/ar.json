@@ -607,7 +607,12 @@
   "Bill ofQuantity": "4. جدول الكميات",
   "Technical EvaluationCriteria": "3. معايير التقييم الفني",
   "Scope ofWork": "2. نطاق العمل",
-  "BasicInformation": "1. المعلومات الأساسية"
+  "BasicInformation": "1. المعلومات الأساسية",
+  "Select Duration Type": "حدد نوع المدة",
+  "Duration Type": "نوع المدة",
+  "Types of Competition": "أنواع المنافسة",
+  "Enter UID": "أدخل معرف المستخدم",
+  "Enter Reference Number": "أدخل رقم المرجع"
 
     
     

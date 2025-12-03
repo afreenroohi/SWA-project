@@ -623,7 +623,12 @@
     "Bill ofQuantity":"4. Bill of Quantity",
     "Technical EvaluationCriteria":"3. Technical Evaluation Criteria",
     "Scope ofWork":"2. Scope of Work",
-    "BasicInformation":"1. Basic Information"
+    "BasicInformation":"1. Basic Information",
+    "Select Duration Type":"Select Duration Type",
+    "Enter Project Duration":"Enter Project Duration",
+    "Types of Competition":"Types of Competition",
+    "Enter UID":"Enter UID",
+    "Enter Reference Number":"Enter Reference Number"
     
     
   },

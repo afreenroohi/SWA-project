@@ -325,6 +325,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="competitionType"
+                  [nzPlaceHolder]="'RFP.Types of Competition'|translate"
                   style="width: 100%"
                   nzAllowClear
                   (ngModelChange)="onCompetitionChange($event)"
@@ -394,6 +395,17 @@
               >
                 {{ "RFP.FieldIsRequired" | translate }}
               </small>
+              <!-- Negative Value Validation -->
+              <small
+                *ngIf="
+                  rfpForm.controls.estimatedCost.touched &&
+                  (rfpForm.controls.estimatedCost.hasError('min') || 
+                   rfpForm.controls.estimatedCost.value < 0)
+                "
+                style="margin-top: 8px; color: red"
+              >
+                Value cannot be negative or zero
+              </small>
               <!-- Warning message -->
               <small
                 *ngIf="showDirectPurchaseField"
@@ -405,12 +417,6 @@
                 style="margin-top: 8px; color: #1890ff"
                 >Estimated cost is more than 500K SAR</small
               >
-              <small
-                *ngIf="showErrorField"
-                style="margin-top: 8px; color: #d71a05"
-                >Values Must not be Negative or Zero SAR</small
-              >
-
               <!-- Max Value Validation -->
               <small
                 *ngIf="
@@ -726,6 +732,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="DurationType"
+                  [nzPlaceHolder]="'RFP.Select Duration Type'|translate"
                   style="width: 100%"
                   nzAllowClear
                 >
@@ -765,6 +772,7 @@
                 <nz-input-number
                   nz-input
                   formControlName="ProjDur"
+                  [nzPlaceHolder]="'RFP.Enter Project Duration'|translate"
                   style="width: 100%"
                   (keydown)="restrictZero($event)"
                 ></nz-input-number>
@@ -1098,7 +1106,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter UID"
+                [placeholder]="'RFP.Enter UID'|translate"
                 formControlName="userId"
               />
             </div>
@@ -1113,7 +1121,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Email"
+                [placeholder]="'RFP.Enter Email'|translate"
                 formControlName="email"
               />
             </div>
@@ -1128,7 +1136,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Contact Number"
+                [placeholder]="'RFP.Enter Contact Number'|translate"
                 formControlName="contactNumber"
               />
             </div>
@@ -1156,7 +1164,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                placeholder="Enter Reference Number"
+                [placeholder]="'RFP.Enter Reference Number'|translate"
                 formControlName="prequalificationDetails"
               />
               <small

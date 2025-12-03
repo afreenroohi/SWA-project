@@ -1450,7 +1450,7 @@ export class CreateRFPComponent implements OnInit {
       number: new FormControl('', [Validators.min(1)]),
 
       requestStatus: ['', [Validators.required]],
-      estimatedCost: [0, [Validators.required, Validators.min(0)]],
+      estimatedCost: [0, [Validators.required, Validators.min(1)]],
       includeFrameworkItems: ['', [Validators.required]],
       prequalificationRequired: [false, [Validators.required]],
       qualificationReference: [''],
