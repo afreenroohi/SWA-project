@@ -11,7 +11,7 @@
     "start:dev": "set NODE_ENV=dev&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
     "start:prod": "set NODE_ENV=prd&& set NODE_EXTRA_CA_CERTS=./cert/sap_prod.crt&& nodemon server.js",
     "start:local": "set NODE_ENV=loc&& set NODE_EXTRA_CA_CERTS=./cert/p2p-sap.pem&& nodemon server.js",
-    "start": "set NODE_ENV=prd&& nodemon server.js",
+    "start": "NODE_ENV=prd node server.js",
     "build:projdev": "npm run --prefix client build -- -c=projdev",
     "build:projqas": "npm run --prefix client build -- -c=projqas",
     "build:maintdev": "npm run --prefix client build -- -c=maintdev",

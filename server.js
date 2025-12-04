@@ -10,7 +10,7 @@ var https = require("https");
 const helmet = require("helmet");
 
 // port and hostname
-var port = config.PORT;
+var port = process.env.PORT || config.PORT;
 var hostname = config.HOSTNAME;
 
 
@@ -102,9 +102,9 @@ app.use("*", (req, res) => {
 });
 
 
-if(hostname === 'localhost'){
-http.createServer(app).listen(port, hostname, function () {
-  console.log('http' + '://' + hostname + ':' + port + '/')
+if(hostname === 'localhost' || process.env.PORT){
+http.createServer(app).listen(port, function () {
+  console.log('Server running on port: ' + port)
 })
 }
 else {
