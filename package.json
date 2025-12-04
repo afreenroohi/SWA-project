@@ -17,7 +17,7 @@
     "build:maintdev": "npm run --prefix client build -- -c=maintdev",
     "build:maintqas": "npm run --prefix client build -- -c=maintqas",
     "build:preprod": "npm run --prefix client build -- -c=preprod",
-    "build:production": "npm run --prefix client build -- -c=production"
+    "build:production": "npm run --prefix client build -- -c=production && cp -r client/dist dist"
   },
   "author": "kaar",
   "license": "ISC",
