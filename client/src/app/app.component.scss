@@ -453,10 +453,17 @@ nz-sider {
   right: auto !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
+  z-index: 1 !important;
 }
 
 .rtl-layout .right-header-section {
   position: relative !important;
+}
+
+// Ensure left header section is above profile in Arabic
+.rtl-layout .left-header-section {
+  z-index: 2 !important;
+  pointer-events: auto !important;
 }
 
 [dir="rtl"] .user-info-container > div,
@@ -645,12 +652,15 @@ nz-header {
   height: 80px !important;
 }
 
+/* RTL Header positioning */
+.rtl-layout nz-header {
+  direction: rtl !important;
+}
+
 /* Content area top margin to prevent header overlap */
 nz-content {
   margin-top: 80px !important;
 }
-
-/* Sidebar border fix */
 ::ng-deep .ant-layout-sider {
   border-right: 3px solid #005c99 !important;
 }
@@ -755,4 +765,44 @@ nz-content {
 :host ::ng-deep .ant-menu-item,
 :host ::ng-deep .ant-menu-submenu-title {
   padding: 0 0 0 20px !important;
+}
+
+// Test login container margin
+.test-login-container {
+  margin-left: 16px !important;
+}
+
+// RTL test login container margin
+.rtl-layout .test-login-container {
+  margin-left: 200px !important;
+}
+
+// Test login button padding
+.test-login-container button {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+// RTL test login button padding
+.rtl-layout .test-login-container button {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  margin-left: 12px !important;
+}
+
+// RTL test login input spacing
+.rtl-layout .test-login-container input {
+  margin-right: 0 !important;
+  margin-left: 12px !important;
+}
+
+// Create RFP content margin
+.inner-content {
+  margin-right: 16px !important;
+}
+
+// RTL Create RFP content margin
+.rtl-layout .inner-content {
+  margin-left: 30px !important;
+  margin-right: 0 !important;
 }
