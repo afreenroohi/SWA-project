@@ -9,7 +9,7 @@ export const environment = {
   scope: '',
   token: '',
   downloadUrl: '',
-  filenetUrl: '', //
+  filenetUrl: '', // //
   testlogin: true,
   sapCreateSesArUrl: '',
   sapCreateSesUrl:'',
