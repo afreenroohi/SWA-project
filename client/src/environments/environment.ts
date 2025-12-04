@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   postLogoutUrl: '',
-  apiUrl: '',
+  apiUrl: 'http://localhost:8000/',
   adfsendpoint: '',
   clientId: '',
   clientSecret: '',

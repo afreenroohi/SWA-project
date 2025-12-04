@@ -28,7 +28,7 @@ import { ComponentsModule } from './components/components.module';
 
 
 const ngZorroConfig: NzConfig = {
-  message: { nzTop: 500 },
+  message: { nzTop: 120, nzDuration: 3000 },
   notification: { nzTop: 240 }
 };
 

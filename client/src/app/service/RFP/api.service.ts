@@ -19,6 +19,34 @@ export class ApiService {
 
   httpOptions = new HttpHeaders().set("Authorization", `Basic ${environment.token}`)
 
+
+  // RFP FLOW
+
+  getLoginUserDetails(userId: string) {
+    // KAAR-758
+    console.log(userId, '=====userId')
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    return this.http.get(this.baseurl + `api/LoginUserDetails/${userId}`, { headers });
+  }
+
+  get(action: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    return this.http.get(this.baseurl + 'api/' + action, { headers });
+  }
+  post(action: any, data: any): Observable<any> {
+    return this.http.post(this.baseurl + 'api/' + action, data)
+  }
+
+  patch(action: any, data: any): Observable<any> {
+    return this.http.put(this.baseurl + 'api/' + action, data)
+  }
+
+  // END 
+
   // Documnet APIS
   docUpload(data: any): Observable<any> {
     return this.http.post(this.baseurl + 'api/F4ProjIdSet', data)
@@ -33,16 +61,7 @@ export class ApiService {
   }
 
   // RFP APIS
-  get(action: any): Observable<any> {
-    return this.http.get(this.baseurl + 'api/' + action)
-  }
-  post(action: any, data: any): Observable<any> {
-    return this.http.post(this.baseurl + 'api/' + action, data)
-  }
 
-  patch(action: any, data: any): Observable<any> {
-    return this.http.put(this.baseurl + 'api/' + action, data)
-  }
 
   downloadFromFilenet(req: any): Observable<any> {
     // * Filenet Download URL
@@ -65,7 +84,7 @@ export class ApiService {
     return this.http.post(this.baseurl + 'api/sap-file', req);
   }
 
-  downloadPDF(action:any, data:any): Observable<any> {
+  downloadPDF(action: any, data: any): Observable<any> {
     var headers = new HttpHeaders();
     headers.append('Content-Type', 'application/pdf');
     return this.http.post(this.baseurl + 'api/' + action, data, {
@@ -73,7 +92,7 @@ export class ApiService {
       responseType: 'arraybuffer'
     });
   }
-  getQualificationList(){
+  getQualificationList() {
     return this.http.get(this.baseurl + 'api/qualification-list')
   }
 

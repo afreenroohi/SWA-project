@@ -1,6 +1,6 @@
 {
-  "PORT": "5000",
+  "PORT": "8000",
   "HOSTNAME": "localhost",
-  "URL": "https://vhncwds4ap01.hec.mwan.gov.sa:44300/sap/opu/odata/sap//",
-  "SYSTEM_ALIAS": "FIORI"
+  "URL": "http://dxbktlds4cp.KCLOUD.COM:8000/sap/opu/odata/sap//",
+  "SYSTEM_ALIAS": "LOCAL"
 }
