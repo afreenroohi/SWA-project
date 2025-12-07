@@ -80,6 +80,9 @@ export class CreateRFPComponent implements OnInit {
   billOfQuantityActive = false;
   attachmentsCollapseActive = false;
 
+  //add criteria button visibility
+  isAddCriteriaVisible :boolean= true;
+
   // Collapse panel visibility
   showBasicInfo = true;
   showScopeOfWork = false;
@@ -407,6 +410,8 @@ export class CreateRFPComponent implements OnInit {
       'activity',
       'subactivity',
       'projectJustification',
+      'Necessity',
+      'Impact'
     ];
 
     // Check base fields
@@ -1281,6 +1286,13 @@ export class CreateRFPComponent implements OnInit {
   }
 
   addEvalCriteriaItem(index: number): void {
+    if (this.getTotalWeightage() > 100) {
+      this.cs.createMessage(
+        'error',
+        `Cannot add criteria. Total weightage exceeds 100% (current: ${this.getTotalWeightage()}%)`
+      );
+      return;
+    }
     this.evalCriteriaItems.insert(index + 1, this.createEvalCriteriaRow());
   }
 
@@ -1474,6 +1486,15 @@ export class CreateRFPComponent implements OnInit {
         '',
         [Validators.required, Validators.maxLength(500)],
       ],
+      Necessity: [
+        '',
+        [Validators.required, Validators.maxLength(500)],
+      ],
+      Impact: [
+        '',
+        [Validators.required, Validators.maxLength(500)],
+      ],
+      
       projectContinuous: [false, [Validators.required]],
 
       members: this.fb.array(
@@ -3370,7 +3391,6 @@ export class CreateRFPComponent implements OnInit {
       this.subCriterias.clear();
       return;
     }
-
     const item = this.evalCriteriaItems.at(index);
     const subCriFlg = 'X'; // your existing logic
 
@@ -5513,6 +5533,11 @@ export class CreateRFPComponent implements OnInit {
         coordinatorEmail: selectedItem.Subty || ''
       });
     }
+  }
+
+  getSelectedWorkLocations(): string[] {
+    const workLocationValue = this.rfpForm.get('workLocation')?.value;
+    return Array.isArray(workLocationValue) ? workLocationValue : [];
   }
 
   ngOnDestroy(): void {

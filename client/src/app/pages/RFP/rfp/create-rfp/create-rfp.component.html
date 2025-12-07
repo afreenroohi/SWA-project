@@ -819,10 +819,8 @@
               <nz-select
                 formControlName="workLocation"
                 nzMode="multiple"
-                class="compact-multi-select"
                 style="width: 100%"
                 [nzPlaceHolder]="'RFP.Select work locations' | translate"
-                [nzMaxTagCount]="3"
               >
                 <nz-option nzValue="riyadh/Al-Rin" [nzLabel]="'RFP.Riyadh Region/Al-Rin'| translate"></nz-option>
                 <nz-option nzValue="riyadh/Khurayman" [nzLabel]="'RFP.Riyadh Region/Khurayman' | translate"></nz-option>
@@ -1281,7 +1279,7 @@
                 nz-input
                 rows="3"
                 placeholder="Describe the Necessity..."
-                formControlName="projectJustification"
+                formControlName="Necessity"
               ></textarea>
             </div>
             <div class="col-12 my-1">
@@ -1292,7 +1290,7 @@
                 nz-input
                 rows="3"
                 placeholder="Describe the Impact..."
-                formControlName="projectJustification"
+                formControlName="Impact"
               ></textarea>
             </div>
 
@@ -3489,9 +3487,11 @@
           <div class="mt-3">
             <button
               nz-button
-              nzType="primary"
+              [nzType]="getTotalWeightage() > 100 ? 'default' : 'primary'"
               nzSize="default"
               (click)="addEvalCriteriaItem(evalCriteriaItems.length - 1)"
+              [disabled]="getTotalWeightage() > 100"
+              ngif="isAddCriteriaVisible"
             >
               <span nz-icon nzType="plus"></span>
               <span>{{ "RFP.Add Criteria" | translate }}</span>
