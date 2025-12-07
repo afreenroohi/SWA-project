@@ -51,4 +51,22 @@ router.get('/get-user-details', (req, res) => {
 
 });
 
+// * Login User Details by userId
+router.get('/LoginUserDetails/:userId', (req, res) => {
+    const userId = req.params.userId;
+    
+    axios({
+        method: 'get',
+        url: apisJson.LoginUserDetails + `('${userId}')`,
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": req.headers.authorization
+        }
+    }).then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json({message: error});
+    })
+});
+
 module.exports = router;

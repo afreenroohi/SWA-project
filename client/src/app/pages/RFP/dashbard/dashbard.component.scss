@@ -277,13 +277,13 @@
 }
 
 .stat-card-submitted {
-  --card-color: #722ed1;
-  --card-color-light: #9254de;
-  --card-color-dark: #531dab;
+  --card-color: #ed104f;
+  --card-color-light: #f91b3c;
+  --card-color-dark: #f91b3c;
   
   .stat-icon {
     background: linear-gradient(135deg, rgba(114, 46, 209, 0.15) 0%, rgba(114, 46, 209, 0.05) 100%);
-    color: #722ed1;
+    color: #f12345;
   }
 }
 
