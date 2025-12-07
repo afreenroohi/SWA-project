@@ -63,16 +63,18 @@ export class RfptableComponent implements OnInit, OnChanges {
     if (this.listArray) {
       this.listOfData = [...this.listArray];
       this.listOfData.forEach((elem) => {
-        elem.CreatedOn = this.cs.getDateNew(elem.CreatedOn);
-        elem.SlaEndDate = this.cs.getDateNew(elem.SlaEndDate);
-        elem.SlaEndTime = this.cs.extractTimeFromString(elem.SlaEndTime);
-
+        if (elem.CreatedOn) {
+          elem.CreatedOn = this.cs.getDateNew(elem.CreatedOn);
+        }
+        if (elem.SlaEndDate) {
+          elem.SlaEndDate = this.cs.getDateNew(elem.SlaEndDate);
+        }
+        if (elem.SlaEndTime) {
+          elem.SlaEndTime = this.cs.extractTimeFromString(elem.SlaEndTime);
+        }
       });
       this.listOfDisplayData = [...this.listOfData];
-      console.log(this.listOfDisplayData,'listOfDisplayData==================')
-      
     }
-    
   }
 
   ngOnInit(): void {
@@ -241,17 +243,14 @@ export class RfptableComponent implements OnInit, OnChanges {
   onActionClick(action: string, data: any): void {
     console.log('Action clicked:', action, 'Data:', data);
     switch(action) {
-      case 'changeBOQ':
-        this.nzMessageService.info(`Change BOQ for ${data.RfpNo}`);
+      case 'approve':
+        this.nzMessageService.success(`Approved: ${data.RfpName} (${data.PurchaseReqNo})`);
         break;
-      case 'extendBidOpening':
-        this.nzMessageService.info(`Extend Bid Opening for ${data.RfpNo}`);
+      case 'decline':
+        this.nzMessageService.warning(`Declined: ${data.RfpName} (${data.PurchaseReqNo})`);
         break;
-      case 'addAttachments':
-        this.nzMessageService.info(`Add More Attachments for ${data.RfpNo}`);
-        break;
-      case 'inviteCompanies':
-        this.nzMessageService.info(`Invite More Companies for ${data.RfpNo}`);
+      case 'transfer':
+        this.nzMessageService.info(`Transfer initiated for: ${data.RfpName} (${data.PurchaseReqNo})`);
         break;
     }
   }

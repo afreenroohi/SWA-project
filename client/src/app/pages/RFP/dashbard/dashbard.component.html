@@ -25,7 +25,7 @@
                             <i nz-icon nzType="project" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">{{'RFP.Total_Projects'|translate}}</div>
+                            <div class="stat-label">{{'RFP.Total_Rfps'|translate}}</div>
                             <div class="stat-value">{{ totalProjects }}</div>
                             <div class="stat-trend">{{'RFP.All RFPs'|translate}}</div>
                         </div>
@@ -44,29 +44,30 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 col-md-6 mb-3">
-                    <div class="stat-card stat-card-draft">
-                        <div class="stat-icon">
-                            <i nz-icon nzType="file-text" nzTheme="outline"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-label">{{'RFP.Draft'|translate}}</div>
-                            <div class="stat-value">{{ draftProjects }}</div>
-                            <div class="stat-trend">{{'RFP.In progress'|translate}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-3 col-md-6 mb-3">
                     <div class="stat-card stat-card-submitted">
                         <div class="stat-icon">
                             <i nz-icon nzType="send" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">{{'RFP.Submitted'|translate}}</div>
+                            <div class="stat-label">{{'RFP.Declined'|translate}}</div>
                             <div class="stat-value">{{ submittedProjects }}</div>
                             <div class="stat-trend">{{'RFP.Pending review'|translate}}</div>
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-3 col-md-6 mb-3">
+                    <div class="stat-card stat-card-draft">
+                        <div class="stat-icon">
+                            <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">{{'RFP.Pending'|translate}}</div>
+                            <div class="stat-value">{{ draftProjects }}</div>
+                            <div class="stat-trend">{{'RFP.In progress'|translate}}</div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
 
