@@ -3026,3 +3026,9 @@ nz-collapse {
 [data-theme="dark"] .bold-label {
   color: var(--dark-text-primary) !important;
 }
+
+/* Remove margin-right for ant-menu icons in RTL (Arabic) */
+[dir="rtl"] .ant-menu .anticon,
+[dir="rtl"] .ant-menu app-icon {
+  margin-right: 0 !important;
+}
