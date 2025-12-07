@@ -192,8 +192,8 @@
               </ng-template>
               <ul>
                 <li style="font-size: 0.8rem" [ngStyle]="{
-                  'padding-left': cs.userLanguage === 'en' ? '20px' : '',
-                  'padding-right': cs.userLanguage === 'ar' ? '20px' : ''
+                  'padding-left': cs.userLanguage === 'en' ? '25px' : '',
+                  'padding-right': cs.userLanguage === 'ar' ? '25px' : ''
                 }" nz-menu-item *ngFor="let subItem of item.navItem" [nzSelected]="subItem.name == cs.activeMenu">
                   <!-- External link -->
                   <ng-container *ngIf="subItem.external; else internalLink">

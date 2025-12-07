@@ -199,7 +199,6 @@ nz-sider {
       background: transparent !important;
       transition: all $transition-smooth !important;
       // margin: 4px 8px !important;
-      border-radius: 8px !important;
       height: 50px !important;
       line-height: 50px !important;
       display: flex !important;
@@ -211,12 +210,15 @@ nz-sider {
         background: rgba(0, 92, 153, 0.1) !important;
       }
 
+      &:not([dir="rtl"] *):not(.rtl-layout *) {
+        border-radius: 8px !important;
+      }
+
       &.ant-menu-item-selected {
         background: #005c99 !important;
         color: white !important;
         border-radius: 8px 0 0 8px !important;
         margin: 4px 0 4px 8px !important;
-        margin-right: -3px !important;
         box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3);
         padding-left: 0 !important;
 
@@ -226,12 +228,41 @@ nz-sider {
       }
     }
 
+    // Arabic version - override border-radius
+    [dir="rtl"] .ant-menu-item.ant-menu-item-selected,
+    .rtl-layout .ant-menu-item.ant-menu-item-selected {
+      border-radius: 0 8px 8px 0 !important;
+    }
+
+    .ant-menu-item {
+      color: #666 !important;
+    }
+
     // RTL menu item styling
     [dir="rtl"] .ant-menu-item.ant-menu-item-selected,
     .rtl-layout .ant-menu-item.ant-menu-item-selected {
       border-radius: 0 8px 8px 0 !important;
       margin: 4px 0 4px 8px !important;
       margin-left: -3px !important;
+    }
+  }
+
+  // Arabic version menu item styling
+  [dir="rtl"] .menu .ant-menu-item.ant-menu-item-selected,
+  .rtl-layout .menu .ant-menu-item.ant-menu-item-selected {
+    background: #005c99 !important;
+    color: white !important;
+    border-radius: 0px 8px 8px 0px !important;
+    margin: 4px 0 4px 8px !important;
+    margin-left: -3px !important;
+    box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3);
+    padding-left: 0 !important;
+  }
+
+  ::ng-deep {
+    .ant-menu {
+      background: transparent !important;
+      border-right: none !important;
     }
 
     .ant-menu-inline-collapsed .ant-menu-item {
@@ -754,7 +785,7 @@ nz-content {
   padding: 0 !important;
 }
 :host ::ng-deep span[nz-icon][ng-reflect-nz-type="line-chart"] {
-  padding-left: 20px !important;
+  padding-left: 25px !important;
 }
 :host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-submenu-title {
   padding: 0 !important;
@@ -764,7 +795,7 @@ nz-content {
 }
 :host ::ng-deep .ant-menu-item,
 :host ::ng-deep .ant-menu-submenu-title {
-  padding: 0 0 0 20px !important;
+  padding: 0 0 0 25px !important;
 }
 
 // Test login container margin
@@ -805,4 +836,81 @@ nz-content {
 .rtl-layout .inner-content {
   margin-left: 30px !important;
   margin-right: 0 !important;
+}
+
+
+// Force Arabic border-radius with highest specificity
+[dir="rtl"] .menu ::ng-deep .ant-menu-item.ant-menu-item-selected {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+.rtl-layout .menu ::ng-deep .ant-menu-item.ant-menu-item-selected {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+
+// Force Arabic margin with highest specificity
+[dir="rtl"] .menu ::ng-deep .ant-menu-item.ant-menu-item-selected {
+  margin: 4px 8px 4px 0px !important;
+}
+
+.rtl-layout .menu ::ng-deep .ant-menu-item.ant-menu-item-selected {
+  margin: 4px 8px 4px 0px !important;
+}
+
+
+// Force Arabic submenu styling with highest specificity
+[dir="rtl"] .menu ::ng-deep .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title {
+  background: #005c99 !important;
+  color: white !important;
+  border-radius: 0px 8px 8px 0px !important;
+  margin: 4px 0 4px 8px !important;
+  margin-left: -3px !important;
+}
+
+.rtl-layout .menu ::ng-deep .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title {
+  background: #005c99 !important;
+  color: white !important;
+  border-radius: 0px 8px 8px 0px !important;
+  margin: 4px 0 4px 8px !important;
+  margin-left: -3px !important;
+}
+
+
+// Force Arabic submenu margin update with highest specificity
+[dir="rtl"] .menu ::ng-deep .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title {
+  margin: 4px 8px 4px 8px !important;
+}
+
+.rtl-layout .menu ::ng-deep .ant-menu-submenu.ant-menu-submenu-open .ant-menu-submenu-title {
+  margin: 4px 8px 4px 8px !important;
+}
+
+
+// Force Arabic submenu arrow positioning
+
+
+:host ::ng-deep [dir="rtl"] .ant-menu-submenu-expand-icon,
+:host ::ng-deep [dir="rtl"] .ant-menu-submenu-arrow {
+  right: auto !important;
+  left: 16px !important;
+}
+
+
+// RTL submenu arrow positioning - highest specificity
+[dir="rtl"] .ant-menu-submenu-expand-icon,
+[dir="rtl"] .ant-menu-submenu-arrow,
+.rtl-layout .ant-menu-submenu-expand-icon,
+.rtl-layout .ant-menu-submenu-arrow {
+  right: auto !important;
+  left: 16px !important;
+}
+
+// RTL submenu arrow positioning - override with ::ng-deep
+::ng-deep [dir="rtl"] .ant-menu-submenu-expand-icon,
+::ng-deep [dir="rtl"] .ant-menu-submenu-arrow,
+::ng-deep .rtl-layout .ant-menu-submenu-expand-icon,
+::ng-deep .rtl-layout .ant-menu-submenu-arrow {
+  right: auto !important;
+  left: 16px !important;
 }
