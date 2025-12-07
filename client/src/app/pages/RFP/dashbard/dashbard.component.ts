@@ -25,6 +25,8 @@ export class DashbardComponent implements OnInit, OnDestroy {
   listOfColumnList = listOfColumnRFPMG;
   size: NzButtonSize = 'large';
   repForm: FormGroup;
+  isProcurementDashboard = false;
+  currentDashboard = 'my';
 
   // Dashboard Stats
   totalProjects = 0;
@@ -108,6 +110,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   this.rfp.setIsSearchRFPMenuActive(true);
+  this.updateColumnList();
   
   this.listArray = [
   { RfpName: 'Water Treatment Expansion', PurchaseReqNo: 'PR-2025-1001', DeptText: 'Engineering Department', CompetitionType: 'General Competition', Activity: 'Water Infrastructure', CoordinatorContact: '+966-50-123-4567', AssignedTo: 'Mohammed Ali', RfpStatus: 'A', CreatedOn: '20250110', RfpNo: 'RFP-001', RfpVersion: '1' },
@@ -224,6 +227,39 @@ this.rfpList = this.listArray;
     this.doughnutChartData.labels = Object.keys(userCounts);
     this.doughnutChartData.datasets[0].data = Object.values(userCounts);
     this.doughnutChartData.datasets[0].backgroundColor = colors.slice(0, Object.keys(userCounts).length);
+  }
+
+  toggleDashboard(): void {
+    this.currentDashboard = this.isProcurementDashboard ? 'procurement' : 'my';
+    this.updateColumnList();
+  }
+
+  updateColumnList(): void {
+    if (this.currentDashboard === 'procurement') {
+      this.listOfColumnList = [
+        { id: 1, title: 'PR Number', titleAr: 'رقم طلب الشراء' },
+        { id: 2, title: 'Project Name', titleAr: 'اسم المشروع' },
+        { id: 3, title: 'Project Dept', titleAr: 'قسم المشروع' },
+        { id: 4, title: 'Type of Competition', titleAr: 'نوع المنافسة' },
+        { id: 5, title: 'Activity', titleAr: 'النشاط' },
+        { id: 6, title: 'Coordinator Contact', titleAr: 'جهة اتصال المنسق' },
+        { id: 7, title: 'Assigned To', titleAr: 'مسند إلى' },
+        { id: 8, title: 'Status', titleAr: 'الحالة' },
+        { id: 9, title: 'View', titleAr: 'عرض' }
+      ];
+    } else {
+      this.listOfColumnList = [
+        { id: 1, title: 'PR Number', titleAr: 'رقم طلب الشراء' },
+        { id: 2, title: 'Project Name', titleAr: 'اسم المشروع' },
+        { id: 3, title: 'Project Dept', titleAr: 'قسم المشروع' },
+        { id: 4, title: 'Type of Competition', titleAr: 'نوع المنافسة' },
+        { id: 5, title: 'Activity', titleAr: 'النشاط' },
+        { id: 6, title: 'Coordinator Contact', titleAr: 'جهة اتصال المنسق' },
+        { id: 8, title: 'Status', titleAr: 'الحالة' },
+        { id: 9, title: 'View', titleAr: 'عرض' },
+        { id: 10, title: 'Actions', titleAr: 'الإجراءات' }
+      ];
+    }
   }
 
   ngOnDestroy(): void {
