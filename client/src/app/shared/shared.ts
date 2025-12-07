@@ -808,28 +808,6 @@ export const listOfColumnRFPAppRej = [
 export const listOfColumnRFPMG = [
   {
     id: 1,
-    title: 'Project Name',
-    titleAr: 'اسم المشروع',
-  },
-  {
-    id: 2,
-    title: 'RFP Number',
-    titleAr: 'رقم المنافسة',
-    sortFn: (a: DataItem, b: DataItem) =>
-      a.RfpNo.localeCompare(b.RfpNo),
-    sortDirections: ['ascend', 'descend', null],
-  },
-  {
-    id: 3,
-    title: `RFP Version`,
-    titleAr: `نسخة طلب تقديم العروض`,
-    sortFn: (prev: DataItem, next: DataItem) => Number(prev.RfpVersion) - Number(next.RfpVersion),
-    sortDirections: ['ascend', 'descend', null],
-  },
-
-
-  {
-    id: 4,
     title: 'PR Number',
     titleAr: 'رقم طلب الشراء',
     sortFn: (a: DataItem, b: DataItem) =>
@@ -837,70 +815,50 @@ export const listOfColumnRFPMG = [
     sortDirections: ['ascend', 'descend', null],
   },
   {
+    id: 2,
+    title: 'Project Name',
+    titleAr: 'اسم المشروع',
+  },
+  {
+    id: 3,
+    title: 'Project Dept',
+    titleAr: 'قسم المشروع',
+  },
+  {
+    id: 4,
+    title: 'Type of Competition',
+    titleAr: 'نوع المنافسة',
+  },
+  {
     id: 5,
-    title: 'Created On',
-    titleAr: 'أنشئ في',
-    sortFn: (prev: DataItem, next: DataItem) => {
-      const preCreatedOn = prev.CreatedOn.valueOf() || 0, nextCreatedOn = next.CreatedOn.valueOf() || 0;
-      return preCreatedOn - nextCreatedOn;
-    },
-    sortDirections: ['ascend', 'descend', null],
-  },
-  {
-    id: 49,
-    title: 'Req. Dept',
-    titleAr: 'الجهة الطالبة',
-  },
-  {
-    id: 41,
-    title: 'Pending Dept',
-    titleAr: 'قيد الانتظار مع القسم',
-  },
-
-  {
-    id: 42,
-    title: 'Pending User',
-    titleAr: 'قيد الانتظار مع المستخدم',
+    title: 'Activity',
+    titleAr: 'النشاط',
   },
   {
     id: 6,
+    title: 'Coordinator Contact',
+    titleAr: 'جهة اتصال المنسق',
+  },
+  {
+    id: 7,
+    title: 'Assigned To',
+    titleAr: 'مسند إلى',
+  },
+  {
+    id: 8,
     title: 'Status',
     titleAr: 'الحالة',
   },
-  // {
-  //   id: 6,
-  //   title: 'SLA',
-  //   titleAr: 'اتفاقية مستوي التشغيل',
-  //   sortFn: (prev: DataItem, next: DataItem) => {
-  //     const preEndDate = prev.SlaEndDate ? Number(prev.SlaEndDate) : 0,
-  //       nextEndDate = next.SlaEndDate ? Number(next.SlaEndDate) : 0;
-  //     if (preEndDate > nextEndDate) {
-  //       return -1;
-  //     } else if (preEndDate < nextEndDate) {
-  //       return 1;
-  //     } else {
-  //       return 0;
-  //     }
-  //   },
-  //   sortDirections: ['ascend', 'descend', null],
-  // },
   {
-    id: 7,
+    id: 9,
     title: 'View',
     titleAr: 'عرض',
   },
   {
-    id: 8,
+    id: 10,
     title: 'Actions',
     titleAr: 'الإجراءات',
-  },
-  // {
-  //   id:10,
-  //   title:'Has it been re-announced?',
-  //   titleAr: 'هل تم الإعلان عنه مرة أخرى؟',
-
-  // }
-
+  }
 ];
 
 export const listOfColumnBudget = [
