@@ -5,13 +5,17 @@
     <div class="row">
         <!-- Dashboard Header -->
         <div class="col-12 mb-3">
-            <div class="dashboard-header">
+            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="header-content">
                     <i nz-icon nzType="dashboard" nzTheme="outline" class="header-icon"></i>
                     <div>
-                        <h1 class="dashboard-title">{{"RFP.RFP Summary"|translate}}</h1>
+                        <h1 class="dashboard-title">{{ currentDashboard === 'my' ? 'My Dashboard' : 'Procurement Dashboard' }}</h1>
                         <p class="dashboard-subtitle">{{"RFP.Real-time RFP status and Summary"|translate}}</p>
                     </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f0f2f5; padding: 8px 16px; border-radius: 20px;">
+                    <span style="font-size: 14px; font-weight: 500; color: #595959;">{{ isProcurementDashboard ? 'Procurement' : 'My Dashboard' }}</span>
+                    <nz-switch [(ngModel)]="isProcurementDashboard" (ngModelChange)="toggleDashboard()" nzSize="default"></nz-switch>
                 </div>
             </div>
         </div>
@@ -207,7 +211,7 @@
                     </h3>
                 </div>
                 <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
-                    Action="MG"></app-rfptable>
+                    [Action]="currentDashboard" [dashboardType]="currentDashboard"></app-rfptable>
                 <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
             </div>
 

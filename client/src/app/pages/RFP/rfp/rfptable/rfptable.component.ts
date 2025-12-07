@@ -29,6 +29,7 @@ export class RfptableComponent implements OnInit, OnChanges {
   @Input() Action: any;
   @Input() selectedType: any;
   @Input() isSearchRFPSelected: boolean = false;
+  @Input() dashboardType: string = 'my';
   readonly IconList = IconList;
 
   detArray: any;
@@ -46,6 +47,11 @@ export class RfptableComponent implements OnInit, OnChanges {
   searchValue = '';
   visible = false;
   statusvisible = false;
+  
+  showApproveModal = false;
+  showDeclineModal = false;
+  showTransferModal = false;
+  selectedRowData: any;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -241,18 +247,45 @@ export class RfptableComponent implements OnInit, OnChanges {
   }
 
   onActionClick(action: string, data: any): void {
-    console.log('Action clicked:', action, 'Data:', data);
+    this.selectedRowData = data;
     switch(action) {
       case 'approve':
-        this.nzMessageService.success(`Approved: ${data.RfpName} (${data.PurchaseReqNo})`);
+        this.showApproveModal = true;
         break;
       case 'decline':
-        this.nzMessageService.warning(`Declined: ${data.RfpName} (${data.PurchaseReqNo})`);
+        this.showDeclineModal = true;
         break;
       case 'transfer':
-        this.nzMessageService.info(`Transfer initiated for: ${data.RfpName} (${data.PurchaseReqNo})`);
+        this.showTransferModal = true;
         break;
     }
+  }
+
+  handleApproveCancel(): void {
+    this.showApproveModal = false;
+  }
+
+  handleDeclineCancel(): void {
+    this.showDeclineModal = false;
+  }
+
+  handleTransferCancel(): void {
+    this.showTransferModal = false;
+  }
+
+  handleApproveSubmit(): void {
+    this.nzMessageService.success(`Approved: ${this.selectedRowData.RfpName}`);
+    this.showApproveModal = false;
+  }
+
+  handleDeclineSubmit(): void {
+    this.nzMessageService.warning(`Declined: ${this.selectedRowData.RfpName}`);
+    this.showDeclineModal = false;
+  }
+
+  handleTransferSubmit(): void {
+    this.nzMessageService.info(`Transferred: ${this.selectedRowData.RfpName}`);
+    this.showTransferModal = false;
   }
 
   ngOnDestroy(): void {
