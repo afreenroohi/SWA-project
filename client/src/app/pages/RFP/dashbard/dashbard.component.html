@@ -9,11 +9,11 @@
                 <div class="header-content">
                     <i nz-icon nzType="dashboard" nzTheme="outline" class="header-icon"></i>
                     <div>
-                        <h1 class="dashboard-title">{{ currentDashboard === 'my' ? 'My Dashboard' : 'Procurement Dashboard' }}</h1>
+                        <h1 class="dashboard-title">{{ isEndUser ? 'RFPs' : (currentDashboard === 'my' ? 'My Dashboard' : 'Procurement Dashboard') }}</h1>
                         <p class="dashboard-subtitle">{{"RFP.Real-time RFP status and Summary"|translate}}</p>
                     </div>
                 </div>
-                <div class="toggle-container">
+                <div class="toggle-container" *ngIf="!isEndUser">
                     <button class="toggle-btn" [class.active]="!isProcurementDashboard" (click)="isProcurementDashboard = false; toggleDashboard()">
                         My Dashboard
                     </button>
@@ -104,7 +104,7 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
-                        Pending with Procurement Team Members
+                        {{ isEndUser ? 'Pending with Users' : 'Pending with Procurement Team Members' }}
                     </h3>
                 </div>
                 <div class="chart-container">
@@ -132,7 +132,81 @@
                 </div>
                 <form [formGroup]="repForm">
                     <div class="filter-content">
-                        <div class="row g-3 align-items-end">
+                        <!-- ENDUSER Filters -->
+                        <div class="row g-3 align-items-end" *ngIf="isEndUser">
+                            <!-- * Project Name -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Project Name</label>
+                                    <nz-select id="dep" formControlName="dep" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * PR Number -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">PR Number</label>
+                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
+                                        [nzDisabled]="rfpList.length === 0">
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.PurchaseReqNo"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.PurchaseReqNo : o.PurchaseReqNo"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * RFP Number -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">RFP Number</label>
+                                    <nz-select formControlName="rfpNumber" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpNo"
+                                            [nzLabel]="o.RfpNo"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Pending with User -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Pending with User</label>
+                                    <nz-select formControlName="pendingUser" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option nzValue="Mohammed Ali" nzLabel="Mohammed Ali"></nz-option>
+                                        <nz-option nzValue="Fatima Noor" nzLabel="Fatima Noor"></nz-option>
+                                        <nz-option nzValue="John Smith" nzLabel="John Smith"></nz-option>
+                                        <nz-option nzValue="Aisha Karim" nzLabel="Aisha Karim"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Status -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Status</label>
+                                    <nz-select formControlName="status" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option nzValue="A" nzLabel="Approved"></nz-option>
+                                        <nz-option nzValue="S" nzLabel="Declined"></nz-option>
+                                        <nz-option nzValue="D" nzLabel="Pending"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- Spacer -->
+                            <div class="col"></div>
+
+                            <!-- Search Button -->
+                            <div class="col-auto ms-auto">
+                                <button nz-button nzType="primary" class="search-btn-compact" (click)="filterSearch()">
+                                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                                    {{ 'RFP.search' | translate }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PROCUSER Filters -->
+                        <div class="row g-3 align-items-end" *ngIf="!isEndUser">
                             <!-- * PR Number -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
@@ -203,7 +277,7 @@
                     </h3>
                 </div>
                 <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
-                    [Action]="currentDashboard" [dashboardType]="currentDashboard"></app-rfptable>
+                    [Action]="currentDashboard" [dashboardType]="currentDashboard" [isEndUser]="isEndUser"></app-rfptable>
                 <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
             </div>
 

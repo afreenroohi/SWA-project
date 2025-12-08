@@ -14,83 +14,115 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of nzTable.data">
-      <td>{{ data.PurchaseReqNo }}</td>
-      <td>{{ data.RfpName }}</td>
-      <td>{{ data.DeptText }}</td>
-      <td>{{ data.CompetitionType }}</td>
-      <td>{{ data.Activity }}{{ data.SubActivity ? ' / ' + data.SubActivity : '' }}</td>
-      <td>{{ data.CoordinatorName }}</td>
-      <td>{{ data.CoordinatorContact }}</td>
-      <td *ngIf="dashboardType === 'procurement'">{{ data.AssignedTo }}</td>
+    <ng-container *ngIf="isEndUser">
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{ data.RfpName }}</td>
+        <td>{{ data.RfpNo }}</td>
+        <td>{{ data.RfpVersion }}</td>
+        <td>{{ data.PurchaseReqNo }}</td>
+        <td>{{ data.CreatedOn | date:'dd-MM-yyyy' }}</td>
+        <td>{{ data.DeptText }}</td>
+        <td>{{ data.PendingDept }}</td>
+        <td>{{ data.PendingUser }}</td>
+        <td [ngClass]="{
+          'status-approved': data.RfpStatus === 'A',
+          'status-draft': data.RfpStatus === 'D',
+          'status-submitted': data.RfpStatus === 'S'
+        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
+          {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
+        </td>
+        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
+            (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
+            nzTooltipTitle="{{ 'RFP.View' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <span nz-icon nzType="eye" nzTheme="outline"></span>
+          </button>
+        </td>
+        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nz-dropdown [nzDropdownMenu]="endUserActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+          </button>
+          <nz-dropdown-menu #endUserActionMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="onActionClick('changebidopeningdate', data)">
+                <span nz-icon nzType="calendar" nzTheme="outline"></span>
+                Change Bid Opening Date
+              </li>
+              <li nz-menu-item (click)="onActionClick('extenddate', data)">
+                <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+                Extend Bid Opening Date
+              </li>
+              <li nz-menu-item (click)="onActionClick('addattachment', data)">
+                <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+                Add More Attachments
+              </li>
+              <li nz-menu-item (click)="onActionClick('invitecompanies', data)">
+                <span nz-icon nzType="user-add" nzTheme="outline"></span>
+                Invite More Companies
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+    </ng-container>
 
-
-      <td *ngIf="data.RfpStatus" [ngClass]="{
-        'status-approved': data.RfpStatus === 'A',
-        'status-draft': data.RfpStatus === 'D',
-        'status-submitted': data.RfpStatus === 'S'
-      }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
-        {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
-      </td>
-      <!-- <td [ngStyle]="{
-        color: data.SlaInd === 'N' ? 'red' : 'green'
-      }">{{ cs.userLanguage === 'en'? data.Sla : data.SlaAr }}</td> -->
-
-      <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-        <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
-          (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
-          nzTooltipTitle="{{ 'RFP.View' | translate }}" nzTooltipPlacement="bottomLeft"
-          [nzTooltipArrowPointAtCenter]="true">
-          <span nz-icon nzType="eye" nzTheme="outline"></span>
-        </button>
-      </td>
-
-      <td *ngIf="dashboardType === 'my'" style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-        <button nz-button nz-dropdown [nzDropdownMenu]="actionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
-          <span nz-icon nzType="more" nzTheme="outline"></span>
-        </button>
-        <nz-dropdown-menu #actionMenu="nzDropdownMenu">
-          <ul nz-menu>
-            <li nz-menu-item (click)="onActionClick('approve', data)" style="color: #52c41a;">
-              <span nz-icon nzType="check-circle" nzTheme="outline" style="color: #52c41a;"></span>
-              Approve
-            </li>
-            <li nz-menu-item (click)="onActionClick('decline', data)" style="color: #ff4d4f;">
-              <span nz-icon nzType="close-circle" nzTheme="outline" style="color: #ff4d4f;"></span>
-              Decline
-            </li>
-            <li nz-menu-item (click)="onActionClick('transfer', data)">
-              <span nz-icon nzType="swap" nzTheme="outline"></span>
-              Transfer
-            </li>
-          </ul>
-        </nz-dropdown-menu>
-      </td>
-
-      <!-- <td>
-        <nz-switch [(ngModel)]="data.isReAnnounced" (ngModelChange)="onReAnnouncedChange(data)">
-        </nz-switch>
-      </td> -->
-
-    </tr>
+    <ng-container *ngIf="!isEndUser">
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{ data.PurchaseReqNo }}</td>
+        <td>{{ data.RfpName }}</td>
+        <td>{{ data.DeptText }}</td>
+        <td>{{ data.CompetitionType }}</td>
+        <td>{{ data.Activity }}{{ data.SubActivity ? ' / ' + data.SubActivity : '' }}</td>
+        <td>{{ data.CoordinatorName }}</td>
+        <td>{{ data.CoordinatorContact }}</td>
+        <td *ngIf="dashboardType === 'procurement'">{{ data.AssignedTo }}</td>
+        <td [ngClass]="{
+          'status-approved': data.RfpStatus === 'A',
+          'status-draft': data.RfpStatus === 'D',
+          'status-submitted': data.RfpStatus === 'S'
+        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
+          {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
+        </td>
+        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
+            (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
+            nzTooltipTitle="{{ 'RFP.View' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <span nz-icon nzType="eye" nzTheme="outline"></span>
+          </button>
+        </td>
+        <td *ngIf="dashboardType === 'my'" style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nz-dropdown [nzDropdownMenu]="procUserActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+          </button>
+          <nz-dropdown-menu #procUserActionMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="onActionClick('approve', data)" style="color: #52c41a;">
+                <span nz-icon nzType="check-circle" nzTheme="outline" style="color: #52c41a;"></span>
+                Approve
+              </li>
+              <li nz-menu-item (click)="onActionClick('decline', data)" style="color: #ff4d4f;">
+                <span nz-icon nzType="close-circle" nzTheme="outline" style="color: #ff4d4f;"></span>
+                Decline
+              </li>
+              <li nz-menu-item (click)="onActionClick('transfer', data)">
+                <span nz-icon nzType="swap" nzTheme="outline"></span>
+                Transfer
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </nz-table>
 
-<!-- <nz-modal [(nzVisible)]="isVisible" nzTitle="Workflow Inbox" (nzOnCancel)="handleCancel()">
-  <div *nzModalContent>
-  </div>
-  <div *nzModalFooter>
-
-
-    <button nz-button nzType="primary" (click)="handleOk()">Custom Submit</button>
-  </div>
-</nz-modal> -->
 <nz-drawer [nzVisible]="showDetails" [nzWidth]="1180" [nzClosable]="false" (nzOnClose)="close()">
   <ng-container *nzDrawerContent>
     <app-rfpdetails *ngIf="detArray" [Actiondet]="Actiondet" [detArray]="detArray"></app-rfpdetails>
   </ng-container>
 </nz-drawer>
-
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
@@ -103,8 +135,6 @@
   </div>
 </nz-dropdown-menu>
 
-
-
 <nz-dropdown-menu #statusMenu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
     <div class="search-box">
@@ -116,7 +146,6 @@
   </div>
 </nz-dropdown-menu>
 
-<!-- Approve Modal -->
 <nz-modal [(nzVisible)]="showApproveModal" nzTitle="Approve Request" [nzMaskClosable]="false" [nzClosable]="true" 
   (nzOnCancel)="handleApproveCancel()" [nzFooter]="approveFooter" nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
@@ -158,7 +187,6 @@
   </ng-template>
 </nz-modal>
 
-<!-- Decline Modal -->
 <nz-modal [(nzVisible)]="showDeclineModal" nzTitle="Decline Request" [nzMaskClosable]="false" [nzClosable]="true" 
   (nzOnCancel)="handleDeclineCancel()" [nzFooter]="declineFooter" nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
@@ -188,7 +216,6 @@
   </ng-template>
 </nz-modal>
 
-<!-- Transfer Modal -->
 <nz-modal [(nzVisible)]="showTransferModal" nzTitle="Transfer Request" [nzMaskClosable]="false" [nzClosable]="true" 
   (nzOnCancel)="handleTransferCancel()" [nzFooter]="transferFooter" nzWidth="500px">
   <div *nzModalContent style="padding: 24px;">
