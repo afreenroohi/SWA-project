@@ -13,9 +13,13 @@
                         <p class="dashboard-subtitle">{{"RFP.Real-time RFP status and Summary"|translate}}</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 12px; background: #f0f2f5; padding: 8px 16px; border-radius: 20px;">
-                    <span style="font-size: 14px; font-weight: 500; color: #595959;">{{ isProcurementDashboard ? 'Procurement' : 'My Dashboard' }}</span>
-                    <nz-switch [(ngModel)]="isProcurementDashboard" (ngModelChange)="toggleDashboard()" nzSize="default"></nz-switch>
+                <div class="toggle-container">
+                    <button class="toggle-btn" [class.active]="!isProcurementDashboard" (click)="isProcurementDashboard = false; toggleDashboard()">
+                        My Dashboard
+                    </button>
+                    <button class="toggle-btn" [class.active]="isProcurementDashboard" (click)="isProcurementDashboard = true; toggleDashboard()">
+                        Procurement
+                    </button>
                 </div>
             </div>
         </div>
@@ -81,7 +85,7 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
-                        {{'RFP.Project Pending Department'|translate}}
+                        Total RFPs
                     </h3>
                 </div>
                 <div class="chart-container">
@@ -100,7 +104,7 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
-                        {{"RFP.Pending with Users"|translate}}
+                        Pending with Procurement Team Members
                     </h3>
                 </div>
                 <div class="chart-container">
@@ -129,21 +133,10 @@
                 <form [formGroup]="repForm">
                     <div class="filter-content">
                         <div class="row g-3 align-items-end">
-                            <!-- * Project Name -->
+                            <!-- * PR Number -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
-                                    <label class="filter-label-compact">{{ 'RFP.Project Name' | translate }}</label>
-                                    <nz-select id="dep" formControlName="dep" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
-                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
-                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
-                                    </nz-select>
-                                </div>
-                            </div>
-
-                            <!-- * Purchase Request Number -->
-                            <div class="col-auto filter-col">
-                                <div class="filter-field-compact">
-                                    <label class="filter-label-compact">{{ 'RFP.Purchase Request Number' | translate }}</label>
+                                    <label class="filter-label-compact">PR Number</label>
                                     <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
                                         [nzDisabled]="rfpList.length === 0">
                                         <nz-option *ngFor="let o of departmentList" [nzValue]="o.PurchaseReqNo"
@@ -152,26 +145,24 @@
                                 </div>
                             </div>
 
-                            <!-- * RFP Number -->
+                            <!-- * Project Name -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
-                                    <label class="filter-label-compact">{{ 'RFP.RFP Number' | translate }}</label>
-                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
-                                        [nzDisabled]="rfpList.length === 0">
-                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpNo"
-                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpNo : o.RfpNo"></nz-option>
+                                    <label class="filter-label-compact">Project Name</label>
+                                    <nz-select id="dep" formControlName="dep" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RfpName"
+                                            [nzLabel]="cs.userLanguage === 'en' ? o.RfpName : o.RfpName"></nz-option>
                                     </nz-select>
                                 </div>
                             </div>
 
-                            <!-- * Pending with User -->
+                            <!-- * Type of Competition -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
-                                    <label class="filter-label-compact">{{ 'RFP.Pending with User' | translate }}</label>
-                                    <nz-select formControlName="rfpNo" nzShowSearch nzPlaceHolder="Select" nzAllowClear
-                                        [nzDisabled]="rfpList.length === 0">
-                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
-                                            [nzLabel]="o.WfPendUsrEn"></nz-option>
+                                    <label class="filter-label-compact">Type of Competition</label>
+                                    <nz-select formControlName="competition" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.CompetitionType"
+                                            [nzLabel]="o.CompetitionType"></nz-option>
                                     </nz-select>
                                 </div>
                             </div>
@@ -179,10 +170,11 @@
                             <!-- * Status -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
-                                    <label class="filter-label-compact">{{'RFP.Status'|translate}}</label>
+                                    <label class="filter-label-compact">Status</label>
                                     <nz-select formControlName="status" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
-                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.WfPendUsrEn"
-                                            [nzLabel]="o.WfPendUsrEn"></nz-option>
+                                        <nz-option nzValue="A" nzLabel="Approved"></nz-option>
+                                        <nz-option nzValue="S" nzLabel="Declined"></nz-option>
+                                        <nz-option nzValue="D" nzLabel="Pending"></nz-option>
                                     </nz-select>
                                 </div>
                             </div>

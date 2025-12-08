@@ -19,7 +19,8 @@
       <td>{{ data.RfpName }}</td>
       <td>{{ data.DeptText }}</td>
       <td>{{ data.CompetitionType }}</td>
-      <td>{{ data.Activity }}</td>
+      <td>{{ data.Activity }}{{ data.SubActivity ? ' / ' + data.SubActivity : '' }}</td>
+      <td>{{ data.CoordinatorName }}</td>
       <td>{{ data.CoordinatorContact }}</td>
       <td *ngIf="dashboardType === 'procurement'">{{ data.AssignedTo }}</td>
 
@@ -27,11 +28,9 @@
       <td *ngIf="data.RfpStatus" [ngClass]="{
         'status-approved': data.RfpStatus === 'A',
         'status-draft': data.RfpStatus === 'D',
-        'status-cancelled': data.RfpStatus === 'C',
-        'status-returned': data.RfpStatus === 'R',
         'status-submitted': data.RfpStatus === 'S'
-      }"> 
-        {{ cs.returnStatus(data.RfpStatus === 'C' ? 'Cancel' : data.RfpStatus) }}
+      }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
+        {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
       </td>
       <!-- <td [ngStyle]="{
         color: data.SlaInd === 'N' ? 'red' : 'green'
