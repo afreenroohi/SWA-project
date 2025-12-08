@@ -102,7 +102,7 @@
               {{ dispname }}
             </span>
             <span style="color: gray; font-size: 13px;">
-              IT / Operations
+              {{department}}
             </span>
           </div>
         </div>
@@ -157,22 +157,25 @@
     <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
       [nzWidth]="isCollapsed ? 80 : 200" [ngStyle]="{ 'background-color': 'white' }">
 
-      <!-- Toggle button at top-left -->
-      <div class="header-toggle" *ngIf="navItems && navItems.length > 0">
-        <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
-          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
-        </button>
-      </div>
+      <!-- Header container for toggle and logo -->
+      <div class="sidebar-header" [class.collapsed]="isCollapsed ">
+        <!-- Toggle button -->
+        <div class="header-toggle" *ngIf="navItems && navItems.length > 0">
+          <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
+            <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+          </button>
+        </div>
 
-      <!-- Logo container centered below toggle -->
-      <div class="logo-container" [class.collapsed]="isCollapsed">
-        <a href="/" class="logo-link" title="Home">
-          <!-- expanded logo -->
-          <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
-          <!-- collapsed logo -->
-          <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="44" height="44"
-            alt="logo-collapsed" />
-        </a>
+        <!-- Logo container -->
+        <div class="logo-container" [class.collapsed]="isCollapsed">
+          <a href="/" class="logo-link" title="Home">
+            <!-- expanded logo -->
+            <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
+            <!-- collapsed logo -->
+            <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="44" height="44"
+              alt="logo-collapsed" />
+          </a>
+        </div>
       </div>
 
       <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
@@ -182,7 +185,7 @@
               [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
               <ng-template #submenuTitle>
                 <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalSubmenuIcon">
-                  <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
+                  <app-icon style="line-height: 9px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
                 </ng-container>
                 <ng-template #normalSubmenuIcon>
                   <span nz-icon [nzType]="item.ModuleIcon" style="font-size: 16px;"></span>

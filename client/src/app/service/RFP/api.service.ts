@@ -21,11 +21,11 @@ export class ApiService {
 
 
   // RFP FLOW
-
+  
   getLoginUserDetails(userId: string) {
     // KAAR-758
     console.log(userId, '=====userId')
-    const headers = new HttpHeaders({
+    const headers = new HttpHeaders({    //btoa = browser to ascii (encoding base64)
       'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
     });
     return this.http.get(this.baseurl + `api/LoginUserDetails/${userId}`, { headers });
