@@ -448,13 +448,14 @@ export class AppComponent {
         
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
-        
-        if(this.dispname === 'KAAR-758'){
+        console.log(this.dispname,'displayyyyyyyyyyyy')
+        if(this.dispname === 'ENDUSER'){
           localStorage.setItem('username', btoa('ENDUSER'))
-        }else if(this.dispname === 'KAAR-2792'){
+        }else if(this.dispname === 'PROCUSER'){
           localStorage.setItem('username', btoa('PROCUSER'))
         }else{
-          this.roleTest('Requestor');
+          localStorage.setItem('username', btoa('ADMIN'))
+
         }
         this.department = response?.d?.Planstxt || 'N/A'
         this.ProxyUserId = userName.toUpperCase();
@@ -472,11 +473,11 @@ export class AppComponent {
             link: 'rfp/dashboard'
           },
         )
-        if(userName === 'KAAR-2792'){
+        if(userName === 'PROCUSER'){
           this.router.navigate(['rfp/dashboard'])
         }
         // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-        if (userName === 'KAAR-758') {
+        if (userName === 'ENDUSER') {
           this.roleTest('Requestor');
 
           // ensure Dashboard is the active/selected menu key

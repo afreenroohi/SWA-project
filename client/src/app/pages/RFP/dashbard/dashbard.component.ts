@@ -262,17 +262,17 @@ this.rfpList = this.listArray;
   updateColumnList(): void {
     if (this.isEndUser) {
       this.listOfColumnList = [
-        { id: 1, title: 'Project Name', titleAr: 'اسم المشروع' },
-        { id: 2, title: 'RFP Number', titleAr: 'رقم RFP' },
-        { id: 3, title: 'RFP Version', titleAr: 'إصدار RFP' },
-        { id: 4, title: 'PR Number', titleAr: 'رقم طلب الشراء' },
-        { id: 5, title: 'Created On', titleAr: 'تاريخ الإنشاء' },
-        { id: 6, title: 'Req. Dept', titleAr: 'قسم الطلب' },
-        { id: 7, title: 'Pending Dept', titleAr: 'القسم المعلق' },
-        { id: 8, title: 'Pending User', titleAr: 'المستخدم المعلق' },
-        { id: 9, title: 'Status', titleAr: 'الحالة' },
-        { id: 10, title: 'View', titleAr: 'عرض' },
-        { id: 11, title: 'Actions', titleAr: 'الإجراءات' }
+        // { id: 1, title: 'Project Name', titleAr: 'اسم المشروع' },
+        // { id: 2, title: 'RFP Number', titleAr: 'رقم RFP' },
+        // { id: 3, title: 'RFP Version', titleAr: 'إصدار RFP' },
+        // { id: 4, title: 'PR Number', titleAr: 'رقم طلب الشراء' },
+        // { id: 5, title: 'Created On', titleAr: 'تاريخ الإنشاء' },
+        // { id: 6, title: 'Req. Dept', titleAr: 'قسم الطلب' },
+        // { id: 7, title: 'Pending Dept', titleAr: 'القسم المعلق' },
+        // { id: 8, title: 'Pending User', titleAr: 'المستخدم المعلق' },
+        // { id: 9, title: 'Status', titleAr: 'الحالة' },
+        // { id: 10, title: 'View', titleAr: 'عرض' },
+        // { id: 11, title: 'Actions', titleAr: 'الإجراءات' }
       ];
     } else if (this.currentDashboard === 'procurement') {
       this.listOfColumnList = [
