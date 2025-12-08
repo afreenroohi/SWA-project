@@ -325,6 +325,37 @@
   }
 }
 
+.toggle-container {
+  display: flex;
+  background: #f0f2f5;
+  padding: 4px;
+  border-radius: 20px;
+  gap: 4px;
+}
+
+.toggle-btn {
+  padding: 6px 20px;
+  border: none;
+  background: transparent;
+  color: #595959;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: #005c99;
+  }
+
+  &.active {
+    background: #005c99;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 92, 153, 0.2);
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-header {
     padding: 20px;
