@@ -30,6 +30,7 @@ export class RfptableComponent implements OnInit, OnChanges {
   @Input() selectedType: any;
   @Input() isSearchRFPSelected: boolean = false;
   @Input() dashboardType: string = 'my';
+  @Input() isEndUser: boolean = false;
   readonly IconList = IconList;
 
   detArray: any;
