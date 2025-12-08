@@ -27,6 +27,8 @@ export class DashbardComponent implements OnInit, OnDestroy {
   repForm: FormGroup;
   isProcurementDashboard = false;
   currentDashboard = 'my';
+  isEndUser = false;
+  username = '';
 
   // Dashboard Stats
   totalProjects = 0;
@@ -42,6 +44,17 @@ export class DashbardComponent implements OnInit, OnDestroy {
       data: [0, 0, 0], 
       label: 'Total RFPs', 
       backgroundColor: ['#005c99', '#005c99', '#005c99'],
+      borderRadius: 8,
+      barThickness: 40
+    }]
+  };
+  
+  public departmentBarChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Procurement', 'Finance', 'Quality Control', 'HR', 'Legal'],
+    datasets: [{ 
+      data: [5, 3, 7, 2, 4], 
+      label: 'Project Pending Department', 
+      backgroundColor: ['#005c99', '#0077c2', '#004a7a', '#003d66', '#faad14'],
       borderRadius: 8,
       barThickness: 40
     }]
@@ -109,8 +122,11 @@ export class DashbardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const username = localStorage.getItem('username');
-    console.log('Username:', username ? atob(username) : null);
+    const encodedUsername = localStorage.getItem('username');
+    this.username = encodedUsername ? atob(encodedUsername) : '';
+    console.log('Username:', this.username);
+    
+    this.isEndUser = this.username === 'ENDUSER';
     
   this.rfp.setIsSearchRFPMenuActive(true);
   this.updateColumnList();
