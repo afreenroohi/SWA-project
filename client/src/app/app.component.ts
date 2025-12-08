@@ -450,7 +450,13 @@ export class AppComponent {
         
         this.isUserLoggedIn = true;
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
-        localStorage.setItem('username', btoa(this.dispname))
+        if(this.dispname === 'KAAR-758'){
+          localStorage.setItem('username', btoa('ENDUSER'))
+        }else if(this.dispname === 'KAAR-2792'){
+          localStorage.setItem('username', btoa('PROCUSER'))
+        }else{
+          this.roleTest('Requestor');
+        }
         this.department = response?.d?.Planstxt ? response?.d?.Planstxt : 'undefined'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
@@ -467,6 +473,9 @@ export class AppComponent {
             link: 'rfp/dashboard'
           },
         )
+        if(userName === 'KAAR-2792'){
+          this.router.navigate(['rfp/dashboard'])
+        }
         // if(userName === 'OALMAGHRABI'){  'KAAR-758'
         if (userName === 'KAAR-758') {
           this.roleTest('Requestor');

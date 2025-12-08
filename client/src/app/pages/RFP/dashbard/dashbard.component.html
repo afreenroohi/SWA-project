@@ -85,12 +85,12 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
-                        Total RFPs
+                        {{ isEndUser ? 'Project Pending Department' : 'Total RFPs' }}
                     </h3>
                 </div>
                 <div class="chart-container">
                     <canvas baseChart
-                        [data]="barChartData"
+                        [data]="isEndUser ? departmentBarChartData : barChartData"
                         [options]="barChartOptions"
                         type="bar">
                     </canvas>
