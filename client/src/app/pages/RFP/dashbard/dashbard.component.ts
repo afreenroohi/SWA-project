@@ -109,6 +109,9 @@ export class DashbardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const username = localStorage.getItem('username');
+    console.log('Username:', username ? atob(username) : null);
+    
   this.rfp.setIsSearchRFPMenuActive(true);
   this.updateColumnList();
   

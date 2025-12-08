@@ -396,6 +396,7 @@ export class AppComponent {
         
         this.isUserLoggedIn = true;
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+        localStorage.setItem('username', btoa(this.dispname))
         this.department = response?.d?.Planstxt ? response?.d?.Planstxt : 'undefined'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
