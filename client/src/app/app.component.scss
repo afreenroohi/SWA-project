@@ -457,6 +457,12 @@ nz-sider {
   padding-right: 20px !important;
 }
 
+// RTL logo container padding
+[dir="rtl"] .logo-container,
+.rtl-layout .logo-container {
+  padding-left: 20px;
+}
+
 // Avatar animation
 .animated-avatar {
   animation: glow 2s ease-in-out infinite alternate;
