@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from './service/common.service';
-import { SessionService } from './service/session.service';
+import { AuthService } from './service/auth.service';
 import { ar_EG, en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { ApiService } from './service/RFP/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -122,13 +122,7 @@ export class AppComponent {
   }
 
   logout() {
-    // Use session service to clear session
-    this.sessionService.clearSession();
-    
-    // Reset user state
-    this.resetUserState();
-    
-    // Navigate to login or home page
+    this.authService.logout();
     this.router.navigate(['/']);
   }
   
@@ -237,7 +231,7 @@ export class AppComponent {
     private translate: TranslateService,
     public cs: CommonService,
     private rfp: RFPService,
-    private sessionService: SessionService
+    private authService: AuthService
   ) {
     this.translate.addLangs(['en', 'ar']);
     this.translate.use('en');
@@ -266,9 +260,6 @@ export class AppComponent {
   ngOnDestroy(): void {
     this._destroy.next(undefined);
     this._destroy.complete();
-    
-    // Stop session monitoring
-    this.sessionService.stopSessionCheck();
   }
 
   ngOnInit(): void {
@@ -287,12 +278,7 @@ export class AppComponent {
       document.documentElement.removeAttribute('data-theme');
     }
     
-    // Monitor session expiration
-    this.sessionService.sessionExpired$.pipe(takeUntil(this._destroy)).subscribe(expired => {
-      if (expired) {
-        this.handleSessionExpired();
-      }
-    });
+
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
     //   const decode: any = jwt_decode(token);
@@ -450,6 +436,19 @@ export class AppComponent {
         
         this.isUserLoggedIn = true;
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+        
+        // Create session token
+        const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+        const userDetails = {
+          username: userName,
+          displayName: this.dispname,
+          department: response?.d?.Planstxt || 'undefined',
+          loginTime: new Date().toISOString()
+        };
+        
+        // Set session with 8 hours expiry
+        this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
+        
         if(this.dispname === 'KAAR-758'){
           localStorage.setItem('username', btoa('ENDUSER'))
         }else if(this.dispname === 'KAAR-2792'){
@@ -457,7 +456,7 @@ export class AppComponent {
         }else{
           this.roleTest('Requestor');
         }
-        this.department = response?.d?.Planstxt ? response?.d?.Planstxt : 'undefined'
+        this.department = response?.d?.Planstxt || 'N/A'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
         this.isCollapsed = true;

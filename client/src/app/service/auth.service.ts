@@ -39,10 +39,37 @@ export class AuthService {
 
   // Logout
   logout() {
+    // Clear auth tokens
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     localStorage.removeItem(this.EXP_KEY);
+    
+    // Clear all other session data
+    localStorage.removeItem('username');
+    localStorage.removeItem('ROLERFP');
+    localStorage.removeItem('ROLEBUD');
+    localStorage.removeItem('ID');
+    localStorage.removeItem('Dep');
+    localStorage.removeItem('DepTxt');
+    localStorage.removeItem('CC');
+    localStorage.removeItem('CA');
+    localStorage.removeItem('CommitteeName');
+    localStorage.removeItem('LogdInUsrID');
+    localStorage.removeItem('CMTID');
+    localStorage.removeItem('ROLEOP');
+    localStorage.removeItem('ROLEEV');
+    localStorage.removeItem('ROLEQP');
+    localStorage.removeItem('ROLEDP');
+    localStorage.removeItem('ROLEMG');
+    localStorage.removeItem('ROLETE');
+    localStorage.removeItem('ContractDep');
+    localStorage.removeItem('CocDep');
+    localStorage.removeItem('RoleCOC');
+    
+    // Clear session storage
+    sessionStorage.clear();
 
-    this.router.navigate(['/rfp/home'], { replaceUrl: true });
+    // Force page reload to reset component state
+    window.location.href = '/rfp/home';
   }
 }

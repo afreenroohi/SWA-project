@@ -102,7 +102,7 @@ nz-sider {
   align-items: center;
   justify-content: center;
   transition: all $transition-smooth;
-  padding-left: 20px;
+  padding-left: 37px;
   padding-top: 5px;
   padding-right: 5px;
 
@@ -129,8 +129,8 @@ nz-sider {
     
     a.logo-link {
       img {
-        width: 44px !important;
-        height: 44px !important;
+        width: 60px !important;
+        height: 60px !important;
       }
     }
   }
@@ -157,13 +157,15 @@ nz-sider {
 .sidebar-header {
   // default top spacing (open state)
   .header-toggle {
-    margin-top: 52px; 
+    margin-top: 20px; 
   }
 
-  // when collapsed → reduce top space
+  // when collapsed → move button to bottom
   &.collapsed {
     .header-toggle {
-      margin-top:20px; // adjust as you want
+      position: absolute;
+      top: 70px;
+      margin-top: 0;
     }
   }
 }
@@ -464,9 +466,9 @@ nz-sider {
 }
 
 // Avatar animation
-.animated-avatar {
-  animation: glow 2s ease-in-out infinite alternate;
-}
+// .animated-avatar {
+//   animation: glow 2s ease-in-out infinite alternate;
+// }
 
 // User dropdown styling
 .user-dropdown {
@@ -475,7 +477,7 @@ nz-sider {
 
 // User info container styling
 .user-info-container {
-  max-width: 200px;
+  max-width: 230px;
   
   div[style*="flex-direction:column"] {
     span:last-child {
@@ -520,6 +522,8 @@ nz-sider {
 
 .rtl-layout .right-header-section {
   position: relative !important;
+  left: 0 !important;
+  right: auto !important;
 }
 
 // Ensure left header section is above profile in Arabic
@@ -561,11 +565,11 @@ nz-sider {
 // Logout button styling
 .logout-btn {
   border: 1px solid #ff4d4f !important;
-  color: #ff4d4f !important;
-  background: white !important;
+  color: white !important;
+  background: #005c99 !important;
   
   &:hover {
-    background: #ff4d4f !important;
+    background: #40a9ff !important;
     color: white !important;
   }
 }
