@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from './service/common.service';
+import { SessionService } from './service/session.service';
 import { ar_EG, en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { ApiService } from './service/RFP/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -121,10 +122,52 @@ export class AppComponent {
   }
 
   logout() {
-    this.oauthService.logOut();
-    localStorage.clear();
-    sessionStorage.clear();
-
+    // Use session service to clear session
+    this.sessionService.clearSession();
+    
+    // Reset user state
+    this.resetUserState();
+    
+    // Navigate to login or home page
+    this.router.navigate(['/']);
+  }
+  
+  /**
+   * Handle session expiration
+   */
+  handleSessionExpired(): void {
+    // Show notification to user
+    this.cs.createMessage('warning', 'Your session has expired. Please login again.');
+    
+    // Reset user state
+    this.resetUserState();
+    
+    // Navigate to login
+    this.router.navigate(['/']);
+  }
+  
+  /**
+   * Reset all user-related state
+   */
+  private resetUserState(): void {
+    this.isUserLoggedIn = false;
+    this.dispname = '';
+    this.department = '';
+    this.ProxyUserId = '';
+    this.navItems = [];
+    
+    // Reset role flags
+    this.rqter = false;
+    this.appr = false;
+    this.budalltr = false;
+    this.manager = false;
+    this.apprmanager = false;
+    this.isAdmin = false;
+    this.isAdminFullAccess = false;
+    this.enableproxy = false;
+    
+    // Hide dropdown
+    this.showDropdown = false;
   }
   toggleLang() {
     if (this.cs.userLanguage === 'en') {
@@ -193,7 +236,8 @@ export class AppComponent {
     private api: ApiService,
     private translate: TranslateService,
     public cs: CommonService,
-    private rfp: RFPService
+    private rfp: RFPService,
+    private sessionService: SessionService
   ) {
     this.translate.addLangs(['en', 'ar']);
     this.translate.use('en');
@@ -222,6 +266,9 @@ export class AppComponent {
   ngOnDestroy(): void {
     this._destroy.next(undefined);
     this._destroy.complete();
+    
+    // Stop session monitoring
+    this.sessionService.stopSessionCheck();
   }
 
   ngOnInit(): void {
@@ -239,6 +286,13 @@ export class AppComponent {
       this.isDarkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
+    
+    // Monitor session expiration
+    this.sessionService.sessionExpired$.pipe(takeUntil(this._destroy)).subscribe(expired => {
+      if (expired) {
+        this.handleSessionExpired();
+      }
+    });
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
     //   const decode: any = jwt_decode(token);
