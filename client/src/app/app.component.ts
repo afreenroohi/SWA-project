@@ -122,8 +122,11 @@ export class AppComponent {
   }
 
   logout() {
+    // Reset component state first
+    this.resetUserState();
+    
+    // Clear all localStorage and sessionStorage
     this.authService.logout();
-    this.router.navigate(['/']);
   }
   
   /**
@@ -428,14 +431,22 @@ export class AppComponent {
         console.log(response, '=========RFPLoginApi=======');
         console.log(response?.d?.Uname, '=========username=======');
         
-        if(!response?.d?.Uname){
-            this.cs.createMessage("error", 'User Not Found');
-            console.log('Error message triggered: User Not Found');
+        // if(!response?.d?.Uname){
+        //     this.cs.createMessage("error", 'User Not Found');
+        //     console.log('Error message triggered: User Not Found');
+        //     return;
+        // }
+        
+        // this.isUserLoggedIn = true;
+        // this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+         if(response?.d?.Msgid === 'S' && response?.d?.Uname){
+            this.isUserLoggedIn = true;
+        } else {
+            this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
+            console.log('Login failed:', response?.d?.Message);
             return;
         }
-        
-        this.isUserLoggedIn = true;
-        this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+        this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
         
         // Create session token
         const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';

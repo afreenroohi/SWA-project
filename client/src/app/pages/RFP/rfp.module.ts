@@ -37,7 +37,7 @@ const routes: Routes = [
   {
     path: 'create',
     component: CreateRFPComponent,
-    // canActivate: [AuthGuardGuard],   // afreen commented
+    canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Requestor',
@@ -46,7 +46,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [AuthGuardGuard],
   },
   {
     path: 'list',
@@ -110,7 +109,7 @@ const routes: Routes = [
   {
     path: 'myinbox',
     component: MyinboxComponent,
-    // canActivate: [AuthGuardGuard],   // afreen commented
+    canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Approver',
@@ -155,7 +154,7 @@ const routes: Routes = [
     NzCollapseModule,
     NgChartsModule,
     RouterModule.forChild(routes)
-    
+
   ],
   providers: [
 

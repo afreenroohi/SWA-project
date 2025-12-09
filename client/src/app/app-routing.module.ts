@@ -16,20 +16,20 @@ const routes: Routes = [
   //   canActivate:[AuthGuardGuard]
   // },
 
-  
-  
-  { path: 'rfp', loadChildren: () => import('./pages/RFP/rfp.module').then(m => m.RFPModule)},
-  
-  { path: 'coc', loadChildren: () => import('./pages/COC/coc.module').then(m => m.COCModule)},
-  
-  { path: 'committee', loadChildren: () => import('./pages/COMMITTEE/committee.module').then(m => m.CommitteeModule)},
-  
-  { path: 'contract', loadChildren: () => import('./pages/CONTRACT/contract.module').then(m => m.ContractModule)},
 
-  { path: 'admin', loadChildren: () => import('./pages/Admin/admin.module').then(m => m.AdminModule)},
-  
-  { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
-  
+
+  { path: 'rfp', loadChildren: () => import('./pages/RFP/rfp.module').then(m => m.RFPModule) },
+
+  { path: 'coc', loadChildren: () => import('./pages/COC/coc.module').then(m => m.COCModule), canActivate: [AuthGuardGuard] },
+
+  { path: 'committee', loadChildren: () => import('./pages/COMMITTEE/committee.module').then(m => m.CommitteeModule), canActivate: [AuthGuardGuard] },
+
+  { path: 'contract', loadChildren: () => import('./pages/CONTRACT/contract.module').then(m => m.ContractModule), canActivate: [AuthGuardGuard] },
+
+  { path: 'admin', loadChildren: () => import('./pages/Admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuardGuard] },
+
+  { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AuthGuardGuard] },
+
   // { path: '**', redirectTo: 'rfp/home' }
 ];
 
