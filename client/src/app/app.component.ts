@@ -426,6 +426,7 @@ export class AppComponent {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
+    this.spinner.show();
     this.api.getLoginUserDetails(userName).subscribe(
       (response:any) => {
         console.log(response, '=========RFPLoginApi=======');
@@ -533,9 +534,11 @@ export class AppComponent {
           // Budallocator Manager Approver&Manager
           this.router.navigate(['rfp/myinbox']);
         }
+        this.spinner.hide();
       },
       error => {
-        console.error(error)
+        console.error(error);
+        this.spinner.hide();
       }
     );
    
