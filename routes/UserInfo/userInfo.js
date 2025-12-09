@@ -55,8 +55,12 @@ router.get('/get-user-details', (req, res) => {
 router.get('/LoginUserDetails/:userId', (req, res) => {
     const userId = req.params.userId;
     
+    console.log('USE_MOCK_API:', process.env.USE_MOCK_API);
+    console.log('Environment:', process.env.NODE_ENV);
+    
     // Mock API for testing on Render (when SAP is not accessible)
-    if (process.env.USE_MOCK_API === 'true') {
+    if (process.env.USE_MOCK_API === 'true' || process.env.NODE_ENV === 'production') {
+        console.log('Using Mock API for user:', userId);
         const mockResponse = {
             d: {
                 Msgid: 'S',
@@ -76,12 +80,11 @@ router.get('/LoginUserDetails/:userId', (req, res) => {
             'Content-Type': 'application/json',
             "Authorization": req.headers.authorization
         },
-        timeout: 10000 // 10 second timeout
+        timeout: 10000
     }).then((response) => {
         res.status(200).json(response.data);
     }).catch((error) => {
         console.error('SAP Connection Error:', error.message);
-        // Fallback to mock if SAP is unreachable
         const mockResponse = {
             d: {
                 Msgid: 'S',

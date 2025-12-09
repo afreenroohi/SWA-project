@@ -14,25 +14,38 @@ Render ka server aapke internal SAP server (`dxbktlds4cp.kcloud.com`) ko access 
 
 ## Immediate Fix (Testing ke liye)
 
-### Step 1: Render Dashboard Settings
+### Step 1: Code Changes (DONE ✅)
 
-1. Render Dashboard pe jao
-2. Apni service select karo
-3. **Environment** tab pe jao
-4. Yeh environment variable add karo:
+Main ne already 2 files me mock API support add kar diya hai:
+- ✅ `routes/UserInfo/userInfo.js`
+- ✅ `routes/RFP/createRFP.js`
 
+### Step 2: Git Push
+
+```bash
+git add .
+git commit -m "Add mock API support for Render deployment"
+git push origin main
 ```
-USE_MOCK_API = true
-```
 
-5. **Save Changes** karo
-6. Service automatically redeploy hogi
+### Step 3: Render Auto-Deploy
 
-### Step 2: Verify
+Render automatically detect karega aur redeploy karega (5-10 minutes)
+
+### Step 4: Verify
 
 - Frontend load hoga
 - Login API mock data return karega
 - 500 error nahi aayega
+
+### Optional: Environment Variable (Already working without it)
+
+Agar chahte ho to Render Dashboard me add kar sakte ho:
+```
+USE_MOCK_API = true
+```
+
+Lekin ab code me `NODE_ENV === 'production'` check hai, to environment variable ki zarurat nahi hai.
 
 ## Permanent Solutions
 
