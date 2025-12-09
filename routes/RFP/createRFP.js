@@ -11,25 +11,6 @@ apisJson = JSON.parse(api.apiList());
 // get login user details
 router.get("/LoginUserDetails/:userId", (req, res) => {
   let userId = req.params.userId;
-  
-  console.log('USE_MOCK_API:', process.env.USE_MOCK_API);
-  console.log('NODE_ENV:', process.env.NODE_ENV);
-  
-  // Mock API for Render deployment
-  if (process.env.USE_MOCK_API === 'true' || process.env.NODE_ENV === 'production') {
-    console.log('Using Mock API for user:', userId);
-    const mockResponse = {
-      d: {
-        Msgid: 'S',
-        Message: 'Login Successful',
-        Uname: userId,
-        Planstxt: 'IT Department',
-        UserId: userId
-      }
-    };
-    return res.status(200).json(mockResponse);
-  }
-  
   console.log('API URL:', apisJson.LoginUserDetails + `('${userId}')?$format=json`);
   axios({
     method: "get",
@@ -37,23 +18,13 @@ router.get("/LoginUserDetails/:userId", (req, res) => {
     headers: {
       Authorization: req.headers.authorization,
     },
-    timeout: 10000
   })
     .then((response) => {
       res.status(200).json(response.data);
     })
     .catch((err) => {
-      console.error('SAP Connection Error:', err.message);
-      const mockResponse = {
-        d: {
-          Msgid: 'S',
-          Message: 'Login Successful (Fallback)',
-          Uname: userId,
-          Planstxt: 'IT Department',
-          UserId: userId
-        }
-      };
-      res.status(200).json(mockResponse);
+      console.error('Error:', err.message);
+      res.status(500).json({ message: err.message, error: err.response?.data });
     });
 });
 
