@@ -961,14 +961,17 @@ background: rgba(217, 83, 79, 0.08);
   border: 2px solid #ffffff;
   border-radius: 4px;
   padding: 18px 22px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
   margin-top: -10px;
+  border: 3px solid #005bbd;
+  background-color: #E0E0E0;
 }
 
 /* Stepper Container */
 .custom-stepper {
   width: 100%;
   padding: 20px 0;
+  border-color: #003d80;
 }
 
 .stepper-container {
@@ -1002,8 +1005,8 @@ background: rgba(217, 83, 79, 0.08);
   width: 50px;
   height: 50px;
   border-radius:100px;
-  background-color: #4a9cf3;
-  border: 2px solid #005bbd;
+  background-color: #808080;
+  border: 2px solid #808080;
   display: flex;
   align-items: center;
   justify-content: center;

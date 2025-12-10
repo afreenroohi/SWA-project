@@ -79,11 +79,11 @@
       <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'ar'">
          
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="display:flex;flex-direction:row;margin-left:5px;">
+          <!-- <div style="display:flex;flex-direction:row;margin-left:5px;">
             <button nz-button nzType="default" (click)="logout()" class="logout-btn">
               <span nz-icon nzType="logout"></span> Logout
             </button>
-          </div>
+          </div> -->
           <div class="user-dropdown" (click)="toggleDropdown()">
             <nz-avatar nzIcon="user" class="animated-avatar" style="
               background-color:#005c99;
@@ -102,7 +102,11 @@
                 </span>
                 <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
               </div>
+              <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+  <span nz-icon nzType="logout"></span> Logout
+</button>
             </div>
+            
           </div>
           
           <div style="display:flex;flex-direction:column;line-height:1.2;">
@@ -142,7 +146,11 @@
                   {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
                 </span>
                 <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
+                
               </div>
+              <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+  <span nz-icon nzType="logout"></span> Logout
+</button>
             </div>
           </div>
           <div style="display:flex;flex-direction:column;line-height:1.2;">
@@ -153,11 +161,11 @@
               {{department}}
             </span>
           </div>
-          <div style="display:flex;flex-direction:row;margin-right:5px;">
+          <!-- <div style="display:flex;flex-direction:ro;margin-right:5px;">
             <button nz-button nzType="default" (click)="logout()" class="logout-btn">
   <span nz-icon nzType="logout"></span> Logout
-</button>
-          </div>
+</button> -->
+          <!-- </div--> 
         </div>
       </div>
     </div>
@@ -286,10 +294,16 @@
         </ng-container>
       </ul>
 
+      <!-- Copyright text when expanded -->
       <div class="copy-right-container row" *ngIf="!isCollapsed">
         <label>© {{ currentYear }}
           {{ "COMMON.CopyrightAllRightsReserved" | translate }}</label>
         <label>{{ "COMMON.Version" | translate }} - {{ applicationVersion }}</label>
+      </div>
+      
+      <!-- Copyright icon when collapsed -->
+      <div class="copy-right-icon" *ngIf="isCollapsed" style="position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 16px;">
+        <span nz-icon nzType="copyright" nz-tooltip [nzTooltipTitle]="'© ' + currentYear + ' All Rights Reserved'"></span>
       </div>
     </nz-sider>
 

@@ -567,13 +567,24 @@ nz-sider {
   border: 1px solid #ff4d4f !important;
   color: white !important;
   background: #005c99 !important;
+  margin-left: 33px;
   
   &:hover {
     background: #40a9ff !important;
     color: white !important;
   }
 }
-
+.rtl-layout .logout-btn{
+   border: 1px solid #ff4d4f !important;
+  color: white !important;
+  background: #005c99 !important;
+  margin-right: 33px;
+  
+  &:hover {
+    background: #40a9ff !important;
+    color: white !important;
+  }
+}
 .theme-label {
   display: flex;
   align-items: center;
