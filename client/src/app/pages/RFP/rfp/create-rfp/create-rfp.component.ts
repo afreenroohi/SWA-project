@@ -597,11 +597,65 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinue(): void {
     if (this.basicInfoValid) {
-      this.basicInfoSaved = true;
-      this.step = 1;
-      this.activateCollapse('scopeOfWork');
-      this.showScopeOfWork = true;
-      this.showBasicInfo = false;
+      const formValues = this.rfpForm.value;
+      
+      const payload = {
+        // Comptype: formValues.competitionType || '',
+        Comptype:'02',
+        Encompdesc: '',
+        Arcompdesc: '',
+        Prjname: formValues.competitionName || '',
+        Estcost: formValues.estimatedCost?.toString() || '0',
+        Dirpur: formValues.directPurchaseType || '00',
+        Endirdes: '',
+        Ardirdes: '',
+        Limcomp: formValues.limitedType || '00',
+        Enlimcomp: '',
+        Arlimcomp: '',
+        Invite: formValues.invite || '',
+        Durtype: formValues.DurationType || '',
+        Durperiod: formValues.ProjDur || 0,
+        Workloc: Array.isArray(formValues.workLocation) ? formValues.workLocation.join(',') : formValues.workLocation || '',
+        Activity: formValues.activity || '',
+        Subactivity: formValues.subactivity || '',
+        Coordinator: formValues.coordinatorName || '',
+        CoordinatorPhNo: formValues.coordinatorNumber || '',
+        CoordinatorEmail: formValues.coordinatorEmail || '',
+        ProjectConti: formValues.projectContinuous ? 'X' : '',
+        ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
+        PrevPrjNo: formValues.number?.toString() || '',
+        SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
+        SiteVisitUid: formValues.userId || '',
+        SiteVisitEmail: formValues.email || '',
+        SiteVisitContact: formValues.contactNumber || '',
+        PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
+        Justification: formValues.projectJustification || '',
+        Necessity: formValues.Necessity || '',
+        Impact: formValues.Impact || '',
+        ExpePjctEffi: '',
+        Msgid: '',
+        Msgv1: ''
+      };
+      console.log(payload, '=====payload======')
+      // return;
+      this.spinner.show();
+      this.api.post('BasicInformationDetailsSet', payload)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (response: any) => {
+            this.spinner.hide();
+            this.cs.createMessage('success', 'Basic Information saved successfully');
+            this.basicInfoSaved = true;
+            this.step = 1;
+            this.activateCollapse('scopeOfWork');
+            this.showScopeOfWork = true;
+            this.showBasicInfo = false;
+          },
+          (error) => {
+            this.spinner.hide();
+            this.cs.createMessage('error', error.message || 'Failed to save Basic Information');
+          }
+        );
     }
   }
 

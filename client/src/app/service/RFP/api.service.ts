@@ -38,7 +38,10 @@ export class ApiService {
     return this.http.get(this.baseurl + 'api/' + action, { headers });
   }
   post(action: any, data: any): Observable<any> {
-    return this.http.post(this.baseurl + 'api/' + action, data)
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa('KAAR-2792:Copyright@123456789')
+    });
+    return this.http.post(this.baseurl + 'api/' + action, data, { headers })
   }
 
   patch(action: any, data: any): Observable<any> {
