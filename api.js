@@ -63,6 +63,9 @@ module.exports.apiList = () => {
     // * Communication Details List
     CommunicationDetailsSet: config.URL + RFP_LOGIN_SRV + "/CommunicationDetailsSet",
 
+    // * Basic Information Details
+    BasicInformationDetailsSet: config.URL + RFP_LOGIN_SRV + "/BasicInformationDetailsSet",
+
     // * Delete RFP ITEM TABLES
     RfpBoqSet: config.URL + RFP_SRV + "/RfpBoqSet",
     RfpMpwrSet: config.URL + RFP_SRV + "/RfpMpwrSet",
