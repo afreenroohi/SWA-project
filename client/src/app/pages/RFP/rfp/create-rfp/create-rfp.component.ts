@@ -479,7 +479,15 @@ export class CreateRFPComponent implements OnInit {
   }
 
   get standardsValid(): boolean {
-    return this.TechReqListData.length > 0 && this.evalCriteriaItems.length > 0;
+    // Check if we have technical requirements
+    const hasTechReq = this.TechReqListData.length > 0;
+    
+    // Check if we have evaluation criteria with valid weightage totaling 100%
+    const hasEvalCriteria = this.evalCriteriaItems.length > 0;
+    const totalWeightage = this.getTotalWeightage();
+    const isWeightageValid = totalWeightage === 100;
+    
+    return hasTechReq && hasEvalCriteria && isWeightageValid;
   }
 
   get billOfQuantityValid(): boolean {
@@ -671,11 +679,53 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinueStandards(): void {
     if (this.standardsValid) {
-      this.standardsSaved = true;
-      this.step = 3;
-      this.activateCollapse('billOfQuantity');
-      this.showBillOfQuantity = true;
-      this.showStandards = false;
+      const formValues = this.rfpForm.value;
+      
+      const payload = {
+        Rfpno: formValues.rfpNumber ,
+        RFPKeyCriteriaNav: this.TechReqListData.map((item: any, index: number) => ({
+          Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+          Sino: index + 1,
+          Keyascr: item.Descr || '',
+          Pasfal: String
+        })),
+        RFPMainCriteria: this.evalCriteriaItems.value.map((item: any, index: number) => ({
+          Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+          Sino: (index + 1) ,
+          Headline: item.Headline || '',
+          Weightage: parseInt(item.Percentage) || 0,
+          MainSubCriteria: item.subCriteriaList ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
+            Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+            Sino: (index + 1) ,
+            Subsino: subIndex + 1,
+            Description: subItem.Descr || '',
+            Weightage: parseInt(subItem.Percentage) || 0
+          })) : []
+        }))
+      };
+      
+      console.log('Standards payload:', payload);
+      
+      this.spinner.show();
+      this.api.post('RFPNoSet', payload)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (response: any) => {
+            this.spinner.hide();
+            this.cs.createMessage('success', 'Standards saved successfully');
+            this.standardsSaved = true;
+            this.step = 3;
+            this.activateCollapse('billOfQuantity');
+            this.showBillOfQuantity = true;
+            this.showStandards = false;
+          },
+          (error) => {
+            this.spinner.hide();
+            this.cs.createMessage('error', error.message || 'Failed to save Standards');
+          }
+        );
+    } else {
+      this.cs.createMessage('error', 'Please complete all required fields in the Standards section');
     }
   }
 

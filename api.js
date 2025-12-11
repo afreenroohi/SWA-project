@@ -14,6 +14,7 @@ const ADMIN_SRV = "ZMM_P2P_ADMIN_SRV" + SAP_PL_ALIAS;
 const FILE_SRV = "ZMM_FILES_PRCS2_SRV"
 const CONTRACT_PRLIST = "ZP2P_CONT_CREAT_SRV_SRV" 
 const DASHBOARD_SRV = "ZMM_DASHBOARD_PRCS_SRV" + SAP_PL_ALIAS;
+const RFP_Standards_SRV="ZP2P_RFP2_SRV_02"+ SAP_PL_ALIAS;
 
 
 module.exports.apiList = () => {
@@ -65,6 +66,10 @@ module.exports.apiList = () => {
 
     // * Basic Information Details
     BasicInformationDetailsSet: config.URL + RFP_LOGIN_SRV + "/BasicInformationDetailsSet",
+    //Standards
+   RFPNoSet:config.URL+RFP_Standards_SRV+"/RFPNoSet",
+   //StandardsDetailsSet:config.URL+RFP_Standards_SRV+StandardsDetailsSet",
+
 
     // * Delete RFP ITEM TABLES
     RfpBoqSet: config.URL + RFP_SRV + "/RfpBoqSet",

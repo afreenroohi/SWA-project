@@ -236,30 +236,44 @@ router.post("/F4FinEvalSet", (req, res) => {
 });
 
 // submit/save rfp
-router.post("/RfpHeaderSet", (req, res) => {
-  var data = JSON.stringify(req.body);
-  
-  var config = {
-    method: "post",
-    url: apisJson.RfpHeaderSet,
-    headers: {
-      "X-Requested-With": "X",
-      Authorization: req.headers.authorization,
-      "Content-Type": "application/json",
-    },
-    data: data,
-  };
-
-  axios(config)
-    .then(
-      function (response) {
-        res.status(200).json(response.data);
-      },
-      function (error) {
-        res.sendStatus(400).json({ ErMessage: error.message });
+router.post("/RfpHeaderSet", async (req, res) => {
+  try {
+    // Remove origin segment parameter (;o=) from service root URL
+    let serviceRoot = apisJson.RfpHeaderSet.split('/RfpHeaderSet')[0];
+    serviceRoot = serviceRoot.replace(/;o=[^/]*/, '');
+    
+    // Step 1: GET request to fetch CSRF token
+    const getResponse = await axios({
+      method: "get",
+      url: serviceRoot,
+      headers: {
+        Authorization: req.headers.authorization,
+        "x-csrf-token": "fetch"
       }
-    )
-    .catch(function () {});
+    });
+
+    const csrfToken = getResponse.headers['x-csrf-token'];
+    const cookies = getResponse.headers['set-cookie'];
+
+    // Step 2: POST request with CSRF token
+    const postResponse = await axios({
+      method: "post",
+      url: apisJson.RfpHeaderSet,
+      headers: {
+        "X-Requested-With": "X",
+        Authorization: req.headers.authorization,
+        "Content-Type": "application/json",
+        "x-csrf-token": csrfToken,
+        "Cookie": cookies ? cookies.join('; ') : ''
+      },
+      data: req.body
+    });
+
+    res.status(200).json(postResponse.data);
+  } catch (err) {
+    console.error('RfpHeaderSet CSRF Error:', err.response?.data || err.message);
+    res.status(500).json({ message: err.message || err, details: err.response?.data });
+  }
 });
 
 // cancel rfp
@@ -598,6 +612,48 @@ router.get("/CommunicationDetailsSet", (req, res) => {
   .catch((err) => {
     res.status(500).json({ message: err.message || err });
   });
+});
+
+
+router.post("/RFPNoSet", async (req, res) => {
+  try {
+    // const serviceUrl = apisJson.RFPNoSet.split('/RFPNoSet')[0];
+    // const serviceRoot = serviceRoot.replace(/;o=[^/]*/, '');
+    let serviceRoot = apisJson.RFPNoSet.split('/RFPNoSet')[0];
+    serviceRoot = serviceRoot.replace(/;o=[^/]*/, '');
+    
+    // Step 1: GET request to fetch CSRF token
+    const getResponse = await axios({
+      method: "get",
+      url: serviceRoot,
+      headers: {
+        Authorization: req.headers.authorization,
+        "x-csrf-token": "fetch"
+      }
+    });
+
+    const csrfToken = getResponse.headers['x-csrf-token'];
+    const cookies = getResponse.headers['set-cookie'];
+
+    // Step 2: POST request with CSRF token
+    const postResponse = await axios({
+      method: "post",
+      url: apisJson.RFPNoSet,
+      headers: {
+        "X-Requested-With": "X",
+        Authorization: req.headers.authorization,
+        "Content-Type": "application/json",
+        "x-csrf-token": csrfToken,
+        "Cookie": cookies ? cookies.join('; ') : ''
+      },
+      data: req.body
+    });
+
+    res.status(200).json(postResponse.data);
+  } catch (err) {
+    console.error('RFPNoSet Error:', err.response?.data || err.message);
+    res.status(500).json({ message: err.message || err, details: err.response?.data });
+  }
 });
 
 // * Post Basic Information Details

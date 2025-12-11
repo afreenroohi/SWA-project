@@ -247,7 +247,7 @@
   --card-color: #005c99;
   --card-color-light: #0078c2;
   --card-color-dark: #004a7a;
-  
+
   .stat-icon {
     background: linear-gradient(135deg, rgba(0, 92, 153, 0.15) 0%, rgba(0, 92, 153, 0.05) 100%);
     color: #005c99;
@@ -258,7 +258,7 @@
   --card-color: #52c41a;
   --card-color-light: #73d13d;
   --card-color-dark: #389e0d;
-  
+
   .stat-icon {
     background: linear-gradient(135deg, rgba(82, 196, 26, 0.15) 0%, rgba(82, 196, 26, 0.05) 100%);
     color: #52c41a;
@@ -269,7 +269,7 @@
   --card-color: #faad14;
   --card-color-light: #ffc53d;
   --card-color-dark: #d48806;
-  
+
   .stat-icon {
     background: linear-gradient(135deg, rgba(250, 173, 20, 0.15) 0%, rgba(250, 173, 20, 0.05) 100%);
     color: #faad14;
@@ -280,7 +280,7 @@
   --card-color: #ed104f;
   --card-color-light: #f91b3c;
   --card-color-dark: #f91b3c;
-  
+
   .stat-icon {
     background: linear-gradient(135deg, rgba(114, 46, 209, 0.15) 0%, rgba(114, 46, 209, 0.05) 100%);
     color: #f12345;
@@ -410,5 +410,141 @@
         width: 100%;
       }
     }
+  }
+}
+
+/* Dark Mode Overrides */
+:host-context([data-theme="dark"]) {
+  .dashboard-wrapper {
+    background: #0d1117 !important;
+  }
+
+  .dashboard-header {
+    background: #161b22 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+
+    .dashboard-title {
+      color: #ffffff !important;
+    }
+
+    .dashboard-subtitle {
+      color: #8b949e !important;
+    }
+  }
+
+  .filter-section,
+  .results-section,
+  .chart-card,
+  .stat-card {
+    background: #161b22 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid #30363d !important;
+  }
+
+  /* Filter Section Specifics */
+  .filter-section {
+    .filter-header {
+      background: #161b22 !important;
+      border-bottom-color: #30363d !important;
+
+      .filter-title {
+        color: #ffffff !important;
+      }
+
+      .reset-btn {
+        color: #58a6ff !important;
+        border-color: #30363d !important;
+
+        &:hover {
+          background: #21262d !important;
+        }
+      }
+    }
+
+    .filter-label-compact {
+      color: #c9d1d9 !important;
+    }
+
+    .search-btn-compact {
+      background: #1f6feb !important;
+      border-color: #1f6feb !important;
+      color: #ffffff !important;
+    }
+  }
+
+  /* Results Section Specifics */
+  .results-section {
+    .results-header {
+      border-bottom-color: #30363d !important;
+
+      .results-title {
+        color: #ffffff !important;
+
+        .results-count {
+          background: #21262d !important;
+          color: #c9d1d9 !important;
+        }
+      }
+    }
+  }
+
+  /* Chart Card Specifics */
+  .chart-card {
+    .chart-header {
+      border-bottom-color: #30363d !important;
+
+      .chart-title {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  /* Stat Card Specifics */
+  .stat-card {
+    &::before {
+      opacity: 0.8;
+    }
+
+    .stat-label {
+      color: #8b949e !important;
+    }
+
+    .stat-value {
+      /* Keep the gradient or adjust for dark mode visibility */
+      text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-trend {
+      color: #8b949e !important;
+    }
+  }
+
+  /* Toggle Buttons */
+  .toggle-container {
+    background: #21262d !important;
+  }
+
+  .toggle-btn {
+    color: #c9d1d9 !important;
+
+    &:hover {
+      color: #58a6ff !important;
+    }
+
+    &.active {
+      background: #1f6feb !important;
+      color: #ffffff !important;
+    }
+  }
+
+  /* Form Controls */
+  ::ng-deep .ant-select-selector {
+    background-color: #0d1117 !important;
+    border-color: #30363d !important;
+    color: #ffffff !important;
+  }
+
+  ::ng-deep .ant-select-arrow {
+    color: #8b949e !important;
   }
 }
