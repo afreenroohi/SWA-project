@@ -656,6 +656,23 @@ router.post("/RFPNoSet", async (req, res) => {
   }
 });
 
+// * Get CreateRFPSet - Generate RFP Number
+router.get("/CreateRFPSet", (req, res) => {
+  axios({
+    method: "get",
+    url: apisJson.CreateRFPSet + "?$format=json",
+    headers: {
+      Authorization: req.headers.authorization
+    }
+  })
+  .then((response) => {
+    res.status(200).json(response.data);
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message || err });
+  });
+});
+
 // * Post Basic Information Details
 router.post("/BasicInformationDetailsSet", async (req, res) => {
   try {
