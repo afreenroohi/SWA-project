@@ -671,14 +671,14 @@
               </nz-form-control>
             </div>
 
-            <!-- *coordinator name -->
+            <!-- *coordinator name      (ngModelChange)="onCoordinatorSelect($event)" -->
             <div class="col-4 my-1">
               <nz-form-label>{{
                 "RFP.coordinator name" | translate
                 }}</nz-form-label>
               <nz-select nzShowSearch nzAllowClear formControlName="coordinatorName"
                 [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate" style="width: 100%"
-                (nzOnSearch)="onCoordinatorSearch($event)" (ngModelChange)="onCoordinatorSelect($event)">
+                (nzOnSearch)="onCoordinatorSearch($event)" >   
                 <nz-option *ngFor="let item of filteredCommunicationList" [nzValue]="item.Uname"
                   [nzLabel]="item.Uname"></nz-option>
               </nz-select>

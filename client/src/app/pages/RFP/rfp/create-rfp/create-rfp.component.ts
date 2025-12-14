@@ -2277,6 +2277,14 @@ export class CreateRFPComponent implements OnInit {
 
     this.listenDeliveryDateChange();
     this.rfpForm.get('SubCriFlg')?.setValue('X');
+    this.rfpForm.get('coordinatorName')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((name:string) => {
+      if(!name) return;
+      const selectedUser = this.members.controls.findIndex((ctrl) => ctrl.get('role')?.value === 'Project Director');
+      if(selectedUser!==-1){
+        this.members.at(selectedUser).patchValue({name: name});
+      }
+    });
+
   }
   private isDirectCompetitionSelected(): boolean {
     const compVal = this.rfpForm.get('competitionType')?.value;
