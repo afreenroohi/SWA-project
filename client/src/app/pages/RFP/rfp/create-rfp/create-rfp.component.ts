@@ -270,6 +270,7 @@ export class CreateRFPComponent implements OnInit {
   showErrorField: boolean = false;
   isPrivateSelected: boolean = false;
   selectedBundleIndex: number | null = null;
+  selectedPackageIndex: number = 0;
   selectedYears: number = 1;
 
   workforceRows: any[] = [{}];
@@ -605,63 +606,88 @@ export class CreateRFPComponent implements OnInit {
 
   saveAndContinue(): void {
     if (this.basicInfoValid) {
-      const formValues = this.rfpForm.value;
-
-      const payload = {
-        // Comptype: formValues.competitionType || '',
-        Comptype: '02',
-        Encompdesc: '',
-        Arcompdesc: '',
-        Prjname: formValues.competitionName || '',
-        Estcost: formValues.estimatedCost?.toString() || '0',
-        Dirpur: formValues.directPurchaseType || '00',
-        Endirdes: '',
-        Ardirdes: '',
-        Limcomp: formValues.limitedType || '00',
-        Enlimcomp: '',
-        Arlimcomp: '',
-        Invite: formValues.invite || '',
-        Durtype: formValues.DurationType || '',
-        Durperiod: formValues.ProjDur || 0,
-        Workloc: Array.isArray(formValues.workLocation) ? formValues.workLocation.join(',') : formValues.workLocation || '',
-        Activity: formValues.activity || '',
-        Subactivity: formValues.subactivity || '',
-        Coordinator: formValues.coordinatorName || '',
-        CoordinatorPhNo: formValues.coordinatorNumber || '',
-        CoordinatorEmail: formValues.coordinatorEmail || '',
-        ProjectConti: formValues.projectContinuous ? 'X' : '',
-        ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
-        PrevPrjNo: formValues.number?.toString() || '',
-        SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
-        SiteVisitUid: formValues.userId || '',
-        SiteVisitEmail: formValues.email || '',
-        SiteVisitContact: formValues.contactNumber || '',
-        PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
-        Justification: formValues.projectJustification || '',
-        Necessity: formValues.Necessity || '',
-        Impact: formValues.Impact || '',
-        ExpePjctEffi: '',
-        Msgid: '',
-        Msgv1: ''
-      };
-      console.log(payload, '=====payload======')
-      // return;
       this.spinner.show();
-      this.api.post('BasicInformationDetailsSet', payload)
+
+      // First, generate RFP number
+      this.api.get('CreateRFPSet')
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          (response: any) => {
-            this.spinner.hide();
-            this.cs.createMessage('success', 'Basic Information saved successfully');
-            this.basicInfoSaved = true;
-            this.step = 1;
-            this.activateCollapse('scopeOfWork');
-            this.showScopeOfWork = true;
-            this.showBasicInfo = false;
+          (rfpResponse: any) => {
+            const rfpNumber = rfpResponse?.d?.results?.[0]?.RFPNO;
+
+            if (!rfpNumber) {
+              this.spinner.hide();
+              this.cs.createMessage('error', 'Failed to generate RFP number');
+              return;
+            }
+
+            // Store RFP number in form for later use
+            this.rfpForm.patchValue({ rfpNumber: rfpNumber });
+
+            const formValues = this.rfpForm.value;
+
+            const payload = {
+              Comptype: '02',
+              Encompdesc: '',
+              Arcompdesc: '',
+              Prjname: formValues.competitionName || '',
+              Estcost: formValues.estimatedCost?.toString() || '0',
+              Dirpur: formValues.directPurchaseType || '00',
+              Endirdes: '',
+              Ardirdes: '',
+              Limcomp: formValues.limitedType || '00',
+              Enlimcomp: '',
+              Arlimcomp: '',
+              Invite: formValues.invite || '',
+              Durtype: formValues.DurationType || '',
+              Durperiod: formValues.ProjDur || 0,
+              Workloc: Array.isArray(formValues.workLocation) ? formValues.workLocation.join(',') : formValues.workLocation || '',
+              Activity: formValues.activity || '',
+              Subactivity: formValues.subactivity || '',
+              Coordinator: formValues.coordinatorName || '',
+              CoordinatorPhNo: formValues.coordinatorNumber || '',
+              CoordinatorEmail: formValues.coordinatorEmail || '',
+              ProjectConti: formValues.projectContinuous ? 'X' : '',
+              ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
+              PrevPrjNo: formValues.number?.toString() || '',
+              SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
+              SiteVisitUid: formValues.userId || '',
+              SiteVisitEmail: formValues.email || '',
+              SiteVisitContact: formValues.contactNumber || '',
+              PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
+              Justification: formValues.projectJustification || '',
+              Necessity: formValues.Necessity || '',
+              Impact: formValues.Impact || '',
+              ExpePjctEffi: '',
+              Msgid: '',
+              Msgv1: '',
+              Rfpno: rfpNumber
+            };
+
+            console.log('RFP Number:', rfpNumber);
+            console.log('Payload:', payload);
+
+            this.api.post('BasicInformationDetailsSet', payload)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(
+                (response: any) => {
+                  this.spinner.hide();
+                  this.cs.createMessage('success', 'Basic Information saved successfully');
+                  this.basicInfoSaved = true;
+                  this.step = 1;
+                  this.activateCollapse('scopeOfWork');
+                  this.showScopeOfWork = true;
+                  this.showBasicInfo = false;
+                },
+                (error) => {
+                  this.spinner.hide();
+                  this.cs.createMessage('error', error.message || 'Failed to save Basic Information');
+                }
+              );
           },
           (error) => {
             this.spinner.hide();
-            this.cs.createMessage('error', error.message || 'Failed to save Basic Information');
+            this.cs.createMessage('error', error.message || 'Failed to generate RFP number');
           }
         );
     }
@@ -680,22 +706,23 @@ export class CreateRFPComponent implements OnInit {
   saveAndContinueStandards(): void {
     if (this.standardsValid) {
       const formValues = this.rfpForm.value;
+      const rfpNumber = formValues.rfpNumber || '';
 
       const payload = {
-        Rfpno: formValues.rfpNumber,
+        Rfpno: rfpNumber,
         RFPKeyCriteriaNav: this.TechReqListData.map((item: any, index: number) => ({
-          Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+          Rfpno: rfpNumber,
           Sino: index + 1,
           Keyascr: item.Descr || '',
           Pasfal: item.Pasfal || ''
         })),
         RFPMainCriteria: this.evalCriteriaItems.value.map((item: any, index: number) => ({
-          Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+          Rfpno: rfpNumber,
           Sino: (index + 1),
           Headline: item.Headline || '',
           Weightage: parseInt(item.Percentage) || 0,
           MainSubCriteria: item.subCriteriaList ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
-            Rfpno: `R${String(index + 1).padStart(3, '0')}`,
+            Rfpno: rfpNumber,
             Sino: (index + 1),
             Subsino: subIndex + 1,
             Description: subItem.Descr || '',
@@ -705,7 +732,6 @@ export class CreateRFPComponent implements OnInit {
       };
 
       console.log('Standards payload:', payload);
-
       this.spinner.show();
       this.api.post('RFPNoSet', payload)
         .pipe(takeUntil(this.destroy$))
@@ -729,13 +755,99 @@ export class CreateRFPComponent implements OnInit {
     }
   }
 
+
+
   saveAndContinueBOQ(): void {
     if (this.billOfQuantityValid) {
-      this.billOfQuantitySaved = true;
-      this.step = 4;
-      this.activateCollapse('attachments');
-      this.showAttachments = true;
-      this.showBillOfQuantity = false;
+      // Save current package data before submitting
+      this.saveCurrentPackageData();
+
+      const formValues = this.rfpForm.value;
+      const rfpNumber = formValues.rfpNumber || '';
+
+      if (!rfpNumber) {
+        this.cs.createMessage('error', 'RFP Number is required. Please complete Basic Information first.');
+        return;
+      }
+
+      const payload = {
+        Rfpno: rfpNumber,
+        Compfrag: formValues.competitionFragmentation ? 'X' : '',
+        Numyear: formValues.noOfYears?.toString() || '',
+        HeaderToPack: this.competitionFragmentationItems.value.map((pkg: any, index: number) => ({
+          Rfpno: rfpNumber,
+          Packid: `P${String(index + 1).padStart(2, '0')}`,
+          Packname: pkg.package || '',
+          Packdes: pkg.description || '',
+          Packclas: pkg.classificationField || '',
+          PackToWorkforce: (pkg.workforceRows || [])
+            .filter((row: any) => row.jobTitle || row.itemDescription)
+            .map((row: any, rowIndex: number) => ({
+              Rfpno: rfpNumber,
+              Packid: `P${String(index + 1).padStart(2, '0')}`,
+              Slno: String(rowIndex + 1).padStart(3, '0'),
+              Jobtitle: row.jobTitle || '',
+              Itemdes: row.itemDescription || '',
+              Leastelgb: row.leastEligibility || '',
+              Minyears: row.minYears?.toString() || '0',
+              BasicHrsY1: row.basicHoursY1?.toString() || row.quantityY1?.toString() || '0',
+              OtHrsY1: row.otHoursY1?.toString() || '0'
+            })),
+          PackToMaterial: (pkg.materialsRows || [])
+            .filter((row: any) => row.item || row.itemDescription || row.category)
+            .map((row: any, rowIndex: number) => ({
+              Rfpno: rfpNumber,
+              Packid: `P${String(index + 1).padStart(2, '0')}`,
+              Slno: String(rowIndex + 1).padStart(3, '0'),
+              Item: row.item || '',
+              Uom: row.uom || '',
+              MquanY1: row.quantityY1?.toString() || '0'
+            })),
+          PackToEquipment: (pkg.equipmentRows || [])
+            .filter((row: any) => row.item || row.itemDescription || row.category)
+            .map((row: any, rowIndex: number) => ({
+              Rfpno: rfpNumber,
+              Packid: `P${String(index + 1).padStart(2, '0')}`,
+              Slno: String(rowIndex + 1).padStart(3, '0'),
+              Item: row.item || '',
+              Uom: row.uom || '',
+              EquanY1: row.quantityY1?.toString() || '0'
+            })),
+          PackToService: (pkg.serviceRows || [])
+            .filter((row: any) => row.item || row.itemDescription || row.category)
+            .map((row: any, rowIndex: number) => ({
+              Rfpno: rfpNumber,
+              Packid: `P${String(index + 1).padStart(2, '0')}`,
+              Slno: String(rowIndex + 1).padStart(3, '0'),
+              Item: row.item || '',
+              Uom: row.uom || '',
+              SquanY1: row.quantityY1?.toString() || '0'
+            }))
+        }))
+      };
+
+      console.log('BOQ payload:', payload);
+
+      this.spinner.show();
+      this.api.post('BoqHeaderSet', payload)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (response: any) => {
+            this.spinner.hide();
+            this.cs.createMessage('success', 'Bill of Quantity saved successfully');
+            this.billOfQuantitySaved = true;
+            this.step = 4;
+            this.activateCollapse('attachments');
+            this.showAttachments = true;
+            this.showBillOfQuantity = false;
+          },
+          (error) => {
+            this.spinner.hide();
+            this.cs.createMessage('error', error.message || 'Failed to save Bill of Quantity');
+          }
+        );
+    } else {
+      this.cs.createMessage('error', 'Please complete all required fields in the Bill of Quantity section');
     }
   }
   //   get attachmentsValid(): boolean {
@@ -1425,6 +1537,10 @@ export class CreateRFPComponent implements OnInit {
       package: ['', Validators.required],
       description: ['', Validators.required],
       classificationField: ['', Validators.required],
+      workforceRows: [[{}]],
+      materialsRows: [[{}]],
+      equipmentRows: [[{}]],
+      serviceRows: [[{}]]
     });
   }
 
@@ -1468,8 +1584,40 @@ export class CreateRFPComponent implements OnInit {
     return Array.from({ length: this.selectedYears }, (_, i) => i + 1);
   }
 
+  saveCurrentPackageData(): void {
+    if (this.selectedBundleIndex !== null) {
+      const currentPackage = this.competitionFragmentationItems.at(this.selectedBundleIndex);
+      if (currentPackage) {
+        currentPackage.patchValue({
+          workforceRows: this.workforceRows,
+          materialsRows: this.materialsRows,
+          equipmentRows: this.equipmentRows,
+          serviceRows: this.serviceRows
+        });
+      }
+    }
+  }
+
   selectBundle(index: number): void {
+    // Save current package data before switching
+    this.saveCurrentPackageData();
+
     this.selectedBundleIndex = index;
+    this.selectedPackageIndex = index;
+
+    const selectedPackage = this.competitionFragmentationItems.at(index);
+    if (selectedPackage) {
+      // Load selected package data or initialize with empty arrays
+      const workforce = selectedPackage.get('workforceRows')?.value;
+      const materials = selectedPackage.get('materialsRows')?.value;
+      const equipment = selectedPackage.get('equipmentRows')?.value;
+      const service = selectedPackage.get('serviceRows')?.value;
+
+      this.workforceRows = (workforce && workforce.length > 0) ? workforce : [{}];
+      this.materialsRows = (materials && materials.length > 0) ? materials : [{}];
+      this.equipmentRows = (equipment && equipment.length > 0) ? equipment : [{}];
+      this.serviceRows = (service && service.length > 0) ? service : [{}];
+    }
   }
 
   addWorkforceRow(index: number): void {
@@ -1535,6 +1683,7 @@ export class CreateRFPComponent implements OnInit {
   // Updated buildMainFormGroup() with correct ItemNo reset after delete
   buildMainFormGroup(): void {
     this.rfpForm = this.fb.group({
+      rfpNumber: new FormControl(''),
       limitedType: new FormControl(''),
       directPurchaseType: new FormControl(''),
       invite: new FormControl('', [Validators.required]),
