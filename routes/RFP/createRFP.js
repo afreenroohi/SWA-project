@@ -714,4 +714,47 @@ router.post("/BasicInformationDetailsSet", async (req, res) => {
   }
 });
 
+//Bill of Quantity Header Set
+
+// router.post("/BoqHeaderSet", async (req, res) => {
+//   try {
+//     // Remove origin segment parameter (;o=) from service root URL
+//     let serviceRoot = apisJson.BoqHeaderSet.split('/BoqHeaderSet')[0];
+//     serviceRoot = serviceRoot.replace(/;o=[^/]*/, '');
+    
+//     // Step 1: GET request to fetch CSRF token
+//     const getResponse = await axios({
+//       method: "get",
+//       url: serviceRoot,
+//       headers: {
+//         Authorization: req.headers.authorization,
+//         "x-csrf-token": "fetch"
+//       }
+//     });
+
+//     const csrfToken = getResponse.headers['x-csrf-token'];
+//     const cookies = getResponse.headers['set-cookie'];
+
+//     // Step 2: POST request with CSRF token (keep original URL with ;o= for POST)
+//     const postResponse = await axios({
+//       method: "post",
+//       url: apisJson.BoqHeaderSet,
+//       headers: {
+//         "X-Requested-With": "X",
+//         Authorization: req.headers.authorization,
+//         "Content-Type": "application/json",
+//         "x-csrf-token": csrfToken,
+//         "Cookie": cookies ? cookies.join('; ') : ''
+//       },
+//       data: req.body
+//     });
+
+//     res.status(200).json(postResponse.data);
+//   } catch (err) {
+//     console.error('CSRF Error:', err.response?.data || err.message);
+//     res.status(500).json({ message: err.message || err, details: err.response?.data });
+//   }
+// });
+
+
 module.exports = router;
