@@ -448,6 +448,8 @@ export class AppComponent {
             return;
         }
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
+        let role = response?.d?.Addfield5
+        
         
         // Create session token
         const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
@@ -461,9 +463,9 @@ export class AppComponent {
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
         console.log(this.dispname,'displayyyyyyyyyyyy')
-        if(this.dispname === 'ENDUSER'){
+        if(role === 'ENDUSER'){
           localStorage.setItem('username', btoa('ENDUSER'))
-        }else if(this.dispname === 'PROCUSER'){
+        }else if(role === 'PRUSER'){
           localStorage.setItem('username', btoa('PROCUSER'))
         }else{
           localStorage.setItem('username', btoa('ADMIN'))
@@ -485,11 +487,11 @@ export class AppComponent {
             link: 'rfp/dashboard'
           },
         )
-        if(userName === 'PROCUSER'){
+        if(role === 'PRUSER'){
           this.router.navigate(['rfp/dashboard'])
         }
         // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-        if (userName === 'ENDUSER') {
+        if (role === 'ENDUSER') {
           this.roleTest('Requestor');
 
           // ensure Dashboard is the active/selected menu key
