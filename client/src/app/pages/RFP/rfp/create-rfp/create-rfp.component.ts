@@ -723,7 +723,7 @@ export class CreateRFPComponent implements OnInit {
           Weightage: parseInt(item.Percentage) || 0,
           MainSubCriteria: item.subCriteriaList ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
             Rfpno: rfpNumber,
-            Sino: (index + 1),
+            Sino: (index + 1) ,
             Subsino: subIndex + 1,
             Description: subItem.Descr || '',
             Weightage: parseInt(subItem.Percentage) || 0
