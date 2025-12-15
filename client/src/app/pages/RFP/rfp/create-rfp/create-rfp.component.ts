@@ -730,7 +730,7 @@ export class CreateRFPComponent implements OnInit {
           Weightage: parseInt(item.Percentage) || 0,
           MainSubCriteria: item.subCriteriaList ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
             Rfpno: rfpNumber,
-            Sino: (index + 1) ,
+            Sino: (index + 1),
             Subsino: subIndex + 1,
             Description: subItem.Descr || '',
             Weightage: parseInt(subItem.Percentage) || 0
@@ -798,7 +798,15 @@ export class CreateRFPComponent implements OnInit {
               Leastelgb: row.leastEligibility || '',
               Minyears: row.minYears?.toString() || '0',
               BasicHrsY1: row.basicHoursY1?.toString() || row.quantityY1?.toString() || '0',
-              OtHrsY1: row.otHoursY1?.toString() || '0'
+              OtHrsY1: row.otHoursY1?.toString() || '0',
+              BasicHrsY2: row.basicHoursY2?.toString() || row.quantityY2?.toString() || '0',
+              OtHrsY2: row.otHoursY2?.toString() || '0',
+              BasicHrsY3: row.basicHoursY3?.toString() || row.quantityY3?.toString() || '0',
+              OtHrsY3: row.otHoursY3?.toString() || '0',
+              BasicHrsY4: row.basicHoursY4?.toString() || row.quantityY4?.toString() || '0',
+              OtHrsY4: row.otHoursY4?.toString() || '0',
+              BasicHrsY5: row.basicHoursY5?.toString() || row.quantityY5?.toString() || '0',
+              OtHrsY5: row.otHoursY5?.toString() || '0'
             })),
           PackToMaterial: (pkg.materialsRows || [])
             .filter((row: any) => row.item || row.itemDescription || row.category)
@@ -808,7 +816,11 @@ export class CreateRFPComponent implements OnInit {
               Slno: String(rowIndex + 1).padStart(3, '0'),
               Item: row.item || '',
               Uom: row.uom || '',
-              MquanY1: row.quantityY1?.toString() || '0'
+              MquanY1: row.quantityY1?.toString() || '0',
+              MquanY2: row.quantityY2?.toString() || '0',
+              MquanY3: row.quantityY3?.toString() || '0',
+              MquanY4: row.quantityY4?.toString() || '0',
+              MquanY5: row.quantityY5?.toString() || '0'
             })),
           PackToEquipment: (pkg.equipmentRows || [])
             .filter((row: any) => row.item || row.itemDescription || row.category)
@@ -818,7 +830,11 @@ export class CreateRFPComponent implements OnInit {
               Slno: String(rowIndex + 1).padStart(3, '0'),
               Item: row.item || '',
               Uom: row.uom || '',
-              EquanY1: row.quantityY1?.toString() || '0'
+              EquanY1: row.quantityY1?.toString() || '0',
+              EquanY2: row.quantityY2?.toString() || '0',
+              EquanY3: row.quantityY3?.toString() || '0',
+              EquanY4: row.quantityY4?.toString() || '0',
+              EquanY5: row.quantityY5?.toString() || '0'
             })),
           PackToService: (pkg.serviceRows || [])
             .filter((row: any) => row.item || row.itemDescription || row.category)
@@ -828,7 +844,11 @@ export class CreateRFPComponent implements OnInit {
               Slno: String(rowIndex + 1).padStart(3, '0'),
               Item: row.item || '',
               Uom: row.uom || '',
-              SquanY1: row.quantityY1?.toString() || '0'
+              SquanY1: row.quantityY1?.toString() || '0',
+              SquanY2: row.quantityY2?.toString() || '0',
+              SquanY3: row.quantityY3?.toString() || '0',
+              SquanY4: row.quantityY4?.toString() || '0',
+              SquanY5: row.quantityY5?.toString() || '0'
             }))
         }))
       };
@@ -1435,24 +1455,31 @@ export class CreateRFPComponent implements OnInit {
   ];
 
   // Add new row Technical Committee Members
-  // addMember(index: number): void {
-  //   if (this.members.length < 15) {
-  //     this.members.insert(index + 1, this.createMemberRow(''));
-  //   }
+  addMember(index: number): void {
+    if (this.members.length < 15) {
+      this.members.insert(index + 1, this.createMemberRow(''));
+    }
+  }
+  // addMember(index: number) {
+  //   if (this.members.length >= 5) return;
+
+  //   this.members.push(
+  //     this.fb.group({
+  //       role: [''],
+  //       name: [null],          // IMPORTANT: allow dropdown binding
+  //       extension: [''],
+  //       jobTitle: ['']
+  //     })
+  //   );
   // }
-addMember(index: number) {
-  if (this.members.length >= 5) return;
-
-  this.members.push(
-    this.fb.group({
-      role: [''],
-      name: [null],          // IMPORTANT: allow dropdown binding
-      extension: [''],
-      jobTitle: ['']
-    })
-  );
-}
-
+// addMember(index: number): FormGroup {
+//   return this.fb.group({
+//     role: [''],
+//     name: [null],        // 👈 MUST EXIST
+//     extension: [''],
+//     jobTitle: ['']
+//   });
+// }
 
   // Delete row
   deleteMember(index: number): void {
@@ -2191,6 +2218,7 @@ addMember(index: number) {
       this.showConsultative = value === 'Consultative';
     });
 
+
     compCtrl.valueChanges
       .pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
       .subscribe((v) => console.log('DBG competitionType emitted:', v));
@@ -2305,24 +2333,13 @@ addMember(index: number) {
     //   if(selectedUser!==-1){
     //     this.members.at(selectedUser).patchValue({name: name});
     //   }
-      
+
     // });
 this.rfpForm.get('coordinatorName')?.valueChanges
   .pipe(takeUntil(this.destroy$))
   .subscribe((name: string) => {
     this.selectedCoordinatorName = name || null;
-
-    this.members.controls.forEach(ctrl => {
-      const role = ctrl.get('role')?.value;
-
-      if (
-        role === 'Project Director' ||
-        role === 'Project Coordinator' ||
-        role === 'Committee Member'
-      ) {
-        ctrl.patchValue({ name });
-      }
-    });
+    // ❌ DO NOT PATCH MEMBERS
   });
 
   }
@@ -5821,56 +5838,56 @@ this.rfpForm.get('coordinatorName')?.valueChanges
   getGrandVatAmount(data: readonly any[]): number {
     return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
   }
-getCompetitionTypes(): void {
-  this.spinner.show();
+  getCompetitionTypes(): void {
+    this.spinner.show();
 
-  this.api.get('CompTypeSet')
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(
-      (response: any) => {
-        this.spinner.hide();
+    this.api.get('CompTypeSet')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (response: any) => {
+          this.spinner.hide();
 
-        const results = response?.d?.results || [];
+          const results = response?.d?.results || [];
 
-        // ✅ IMPORTANT: Map EXACT backend keys
-        this.competitionTypes = results.map((o: any) => ({
-          id: o.Id,               // <-- capital I
-          value: o.Value,         // <-- capital V
-          valueAr: o.Valuear      // <-- exact key name
-        }));
+          // ✅ IMPORTANT: Map EXACT backend keys
+          this.competitionTypes = results.map((o: any) => ({
+            id: o.Id,               // <-- capital I
+            value: o.Value,         // <-- capital V
+            valueAr: o.Valuear      // <-- exact key name
+          }));
 
-        console.log('FINAL competitionTypes:', this.competitionTypes);
-      },
-      () => {
-        this.spinner.hide();
-        this.cs.createMessage('error', 'Failed to load competition types');
-      }
-    );
-}
+          console.log('FINAL competitionTypes:', this.competitionTypes);
+        },
+        () => {
+          this.spinner.hide();
+          this.cs.createMessage('error', 'Failed to load competition types');
+        }
+      );
+  }
 
-// mapCompetitionTypes(): void {
-//   if (!Array.isArray(this.competitionTypes)) return;
+  // mapCompetitionTypes(): void {
+  //   if (!Array.isArray(this.competitionTypes)) return;
 
-//   const direct = this.competitionTypes.find(
-//     (o) =>
-//       (o.value && o.value.toString().toLowerCase().includes('direct')) ||
-//       (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
-//       String(o.id).toLowerCase().includes('direct')
-//   );
+  //   const direct = this.competitionTypes.find(
+  //     (o) =>
+  //       (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+  //       (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
+  //       String(o.id).toLowerCase().includes('direct')
+  //   );
 
-//   const limited = this.competitionTypes.find(
-//     (o) =>
-//       (o.value && o.value.toString().toLowerCase().includes('limited')) ||
-//       (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
-//       String(o.id).toLowerCase().includes('limited')
-//   );
+  //   const limited = this.competitionTypes.find(
+  //     (o) =>
+  //       (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+  //       (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
+  //       String(o.id).toLowerCase().includes('limited')
+  //   );
 
-//   console.log('Direct Type:', direct);
-//   console.log('Limited Type:', limited);
+  //   console.log('Direct Type:', direct);
+  //   console.log('Limited Type:', limited);
 
-//   // Optional defaults
-//   // this.rfpForm.patchValue({ competitionType: direct?.id });
-// }
+  //   // Optional defaults
+  //   // this.rfpForm.patchValue({ competitionType: direct?.id });
+  // }
 
 
   getCommunicationDetailsList(): void {

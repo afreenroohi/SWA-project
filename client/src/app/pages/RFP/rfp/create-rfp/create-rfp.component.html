@@ -720,8 +720,8 @@
                 "RFP.coordinator name" | translate
                 }}</nz-form-label>
               <nz-select nzShowSearch nzAllowClear formControlName="coordinatorName"
-                [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate" style="width: 100%"
-                (nzOnSearch)="onCoordinatorSearch($event)" (ngModelChange)="onCoordinatorSelect($event)" >   
+                [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate" style="width: 100%" (ngModelChange)="onCoordinatorSelect($event)"
+                (nzOnSearch)="onCoordinatorSearch($event)"  >   
                 <nz-option *ngFor="let item of filteredCommunicationList" [nzValue]="item.Uname"
                   [nzLabel]="item.Uname"></nz-option>
               </nz-select>
@@ -2627,7 +2627,7 @@
       </nz-collapse>
 
       <!-- Bill of Quantity *ngIf="showBillOfQuantity"----*ngIf="showBillOfQuantity" -->
-      <nz-collapse *ngIf="showBillOfQuantity" id="billOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4"
+      <nz-collapse  id="billOfQuantity" [nzExpandIconPosition]="expandIconPosition" class="mt-4"
         style="margin-left: 20px">
         <nz-collapse-panel [nzActive]="billOfQuantityActive" [nzHeader]="'RFP.Bill of Quantity' | translate">
           <!-- Competition Fragmentation Toggle -->
