@@ -330,6 +330,9 @@ export class CreateRFPComponent implements OnInit {
   step3 = true;
 
   step4 = true;
+
+  showInitialBoxes = true;
+  showPopup = false;
   progressPercent = 0;
 
   invalidFileSize = false;
@@ -2197,7 +2200,8 @@ addMember(index: number): void {
 
   ngOnInit(): void {
     this.activateCollapse('basicInfo');
-    this.step1 = true;
+    this.step1 = false;
+    this.showInitialBoxes = true;
     this.boqList = this.rfpForm.get('billOFQty') as FormArray;
     this.attList = this.rfpForm.get('Attachments') as FormArray;
     this.autoPopulateSopFields();
@@ -5899,6 +5903,25 @@ this.rfpForm.get('coordinatorName')?.valueChanges
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onBoxClick(boxType: string): void {
+    if (boxType === 'services') {
+      this.showPopup = true;
+    } else {
+      this.showInitialBoxes = false;
+      this.step1 = true;
+    }
+  }
+
+  onPopupButtonClick(buttonType: string): void {
+    this.showPopup = false;
+    this.showInitialBoxes = false;
+    this.step1 = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
   }
 
   createTechReq(): FormGroup {

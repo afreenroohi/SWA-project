@@ -3633,3 +3633,213 @@ nz-collapse {
     }
   }
 }
+
+
+/* ========== Initial Selection Boxes ========== */
+.initial-selection-container {
+  padding: 20px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.selection-boxes-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.selection-box {
+  width: 280px;
+  height: 200px;
+  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 50%, #015f96 100%);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 92, 153, 0.3);
+  padding: 20px;
+}
+
+.selection-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 92, 153, 0.45);
+  background: linear-gradient(135deg, #003d80 0%, #005c99 50%, #004b80 100%);
+}
+
+.selection-box .box-icon {
+  font-size: 48px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.selection-box h3 {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ========== Popup Modal Styles ========== */
+.popup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.popup-btn {
+  width: 100%;
+  height: 60px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.popup-btn i {
+  font-size: 24px;
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme support for initial boxes */
+[data-theme="dark"] .initial-selection-container {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+[data-theme="dark"] .selection-box {
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+}
+
+[data-theme="dark"] .selection-box:hover {
+  background: linear-gradient(135deg, #1a4d7a 0%, #1e3a5f 100%);
+}
+
+/* Custom Popup Styles */
+.custom-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.custom-popup-container {
+  background: white;
+  border-radius: 16px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.custom-popup-header {
+  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 100%);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-popup-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.custom-popup-content {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.custom-popup-btn {
+  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 100%);
+  border: none;
+  color: white;
+  padding: 18px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 79, 135, 0.3);
+}
+
+.custom-popup-btn:hover {
+  background: linear-gradient(135deg, #003d80 0%, #005c99 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 79, 135, 0.4);
+}
+
+.custom-popup-btn i {
+  font-size: 24px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -100,6 +100,49 @@
 <ngx-spinner bdColor="rgb(25,113,229)" size="default" color="#1fcecb" type="ball-grid-beat" [fullScreen]="true">
   <p style="color: white">Loading...</p>
 </ngx-spinner>
+
+<!-- Initial Selection Boxes -->
+<div class="initial-selection-container" *ngIf="showInitialBoxes">
+  <div class="selection-boxes-wrapper">
+    <div class="selection-box" (click)="onBoxClick('services')">
+      <i nz-icon nzType="project" nzTheme="outline" class="box-icon"></i>
+      <h3>Create RFP for Services/Projects</h3>
+    </div>
+
+    <div class="selection-box" (click)="onBoxClick('spareParts')">
+      <i nz-icon nzType="tool" nzTheme="outline" class="box-icon"></i>
+      <h3>Create RFP for Spare Parts</h3>
+    </div>
+
+    <div class="selection-box" (click)="onBoxClick('agreements')">
+      <i nz-icon nzType="file-text" nzTheme="outline" class="box-icon"></i>
+      <h3>Create Agreements</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Modal -->
+<div class="custom-popup-overlay" *ngIf="showPopup" (click)="closePopup()">
+  <div class="custom-popup-container" (click)="$event.stopPropagation()">
+    <div class="custom-popup-header">
+      <h2>Select RFP Type</h2>
+      <button class="close-btn" (click)="closePopup()">
+        <i nz-icon nzType="close" nzTheme="outline"></i>
+      </button>
+    </div>
+    <div class="custom-popup-content">
+      <button class="custom-popup-btn" (click)="onPopupButtonClick('manual')">
+        <i nz-icon nzType="edit" nzTheme="outline"></i>
+        <span>Create Manual PR</span>
+      </button>
+      <button class="custom-popup-btn" (click)="onPopupButtonClick('automated')">
+        <i nz-icon nzType="robot" nzTheme="outline"></i>
+        <span>Create PR for Automated CRs</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="col-12">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
