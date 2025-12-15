@@ -1,12 +1,13 @@
 :host {
 
     .card {
-
-        border-width: thin;
+        background: #005c99;
+        border-width: 2px;
         border-radius: 1rem;
         border-style: solid;
-        border-color: #bcc2be;
+        border-color: #005c99;
         box-shadow: 1px 1px 6px gray;
+        min-height: 180px;
 
         .card-body {
 
@@ -18,7 +19,7 @@
                 .card-title {
                     font-size: 0.75rem;
                     font-weight: 600;
-                    color: #575957
+                    color: #ffffff
                 }
             }
 
@@ -35,11 +36,13 @@
 
                 .value {
                     font-weight: bold;
+                    color: #ffffff;
                 }
 
                 .subtitle {
                     font-size: 0.75rem;
                     font-weight: 200;
+                    color: #ffffff;
                 }
 
             }
@@ -68,7 +71,7 @@
         .card-footer {
             border-top-style: solid;
             border-top-width: thin;
-            border-top-color: #bcc2be;
+            border-top-color: rgba(255, 255, 255, 0.3);
             margin-left: 1rem;
             margin-right: 1rem;
             padding-top: 0.5rem;
@@ -76,7 +79,7 @@
             p {
                 font-size: 0.75rem;
                 font-weight: 300;
-                color: gray;
+                color: #ffffff;
             }
 
             .card-footer-text {

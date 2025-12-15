@@ -3637,54 +3637,60 @@ nz-collapse {
 
 /* ========== Initial Selection Boxes ========== */
 .initial-selection-container {
-  padding: 20px;
-  min-height: 100vh;
+  padding: 40px 20px;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  overflow: hidden;
 }
 
 .selection-boxes-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  margin-top: 50px;
+  gap: 50px;
   flex-wrap: wrap;
+  max-width: 1400px;
+  width: 100%;
 }
 
 .selection-box {
-  width: 280px;
-  height: 200px;
-  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 50%, #015f96 100%);
-  border-radius: 12px;
+  width: 350px;
+  height: 300px;
+  background: rgba(59, 130, 246, 0.2) !important;
+  border: 2px solid #005c99;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 92, 153, 0.3);
-  padding: 20px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+  padding: 30px;
 }
 
 .selection-box:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 92, 153, 0.45);
-  background: linear-gradient(135deg, #003d80 0%, #005c99 50%, #004b80 100%);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.3) !important;
 }
 
 .selection-box .box-icon {
-  font-size: 48px;
-  color: white;
-  margin-bottom: 15px;
+  font-size: 64px;
+  color: #005c99;
+  margin-bottom: 20px;
 }
 
 .selection-box h3 {
-  color: white;
-  font-size: 18px;
+  color: #005c99;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 /* ========== Popup Modal Styles ========== */
@@ -3757,7 +3763,7 @@ nz-collapse {
 }
 
 .custom-popup-header {
-  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 100%);
+  background: #005c99;
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
@@ -3798,9 +3804,9 @@ nz-collapse {
 }
 
 .custom-popup-btn {
-  background: linear-gradient(135deg, #004f87 0%, #0b6aa0 100%);
-  border: none;
-  color: white;
+  background: rgba(59, 130, 246, 0.2);
+  border: 2px solid #005c99;
+  color: #005c99;
   padding: 18px 24px;
   border-radius: 12px;
   font-size: 16px;
@@ -3811,13 +3817,13 @@ nz-collapse {
   justify-content: center;
   gap: 12px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 79, 135, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .custom-popup-btn:hover {
-  background: linear-gradient(135deg, #003d80 0%, #005c99 100%);
+  background: rgba(59, 130, 246, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 79, 135, 0.4);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
 .custom-popup-btn i {
