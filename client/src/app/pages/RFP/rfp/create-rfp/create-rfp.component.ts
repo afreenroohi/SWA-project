@@ -73,6 +73,10 @@ export class CreateRFPComponent implements OnInit {
   showScope = false;
   attachmentsActive = false;
 
+
+  selectedCoordinatorName: string | null = null;
+
+
   // Collapse panel states
   basicInfoActive = true;
   scopeOfWorkActive = false;
@@ -1428,11 +1432,54 @@ export class CreateRFPComponent implements OnInit {
   ];
 
   // Add new row Technical Committee Members
-  addMember(index: number): void {
-    if (this.members.length < 15) {
-      this.members.insert(index + 1, this.createMemberRow(''));
-    }
+  // addMember(index: number): void {
+  //   if (this.members.length < 15) {
+  //     this.members.insert(index + 1, this.createMemberRow(''));
+  //   }
+  // }
+addMember(index: number): void {
+  const memberGroup = this.fb.group({
+    role: ['Committee Member'], // or empty if dynamic
+    name: [''],
+    extension: [''],
+    jobTitle: ['']
+  });
+
+  // 👉 Push the new row
+  this.members.push(memberGroup);
+
+  // 👉 AUTO-PATCH NAME FOR NEW ROW
+  if (
+    this.selectedCoordinatorName &&
+    (
+      memberGroup.get('role')?.value === 'Project Director' ||
+      memberGroup.get('role')?.value === 'Project Coordinator' ||
+      memberGroup.get('role')?.value === 'Committee Member'
+    )
+  ) {
+    memberGroup.patchValue({
+      name: this.selectedCoordinatorName
+    });
   }
+
+  // 👉 OPTIONAL: React if role changes later
+  memberGroup.get('role')?.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(role => {
+      if (
+        this.selectedCoordinatorName &&
+        (
+          role === 'Project Director' ||
+          role === 'Project Coordinator' ||
+          role === 'Committee Member'
+        )
+      ) {
+        memberGroup.patchValue({
+          name: this.selectedCoordinatorName
+        });
+      }
+    });
+}
 
   // Delete row
   deleteMember(index: number): void {
@@ -2277,13 +2324,31 @@ export class CreateRFPComponent implements OnInit {
 
     this.listenDeliveryDateChange();
     this.rfpForm.get('SubCriFlg')?.setValue('X');
-    this.rfpForm.get('coordinatorName')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((name:string) => {
-      if(!name) return;
-      const selectedUser = this.members.controls.findIndex((ctrl) => ctrl.get('role')?.value === 'Project Director');
-      if(selectedUser!==-1){
-        this.members.at(selectedUser).patchValue({name: name});
+    // this.rfpForm.get('coordinatorName')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((name:string) => {
+    //   if(!name) return;
+    //   const selectedUser = this.members.controls.findIndex((ctrl) => ctrl.get('role')?.value === 'Project Director' || 'Project Coordinator' || 'Committee Memeber');
+    //   if(selectedUser!==-1){
+    //     this.members.at(selectedUser).patchValue({name: name});
+    //   }
+      
+    // });
+this.rfpForm.get('coordinatorName')?.valueChanges
+  .pipe(takeUntil(this.destroy$))
+  .subscribe((name: string) => {
+    this.selectedCoordinatorName = name || null;
+
+    this.members.controls.forEach(ctrl => {
+      const role = ctrl.get('role')?.value;
+
+      if (
+        role === 'Project Director' ||
+        role === 'Project Coordinator' ||
+        role === 'Committee Member'
+      ) {
+        ctrl.patchValue({ name });
       }
     });
+  });
 
   }
   private isDirectCompetitionSelected(): boolean {
