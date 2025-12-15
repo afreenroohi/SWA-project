@@ -445,6 +445,7 @@ export class AppComponent {
         } else {
             this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
             console.log('Login failed:', response?.d?.Message);
+            this.spinner.hide();
             return;
         }
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
