@@ -237,7 +237,7 @@
                         'white-space': 'break-spaces',
                         'line-height': '20px'
                       }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
-                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }} 
                       </span>
                     </a>
                   </ng-container>
@@ -257,8 +257,8 @@
                         'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
                         'white-space': 'break-spaces',
                         'line-height': '20px'
-                      }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
-                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                      } " nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
+                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }} 
                       </span>
                     </div>
                   </ng-template>

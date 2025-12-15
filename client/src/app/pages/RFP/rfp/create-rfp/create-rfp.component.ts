@@ -2206,6 +2206,7 @@ addMember(index: number): void {
     this.attList = this.rfpForm.get('Attachments') as FormArray;
     this.autoPopulateSopFields();
     this.getCommunicationDetailsList();
+    this.getCompetitionTypes();
     const compCtrl = this.rfpForm.get('competitionType')!;
     const costCtrl = this.rfpForm.get('estimatedCost')!;
     this.rfpForm.get('directPurchaseType')?.valueChanges.subscribe((value) => {
@@ -5850,6 +5851,57 @@ this.rfpForm.get('coordinatorName')?.valueChanges
   getGrandVatAmount(data: readonly any[]): number {
     return data.reduce((sum, item) => sum + this.getVatAmountRow(item), 0);
   }
+getCompetitionTypes(): void {
+  this.spinner.show();
+
+  this.api.get('CompTypeSet')
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (response: any) => {
+        this.spinner.hide();
+
+        const results = response?.d?.results || [];
+
+        // ✅ IMPORTANT: Map EXACT backend keys
+        this.competitionTypes = results.map((o: any) => ({
+          id: o.Id,               // <-- capital I
+          value: o.Value,         // <-- capital V
+          valueAr: o.Valuear      // <-- exact key name
+        }));
+
+        console.log('FINAL competitionTypes:', this.competitionTypes);
+      },
+      () => {
+        this.spinner.hide();
+        this.cs.createMessage('error', 'Failed to load competition types');
+      }
+    );
+}
+
+// mapCompetitionTypes(): void {
+//   if (!Array.isArray(this.competitionTypes)) return;
+
+//   const direct = this.competitionTypes.find(
+//     (o) =>
+//       (o.value && o.value.toString().toLowerCase().includes('direct')) ||
+//       (o.valueAr && o.valueAr.toString().toLowerCase().includes('direct')) ||
+//       String(o.id).toLowerCase().includes('direct')
+//   );
+
+//   const limited = this.competitionTypes.find(
+//     (o) =>
+//       (o.value && o.value.toString().toLowerCase().includes('limited')) ||
+//       (o.valueAr && o.valueAr.toString().toLowerCase().includes('limited')) ||
+//       String(o.id).toLowerCase().includes('limited')
+//   );
+
+//   console.log('Direct Type:', direct);
+//   console.log('Limited Type:', limited);
+
+//   // Optional defaults
+//   // this.rfpForm.patchValue({ competitionType: direct?.id });
+// }
+
 
   getCommunicationDetailsList(): void {
     this.spinner.show();

@@ -14,8 +14,13 @@ const ADMIN_SRV = "ZMM_P2P_ADMIN_SRV" + SAP_PL_ALIAS;
 const FILE_SRV = "ZMM_FILES_PRCS2_SRV"
 const CONTRACT_PRLIST = "ZP2P_CONT_CREAT_SRV_SRV" 
 const DASHBOARD_SRV = "ZMM_DASHBOARD_PRCS_SRV" + SAP_PL_ALIAS;
+
+
 const RFP_Standards_SRV="ZP2P_RFP2_SRV_02"+ SAP_PL_ALIAS;
 const RFP_BOQ_SRV="ZP2P_BOQ_SRV"+ SAP_PL_ALIAS;
+//competition types
+
+const CMPTN_TYPE = "ZP2P_RFP2_SRV_02" + SAP_PL_ALIAS;
 
 
 module.exports.apiList = () => {
@@ -29,6 +34,8 @@ module.exports.apiList = () => {
 
     // * Login User Details
     LoginUserDetails: config.URL + RFP_LOGIN_SRV + "/LoginUserDetailsSet",
+    // types of competition
+    CompTypeSet: config.URL + CMPTN_TYPE + "/CompTypeSet",
 
     // * Crete RFP
     projsGet: config.URL + RFP_SRV + "/F4ProjIdSet",

@@ -614,6 +614,22 @@ router.get("/CommunicationDetailsSet", (req, res) => {
   });
 });
 
+// types of competition
+router.get("/CompTypeSet", (req, res) => {
+  axios({
+    method: "get",
+    url: apisJson.CompTypeSet + "?$format=json",
+    headers: {
+      Authorization: req.headers.authorization
+    }
+  })
+  .then((response) => {
+    res.status(200).json(response.data);
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message || err });
+  });
+});
 
 router.post("/RFPNoSet", async (req, res) => {
   try {
