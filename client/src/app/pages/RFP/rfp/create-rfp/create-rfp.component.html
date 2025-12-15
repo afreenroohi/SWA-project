@@ -721,7 +721,7 @@
                 }}</nz-form-label>
               <nz-select nzShowSearch nzAllowClear formControlName="coordinatorName"
                 [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate" style="width: 100%"
-                (nzOnSearch)="onCoordinatorSearch($event)" >   
+                (nzOnSearch)="onCoordinatorSearch($event)" (ngModelChange)="onCoordinatorSelect($event)" >   
                 <nz-option *ngFor="let item of filteredCommunicationList" [nzValue]="item.Uname"
                   [nzLabel]="item.Uname"></nz-option>
               </nz-select>
@@ -768,7 +768,21 @@
                       <input nz-input formControlName="role" [disabled]="i < 3" placeholder="Committee Member" />
                     </td>
                     <td>
-                      <input nz-input formControlName="name" [placeholder]="'RFP.Enter Name' | translate" />
+                      <!-- <input nz-input formControlName="name" [placeholder]="'RFP.Enter Name' | translate" /> -->
+                       <nz-select
+  nzShowSearch
+  nzAllowClear
+  formControlName="name"
+  [nzPlaceHolder]="'RFP.Enter Name' | translate"
+  style="width: 100%"
+  (nzOnSearch)="onCoordinatorSearch($event)"
+>
+  <nz-option
+    *ngFor="let item of filteredCommunicationList"
+    [nzValue]="item.Uname"
+    [nzLabel]="item.Uname">
+  </nz-option>
+</nz-select>
                     </td>
                     <td>
                       <input nz-input formControlName="extension" [placeholder]="'RFP.Enter Extension' | translate" />

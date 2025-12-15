@@ -1440,49 +1440,19 @@ export class CreateRFPComponent implements OnInit {
   //     this.members.insert(index + 1, this.createMemberRow(''));
   //   }
   // }
-addMember(index: number): void {
-  const memberGroup = this.fb.group({
-    role: ['Committee Member'], // or empty if dynamic
-    name: [''],
-    extension: [''],
-    jobTitle: ['']
-  });
+addMember(index: number) {
+  if (this.members.length >= 5) return;
 
-  // 👉 Push the new row
-  this.members.push(memberGroup);
-
-  // 👉 AUTO-PATCH NAME FOR NEW ROW
-  if (
-    this.selectedCoordinatorName &&
-    (
-      memberGroup.get('role')?.value === 'Project Director' ||
-      memberGroup.get('role')?.value === 'Project Coordinator' ||
-      memberGroup.get('role')?.value === 'Committee Member'
-    )
-  ) {
-    memberGroup.patchValue({
-      name: this.selectedCoordinatorName
-    });
-  }
-
-  // 👉 OPTIONAL: React if role changes later
-  memberGroup.get('role')?.valueChanges
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(role => {
-      if (
-        this.selectedCoordinatorName &&
-        (
-          role === 'Project Director' ||
-          role === 'Project Coordinator' ||
-          role === 'Committee Member'
-        )
-      ) {
-        memberGroup.patchValue({
-          name: this.selectedCoordinatorName
-        });
-      }
-    });
+  this.members.push(
+    this.fb.group({
+      role: [''],
+      name: [null],          // IMPORTANT: allow dropdown binding
+      extension: [''],
+      jobTitle: ['']
+    })
+  );
 }
+
 
   // Delete row
   deleteMember(index: number): void {
@@ -5942,7 +5912,7 @@ getCompetitionTypes(): void {
       this.rfpForm.patchValue({
         coordinatorName: selectedItem.Uname,
         coordinatorNumber: selectedItem.Pernr || '',
-        coordinatorEmail: selectedItem.Subty || ''
+        coordinatorEmail: selectedItem.Usridlong || ''
       });
     }
   }
