@@ -611,94 +611,128 @@ export class CreateRFPComponent implements OnInit {
     // Add your draft save logic here
   }
 
-  saveAndContinue(): void {
-    if (this.basicInfoValid) {
-      this.spinner.show();
-
-      // First, generate RFP number
-      this.api.get('CreateRFPSet')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (rfpResponse: any) => {
-            const rfpNumber = rfpResponse?.d?.results?.[0]?.RFPNO;
-
-            if (!rfpNumber) {
-              this.spinner.hide();
-              this.cs.createMessage('error', 'Failed to generate RFP number');
-              return;
-            }
-
-            // Store RFP number in form for later use
-            this.rfpForm.patchValue({ rfpNumber: rfpNumber });
-
-            const formValues = this.rfpForm.value;
-
-            const payload = {
-              Comptype: '02',
-              Encompdesc: '',
-              Arcompdesc: '',
-              Prjname: formValues.competitionName || '',
-              Estcost: formValues.estimatedCost?.toString() || '0',
-              Dirpur: formValues.directPurchaseType || '00',
-              Endirdes: '',
-              Ardirdes: '',
-              Limcomp: formValues.limitedType || '00',
-              Enlimcomp: '',
-              Arlimcomp: '',
-              Invite: formValues.invite || '',
-              Durtype: formValues.DurationType || '',
-              Durperiod: formValues.ProjDur || 0,
-              Workloc: Array.isArray(formValues.workLocation) ? formValues.workLocation.join(',') : formValues.workLocation || '',
-              Activity: formValues.activity || '',
-              Subactivity: formValues.subactivity || '',
-              Coordinator: formValues.coordinatorName || '',
-              CoordinatorPhNo: formValues.coordinatorNumber || '',
-              CoordinatorEmail: formValues.coordinatorEmail || '',
-              ProjectConti: formValues.projectContinuous ? 'X' : '',
-              ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
-              PrevPrjNo: formValues.number?.toString() || '',
-              SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
-              SiteVisitUid: formValues.userId || '',
-              SiteVisitEmail: formValues.email || '',
-              SiteVisitContact: formValues.contactNumber || '',
-              PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
-              Justification: formValues.projectJustification || '',
-              Necessity: formValues.Necessity || '',
-              Impact: formValues.Impact || '',
-              ExpePjctEffi: '',
-              Msgid: '',
-              Msgv1: '',
-              Rfpno: rfpNumber
-            };
-
-            console.log('RFP Number:', rfpNumber);
-            console.log('Payload:', payload);
-
-            this.api.post('BasicInformationDetailsSet', payload)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(
-                (response: any) => {
-                  this.spinner.hide();
-                  this.cs.createMessage('success', 'Basic Information saved successfully');
-                  this.basicInfoSaved = true;
-                  this.step = 1;
-                  this.activateCollapse('scopeOfWork');
-                  this.showScopeOfWork = true;
-                  this.showBasicInfo = false;
-                },
-                (error) => {
-                  this.spinner.hide();
-                  this.cs.createMessage('error', error.message || 'Failed to save Basic Information');
-                }
-              );
-          },
-          (error) => {
-            this.spinner.hide();
-            this.cs.createMessage('error', error.message || 'Failed to generate RFP number');
-          }
-        );
-    }
+saveAndContinue(): void {
+  if (!this.basicInfoValid) {
+    return;
   }
+
+  this.spinner.show();
+
+  // STEP 1: Generate RFP Number
+  this.api.get('CreateRFPSet')
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (rfpResponse: any) => {
+        const rfpNumber = rfpResponse?.d?.results?.[0]?.RFPNO;
+
+        if (!rfpNumber) {
+          this.spinner.hide();
+          this.cs.createMessage('error', 'Failed to generate RFP number');
+          return;
+        }
+
+        // Patch RFP Number into form
+        this.rfpForm.patchValue({ rfpNumber });
+
+        const formValues = this.rfpForm.value;
+
+        // STEP 2: Build Technical Committee (FormArray → OData results[])
+        // const technicalCommResults = this.members.controls
+        //   .filter(ctrl => ctrl.get('name')?.value) // ignore empty rows
+        //   .map(ctrl => ({
+        //     Rfpno: rfpNumber,
+        //     Role: ctrl.get('role')?.value || '',
+        //     Name: ctrl.get('name')?.value || '',
+        //     ExtNo: ctrl.get('extension')?.value || '',
+        //     JobTitle: ctrl.get('jobTitle')?.value || ''
+        //   }));
+        const technicalCommResults = this.members.controls
+  .map(ctrl => ({
+    Rfpno: rfpNumber,
+    Role: ctrl.get('role')?.value,
+    Name: ctrl.get('name')?.value,
+    ExtNo: ctrl.get('extension')?.value,
+    JobTitle: ctrl.get('jobTitle')?.value
+  }))
+  .filter(row => row.Name);
+  console.log('Members FormArray value:', this.members.value);
+console.log('Members length:', this.members.length);
+
+        // STEP 3: Build FULL Deep Insert Payload
+        const payload = {
+          Rfpno: rfpNumber,
+          Comptype: '02',
+          Encompdesc: '',
+          Arcompdesc: '',
+          Prjname: formValues.competitionName || '',
+          Estcost: formValues.estimatedCost?.toString() || '0',
+          Dirpur: formValues.directPurchaseType || '00',
+          Endirdes: '',
+          Ardirdes: '',
+          Limcomp: formValues.limitedType || '00',
+          Enlimcomp: '',
+          Arlimcomp: '',
+          Invite: formValues.invite || '',
+          Durtype: formValues.DurationType || '',
+          Durperiod: formValues.ProjDur || 0,
+          Workloc: Array.isArray(formValues.workLocation)
+            ? formValues.workLocation.join(',')
+            : formValues.workLocation || '',
+          Activity: formValues.activity || '',
+          Subactivity: formValues.subactivity || '',
+          Coordinator: formValues.coordinatorName || '',
+          CoordinatorPhNo: formValues.coordinatorNumber || '',
+          CoordinatorEmail: formValues.coordinatorEmail || '',
+          ProjectConti: formValues.projectContinuous ? 'X' : '',
+          ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
+          PrevPrjNo: formValues.number?.toString() || '',
+          SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
+          SiteVisitUid: formValues.userId || '',
+          SiteVisitEmail: formValues.email || '',
+          SiteVisitContact: formValues.contactNumber || '',
+          PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
+          Justification: formValues.projectJustification || '',
+          Necessity: formValues.Necessity || '',
+          Impact: formValues.Impact || '',
+          ExpePjctEffi: '',
+          Msgid: '',
+          Msgv1: '',
+
+          
+          BasicInformationToTechnicalComm: {
+            results: technicalCommResults
+          }
+        };
+
+        console.log('Deep Insert Payload:', payload);
+
+        // STEP 4: POST Deep Insert
+        this.api.post('BasicInformationDetailsSet', payload)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.spinner.hide();
+              this.cs.createMessage('success', 'Basic Information saved successfully');
+
+              this.basicInfoSaved = true;
+              this.step = 1;
+              this.activateCollapse('scopeOfWork');
+              this.showScopeOfWork = true;
+              this.showBasicInfo = false;
+            },
+            error: (error) => {
+              this.spinner.hide();
+              this.cs.createMessage('error', error?.message || 'Failed to save Basic Information');
+            }
+          });
+      },
+      error: (error) => {
+        this.spinner.hide();
+        this.cs.createMessage('error', error?.message || 'Failed to generate RFP number');
+      }
+    });
+}
+
 
   saveAndContinueScope(): void {
     if (this.scopeOfWorkValid) {
@@ -2217,6 +2251,9 @@ export class CreateRFPComponent implements OnInit {
       this.showExcept = value === 'Except';
       this.showConsultative = value === 'Consultative';
     });
+    this.rfpForm.get('coordinatorName')?.valueChanges.subscribe(value => {
+    this.updateCoordinatorDetails(value);
+  });
 
 
     compCtrl.valueChanges
@@ -5910,6 +5947,23 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         }
       );
   }
+  updateCoordinatorDetails(value: string): void {
+  const selectedItem = this.communicationDetailsList.find(
+    (item: any) => item.Uname === value
+  );
+
+  if (selectedItem) {
+    this.rfpForm.patchValue({
+      coordinatorNumber: selectedItem.Pernr || '',
+      coordinatorEmail: selectedItem.Usridlong || ''
+    }, { emitEvent: false }); // prevent recursion
+  } else {
+    this.rfpForm.patchValue({
+      coordinatorNumber: '',
+      coordinatorEmail: ''
+    }, { emitEvent: false });
+  }
+}
 
   onCoordinatorSearch(value: string): void {
     if (!value) {
@@ -5920,7 +5974,7 @@ this.rfpForm.get('coordinatorName')?.valueChanges
       );
     }
   }
-
+  
   onCoordinatorSelect(value: string): void {
     const selectedItem = this.communicationDetailsList.find(
       (item: any) => item.Uname === value
