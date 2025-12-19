@@ -74,9 +74,16 @@
     'padding-right': cs.userLanguage === 'en' ? '1rem' : '0',
     'padding-left': cs.userLanguage === 'ar' ? '1rem' : '0'
   }">
+ 
       <!-- Profile first for Arabic, proxy button first for English -->
       <div class="user-info-container" *ngIf="isUserLoggedIn && dispname && cs.userLanguage === 'ar'">
+         
         <div style="display: flex; align-items: center; gap: 10px;">
+          <!-- <div style="display:flex;flex-direction:row;margin-left:5px;">
+            <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+              <span nz-icon nzType="logout"></span> Logout
+            </button>
+          </div> -->
           <div class="user-dropdown" (click)="toggleDropdown()">
             <nz-avatar nzIcon="user" class="animated-avatar" style="
               background-color:#005c99;
@@ -95,16 +102,22 @@
                 </span>
                 <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
               </div>
+              <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+  <span nz-icon nzType="logout"></span> Logout
+</button>
             </div>
+            
           </div>
+          
           <div style="display:flex;flex-direction:column;line-height:1.2;">
             <span style="color: black; font-weight: 500;">
               {{ dispname }}
             </span>
             <span style="color: gray; font-size: 13px;">
-              IT / Operations
+              {{department}}
             </span>
           </div>
+          
         </div>
       </div>
 
@@ -133,7 +146,11 @@
                   {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
                 </span>
                 <nz-switch [(ngModel)]="isDarkMode" (ngModelChange)="toggleTheme()"></nz-switch>
+                
               </div>
+              <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+  <span nz-icon nzType="logout"></span> Logout
+</button>
             </div>
           </div>
           <div style="display:flex;flex-direction:column;line-height:1.2;">
@@ -144,6 +161,11 @@
               {{department}}
             </span>
           </div>
+          <!-- <div style="display:flex;flex-direction:ro;margin-right:5px;">
+            <button nz-button nzType="default" (click)="logout()" class="logout-btn">
+  <span nz-icon nzType="logout"></span> Logout
+</button> -->
+          <!-- </div--> 
         </div>
       </div>
     </div>
@@ -155,43 +177,46 @@
 
   <nz-layout class="ant-top-layout">
     <nz-sider class="menu-sidebar" *ngIf="isUserLoggedIn" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
-      [nzWidth]="isCollapsed ? 80 : 200" [ngStyle]="{ 'background-color': 'white' }">
+      [nzWidth]="isCollapsed ? 80 : 210" [ngStyle]="{ 'background-color': 'white' }">
 
-      <!-- Toggle button at top-left -->
-      <div class="header-toggle" *ngIf="navItems && navItems.length > 0">
-        <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
-          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
-        </button>
-      </div>
+      <!-- Header container for toggle and logo -->
+      <div class="sidebar-header" [class.collapsed]="isCollapsed">
+        <!-- Toggle button -->
+        <div class="header-toggle" *ngIf="navItems && navItems.length > 0" [class.collapsed]="isCollapsed">
+          <button nz-button nzType="text" nzSize="small" (click)="toggleSidebar()" class="header-toggle-btn">
+            <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+          </button>
+        </div>
 
-      <!-- Logo container centered below toggle -->
-      <div class="logo-container" [class.collapsed]="isCollapsed">
-        <a href="/" class="logo-link" title="Home">
-          <!-- expanded logo -->
-          <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
-          <!-- collapsed logo -->
-          <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="44" height="44"
-            alt="logo-collapsed" />
-        </a>
+        <!-- Logo container -->
+        <div class="logo-container" [class.collapsed]="isCollapsed">
+          <a href="/" class="logo-link" title="Home">
+            <!-- expanded logo -->
+            <img *ngIf="!isCollapsed" [src]="logoSrc" width="80" height="77" alt="logo" />
+            <!-- collapsed logo -->
+            <img *ngIf="isCollapsed" src="../assets/logo/swa-header-logo.svg" width="100" height="100"
+              alt="logo-collapsed" />
+          </a>
+        </div>
       </div>
 
       <ul nz-menu class="menu" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
         <ng-container *ngFor="let item of navItems">
           <ng-container *ngIf="item.navItem && item.navItem.length > 0; else noSubMenu">
-            <li nz-submenu class="menu-items" style="font-size: 0.8rem" [nzTitle]="submenuTitle"
+            <li nz-submenu class="menu-items" style="font-size: 0.7rem" [nzTitle]="submenuTitle"
               [(nzOpen)]="item.isOpen" (nzOpenChange)="openHandler(item)">
               <ng-template #submenuTitle>
                 <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalSubmenuIcon">
-                  <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
+                  <app-icon style="line-height: 9px !important;" [icon]="item.ModuleIcon"></app-icon>
                 </ng-container>
                 <ng-template #normalSubmenuIcon>
-                  <span nz-icon [nzType]="item.ModuleIcon" style="font-size: 16px;"></span>
+                  <span nz-icon [nzType]="item.ModuleIcon"></span>
                 </ng-template>
                 &nbsp;&nbsp;
-                <span>{{ cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr }}</span>
+                <span *ngIf="!isCollapsed">{{ cs.userLanguage === 'en' ? (item.Module | uppercase) : item.ModuleAr }}</span>
               </ng-template>
               <ul>
-                <li style="font-size: 0.8rem" [ngStyle]="{
+                <li style="font-size: 0.7rem" [ngStyle]="{
                   'padding-left': cs.userLanguage === 'en' ? '25px' : '',
                   'padding-right': cs.userLanguage === 'ar' ? '25px' : ''
                 }" nz-menu-item *ngFor="let subItem of item.navItem" [nzSelected]="subItem.name == cs.activeMenu">
@@ -200,19 +225,19 @@
                     <a [href]="cs.userLanguage === 'ar' ? subItem.linkAr : subItem.linkEn" target="_blank"
                       rel="noopener" style="display: flex; align-items: center; width: 100%">
                       <ng-container *ngIf="getIsNewIcon(subItem.iconName); else normalIcon">
-                        <app-icon style="line-height: 0px !important" [icon]="subItem.iconName"></app-icon>
+                        <app-icon style="line-height: 0px !important;" [icon]="subItem.iconName"></app-icon>
                       </ng-container>
                       <ng-template #normalIcon>
                         <span nz-icon [nzType]="subItem.iconName"></span>
                       </ng-template>
-                      &nbsp;&nbsp; &nbsp;
-                      <span style="font-size: 0.8rem" [ngStyle]="{
+                      &nbsp;&nbsp;
+                      <span style="font-size: 0.7rem" [ngStyle]="{
                         'max-width': '100%',
                         'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
                         'white-space': 'break-spaces',
                         'line-height': '20px'
                       }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
-                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }} 
                       </span>
                     </a>
                   </ng-container>
@@ -221,19 +246,19 @@
                   <ng-template #internalLink>
                     <div (click)="navigate(subItem)" style="display: flex; align-items: center; width: 100%">
                       <ng-container *ngIf="getIsNewIcon(subItem.iconName); else normalIconInt">
-                        <app-icon style="line-height: 0px !important" [icon]="subItem.iconName"></app-icon>
+                        <app-icon style="line-height: 0px !important;" [icon]="subItem.iconName"></app-icon>
                       </ng-container>
                       <ng-template #normalIconInt>
                         <span nz-icon [nzType]="subItem.iconName"></span>
                       </ng-template>
-                      &nbsp;&nbsp; &nbsp;
-                      <span style="font-size: 0.8rem" [ngStyle]="{
+                      &nbsp;&nbsp;
+                      <span style="font-size: 0.7rem" [ngStyle]="{
                         'max-width': '100%',
                         'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
                         'white-space': 'break-spaces',
                         'line-height': '20px'
-                      }" nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
-                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }}
+                      } " nz-tooltip [nzTooltipTitle]="cs.userLanguage === 'en' ? subItem.text : subItem.textAr">
+                        {{ cs.userLanguage === 'en' ? (subItem.text | titlecase) : subItem.textAr }} 
                       </span>
                     </div>
                   </ng-template>
@@ -244,14 +269,14 @@
           </ng-container>
 
           <ng-template #noSubMenu>
-            <li nz-menu-item class="menu-items" style="font-size: 0.8rem" (click)="navigate(item)">
+            <li nz-menu-item class="menu-items" style="font-size: 0.7rem" (click)="navigate(item)">
               <ng-container *ngIf="getIsNewIcon(item.ModuleIcon); else normalIcon">
-                <app-icon style="line-height: 0px !important; font-size: 16px;" [icon]="item.ModuleIcon"></app-icon>
+                <app-icon style="line-height: 0px !important;" [icon]="item.ModuleIcon"></app-icon>
               </ng-container>
               <ng-template #normalIcon>
-                <span nz-icon [nzType]="item.ModuleIcon" style="font-size: 16px;"></span>
+                <span nz-icon [nzType]="item.ModuleIcon"></span>
               </ng-template>
-              <span style="font-size: 0.8rem" [ngStyle]="{
+              <span style="font-size: 0.7rem" [ngStyle]="{
                     'max-width': '100%',
                     'text-align': cs.userLanguage === 'ar' ? 'right' : 'left',
                     'white-space': 'break-spaces',
@@ -269,10 +294,18 @@
         </ng-container>
       </ul>
 
+      <!-- Copyright text when expanded -->
       <div class="copy-right-container row" *ngIf="!isCollapsed">
         <label>© {{ currentYear }}
           {{ "COMMON.CopyrightAllRightsReserved" | translate }}</label>
         <label>{{ "COMMON.Version" | translate }} - {{ applicationVersion }}</label>
+      </div>
+      
+      <!-- Copyright icon when collapsed -->
+      <div class="copy-right-icon" *ngIf="isCollapsed" style="position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 16px;">
+        <span nz-icon nzType="copyright" nz-tooltip [nzTooltipTitle]="'© ' + currentYear + ' All Rights Reserved'"></span>
+        
+          <span>2026</span>
       </div>
     </nz-sider>
 
@@ -386,3 +419,6 @@
     <button nz-button nzType="primary" (click)="okOnbehalf()">{{ "RFP.Submit" | translate }}</button>
   </ng-template>
 </nz-modal>
+
+<!-- Help Icon for all logged in users except admin -->
+<app-help-icon *ngIf="shouldShowHelpIcon"></app-help-icon>

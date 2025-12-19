@@ -31,13 +31,14 @@ import { BudgetPlannerStepTwoComponent } from './components/budget-planner-step-
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { BudgetPlannerBOQTabelComponent } from './components/budget-planner-boq-tabel/budget-planner-boq-tabel.component';
 import { NgChartsModule } from 'ng2-charts';
+import { PrequalificationComponent } from './prequalification/prequalification.component';
 
 
 const routes: Routes = [
   {
     path: 'create',
     component: CreateRFPComponent,
-    // canActivate: [AuthGuardGuard],   // afreen commented
+    canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Requestor',
@@ -46,7 +47,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [AuthGuardGuard],
   },
   {
     path: 'list',
@@ -58,6 +58,12 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashbardComponent,
+    canActivate: [AuthGuardGuard],
+    // canActivate: [MsalGuard],
+  },
+  {
+    path: 'prequalification',
+    component: PrequalificationComponent,
     canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard],
   },
@@ -110,7 +116,7 @@ const routes: Routes = [
   {
     path: 'myinbox',
     component: MyinboxComponent,
-    // canActivate: [AuthGuardGuard],   // afreen commented
+    canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard,AuthGuardGuard],
     // data: {
     //   role: 'Approver',
@@ -139,6 +145,7 @@ const routes: Routes = [
     BudgetPlannerStepOneComponent,
     BudgetPlannerStepTwoComponent,
     BudgetPlannerBOQTabelComponent,
+    PrequalificationComponent,
     // IconComponent
   ],
   imports: [
@@ -155,7 +162,7 @@ const routes: Routes = [
     NzCollapseModule,
     NgChartsModule,
     RouterModule.forChild(routes)
-    
+
   ],
   providers: [
 

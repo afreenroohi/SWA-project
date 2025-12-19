@@ -160,8 +160,55 @@
   color="#1fcecb"
   type="ball-grid-beat"
   [fullScreen]="true"
-  ><p style="color: white">Loading...</p></ngx-spinner
 >
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<!-- Initial Selection Boxes -->
+<div class="initial-selection-container" *ngIf="showInitialBoxes">
+  <div class="selection-boxes-wrapper">
+    <div class="selection-box" (click)="onBoxClick('services')">
+      <i nz-icon nzType="project" nzTheme="outline" class="box-icon"></i>
+      <h3>Create RFP for Services/Projects</h3>
+    </div>
+
+    <div class="selection-box" (click)="onBoxClick('spareParts')">
+      <i nz-icon nzType="tool" nzTheme="outline" class="box-icon"></i>
+      <h3>Create RFP for Spare Parts</h3>
+    </div>
+
+    <div class="selection-box" (click)="onBoxClick('agreements')">
+      <i nz-icon nzType="file-text" nzTheme="outline" class="box-icon"></i>
+      <h3>Create Agreements</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Modal -->
+<div class="custom-popup-overlay" *ngIf="showPopup" (click)="closePopup()">
+  <div class="custom-popup-container" (click)="$event.stopPropagation()">
+    <div class="custom-popup-header">
+      <h2>Create RFP From</h2>
+      <button class="close-btn" (click)="closePopup()">
+        <i nz-icon nzType="close" nzTheme="outline"></i>
+      </button>
+    </div>
+    <div class="custom-popup-content">
+      <button class="custom-popup-btn" (click)="onPopupButtonClick('manual')">
+        <i nz-icon nzType="edit" nzTheme="outline"></i>
+        <span>Create PR for Manual CRs</span>
+      </button>
+      <button
+        class="custom-popup-btn"
+        (click)="onPopupButtonClick('automated')"
+      >
+        <i nz-icon nzType="robot" nzTheme="outline"></i>
+        <span>Create PR for Automated CRs</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="col-12">
   <nz-form [formGroup]="rfpForm">
     <div class="p-2" *ngIf="step1">
@@ -325,7 +372,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="competitionType"
-                  [nzPlaceHolder]="'RFP.Types of Competition'|translate"
+                  [nzPlaceHolder]="'RFP.Types of Competition' | translate"
                   style="width: 100%"
                   nzAllowClear
                   (ngModelChange)="onCompetitionChange($event)"
@@ -399,8 +446,8 @@
               <small
                 *ngIf="
                   rfpForm.controls.estimatedCost.touched &&
-                  (rfpForm.controls.estimatedCost.hasError('min') || 
-                   rfpForm.controls.estimatedCost.value < 0)
+                  (rfpForm.controls.estimatedCost.hasError('min') ||
+                    rfpForm.controls.estimatedCost.value < 0)
                 "
                 style="margin-top: 8px; color: red"
               >
@@ -732,7 +779,7 @@
               <nz-form-control>
                 <nz-select
                   formControlName="DurationType"
-                  [nzPlaceHolder]="'RFP.Select Duration Type'|translate"
+                  [nzPlaceHolder]="'RFP.Select Duration Type' | translate"
                   style="width: 100%"
                   nzAllowClear
                 >
@@ -772,7 +819,7 @@
                 <nz-input-number
                   nz-input
                   formControlName="ProjDur"
-                  [nzPlaceHolder]="'RFP.Enter Project Duration'|translate"
+                  [nzPlaceHolder]="'RFP.Enter Project Duration' | translate"
                   style="width: 100%"
                   (keydown)="restrictZero($event)"
                 ></nz-input-number>
@@ -819,50 +866,180 @@
               <nz-select
                 formControlName="workLocation"
                 nzMode="multiple"
-                class="compact-multi-select"
                 style="width: 100%"
                 [nzPlaceHolder]="'RFP.Select work locations' | translate"
-                [nzMaxTagCount]="3"
               >
-                <nz-option nzValue="riyadh/Al-Rin" [nzLabel]="'RFP.Riyadh Region/Al-Rin'| translate"></nz-option>
-                <nz-option nzValue="riyadh/Khurayman" [nzLabel]="'RFP.Riyadh Region/Khurayman' | translate"></nz-option>
-                <nz-option nzValue="riyadh/Al-Sahnah" [nzLabel]="'RFP.Riyadh Region/Al-Sahnah' | translate"></nz-option>
-                <nz-option nzValue="makkah/Al-Shaiba" [nzLabel]="'RFP.Makkah Region/Al-Shaiba' | translate"></nz-option>
-                <nz-option nzValue="makkah/Bahrah" [nzLabel]="'RFP.Makkah Region/Bahrah' | translate"></nz-option>
-                <nz-option nzValue="makkah/Asfan" [nzLabel]="'RFP.Makkah Region/Asfan' | translate"></nz-option>
-                <nz-option nzValue="Al-Madinah/Mahd Al-Dhahab" [nzLabel]="'RFP.Al-Madinah Region/Mahd Al-Dhahab' | translate"></nz-option>
-                <nz-option nzValue="Al-Madinah/Al-Furaysh" [nzLabel]="'RFP.Al-Madinah Region/Al-Furaysh' | translate "></nz-option>
-                <nz-option nzValue="Al-Madinah/Abyar Al-Mashi" [nzLabel]="'RFP.Al-Madinah Region/Abyar Al-Mashi' | translate"></nz-option>
-                <nz-option nzValue="Al-Qassim/Shari – Al-Qassim" [nzLabel]="'RFP.Al-Qassim Region/Shari – Al-Qassim' | translate"></nz-option>
-                <nz-option nzValue="Al-Qassim/Al-Dhybiyah – Al-Qassim" [nzLabel]="'RFP.Al-Qassim Region/Al-Dhybiyah – Al-Qassim' | translate"></nz-option>
-                <nz-option nzValue="Al-Qassim/Al-Khurma" [nzLabel]="'RFP.Al-Qassim Region/Al-Khurma' | translate"></nz-option>
-                <nz-option nzValue="Eastern/Tarout" [nzLabel]="'RFP.Eastern Region/Tarout' | translate"></nz-option>
-                <nz-option nzValue="Eastern/Al-Ju’aymah" [nzLabel]="'RFP.Eastern Region/Al-Ju’aymah' | translate"></nz-option>
-                <nz-option nzValue="Eastern/Shedgum" [nzLabel]="'RFP.Eastern Region/Shedgum' | translate"></nz-option>
-                <nz-option nzValue="Asir Region/Rijal Alma" [nzLabel]="'RFP.Asir Region/Rijal Alma' | translate"></nz-option>
-                <nz-option nzValue="Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar" [nzLabel]="'RFP.Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar' | translate"></nz-option>
-                <nz-option nzValue="Asir Region/Al-Majardah" [nzLabel]="'RFP.Asir Region/Al-Majardah'| translate"></nz-option>
-                <nz-option nzValue="Tabuk Region/Bajdah" [nzLabel]="'RFP.Tabuk Region/Bajdah' | translate"></nz-option>
-                <nz-option nzValue="Tabuk Region/Halat Ammar" [nzLabel]="'RFP.Tabuk Region/Halat Ammar'| translate"></nz-option>
-                <nz-option nzValue="Tabuk Region/Al-Fouhah" [nzLabel]="'RFP.Tabuk Region/Al-Fouhah'| translate"></nz-option>
-                <nz-option nzValue="Hail Region/Al-Miyah" [nzLabel]="'RFP.Hail Region/Al-Miyah'| translate"></nz-option>
-                <nz-option nzValue="Hail Region/Al-Sulaymi" [nzLabel]="'RFP.Hail Region/Al-Sulaymi'| translate"></nz-option>
-                <nz-option nzValue="Hail Region/Al-Rawdah" [nzLabel]="'RFP.Hail Region/Al-Rawdah'| translate"></nz-option>
-                <nz-option nzValue="Northern Borders Region/Jadidat Arar" [nzLabel]="'RFP.Northern Borders Region/Jadidat Arar'| translate"></nz-option>
-                <nz-option nzValue="Northern Borders Region/Rafha" [nzLabel]="'RFP.Northern Borders Region/Rafha' | translate"></nz-option>
-                <nz-option nzValue="Northern Borders Region/Al-Sha'bah" [nzLabel]="'RFP.Northern Borders Region/Al-Shabah'| translate"></nz-option>
-                <nz-option nzValue="Jazan Region/Atwood" [nzLabel]="'RFP.Jazan Region/Atwood' | translate"></nz-option>
-                <nz-option nzValue="Jazan Region/Masliyah" [nzLabel]="'RFP.Jazan Region/Masliyah'| translate"></nz-option>
-                <nz-option nzValue="Jazan Region/Munajid" [nzLabel]="'RFP.Jazan Region/Munajid' | translate"></nz-option>
-                <nz-option nzValue="Najran Region/Al-Mujamma" [nzLabel]="'RFP.Najran Region/Al-Mujamma' | translate"></nz-option>
-                <nz-option nzValue="Najran Region/Hubona" [nzLabel]="'RFP.Najran Region/Hubona'| translate"></nz-option>
-                <nz-option nzValue="Najran Region/Badr Al-Janoub" [nzLabel]="'RFP.Najran Region/Badr Al-Janoub'| translate"></nz-option>
-                <nz-option nzValue="Al-Baha Region/Bani Adwan and Bani Harir" [nzLabel]="'RFP.Al-Baha Region/Bani Adwan and Bani Harir' | translate"></nz-option>
-                <nz-option nzValue="Al-Baha Region/Yabs" [nzLabel]="'RFP.Al-Baha Region/Yabs' | translate"></nz-option>
-                <nz-option nzValue="Al-Baha Region/Zinad Al-Batat" [nzLabel]="'RFP.Al-Baha Region/Zinad Al-Batat' | translate"></nz-option>
-                <nz-option nzValue="Al-Jouf Region/Abu Ajram" [nzLabel]="'RFP.Al-Jouf Region/Abu Ajram' | translate"></nz-option>
-                <nz-option nzValue="Al-Jouf Region/Thaniyat Umm Nakhilah" [nzLabel]="'RFP.Al-Jouf Region/Thaniyat Umm Nakhilah' | translate"></nz-option>
-                <nz-option nzValue="Al-Jouf Region/Mayqou" [nzLabel]="'RFP.Al-Jouf Region/Mayqou' | translate"></nz-option>
+                <nz-option
+                  nzValue="riyadh/Al-Rin"
+                  [nzLabel]="'RFP.Riyadh Region/Al-Rin' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="riyadh/Khurayman"
+                  [nzLabel]="'RFP.Riyadh Region/Khurayman' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="riyadh/Al-Sahnah"
+                  [nzLabel]="'RFP.Riyadh Region/Al-Sahnah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="makkah/Al-Shaiba"
+                  [nzLabel]="'RFP.Makkah Region/Al-Shaiba' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="makkah/Bahrah"
+                  [nzLabel]="'RFP.Makkah Region/Bahrah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="makkah/Asfan"
+                  [nzLabel]="'RFP.Makkah Region/Asfan' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Madinah/Mahd Al-Dhahab"
+                  [nzLabel]="'RFP.Al-Madinah Region/Mahd Al-Dhahab' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Madinah/Al-Furaysh"
+                  [nzLabel]="'RFP.Al-Madinah Region/Al-Furaysh' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Madinah/Abyar Al-Mashi"
+                  [nzLabel]="'RFP.Al-Madinah Region/Abyar Al-Mashi' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Qassim/Shari – Al-Qassim"
+                  [nzLabel]="
+                    'RFP.Al-Qassim Region/Shari – Al-Qassim' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Qassim/Al-Dhybiyah – Al-Qassim"
+                  [nzLabel]="
+                    'RFP.Al-Qassim Region/Al-Dhybiyah – Al-Qassim' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Qassim/Al-Khurma"
+                  [nzLabel]="'RFP.Al-Qassim Region/Al-Khurma' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Eastern/Tarout"
+                  [nzLabel]="'RFP.Eastern Region/Tarout' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Eastern/Al-Ju’aymah"
+                  [nzLabel]="'RFP.Eastern Region/Al-Ju’aymah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Eastern/Shedgum"
+                  [nzLabel]="'RFP.Eastern Region/Shedgum' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Asir Region/Rijal Alma"
+                  [nzLabel]="'RFP.Asir Region/Rijal Alma' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar"
+                  [nzLabel]="
+                    'RFP.Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar'
+                      | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Asir Region/Al-Majardah"
+                  [nzLabel]="'RFP.Asir Region/Al-Majardah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Tabuk Region/Bajdah"
+                  [nzLabel]="'RFP.Tabuk Region/Bajdah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Tabuk Region/Halat Ammar"
+                  [nzLabel]="'RFP.Tabuk Region/Halat Ammar' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Tabuk Region/Al-Fouhah"
+                  [nzLabel]="'RFP.Tabuk Region/Al-Fouhah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Hail Region/Al-Miyah"
+                  [nzLabel]="'RFP.Hail Region/Al-Miyah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Hail Region/Al-Sulaymi"
+                  [nzLabel]="'RFP.Hail Region/Al-Sulaymi' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Hail Region/Al-Rawdah"
+                  [nzLabel]="'RFP.Hail Region/Al-Rawdah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Northern Borders Region/Jadidat Arar"
+                  [nzLabel]="
+                    'RFP.Northern Borders Region/Jadidat Arar' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Northern Borders Region/Rafha"
+                  [nzLabel]="'RFP.Northern Borders Region/Rafha' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Northern Borders Region/Al-Sha'bah"
+                  [nzLabel]="
+                    'RFP.Northern Borders Region/Al-Shabah' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Jazan Region/Atwood"
+                  [nzLabel]="'RFP.Jazan Region/Atwood' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Jazan Region/Masliyah"
+                  [nzLabel]="'RFP.Jazan Region/Masliyah' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Jazan Region/Munajid"
+                  [nzLabel]="'RFP.Jazan Region/Munajid' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Najran Region/Al-Mujamma"
+                  [nzLabel]="'RFP.Najran Region/Al-Mujamma' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Najran Region/Hubona"
+                  [nzLabel]="'RFP.Najran Region/Hubona' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Najran Region/Badr Al-Janoub"
+                  [nzLabel]="'RFP.Najran Region/Badr Al-Janoub' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Baha Region/Bani Adwan and Bani Harir"
+                  [nzLabel]="
+                    'RFP.Al-Baha Region/Bani Adwan and Bani Harir' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Baha Region/Yabs"
+                  [nzLabel]="'RFP.Al-Baha Region/Yabs' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Baha Region/Zinad Al-Batat"
+                  [nzLabel]="'RFP.Al-Baha Region/Zinad Al-Batat' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Jouf Region/Abu Ajram"
+                  [nzLabel]="'RFP.Al-Jouf Region/Abu Ajram' | translate"
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Jouf Region/Thaniyat Umm Nakhilah"
+                  [nzLabel]="
+                    'RFP.Al-Jouf Region/Thaniyat Umm Nakhilah' | translate
+                  "
+                ></nz-option>
+                <nz-option
+                  nzValue="Al-Jouf Region/Mayqou"
+                  [nzLabel]="'RFP.Al-Jouf Region/Mayqou' | translate"
+                ></nz-option>
               </nz-select>
             </div>
 
@@ -910,7 +1087,7 @@
               </nz-form-control>
             </div>
 
-            <!-- *coordinator name -->
+            <!-- *coordinator name      (ngModelChange)="onCoordinatorSelect($event)" -->
             <div class="col-4 my-1">
               <nz-form-label>{{
                 "RFP.coordinator name" | translate
@@ -922,13 +1099,13 @@
                 [nzPlaceHolder]="'RFP.Enter Cordinator Name' | translate"
                 style="width: 100%"
                 (nzOnSearch)="onCoordinatorSearch($event)"
-                (ngModelChange)="onCoordinatorSelect($event)"
               >
                 <nz-option
                   *ngFor="let item of filteredCommunicationList"
                   [nzValue]="item.Uname"
                   [nzLabel]="item.Uname"
-                ></nz-option>
+                >
+                </nz-option>
               </nz-select>
             </div>
 
@@ -986,12 +1163,23 @@
                         placeholder="Committee Member"
                       />
                     </td>
-                    <td>
-                      <input
-                        nz-input
+                    <td style="width: 250px">
+                      <!-- <input nz-input formControlName="name" [placeholder]="'RFP.Enter Name' | translate" /> -->
+                      <nz-select
+                        nzShowSearch
+                        nzAllowClear
                         formControlName="name"
-                        [placeholder]="'RFP.Enter Name' | translate"
-                      />
+                        [nzPlaceHolder]="'RFP.Enter Name' | translate"
+                        style="width: 100%"
+                        (nzOnSearch)="onCoordinatorSearch($event)"
+                      >
+                        <nz-option
+                          *ngFor="let item of filteredCommunicationList"
+                          [nzValue]="item.Uname"
+                          [nzLabel]="item.Uname"
+                        >
+                        </nz-option>
+                      </nz-select>
                     </td>
                     <td>
                       <input
@@ -1152,7 +1340,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                [placeholder]="'RFP.Enter UID'|translate"
+                [placeholder]="'RFP.Enter UID' | translate"
                 formControlName="userId"
               />
             </div>
@@ -1167,7 +1355,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                [placeholder]="'RFP.Enter Email'|translate"
+                [placeholder]="'RFP.Enter Email' | translate"
                 formControlName="email"
               />
             </div>
@@ -1182,7 +1370,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                [placeholder]="'RFP.Enter Contact Number'|translate"
+                [placeholder]="'RFP.Enter Contact Number' | translate"
                 formControlName="contactNumber"
               />
             </div>
@@ -1210,7 +1398,7 @@
               }}</nz-form-label>
               <input
                 nz-input
-                [placeholder]="'RFP.Enter Reference Number'|translate"
+                [placeholder]="'RFP.Enter Reference Number' | translate"
                 formControlName="prequalificationDetails"
               />
               <small
@@ -1281,7 +1469,7 @@
                 nz-input
                 rows="3"
                 placeholder="Describe the Necessity..."
-                formControlName="projectJustification"
+                formControlName="Necessity"
               ></textarea>
             </div>
             <div class="col-12 my-1">
@@ -1292,7 +1480,7 @@
                 nz-input
                 rows="3"
                 placeholder="Describe the Impact..."
-                formControlName="projectJustification"
+                formControlName="Impact"
               ></textarea>
             </div>
 
@@ -3489,9 +3677,11 @@
           <div class="mt-3">
             <button
               nz-button
-              nzType="primary"
+              [nzType]="getTotalWeightage() > 100 ? 'default' : 'primary'"
               nzSize="default"
               (click)="addEvalCriteriaItem(evalCriteriaItems.length - 1)"
+              [disabled]="getTotalWeightage() > 100"
+              ngif="isAddCriteriaVisible"
             >
               <span nz-icon nzType="plus"></span>
               <span>{{ "RFP.Add Criteria" | translate }}</span>
@@ -3599,10 +3789,10 @@
         </nz-collapse-panel>
       </nz-collapse>
 
-      <!-- Bill of Quantity *ngIf="showBillOfQuantity"---- -->
+      <!-- Bill of Quantity *ngIf="showBillOfQuantity"----*ngIf="showBillOfQuantity" -->
       <nz-collapse
-        id="billOfQuantity"
         *ngIf="showBillOfQuantity"
+        id="billOfQuantity"
         [nzExpandIconPosition]="expandIconPosition"
         class="mt-4"
         style="margin-left: 20px"
@@ -3896,25 +4086,73 @@
                     <tbody>
                       <tr *ngFor="let row of workforceRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.jobTitle"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.itemDescription"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.leastEligibility"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.minYears"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
                         <ng-container *ngIf="selectedYears === 1">
                           <td>
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row.quantityY1"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <ng-container *ngIf="selectedYears > 1">
                           <ng-container *ngFor="let year of getYearsArray()">
                             <td>
-                              <input nz-input type="number" placeholder="0" />
+                              <input
+                                nz-input
+                                type="number"
+                                placeholder="0"
+                                [(ngModel)]="row['noY' + year]"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
                             </td>
                             <td>
-                              <input nz-input type="number" placeholder="0" />
+                              <input
+                                nz-input
+                                type="number"
+                                placeholder="0"
+                                [(ngModel)]="row['basicHoursY' + year]"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
                             </td>
                             <td>
-                              <input nz-input type="number" placeholder="0" />
+                              <input
+                                nz-input
+                                type="number"
+                                placeholder="0"
+                                [(ngModel)]="row['otHoursY' + year]"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
                             </td>
                           </ng-container>
                         </ng-container>
@@ -4009,21 +4247,76 @@
                     <tbody>
                       <tr *ngFor="let row of materialsRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input placeholder="no" /></td>
-                        <td><input nz-input /></td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.category"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.item"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.uom"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.itemDescription"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.specifications"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            placeholder="no"
+                            [(ngModel)]="row.mandatoryList"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.structuralCode"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
                         <ng-container *ngIf="selectedYears === 1">
                           <td>
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row.quantityY1"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <ng-container *ngIf="selectedYears > 1">
                           <td *ngFor="let year of getYearsArray()">
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row['quantityY' + year]"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <td class="text-center">
@@ -4118,22 +4411,84 @@
                     <tbody>
                       <tr *ngFor="let row of equipmentRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input placeholder="no" /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input placeholder="No attachments" /></td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.category"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.item"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.uom"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.itemDescription"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.specifications"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            placeholder="no"
+                            [(ngModel)]="row.mandatoryList"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.structuralCode"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            placeholder="No attachments"
+                            [(ngModel)]="row.attachments"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
                         <ng-container *ngIf="selectedYears === 1">
                           <td>
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row.quantityY1"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <ng-container *ngIf="selectedYears > 1">
                           <td *ngFor="let year of getYearsArray()">
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row['quantityY' + year]"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <td class="text-center">
@@ -4225,20 +4580,69 @@
                     <tbody>
                       <tr *ngFor="let row of serviceRows; let i = index">
                         <td>{{ i + 1 }}</td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input /></td>
-                        <td><input nz-input placeholder="No attachments" /></td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.category"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.item"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.uom"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.itemDescription"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            [(ngModel)]="row.specifications"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            nz-input
+                            placeholder="No attachments"
+                            [(ngModel)]="row.attachments"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </td>
                         <ng-container *ngIf="selectedYears === 1">
                           <td>
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row.quantityY1"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <ng-container *ngIf="selectedYears > 1">
                           <td *ngFor="let year of getYearsArray()">
-                            <input nz-input type="number" placeholder="0" />
+                            <input
+                              nz-input
+                              type="number"
+                              placeholder="0"
+                              [(ngModel)]="row['quantityY' + year]"
+                              [ngModelOptions]="{ standalone: true }"
+                            />
                           </td>
                         </ng-container>
                         <td class="text-center">

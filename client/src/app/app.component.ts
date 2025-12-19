@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from './service/common.service';
+import { AuthService } from './service/auth.service';
 import { ar_EG, en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { ApiService } from './service/RFP/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -121,10 +122,49 @@ export class AppComponent {
   }
 
   logout() {
-    this.oauthService.logOut();
-    localStorage.clear();
-    sessionStorage.clear();
-
+    // Reset component state first
+    this.resetUserState();
+    
+    // Clear all localStorage and sessionStorage
+    this.authService.logout();
+  }
+  
+  /**
+   * Handle session expiration
+   */
+  handleSessionExpired(): void {
+    // Show notification to user
+    this.cs.createMessage('warning', 'Your session has expired. Please login again.');
+    
+    // Reset user state
+    this.resetUserState();
+    
+    // Navigate to login
+    this.router.navigate(['/']);
+  }
+  
+  /**
+   * Reset all user-related state
+   */
+  private resetUserState(): void {
+    this.isUserLoggedIn = false;
+    this.dispname = '';
+    this.department = '';
+    this.ProxyUserId = '';
+    this.navItems = [];
+    
+    // Reset role flags
+    this.rqter = false;
+    this.appr = false;
+    this.budalltr = false;
+    this.manager = false;
+    this.apprmanager = false;
+    this.isAdmin = false;
+    this.isAdminFullAccess = false;
+    this.enableproxy = false;
+    
+    // Hide dropdown
+    this.showDropdown = false;
   }
   toggleLang() {
     if (this.cs.userLanguage === 'en') {
@@ -193,7 +233,8 @@ export class AppComponent {
     private api: ApiService,
     private translate: TranslateService,
     public cs: CommonService,
-    private rfp: RFPService
+    private rfp: RFPService,
+    private authService: AuthService
   ) {
     this.translate.addLangs(['en', 'ar']);
     this.translate.use('en');
@@ -239,6 +280,8 @@ export class AppComponent {
       this.isDarkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
+    
+
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
     //   const decode: any = jwt_decode(token);
@@ -383,12 +426,66 @@ export class AppComponent {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
-    this.isUserLoggedIn = true;
-    this.dispname = userName.toUpperCase();
+    // Local user data without API call
+    this.spinner.show();
+    
+    // Mock user data based on username
+    let mockUserData: any = {
+      d: {
+        Msgid: 'S',
+        Uname: userName.toUpperCase(),
+        Planstxt: 'Local Department',
+        Addfield5: 'ENDUSER' // Default role
+      }
+    };
+    
+    // Set different roles based on username
+    if (userName === 'SALSUBKI') {
+      mockUserData.d.Addfield5 = 'PRUSER';
+    } else if (userName === 'AALSALEM') {
+      mockUserData.d.Addfield5 = 'ADMIN';
+    }
+    
+    // Process the mock data (same logic as before)
+    console.log(mockUserData, '=========LocalUserData=======');
+    console.log(mockUserData?.d?.Uname, '=========username=======');
+    
+    if(mockUserData?.d?.Msgid === 'S' && mockUserData?.d?.Uname){
+        this.isUserLoggedIn = true;
+    } else {
+        this.cs.createMessage("error", 'User Not Found');
+        console.log('Login failed: User Not Found');
+        this.spinner.hide();
+        return;
+    }
+    this.dispname = mockUserData?.d?.Uname ? mockUserData?.d?.Uname.toUpperCase() : 'undefined';
+    let role = mockUserData?.d?.Addfield5
+    
+    // Create session token
+    const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+    const userDetails = {
+      username: userName,
+      displayName: this.dispname,
+      department: mockUserData?.d?.Planstxt || 'undefined',
+      loginTime: new Date().toISOString()
+    };
+    
+    // Set session with 8 hours expiry
+    this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
+    console.log(this.dispname,'displayyyyyyyyyyyy')
+    if(role === 'ENDUSER'){
+      localStorage.setItem('username', btoa('ENDUSER'))
+    }else if(role === 'PRUSER'){
+      localStorage.setItem('username', btoa('PROCUSER'))
+    }else{
+      localStorage.setItem('username', btoa('ADMIN'))
+    }
+    this.department = mockUserData?.d?.Planstxt || 'N/A'
     this.ProxyUserId = userName.toUpperCase();
     this.hasUsedTestLogin = true;
     this.isCollapsed = true;
 
+    // console.log(userName,'userName==')
     this.navItems = [];
     this.navItems.push(
       {
@@ -398,11 +495,20 @@ export class AppComponent {
         link: 'rfp/dashboard'
       },
     )
-    
-    if (userName === 'testrfp') {
+    if(role === 'PRUSER'){
+      this.router.navigate(['rfp/dashboard'])
+    }
+    // if(userName === 'OALMAGHRABI'){  'KAAR-758'
+    if (role === 'ENDUSER') {
       this.roleTest('Requestor');
+
+      // ensure Dashboard is the active/selected menu key
       this.cs.activeMenu = 'Dashboard';
+
+      // close any open submenus so the Dashboard top-level looks highlighted
       this.navItems.forEach(nav => nav.isOpen = false);
+
+      // navigate to dashboard
       this.router.navigate(['rfp/dashboard']);
     }
     else if (userName === 'SALSUBKI') {
@@ -410,7 +516,26 @@ export class AppComponent {
       this.router.navigate(['rfp/myinbox']);
     }
     else if (userName === 'AALSALEM') {
+
       this.constructCOCmenu({ RoleId: 'FI' })
+      
+      // Add Ticket module for admin
+      this.navItems.push({
+        ModuleIcon: 'customer-service',
+        Module: 'Support Tickets',
+        ModuleId: '99',
+        ModuleAr: 'تذاكر الدعم',
+        navItem: [
+          {
+            name: 'ticketlist',
+            iconName: IconList.listnote,
+            text: 'Ticket List',
+            textAr: 'قائمة التذاكر',
+            link: 'admin/tickets',
+          },
+        ],
+      });
+
       this.navItems.push({
         ModuleIcon: 'dashboard',
         Module: 'Bid Opening Committee',
@@ -433,8 +558,27 @@ export class AppComponent {
           },
         ],
       });
+      
+      // Add Ticket module for admin
+      // this.navItems.push({
+      //   ModuleIcon: 'customer-service',
+      //   Module: 'Support Tickets',
+      //   ModuleId: '99',
+      //   ModuleAr: 'تذاكر الدعم',
+      //   navItem: [
+      //     {
+      //       name: 'ticketlist',
+      //       iconName: IconList.listnote,
+      //       text: 'Ticket List',
+      //       textAr: 'قائمة التذاكر',
+      //       link: 'admin/tickets',
+      //     },
+      //   ],
+      // });
+      // Budallocator Manager Approver&Manager
       this.router.navigate(['rfp/myinbox']);
     }
+    this.spinner.hide();
    
 
     //     this.cs.activeMenu = 'Dashboard';
@@ -2798,6 +2942,15 @@ export class AppComponent {
       localStorage.setItem('theme', 'light');
     }
     console.log('HTML element data-theme:', htmlElement.getAttribute('data-theme'));
+  }
+
+  get shouldShowHelpIcon(): boolean {
+    const userRole = localStorage.getItem('username');
+    if (userRole) {
+      const decodedRole = atob(userRole);
+      return decodedRole !== 'ADMIN';
+    }
+    return true;
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {

@@ -632,7 +632,7 @@
     "Enter UID":"Enter UID",
     "Enter Reference Number":"Enter Reference Number",
     "Riyadh Region/Al-Rin":"Riyadh Region/Al-Rin",
-    "Al-Madinah Region/Mahd Al-Dhahab":"Al-Madinah Region/Mahd Al-Dhahab",
+    
     "Makkah Region/Asfan":"Makkah Region/Asfan",
     "Makkah Region/Bahrah":"Makkah Region/Bahrah",
     "Makkah Region/Al-Shaiba":"Makkah Region/Al-Shaiba",
@@ -645,7 +645,8 @@
     "Al-Qassim Region/Al-Dhybiyah – Al-Qassim":"Al-Qassim Region/Al-Dhybiyah – Al-Qassim",
     "Al-Qassim Region/Shari – Al-Qassim":"Al-Qassim Region/Shari – Al-Qassim",
     "Al-Madinah Region/Abyar Al-Mashi":"Al-Madinah Region/Abyar Al-Mashi",
-    "Al-Madinah Region/Al-Furayshah":"Al-Madinah Region/Al-Furayshah",
+    "Al-Madinah Region/Al-Furaysh":"Al-Madinah Region/Al-Furayshah",
+    "Al-Madinah Region/Mahd Al-Dhahab":"Al-Madinah Region/Mahd Al-Dhahab",
     "Northern Borders Region/Al-Shabah":"Northern Borders Region/Al-Sha'bah",
     "Northern Borders Region/Rafha":"Northern Borders Region/Rafha",
     "Northern Borders Region/Jadidat Arar":"Northern Borders Region/Jadidat Arar",
@@ -656,9 +657,10 @@
     "Tabuk Region/Halat Ammar":"Tabuk Region/Halat Ammar",
     "Tabuk Region/Bajdah":"Tabuk Region/Bajdah",
     "Asir Region/Al-Majardah":"Asir Region/Al-Majardah",
+    
     "Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar":"Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar",
-    "Asir Region/Rijal Almah":"Asir Region/Rijal Almah",
-    "Al-Jouf Region/Mayqoum":"Al-Jouf Region/Mayqoum",
+    "Asir Region/Rijal Alma":"Asir Region/Rijal Almah",
+    "Al-Jouf Region/Mayqou":"Al-Jouf Region/Mayqoum",
     "Al-Jouf Region/Thaniyat Umm Nakhilah":"Al-Jouf Region/Thaniyat Umm Nakhilah",
     "Al-Jouf Region/Abu Ajram":"Al-Jouf Region/Abu Ajram",
     "Al-Baha Region/Zinad Al-Batat":"Al-Baha Region/Zinad Al-Batat",
@@ -667,9 +669,9 @@
     "Najran Region/Badr Al-Janoub":"Najran Region/Badr Al-Janoub",
     "Najran Region/Hubona":"Najran Region/Hubona",
     "Najran Region/Al-Mujamma":"Najran Region/Al-Mujamma",
-    "Jazan Region/Munajidah":"Jazan Region/Munajidah",
+    "Jazan Region/Munajid ":"Jazan Region/Munajidah",
     "Jazan Region/Masliyah":"Jazan Region/Masliyah",
-    "Jazan Region/Atwoodir":"Jazan Region/Atwoodir"
+    "Jazan Region/Atwood":"Jazan Region/Atwood"
     
     
   },

@@ -1,49 +1,52 @@
 :host {
 
     .card {
-
-        border-width: thin;
+        background: #005c99;
+        border-width: 2px;
         border-radius: 1rem;
         border-style: solid;
-        border-color: #bcc2be;
+        border-color: #005c99;
         box-shadow: 1px 1px 6px gray;
-        
+        min-height: 180px;
+
         .card-body {
-            
+
             padding: 1rem;
             position: relative;
 
             .card-heading {
-    
+
                 .card-title {
                     font-size: 0.75rem;
                     font-weight: 600;
-                    color: #575957
+                    color: #ffffff
                 }
             }
-    
+
             .card-content {
 
                 display: flex;
                 gap: 0.2rem;
                 align-items: last baseline;
-    
+
                 p {
                     font-size: 1.25rem;
                     margin-bottom: 0;
                 }
-                
+
                 .value {
                     font-weight: bold;
+                    color: #ffffff;
                 }
 
                 .subtitle {
                     font-size: 0.75rem;
                     font-weight: 200;
+                    color: #ffffff;
                 }
-    
+
             }
-    
+
             .card-icon {
                 height: 3rem;
                 width: 3rem;
@@ -68,7 +71,7 @@
         .card-footer {
             border-top-style: solid;
             border-top-width: thin;
-            border-top-color: #bcc2be;
+            border-top-color: rgba(255, 255, 255, 0.3);
             margin-left: 1rem;
             margin-right: 1rem;
             padding-top: 0.5rem;
@@ -76,15 +79,46 @@
             p {
                 font-size: 0.75rem;
                 font-weight: 300;
-                color: gray;
+                color: #ffffff;
             }
 
-            .card-footer-text{
+            .card-footer-text {
                 cursor: pointer;
             }
 
         }
 
 
+    }
+}
+
+/* Dark Mode Overrides */
+:host-context([data-theme="dark"]) {
+    .card {
+        background-color: #161b22 !important;
+        border-color: #30363d !important;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
+
+        .card-body {
+            .card-heading .card-title {
+                color: #c9d1d9 !important;
+            }
+
+            .card-content {
+                color: #ffffff !important;
+
+                .subtitle {
+                    color: #8b949e !important;
+                }
+            }
+        }
+
+        .card-footer {
+            border-top-color: #30363d !important;
+
+            p {
+                color: #8b949e !important;
+            }
+        }
     }
 }

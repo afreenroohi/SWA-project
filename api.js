@@ -16,6 +16,13 @@ const CONTRACT_PRLIST = "ZP2P_CONT_CREAT_SRV_SRV"
 const DASHBOARD_SRV = "ZMM_DASHBOARD_PRCS_SRV" + SAP_PL_ALIAS;
 
 
+const RFP_Standards_SRV="ZP2P_RFP2_SRV_02"+ SAP_PL_ALIAS;
+const RFP_BOQ_SRV="ZP2P_BOQ_SRV"+ SAP_PL_ALIAS;
+//competition types
+
+const CMPTN_TYPE = "ZP2P_RFP2_SRV_02" + SAP_PL_ALIAS;
+
+
 module.exports.apiList = () => {
   let apis = {
     // * Get logged in user details
@@ -27,6 +34,8 @@ module.exports.apiList = () => {
 
     // * Login User Details
     LoginUserDetails: config.URL + RFP_LOGIN_SRV + "/LoginUserDetailsSet",
+    // types of competition
+    CompTypeSet: config.URL + CMPTN_TYPE + "/CompTypeSet",
 
     // * Crete RFP
     projsGet: config.URL + RFP_SRV + "/F4ProjIdSet",
@@ -62,6 +71,17 @@ module.exports.apiList = () => {
 
     // * Communication Details List
     CommunicationDetailsSet: config.URL + RFP_LOGIN_SRV + "/CommunicationDetailsSet",
+
+    // * Create RFP Set - Generate RFP Number
+    CreateRFPSet: config.URL + RFP_LOGIN_SRV + "/CreateRFPSet",
+
+    // * Basic Information Details
+    BasicInformationDetailsSet: config.URL + RFP_LOGIN_SRV + "/BasicInformationDetailsSet",
+    //Standards
+   RFPNoSet:config.URL+RFP_Standards_SRV+"/RFPNoSet",
+   //Bill of Quantity
+    BoqHeaderSet:config.URL+RFP_BOQ_SRV+"/BoqHeaderSet",
+
 
     // * Delete RFP ITEM TABLES
     RfpBoqSet: config.URL + RFP_SRV + "/RfpBoqSet",
