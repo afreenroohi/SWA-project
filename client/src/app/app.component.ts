@@ -376,93 +376,65 @@ export class AppComponent {
   private hasUsedTestLogin: boolean = false;
 
   get enableTestLogon(): boolean {
-    return !this.hasUsedTestLogin;
+    return true;
   }
 
   set enableTestLogon(value: boolean) {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
-    this.api.getLoginUserDetails(userName).subscribe(
-      (response:any) => {
-        console.log(response, '=========RFPLoginApi=======');
-        console.log(response?.d?.Uname, '=========username=======');
-        
-        if(!response?.d?.Uname){
-            this.cs.createMessage("error", 'User Not Found');
-            console.log('Error message triggered: User Not Found');
-            return;
-        }
-        
-        this.isUserLoggedIn = true;
-        this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
-        this.department = response?.d?.Planstxt ? response?.d?.Planstxt : 'undefined'
-        this.ProxyUserId = userName.toUpperCase();
-        this.hasUsedTestLogin = true;
-        this.isCollapsed = true;
+    this.isUserLoggedIn = true;
+    this.dispname = userName.toUpperCase();
+    this.ProxyUserId = userName.toUpperCase();
+    this.hasUsedTestLogin = true;
+    this.isCollapsed = true;
 
-
-        // console.log(userName,'userName==')
-        this.navItems = [];
-        this.navItems.push(
-          {
-            Module: 'Dashboard',
-            ModuleAr: 'إدارة طلب المنافسات',
-            ModuleIcon: 'line-chart',
-            link: 'rfp/dashboard'
-          },
-        )
-        // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-        if (userName === 'KAAR-758') {
-          this.roleTest('Requestor');
-
-          // ensure Dashboard is the active/selected menu key
-          this.cs.activeMenu = 'Dashboard';
-
-          // close any open submenus so the Dashboard top-level looks highlighted
-          this.navItems.forEach(nav => nav.isOpen = false);
-
-          // navigate to dashboard
-          this.router.navigate(['rfp/dashboard']);
-        }
-        else if (userName === 'SALSUBKI') {
-          this.roleTest('Approver')
-          this.router.navigate(['rfp/myinbox']);
-        }
-        else if (userName === 'AALSALEM') {
-
-          this.constructCOCmenu({ RoleId: 'FI' })
-
-          this.navItems.push({
-            ModuleIcon: 'dashboard',
-            Module: 'Bid Opening Committee',
-            ModuleId: '01',
-            ModuleAr: 'لجنة فتح العروض ',
-            navItem: [
-              {
-                name: 'bidopeningform',
-                iconName: IconList.listcheck,
-                text: 'Bid opening Form',
-                textAr: 'نموذج فتح العروض',
-                link: 'committee/Bid_Create',
-              },
-              {
-                name: 'bidlist',
-                iconName: IconList.listnote,
-                text: 'Bids List (' + this.bidsListCount + ')',
-                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-                link: 'committee/BidList',
-              },
-            ],
-          });
-          // Budallocator Manager Approver&Manager
-          this.router.navigate(['rfp/myinbox']);
-        }
+    this.navItems = [];
+    this.navItems.push(
+      {
+        Module: 'Dashboard',
+        ModuleAr: 'إدارة طلب المنافسات',
+        ModuleIcon: 'line-chart',
+        link: 'rfp/dashboard'
       },
-      error => {
-        console.error(error)
-      }
-    );
+    )
+    
+    if (userName === 'testrfp') {
+      this.roleTest('Requestor');
+      this.cs.activeMenu = 'Dashboard';
+      this.navItems.forEach(nav => nav.isOpen = false);
+      this.router.navigate(['rfp/dashboard']);
+    }
+    else if (userName === 'SALSUBKI') {
+      this.roleTest('Approver')
+      this.router.navigate(['rfp/myinbox']);
+    }
+    else if (userName === 'AALSALEM') {
+      this.constructCOCmenu({ RoleId: 'FI' })
+      this.navItems.push({
+        ModuleIcon: 'dashboard',
+        Module: 'Bid Opening Committee',
+        ModuleId: '01',
+        ModuleAr: 'لجنة فتح العروض ',
+        navItem: [
+          {
+            name: 'bidopeningform',
+            iconName: IconList.listcheck,
+            text: 'Bid opening Form',
+            textAr: 'نموذج فتح العروض',
+            link: 'committee/Bid_Create',
+          },
+          {
+            name: 'bidlist',
+            iconName: IconList.listnote,
+            text: 'Bids List (' + this.bidsListCount + ')',
+            textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+            link: 'committee/BidList',
+          },
+        ],
+      });
+      this.router.navigate(['rfp/myinbox']);
+    }
    
 
     //     this.cs.activeMenu = 'Dashboard';
