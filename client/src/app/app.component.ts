@@ -719,7 +719,14 @@ export class AppComponent {
               text: 'My RFP Requests',
               textAr: 'منافساتي',
               link: 'rfp/myrfp',
-            }
+            },
+            {
+              name: 'prequalification',
+              iconName: IconList.tool,
+              text: 'Prequalification',
+              textAr: 'التأهيل المسبق',
+              link: 'rfp/prequalification',
+            },
           ],
         },
       )
