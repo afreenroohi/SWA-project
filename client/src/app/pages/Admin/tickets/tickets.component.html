@@ -1,0 +1,61 @@
+<div class="tickets-container">
+  <nz-card nzTitle="Support Tickets">
+    
+    <!-- KPI Cards -->
+    <div class="kpi-cards">
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3>{{ totalTickets }}</h3>
+          <p>Total Tickets</p>
+        </div>
+      </nz-card>
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3 style="color: #f5222d">{{ highPriorityTickets }}</h3>
+          <p>High Priority</p>
+        </div>
+      </nz-card>
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3 style="color: #52c41a">{{ openTickets }}</h3>
+          <p>Open Tickets</p>
+        </div>
+      </nz-card>
+    </div>
+
+    <div class="actions-bar">
+      <button nz-button nzType="primary" (click)="showSupportForm = !showSupportForm">
+        {{ showSupportForm ? 'Hide Form' : 'Create Ticket' }}
+      </button>
+    </div>
+
+    <app-support-form *ngIf="showSupportForm"></app-support-form>
+
+    <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Subject</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Created Date</th>
+          <th>Created By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of ticketsTable.data">
+          <td>{{ ticket.id }}</td>
+          <td>{{ ticket.subject }}</td>
+          <td>
+            <span class="priority-badge" [ngClass]="'priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">{{ ticket.status }}</span>
+          </td>
+          <td>{{ ticket.createdDate | date:'short' }}</td>
+          <td>{{ ticket.createdBy }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+</div>
