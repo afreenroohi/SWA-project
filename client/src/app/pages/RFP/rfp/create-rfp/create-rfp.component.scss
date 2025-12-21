@@ -3680,10 +3680,11 @@ nz-collapse {
 //   background: rgba(59, 130, 246, 0.3) !important;
 // }
 .selection-box:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
-  background: rgba(107, 114, 128, 0.22); /* neutral gray */
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  background: rgba(243, 244, 246, 0.6); /* lightest gray */
 }
+
 
 
 .selection-box .box-icon {

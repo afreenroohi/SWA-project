@@ -130,10 +130,7 @@ export class AppComponent {
    */
   handleSessionExpired(): void {
     // Show notification to user
-    this.cs.createMessage(
-      'warning',
-      'Your session has expired. Please login again.'
-    );
+    this.cs.createMessage('warning', 'Your session has expired. Please login again.');
 
     // Reset user state
     this.resetUserState();
@@ -284,6 +281,7 @@ export class AppComponent {
       this.isDarkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
+
 
     // if (!environment.testlogin) {  // afreen commented
     //   const token = this.oauthService.getAccessToken() as any;
@@ -456,144 +454,144 @@ export class AppComponent {
       (response: any) => {
         console.log(response, '=========RFPLoginApi=======');
         console.log(response?.d?.Uname, '=========username=======');
-        
-         if(response?.d?.Msgid === 'S' && response?.d?.Uname){
-            this.isUserLoggedIn = true;
+
+        // if(!response?.d?.Uname){
+        //     this.cs.createMessage("error", 'User Not Found');
+        //     console.log('Error message triggered: User Not Found');
+        //     return;
+        // }
+
+        // this.isUserLoggedIn = true;
+        // this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
+        if (response?.d?.Msgid === 'S' && response?.d?.Uname) {
+          this.isUserLoggedIn = true;
         } else {
-          this.cs.createMessage(
-            'error',
-            response?.d?.Message || 'User Not Found'
-          );
+          this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
           console.log('Login failed:', response?.d?.Message);
           this.spinner.hide();
           return;
         }
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
         let role = response?.d?.Addfield5
-    
-    // Create session token
-    const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
-    const userDetails = {
-      username: userName,
-      displayName: this.dispname,
-      department: response?.d?.Planstxt || 'undefined',
-      loginTime: new Date().toISOString()
-    };
-    
-    // Set session with 8 hours expiry
-    this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
-    console.log(this.dispname,'displayyyyyyyyyyyy')
-    if(role === 'ENDUSER'){
-      localStorage.setItem('username', btoa('ENDUSER'))
-    }else if(role === 'PRUSER'){
-      localStorage.setItem('username', btoa('PROCUSER'))
-    }else{
-      localStorage.setItem('username', btoa('ADMIN'))
-    }
-    this.department = response?.d?.Planstxt || 'N/A'
-    this.ProxyUserId = userName.toUpperCase();
-    this.hasUsedTestLogin = true;
-    this.isCollapsed = true;
 
-    // console.log(userName,'userName==')
-    this.navItems = [];
-    this.navItems.push(
-      {
-        Module: 'Dashboard',
-        ModuleAr: 'إدارة طلب المنافسات',
-        ModuleIcon: 'line-chart',
-        link: 'rfp/dashboard'
-      },
-    )
-    if(role === 'PRUSER'){
-      this.router.navigate(['rfp/dashboard'])
-    }
-    // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-    if (role === 'ENDUSER') {
-      this.roleTest('Requestor');
 
-      // ensure Dashboard is the active/selected menu key
-      this.cs.activeMenu = 'Dashboard';
+        // Create session token
+        const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+        const userDetails = {
+          username: userName,
+          displayName: this.dispname,
+          department: response?.d?.Planstxt || 'undefined',
+          loginTime: new Date().toISOString()
+        };
 
-      // close any open submenus so the Dashboard top-level looks highlighted
-      this.navItems.forEach(nav => nav.isOpen = false);
+        // Set session with 8 hours expiry
+        this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
+        console.log(this.dispname, 'displayyyyyyyyyyyy')
+        if (role === 'ENDUSER') {
+          localStorage.setItem('username', btoa('ENDUSER'))
+        } else if (role === 'PRUSER') {
+          localStorage.setItem('username', btoa('PROCUSER'))
+        } else if (role === 'PRQUALUSER') {
+          localStorage.setItem('username', btoa('PRQUALUSER'))
+        } else {
+          localStorage.setItem('username', btoa('ADMIN'))
+        }
+        this.department = response?.d?.Planstxt || 'N/A'
+        this.ProxyUserId = userName.toUpperCase();
+        this.hasUsedTestLogin = true;
+        this.isCollapsed = true;
 
-      // navigate to dashboard
-      this.router.navigate(['rfp/dashboard']);
-    }
-    else if (userName === 'SALSUBKI') {
-      this.roleTest('Approver')
-      this.router.navigate(['rfp/myinbox']);
-    }
-    else if (userName === 'AALSALEM') {
 
-      this.constructCOCmenu({ RoleId: 'FI' })
-      
-      // Add Ticket module for admin
-      this.navItems.push({
-        ModuleIcon: 'customer-service',
-        Module: 'Support Tickets',
-        ModuleId: '99',
-        ModuleAr: 'تذاكر الدعم',
-        navItem: [
+        // console.log(userName,'userName==')
+        this.navItems = [];
+        this.navItems.push(
           {
-            name: 'ticketlist',
-            iconName: IconList.listnote,
-            text: 'Ticket List',
-            textAr: 'قائمة التذاكر',
-            link: 'admin/tickets',
+            Module: 'Dashboard',
+            ModuleAr: 'إدارة طلب المنافسات',
+            ModuleIcon: 'line-chart',
+            link: 'rfp/dashboard'
           },
-        ],
-      });
+        )
+        if (role === 'ADMIN') {
 
-      this.navItems.push({
-        ModuleIcon: 'dashboard',
-        Module: 'Bid Opening Committee',
-        ModuleId: '01',
-        ModuleAr: 'لجنة فتح العروض ',
-        navItem: [
-          {
-            name: 'bidopeningform',
-            iconName: IconList.listcheck,
-            text: 'Bid opening Form',
-            textAr: 'نموذج فتح العروض',
-            link: 'committee/Bid_Create',
-          },
-          {
-            name: 'bidlist',
-            iconName: IconList.listnote,
-            text: 'Bids List (' + this.bidsListCount + ')',
-            textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-            link: 'committee/BidList',
-          },
-        ],
-      });
-      
-      // Add Ticket module for admin
-      // this.navItems.push({
-      //   ModuleIcon: 'customer-service',
-      //   Module: 'Support Tickets',
-      //   ModuleId: '99',
-      //   ModuleAr: 'تذاكر الدعم',
-      //   navItem: [
-      //     {
-      //       name: 'ticketlist',
-      //       iconName: IconList.listnote,
-      //       text: 'Ticket List',
-      //       textAr: 'قائمة التذاكر',
-      //       link: 'admin/tickets',
-      //     },
-      //   ],
-      // });
-      // Budallocator Manager Approver&Manager
-      this.router.navigate(['rfp/myinbox']);
-    }
+          // this.constructCOCmenu({ RoleId: 'FI' })
+
+          // Add Ticket module for admin
+          this.navItems.push({
+            ModuleIcon: 'customer-service',
+            Module: 'Support Tickets',
+            ModuleId: '99',
+            ModuleAr: 'تذاكر الدعم',
+            navItem: [
+              {
+                name: 'ticketlist',
+                iconName: IconList.listnote,
+                text: 'Ticket List',
+                textAr: 'قائمة التذاكر',
+                link: 'admin/tickets',
+              },
+            ],
+          });
+
+          // this.navItems.push({
+          //   ModuleIcon: 'dashboard',
+          //   Module: 'Bid Opening Committee',
+          //   ModuleId: '01',
+          //   ModuleAr: 'لجنة فتح العروض ',
+          //   navItem: [
+          //     {
+          //       name: 'bidopeningform',
+          //       iconName: IconList.listcheck,
+          //       text: 'Bid opening Form',
+          //       textAr: 'نموذج فتح العروض',
+          //       link: 'committee/Bid_Create',
+          //     },
+          //     {
+          //       name: 'bidlist',
+          //       iconName: IconList.listnote,
+          //       text: 'Bids List (' + this.bidsListCount + ')',
+          //       textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+          //       link: 'committee/BidList',
+          //     },
+          //   ],
+          // });
+
+          this.router.navigate(['rfp/myinbox']);
+        }
+        if (role === 'PRUSER') {
+          this.router.navigate(['rfp/dashboard'])
+        }
+        if (role === 'PRQUALUSER') {
+          this.router.navigate(['rfp/dashboard'])
+        }
+        if (role === 'ENDUSER') {
+          this.roleTest('Requestor');
+
+          // ensure Dashboard is the active/selected menu key
+          this.cs.activeMenu = 'Dashboard';
+
+          // close any open submenus so the Dashboard top-level looks highlighted
+          this.navItems.forEach(nav => nav.isOpen = false);
+
+          // navigate to dashboard
+          this.router.navigate(['rfp/dashboard']);
+        }
+        this.spinner.hide();
       },
       (error) => {
         console.error(error);
         this.spinner.hide();
       }
     );
+
+
+    //     this.cs.activeMenu = 'Dashboard';
+    // this.navItems.forEach(n => n.isOpen = false);
+    // // call helper if exists (keeps same behavior as the forkJoin branch)
+    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+    // this.router.navigate(['rfp/dashboard']);
+
+    return
     // * Setting the Initial State for Login
     localStorage.clear();
     this.noRFC = false;
@@ -748,28 +746,37 @@ export class AppComponent {
     }
 
     if (this.rqter) {
-      this.navItems.push({
-        Module: 'RFP - Requester',
-        ModuleAr: 'إدارة طلب المنافسات',
-        ModuleIcon: 'file-text',
-        isOpen: false,
-        navItem: [
-          {
-            name: 'create',
-            iconName: IconList.create,
-            text: 'Create RFP',
-            textAr: 'انشاء منافسة',
-            link: 'rfp/create',
-          },
-          {
-            name: 'myrfp',
-            iconName: IconList.myRequest,
-            text: 'My RFP Requests',
-            textAr: 'منافساتي',
-            link: 'rfp/myrfp',
-          },
-        ],
-      });
+      this.navItems.push(
+        {
+          Module: 'RFP - Requester',
+          ModuleAr: 'إدارة طلب المنافسات',
+          ModuleIcon: 'file-text',
+          isOpen: false,
+          navItem: [
+            {
+              name: 'create',
+              iconName: IconList.create,
+              text: 'Create RFP',
+              textAr: 'انشاء منافسة',
+              link: 'rfp/create',
+            },
+            {
+              name: 'myrfp',
+              iconName: IconList.myRequest,
+              text: 'My RFP Requests',
+              textAr: 'منافساتي',
+              link: 'rfp/myrfp',
+            },
+            {
+              name: 'prequalification',
+              iconName: IconList.tool,
+              text: 'Prequalification',
+              textAr: 'التأهيل المسبق',
+              link: 'rfp/prequalification',
+            },
+          ],
+        },
+      )
     }
 
     if (this.appr) {
@@ -3069,7 +3076,10 @@ export class AppComponent {
     const htmlElement = document.getElementsByTagName('html')[0];
     const bodyElement = document.getElementsByTagName('body')[0];
 
-    if (lang !== 'ar' && htmlElement.hasAttribute('dir')) {
+    if (
+      lang !== 'ar' &&
+      htmlElement.hasAttribute('dir')
+    ) {
       htmlElement.removeAttribute('dir');
       bodyElement.removeAttribute('dir');
     } else if (lang === 'ar' && !htmlElement.hasAttribute('dir')) {
