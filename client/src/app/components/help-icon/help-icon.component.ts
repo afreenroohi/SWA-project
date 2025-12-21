@@ -8,7 +8,7 @@ import { TicketFormComponent } from '../ticket-form/ticket-form.component';
     <div class="help-icon-container">
       <button nz-button nzType="primary" nzShape="circle" nzSize="large" 
               (click)="openTicketForm()" class="help-button">
-        <i nz-icon nzType="question" nzTheme="outline"></i>
+        <i nz-icon nzType="customer-service" nzTheme="outline"></i>
       </button>
     </div>
   `,

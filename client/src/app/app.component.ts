@@ -426,47 +426,29 @@ export class AppComponent {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
-    // Local user data without API call
     this.spinner.show();
-    
-    // Mock user data based on username
-    let mockUserData: any = {
-      d: {
-        Msgid: 'S',
-        Uname: userName.toUpperCase(),
-        Planstxt: 'Local Department',
-        Addfield5: 'ENDUSER' // Default role
-      }
-    };
-    
-    // Set different roles based on username
-    if (userName === 'SALSUBKI') {
-      mockUserData.d.Addfield5 = 'PRUSER';
-    } else if (userName === 'AALSALEM') {
-      mockUserData.d.Addfield5 = 'ADMIN';
-    }
-    
-    // Process the mock data (same logic as before)
-    console.log(mockUserData, '=========LocalUserData=======');
-    console.log(mockUserData?.d?.Uname, '=========username=======');
-    
-    if(mockUserData?.d?.Msgid === 'S' && mockUserData?.d?.Uname){
-        this.isUserLoggedIn = true;
-    } else {
-        this.cs.createMessage("error", 'User Not Found');
-        console.log('Login failed: User Not Found');
-        this.spinner.hide();
-        return;
-    }
-    this.dispname = mockUserData?.d?.Uname ? mockUserData?.d?.Uname.toUpperCase() : 'undefined';
-    let role = mockUserData?.d?.Addfield5
+    this.api.getLoginUserDetails(userName).subscribe(
+      (response:any) => {
+        console.log(response, '=========RFPLoginApi=======');
+        console.log(response?.d?.Uname, '=========username=======');
+        
+         if(response?.d?.Msgid === 'S' && response?.d?.Uname){
+            this.isUserLoggedIn = true;
+        } else {
+            this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
+            console.log('Login failed:', response?.d?.Message);
+            this.spinner.hide();
+            return;
+        }
+        this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
+        let role = response?.d?.Addfield5
     
     // Create session token
     const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
     const userDetails = {
       username: userName,
       displayName: this.dispname,
-      department: mockUserData?.d?.Planstxt || 'undefined',
+      department: response?.d?.Planstxt || 'undefined',
       loginTime: new Date().toISOString()
     };
     
@@ -480,7 +462,7 @@ export class AppComponent {
     }else{
       localStorage.setItem('username', btoa('ADMIN'))
     }
-    this.department = mockUserData?.d?.Planstxt || 'N/A'
+    this.department = response?.d?.Planstxt || 'N/A'
     this.ProxyUserId = userName.toUpperCase();
     this.hasUsedTestLogin = true;
     this.isCollapsed = true;
@@ -578,16 +560,12 @@ export class AppComponent {
       // Budallocator Manager Approver&Manager
       this.router.navigate(['rfp/myinbox']);
     }
-    this.spinner.hide();
-   
-
-    //     this.cs.activeMenu = 'Dashboard';
-    // this.navItems.forEach(n => n.isOpen = false);
-    // // call helper if exists (keeps same behavior as the forkJoin branch)
-    // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
-    // this.router.navigate(['rfp/dashboard']);
-
-    return
+      },
+      error => {
+        console.error(error);
+        this.spinner.hide();
+      }
+    );
     // * Setting the Initial State for Login
     localStorage.clear()
     this.noRFC = false;
