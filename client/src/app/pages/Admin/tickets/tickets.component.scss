@@ -1,0 +1,64 @@
+.tickets-container {
+  padding: 20px;
+}
+
+.kpi-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.kpi-card {
+  flex: 1;
+  text-align: center;
+  min-height: 100px;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.kpi-content {
+  width: 100%;
+}
+
+.kpi-content h3 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  color: #1890ff;
+}
+
+.kpi-content p {
+  margin: 8px 0 0 0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.actions-bar {
+  margin-bottom: 20px;
+}
+
+.support-form {
+  margin-bottom: 20px;
+}
+
+.priority-badge, .status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.priority-high { background: #ffebee; color: #f5222d; }
+.priority-medium { background: #fff3e0; color: #fa8c16; }
+.priority-low { background: #f6ffed; color: #52c41a; }
+
+.status-open { background: #e6f7ff; color: #1890ff; }
+.status-closed { background: #f6ffed; color: #52c41a; }
+.status-in-progress { background: #fff3e0; color: #fa8c16; }
