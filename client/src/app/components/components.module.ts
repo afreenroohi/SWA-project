@@ -20,6 +20,9 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { ErrorPopupComponent } from '../components/error-popup/error-popup.component';
 import { FinalPopupComponent } from './final-popup/final-popup.component';
 import { KpiCardComponent } from './kpi-card/kpi-card.component';
+import { HelpIconComponent } from './help-icon/help-icon.component';
+import { TicketFormComponent } from './ticket-form/ticket-form.component';
+import { TicketListComponent } from './ticket-list/ticket-list.component';
 
 
 
@@ -39,7 +42,10 @@ import { KpiCardComponent } from './kpi-card/kpi-card.component';
     ConfirmComponent,
     ErrorPopupComponent,
     FinalPopupComponent,
-    KpiCardComponent
+    KpiCardComponent,
+    HelpIconComponent,
+    TicketFormComponent,
+    TicketListComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +70,10 @@ import { KpiCardComponent } from './kpi-card/kpi-card.component';
     FilenetDownloadAndDeleteComponent,
     ConfirmComponent,
     FinalPopupComponent,
-    KpiCardComponent
+    KpiCardComponent,
+    HelpIconComponent,
+    TicketFormComponent,
+    TicketListComponent
   ]
   // providers: [
   //   { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }

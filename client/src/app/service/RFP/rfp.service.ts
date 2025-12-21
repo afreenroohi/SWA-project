@@ -16,10 +16,25 @@ import {
 } from 'src/app/pages/RFP/rfp/rfp.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 
+// Define Ticket interface for compatibility
+interface Ticket {
+  id: number;
+  title: string;
+  description?: string;
+  status: string;
+  priority: string;
+  createdAt: Date;
+  updatedAt: Date;
+  screenshot?: string;
+  ticketNumber: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class RFPService {
+  private tickets: Ticket[] = []; // In-memory store
+  private idCounter = 1;
   commitmentItemsSubject = new Subject<CommitmentItem[]>();
   commitmentItems$ = this.commitmentItemsSubject.asObservable();
 
@@ -65,7 +80,8 @@ export class RFPService {
     private api: ApiService,
     public cs: CommonService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) {
+  }
   /**
    * Filter the Document Types array based on the document type id.
    *
@@ -182,7 +198,7 @@ export class RFPService {
     return boqTabelList.map((item: any) => ({
       RfpNo: item.RfpNo || '0000000000',
       RfpVersion: item.RfpVersion || '00000',
-      ItmYear: item.budgetYear?.toString(),
+      ItmYear: item.budgetYear ? item.budgetYear.toString() : '',
       ItmAmount: item.Price ? item.Price.toString() : '',
       CommItm: item.CommItm ||'',
       NoYears: item.NoYears || '0001', // default to 1 year if not specified
@@ -202,7 +218,7 @@ export class RFPService {
       UnitPrice: item.Price ? parseFloat(item.Price).toFixed(2) + ' ' : '',
       TotPriWoVat: item.totalEstimatedPrice ? parseFloat(item.totalEstimatedPrice).toFixed(2) + ' ' : '',
       TotPriVat: item.totalEstimatedPriceVAT ? parseFloat(item.totalEstimatedPriceVAT).toFixed(2) + ' ' : '',
-      BudYear: item.budgetYear?.toString(),
+      BudYear: item.budgetYear ? item.budgetYear.toString() : '',
       CommItm: item.CommItm ||'',
       IntOrd: item.IntOrd || '',
       BudVat: item.totalEstimatedPriceVAT ? parseFloat(item.totalEstimatedPriceVAT).toFixed(2) + ' ' : '',
@@ -230,12 +246,13 @@ export class RFPService {
       ItemNo: parseInt(item.ItemNo) || index + 1,  // fallback to index if missing
       MaterialText: item.ItemName || '',
       ItemDescription: (
-        ReqToBoqNavg.find((boqMasterItem: any) => parseInt(boqMasterItem.ItemNo) === parseInt(item.ItemNo))?.ItemDescription
+        ReqToBoqNavg.find((boqMasterItem: any) => parseInt(boqMasterItem.ItemNo) === parseInt(item.ItemNo)) && 
+        ReqToBoqNavg.find((boqMasterItem: any) => parseInt(boqMasterItem.ItemNo) === parseInt(item.ItemNo)).ItemDescription
       ) || '', // optional, not present in API
       CostCenter: item.CostCenter || '', // optional, not present in API
-      Quantity: parseFloat(item.Quantity?.trim()) || 0,
+      Quantity: parseFloat(item.Quantity ? item.Quantity.trim() : '0') || 0,
       Uom: item.Uom || '', // optional, not present in API
-      Price: parseFloat(item.UnitPrice?.trim()) || 0,
+      Price: parseFloat(item.UnitPrice ? item.UnitPrice.trim() : '0') || 0,
       budgetYear: item.BudYear || '',
       applyForAllBudgetYears: false, // default as not returned by API
       CommItm: item.CommItm ||'',
@@ -268,5 +285,55 @@ export class RFPService {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+
+  // Ticket management methods for compatibility
+  getTickets(): Ticket[] {
+    return this.tickets;
+  }
+
+  addTicket(ticket: Omit<Ticket, 'id' | 'ticketNumber' | 'createdAt' | 'updatedAt'>): Ticket {
+    const now = new Date();
+    const newTicket: Ticket = {
+      ...ticket,
+      id: this.idCounter++,
+      ticketNumber: `TKT-${String(this.idCounter).padStart(6, '0')}`,
+      createdAt: now,
+      updatedAt: now
+    };
+    this.tickets.push(newTicket);
+    return newTicket;
+  }
+
+  updateTicketStatus(id: number, status: string): Ticket | null {
+    const index = this.tickets.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.tickets[index] = { 
+        ...this.tickets[index], 
+        status,
+        updatedAt: new Date()
+      };
+      return this.tickets[index];
+    }
+    return null;
+  }
+
+  updateTicket(id: number, updates: Partial<Ticket>): Ticket | null {
+    const index = this.tickets.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.tickets[index] = { ...this.tickets[index], ...updates };
+      return this.tickets[index];
+    }
+    return null;
+  }
+
+  deleteTicket(id: number): boolean {
+    const index = this.tickets.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.tickets.splice(index, 1);
+      return true;
+    }
+    return false;
   }
 }
