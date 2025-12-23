@@ -12,7 +12,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { registerLocaleData } from '@angular/common';
 import ar from '@angular/common/locales/ar';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 import { IconList } from './components/icon/icon.component';
 import { HostListener } from '@angular/core';
 import { PROCESS_TYPES } from './shared/shared';
@@ -26,8 +26,8 @@ import { RFPService } from './service/RFP/rfp.service';
 })
 export class AppComponent {
   title = 'committee';
-  collapsedWidth = 80; // final width of collapsed sidebar (px)
-  expandedSiderWidth = 250; // normal sidebar width (px)
+  collapsedWidth = 80;                     // final width of collapsed sidebar (px)
+  expandedSiderWidth = 250;               // normal sidebar width (px)
   expandedLogo = 'assets/logo/swa-logo-dark.svg';
   // collapsedLogo = 'assets/logo/swa-header-logo.svg';
   isCollapsed = false;
@@ -45,7 +45,7 @@ export class AppComponent {
 
   private readonly _destroy = new Subject<void>();
 
-  currentYear = 2026;
+  currentYear = 2026
 
   isUserLoggedIn = false;
   enableproxy = false;
@@ -68,6 +68,8 @@ export class AppComponent {
   noCOC = false;
   noCON = false;
 
+
+
   rqter: any;
   appr: any;
   budalltr: any;
@@ -78,7 +80,7 @@ export class AppComponent {
     rfpRole: new FormControl(''),
     committeeRole: new FormControl(''),
     contractRole: new FormControl(''),
-    cocRole: new FormControl(''),
+    cocRole: new FormControl('')
   });
 
   profile: any;
@@ -101,22 +103,22 @@ export class AppComponent {
   bidsFromfinancialControllerApprovalCount = 0;
   vendorListCount = 0;
 
-  dispname = '';
-  email = '';
-  department = '';
+  dispname = ''
+  email = ''
+  department = ''
 
   applicationVersion = '1.0.0';
 
-
-
   // logoSrc = "assets/logo/mwan_logo.png";
-  logoSrc = 'assets/logo/swa-logo-dark.svg';
+  logoSrc = "assets/logo/swa-logo-dark.svg";
 
   isDarkMode = false;
   showDropdown = false;
 
+
   login() {
     this.oauthService.initLoginFlow();
+
   }
 
   logout() {
@@ -174,12 +176,8 @@ export class AppComponent {
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
-    this.headerLeftWidth = this.isCollapsed
-      ? this.collapsedWidth + 'px'
-      : this.expandedWidth + 'px';
-    this.layoutContentMarginLeft = this.isCollapsed
-      ? this.collapsedWidth
-      : this.expandedWidth;
+    this.headerLeftWidth = this.isCollapsed ? this.collapsedWidth + 'px' : this.expandedWidth + 'px';
+    this.layoutContentMarginLeft = this.isCollapsed ? this.collapsedWidth : this.expandedWidth;
   }
   //   public openParentsForActive(): void {
   //   try {
@@ -214,19 +212,16 @@ export class AppComponent {
   onPopState(event: any) {
     let isAccess = false;
     this.navItems.forEach((nav: any) => {
-      if (
-        nav.navItem.find(
-          (elem: any) => window.location.pathname.indexOf(elem.link) > -1
-        )
-      ) {
+      if (nav.navItem.find((elem: any) => window.location.pathname.indexOf(elem.link) > -1)) {
         isAccess = true;
       }
-    });
+    })
 
     if (!isAccess) {
       setTimeout(() => {
         this.router.navigate(['rfp/home']);
       }, 300);
+
     }
   }
 
@@ -251,15 +246,17 @@ export class AppComponent {
 
     const claims = this.oauthService.getIdentityClaims() as any;
     if (claims) {
-      this.ProxyUserId = claims.upn.split('@')[0].toUpperCase();
+      this.ProxyUserId = claims.upn.split("@")[0].toUpperCase()
       if (this.ProxyUserId) {
         // console.log(this.ProxyUserId)
         this.isUserLoggedIn = true;
-        this.dispname = claims.upn;
-        this.spinner.hide();
+        this.dispname = claims.upn
+        this.spinner.hide()
       }
-    } else {
-      this.spinner.hide();
+    }
+
+    else {
+      this.spinner.hide()
     }
   }
 
@@ -300,112 +297,91 @@ export class AppComponent {
     //   }
     // }
     //* Subscription to get count */
-    this.cs
-      .getBidsCount()
-      .pipe(takeUntil(this._destroy))
-      .subscribe((resFromComp) => {
-        if (resFromComp.committeeAction == 'BOPN') {
-          this.bidsToBeOpenedCount = resFromComp.count;
-        } else if (resFromComp.committeeAction == 'BLST') {
-          this.bidsListCount = resFromComp.count;
-        } else if (
-          resFromComp.committeeAction == 'BAPR' ||
-          resFromComp.committeeAction === 'QAPR'
-        ) {
-          this.bidsToBeApprovedCount = resFromComp.count;
-        } else if (
-          resFromComp.committeeAction == 'BFNC' ||
-          resFromComp.committeeAction == 'BOFR' ||
-          resFromComp.committeeAction === 'BEFM'
-        ) {
-          this.bidsFinancialOfferCount = resFromComp.count;
-        } else if (
-          resFromComp.committeeAction == 'BOPN' ||
-          resFromComp.CommitteeAction === 'BEMR' ||
-          resFromComp.CommitteeAction === 'BTEV' ||
-          resFromComp.CommitteeAction === 'BFEM' ||
-          resFromComp.committeeAction === 'BTTE'
-        ) {
-          this.bidsToBeEvaluated = resFromComp.count;
-        } else if (resFromComp.committeeAction === 'BFTM') {
-          this.bidsFromTechMem = resFromComp.count;
-        } else if (resFromComp.committeeAction === 'BFTC') {
-          this.bidsFromTechnicalEvalCount = resFromComp.count;
-        } else if (resFromComp.committeeAction === 'BFQC') {
-          this.bidsfromQualCount = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'BFAP') {
-          this.bidsfinalApprovalCount = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'BPRV') {
-          this.pendingReviewCount = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'BOMR') {
-          this.openingMemberCount = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'BEMR') {
-          this.bidsToBeEvaluatedData = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'BPFC') {
-          this.bidsFromfinancialControllerApprovalCount = resFromComp.count;
-        } else if (resFromComp.CommitteeAction === 'VNDT') {
-          this.vendorListCount = resFromComp.count;
-        }
+    this.cs.getBidsCount().pipe(takeUntil(this._destroy)).subscribe(resFromComp => {
+      if (resFromComp.committeeAction == 'BOPN') {
+        this.bidsToBeOpenedCount = resFromComp.count;
+      } else if (resFromComp.committeeAction == 'BLST') {
+        this.bidsListCount = resFromComp.count;
+      } else if (resFromComp.committeeAction == 'BAPR'
+        || resFromComp.committeeAction === 'QAPR'
+      ) {
+        this.bidsToBeApprovedCount = resFromComp.count;
+      } else if (resFromComp.committeeAction == 'BFNC'
+        || resFromComp.committeeAction == 'BOFR'
+        || resFromComp.committeeAction === 'BEFM') {
+        this.bidsFinancialOfferCount = resFromComp.count;
+      } else if (resFromComp.committeeAction == 'BOPN'
+        || resFromComp.CommitteeAction === 'BEMR'
+        || resFromComp.CommitteeAction === 'BTEV'
+        || resFromComp.CommitteeAction === 'BFEM'
+        || resFromComp.committeeAction === 'BTTE'
+      ) {
+        this.bidsToBeEvaluated = resFromComp.count;
+      } else if (resFromComp.committeeAction === 'BFTM') {
+        this.bidsFromTechMem = resFromComp.count;
 
-        for (let navItm of this.navItems) {
-          for (let nav of navItm?.navItem) {
-            if (nav?.name == 'bidtobeapproved') {
-              nav.text =
-                'Bids to be approved (' + this.bidsToBeApprovedCount + ')';
-            } else if (nav?.name == 'bidstobeopen') {
-              nav.text = 'Bids to be Opened (' + this.bidsToBeOpenedCount + ')';
-            } else if (nav?.name == 'bidsforfinancialoffer') {
-              nav.text =
-                'Bids for financial offer (' +
-                this.bidsFinancialOfferCount +
-                ')';
-            } else if (nav?.name == 'bidsfromfinancialmember') {
-              nav.text =
-                'Bids from financial member (' +
-                this.bidsFinancialOfferCount +
-                ')';
-            } else if (nav?.name == 'bidlist') {
-              nav.text = 'Bids List (' + this.bidsListCount + ')';
-            } else if (nav?.name == 'bidstobeevaluated') {
-              nav.text =
-                'Bids to be Evaluated (' + this.bidsToBeEvaluated + ')';
-            } else if (nav?.name === 'techbidstobeevaluated') {
-              nav.text =
-                'Bids to be Evaluated (' + this.bidsToBeEvaluated + ')';
-              nav.textAr =
-                ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني';
-            } else if (nav?.name == 'fromqualificationCommittee') {
-              nav.text = 'From Qualification (' + this.bidsfromQualCount + ')';
-            } else if (nav?.name == 'finalapproval') {
-              nav.text = 'Final Approval (' + this.bidsfinalApprovalCount + ')';
-            } else if (nav?.name == 'pendingreview') {
-              nav.text = 'Pending review (' + this.pendingReviewCount + ')';
-            } else if (nav?.name == 'bidswithbidopeningmember') {
-              nav.text = 'Opening member (' + this.openingMemberCount + ')';
-            } else if (nav?.name === 'bidsfromtechmem') {
-              nav.text =
-                'Bids From Technical Members (' + this.bidsFromTechMem + ')';
-              nav.textAr =
-                ' (' +
-                this.bidsFromTechMem +
-                ') ' +
-                'نتائج التحليل الفني المرسله من الأعضاء';
-            } else if (nav?.name === 'vendorlist') {
-              nav.text = 'Vendor List (' + this.vendorListCount + ')';
-              nav.textAr = '(' + this.vendorListCount + ') قائمة البائعين';
-            }
+      } else if (resFromComp.committeeAction === 'BFTC') {
+        this.bidsFromTechnicalEvalCount = resFromComp.count;
+      } else if (resFromComp.committeeAction === 'BFQC') {
+        this.bidsfromQualCount = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'BFAP') {
+        this.bidsfinalApprovalCount = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'BPRV') {
+        this.pendingReviewCount = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'BOMR') {
+        this.openingMemberCount = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'BEMR') {
+        this.bidsToBeEvaluatedData = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'BPFC') {
+        this.bidsFromfinancialControllerApprovalCount = resFromComp.count;
+      } else if (resFromComp.CommitteeAction === 'VNDT') {
+        this.vendorListCount = resFromComp.count;
+      }
+
+      for (let navItm of this.navItems) {
+        for (let nav of navItm?.navItem) {
+          if (nav?.name == "bidtobeapproved") {
+            nav.text = "Bids to be approved (" + this.bidsToBeApprovedCount + ")";
+          } else if (nav?.name == "bidstobeopen") {
+            nav.text = "Bids to be Opened (" + this.bidsToBeOpenedCount + ")";
+          } else if (nav?.name == "bidsforfinancialoffer") {
+            nav.text = "Bids for financial offer (" + this.bidsFinancialOfferCount + ")";
+          } else if (nav?.name == "bidsfromfinancialmember") {
+            nav.text = "Bids from financial member (" + this.bidsFinancialOfferCount + ")";
+          } else if (nav?.name == "bidlist") {
+            nav.text = "Bids List (" + this.bidsListCount + ")";
+          } else if (nav?.name == "bidstobeevaluated") {
+            nav.text = "Bids to be Evaluated (" + this.bidsToBeEvaluated + ")";
+          } else if (nav?.name === 'techbidstobeevaluated') {
+            nav.text = "Bids to be Evaluated (" + this.bidsToBeEvaluated + ")";
+            nav.textAr = ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني';
+          } else if (nav?.name == "fromqualificationCommittee") {
+            nav.text = "From Qualification (" + this.bidsfromQualCount + ")";
+          } else if (nav?.name == "finalapproval") {
+            nav.text = 'Final Approval (' + this.bidsfinalApprovalCount + ')';
+          } else if (nav?.name == "pendingreview") {
+            nav.text = 'Pending review (' + this.pendingReviewCount + ')';
+          } else if (nav?.name == "bidswithbidopeningmember") {
+            nav.text = 'Opening member (' + this.openingMemberCount + ')';
+          } else if (nav?.name === 'bidsfromtechmem') {
+            nav.text = 'Bids From Technical Members (' + this.bidsFromTechMem + ')';
+            nav.textAr = ' (' + this.bidsFromTechMem + ') ' + 'نتائج التحليل الفني المرسله من الأعضاء';
+          } else if (nav?.name === 'vendorlist') {
+            nav.text = 'Vendor List (' + this.vendorListCount + ')';
+            nav.textAr = '(' + this.vendorListCount + ') قائمة البائعين';
           }
         }
-      });
+      }
+    });
   }
 
   /**
    * Navigate to defined route.
-   *
+   * 
    * @param item type any : Menu item with navigation link
-   *
+   * 
    * @returns void
-   *
+   * 
    */
 
   navigate(item: any): void {
@@ -417,12 +393,10 @@ export class AppComponent {
           if (nav.isOpen) {
             nav.isOpen = false;
           }
-        });
+        })
       }
       this.cs.activeMenu = item.name ?? item.Module;
-      this.router.navigate([`/${item.link}`], {
-        queryParams: { fullAccess: item?.adminFullAccess },
-      });
+      this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
 
       // Auto-close the sidebar on mobile so the content is visible
       if (this.isMobile) {
@@ -431,14 +405,15 @@ export class AppComponent {
     }
   }
 
+
   /**
    * Login API and Menu construction method.
-   *
+   * 
    * @param userName Username of the current logged in user
-   *
+   * 
    * @returns void
-   * @todo Make the changes according to the Process deployment.
-   *
+   * @todo Make the changes according to the Process deployment. 
+   * 
    */
   private _enableTestLogon: boolean = true;
   private hasUsedTestLogin: boolean = false;
@@ -467,7 +442,7 @@ export class AppComponent {
         // this.isUserLoggedIn = true;
         // this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
         if (response?.d?.Msgid === 'S' && response?.d?.Uname) {
-          this.isUserLoggedIn
+          this.isUserLoggedIn = true;
         } else {
           this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
           console.log('Login failed:', response?.d?.Message);
@@ -490,17 +465,23 @@ export class AppComponent {
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
         console.log(this.dispname, 'displayyyyyyyyyyyy')
-        if (role === 'ENDUSER') {
-          localStorage.setItem('username', btoa('ENDUSER'))
-        } else if (role === 'PRUSER') {
-          localStorage.setItem('username', btoa('PROCUSER'))
-        } else {
-          localStorage.setItem('username', btoa('ADMIN'))
+        if(role){
+          localStorage.setItem('username', btoa(role))
         }
+        // if (role === 'ENDUSER') {
+        //   localStorage.setItem('username', btoa('ENDUSER'))
+        // } else if (role === 'PRUSER') {
+        //   localStorage.setItem('username', btoa('PROCUSER'))
+        // } else if (role === 'PRQUALUSER') {
+        //   localStorage.setItem('username', btoa('PRQUALUSER'))
+        // } else {
+        //   localStorage.setItem('username', btoa('ADMIN'))
+        // }
         this.department = response?.d?.Planstxt || 'N/A'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
         this.isCollapsed = true;
+
 
         // console.log(userName,'userName==')
         this.navItems = [];
@@ -512,61 +493,9 @@ export class AppComponent {
             link: 'rfp/dashboard'
           },
         )
-        if (role === 'PRUSER') {
-          this.router.navigate(['rfp/dashboard'])
-        }
-        // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-        if (role === 'ENDUSER') {
-          this.roleTest('Requestor');
+        if (role === 'ADMIN') {
 
-
-
-          // Create session token
-          const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
-          const userDetails = {
-            username: userName,
-            displayName: this.dispname,
-            department: response?.d?.Planstxt || 'undefined',
-            loginTime: new Date().toISOString()
-          };
-
-          // Set session with 8 hours expiry
-          this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
-          console.log(this.dispname, 'displayyyyyyyyyyyy')
-          if (role) {
-            localStorage.setItem('username', btoa(role))
-          }
-          // if (role === 'ENDUSER') {
-          //   localStorage.setItem('username', btoa('ENDUSER'))
-          // } else if (role === 'PRUSER') {
-          //   localStorage.setItem('username', btoa('PROCUSER'))
-          // } else if (role === 'PRQUALUSER') {
-          //   localStorage.setItem('username', btoa('PRQUALUSER'))
-          // } else {
-          //   localStorage.setItem('username', btoa('ADMIN'))
-          // }
-          this.department = response?.d?.Planstxt || 'N/A'
-          this.ProxyUserId = userName.toUpperCase();
-          this.hasUsedTestLogin = true;
-          this.isCollapsed = true;
-
-
-          // ensure Dashboard is the active/selected menu key
-          this.cs.activeMenu = 'Dashboard';
-
-          // close any open submenus so the Dashboard top-level looks highlighted
-          this.navItems.forEach(nav => nav.isOpen = false);
-
-          // navigate to dashboard
-          this.router.navigate(['rfp/dashboard']);
-        }
-        else if (userName === 'SALSUBKI') {
-          this.roleTest('Approver')
-          this.router.navigate(['rfp/myinbox']);
-        }
-        else if (userName === 'AALSALEM') {
-
-          this.constructCOCmenu({ RoleId: 'FI' })
+          // this.constructCOCmenu({ RoleId: 'FI' })
 
           // Add Ticket module for admin
           this.navItems.push({
@@ -582,101 +511,31 @@ export class AppComponent {
                 textAr: 'قائمة التذاكر',
                 link: 'admin/tickets',
               },
-
             ],
           });
 
-          this.navItems.push({
-            ModuleIcon: 'dashboard',
-            Module: 'Bid Opening Committee',
-            ModuleId: '01',
-            ModuleAr: 'لجنة فتح العروض ',
-            navItem: [
-              {
-                name: 'bidopeningform',
-                iconName: IconList.listcheck,
-                text: 'Bid opening Form',
-                textAr: 'نموذج فتح العروض',
-                link: 'committee/Bid_Create',
-              },
-              {
-                name: 'bidlist',
-                iconName: IconList.listnote,
-                text: 'Bids List (' + this.bidsListCount + ')',
-                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-                link: 'committee/BidList',
-              },
-            ],
-          });
-
-          // Add Ticket module for admin
           // this.navItems.push({
-          //   ModuleIcon: 'customer-service',
-          //   Module: 'Support Tickets',
-          //   ModuleId: '99',
-          //   ModuleAr: 'تذاكر الدعم',
+          //   ModuleIcon: 'dashboard',
+          //   Module: 'Bid Opening Committee',
+          //   ModuleId: '01',
+          //   ModuleAr: 'لجنة فتح العروض ',
           //   navItem: [
           //     {
-          //       name: 'ticketlist',
+          //       name: 'bidopeningform',
+          //       iconName: IconList.listcheck,
+          //       text: 'Bid opening Form',
+          //       textAr: 'نموذج فتح العروض',
+          //       link: 'committee/Bid_Create',
+          //     },
+          //     {
+          //       name: 'bidlist',
           //       iconName: IconList.listnote,
-          //       text: 'Ticket List',
-          //       textAr: 'قائمة التذاكر',
-          //       link: 'admin/tickets',
+          //       text: 'Bids List (' + this.bidsListCount + ')',
+          //       textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+          //       link: 'committee/BidList',
           //     },
           //   ],
           // });
-          // Budallocator Manager Approver&Manager
-          this.router.navigate(['rfp/myinbox']);
-        }
-
-
-        if (role === 'ADMIN') {
-
-          this.constructCOCmenu({ RoleId: 'FI' })
-
-          // Add Ticket module for admin
-          if (!this.navItems.some(item => item.Module === 'Support Tickets')) {
-            this.navItems.push({
-              ModuleIcon: 'customer-service',
-              Module: 'Support Tickets',
-              ModuleId: '99',
-              ModuleAr: 'تذاكر الدعم',
-              navItem: [
-                {
-                  name: 'ticketlist',
-                  iconName: IconList.listnote,
-                  text: 'Ticket List',
-                  textAr: 'قائمة التذاكر',
-                  link: 'admin/tickets',
-                },
-              ],
-            });
-          }
-
-          if (!this.navItems.some(item => item.Module === 'Bid Opening Committee')) {
-            this.navItems.push({
-              ModuleIcon: 'dashboard',
-              Module: 'Bid Opening Committee',
-              ModuleId: '01',
-              ModuleAr: 'لجنة فتح العروض ',
-              navItem: [
-                {
-                  name: 'bidopeningform',
-                  iconName: IconList.listcheck,
-                  text: 'Bid opening Form',
-                  textAr: 'نموذج فتح العروض',
-                  link: 'committee/Bid_Create',
-                },
-                {
-                  name: 'bidlist',
-                  iconName: IconList.listnote,
-                  text: 'Bids List (' + this.bidsListCount + ')',
-                  textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-                  link: 'committee/BidList',
-                },
-              ],
-            });
-          }
 
           this.router.navigate(['rfp/myinbox']);
         }
@@ -686,7 +545,7 @@ export class AppComponent {
         if (role === 'PRQUALUSER') {
           this.router.navigate(['rfp/dashboard'])
         }
-        if (role === 'BIDOPEN') {
+        if(role === 'BIDOPEN'){
           this.cs.activeMenu = 'Dashboard';
           this.navItems.push({
             ModuleIcon: 'dashboard',
@@ -713,7 +572,7 @@ export class AppComponent {
 
           this.router.navigate(['rfp/dashboard']);
         }
-        if (role === 'ENDUSER') {
+        if (role === 'ENDUSER' || role === 'SCMENDUSER') {
           this.roleTest('Requestor');
 
           // ensure Dashboard is the active/selected menu key
@@ -727,12 +586,11 @@ export class AppComponent {
         }
         this.spinner.hide();
       },
-      (error) => {
+      error => {
         console.error(error);
         this.spinner.hide();
       }
     );
-
 
 
     //     this.cs.activeMenu = 'Dashboard';
@@ -743,7 +601,7 @@ export class AppComponent {
 
     return
     // * Setting the Initial State for Login
-    localStorage.clear();
+    localStorage.clear()
     this.noRFC = false;
     this.noCOC = false;
     this.noCMT = false;
@@ -758,7 +616,7 @@ export class AppComponent {
     this.isAdminFullAccess = false;
 
     // * Username
-    localStorage.setItem('ID', btoa(userName.toUpperCase()));
+    localStorage.setItem('ID', btoa(userName.toUpperCase()))
     const UsernameObj = {
       UserName: this.ProxyUserId.toUpperCase(),
     };
@@ -776,10 +634,11 @@ export class AppComponent {
     AdminRole.pipe(takeUntil(this._destroy)).subscribe((AdminRoleRes) => {
       if (AdminRoleRes.d.results[0]) {
         this.isAdmin = true;
-        this.isAdminFullAccess = AdminRoleRes.d.results[0].IsAllAccess;
+        this.isAdminFullAccess = AdminRoleRes.d.results[0].IsAllAccess
       }
     });
     // ? ....
+
 
     // * Login API's List - All process
     const RFPLogin = this.api.post('F4DeptSet', UsernameObj);
@@ -787,113 +646,104 @@ export class AppComponent {
     // * Contract Login V1
     // const ContractLogin = this.api.post('ContractLogin', UsernameObj);
     // * Contract Login V2
-    const ContractLogin = this.api.get(
-      `/v2/contract-login?username=${this.ProxyUserId.toUpperCase()}`
-    );
+    const ContractLogin = this.api.get(`/v2/contract-login?username=${this.ProxyUserId.toUpperCase()}`);
     // *Coc Login V1
     // const COCLogin = this.api.post('COCLogin',UsernameObj);
     // *Coc Login V2
-    const COCLoginRole = this.api.get(
-      `/v2/COCLogin?username=${this.ProxyUserId.toUpperCase()}`
-    );
+    const COCLoginRole = this.api.get(`/v2/COCLogin?username=${this.ProxyUserId.toUpperCase()}`);
 
-    forkJoin([RFPLogin, CommitteeLogin, ContractLogin, COCLoginRole])
-      .pipe(takeUntil(this._destroy))
-      .subscribe(
-        ([
-          RFPLoginRes,
-          CommitteeLoginRes,
-          ContractLoginRes,
-          COCLoginRoleRes,
-        ]) => {
-          this.navItems.push({
-            Module: 'Dashboard',
-            ModuleAr: 'إدارة طلب المنافسات',
-            ModuleIcon: 'dashboard',
-            link: 'rfp/dashboard',
-          });
-          if (RFPLoginRes) {
-            if (RFPLoginRes.d.results[0].MessageId != 'E') {
-              this.setRFPmenu(RFPLoginRes);
-              this.rfp.setRFPUserDetails(RFPLoginRes.d.results[0]);
-            } else {
-              this.noRFC = true;
-            }
-          }
-
-          if (CommitteeLoginRes.d.results.length > 0) {
-            this.committeeRoles = CommitteeLoginRes.d.results;
-            this.roleForm
-              .get('committeeRole')
-              ?.setValue(CommitteeLoginRes.d.results[0]);
-            this.getCountData(
-              CommitteeLoginRes,
-              this.ProxyUserId.toUpperCase()
-            );
-          } else {
-            this.noCMT = true;
-          }
-
-          // if (COCLoginRes.d.RoleId) {
-          //   localStorage.setItem('RoleCOC', COCLoginRes.d.RoleId);
-          //   this.setCOCmenu(COCLoginRes.d.RoleId)
-          // } else {
-          //   this.noCOC = true;
-          // }
-
-          if (ContractLoginRes.length > 0) {
-            this.contractRoles = ContractLoginRes;
-            localStorage.setItem(
-              'ContractDep',
-              btoa(ContractLoginRes[0].RoleId)
-            );
-            this.roleForm.get('contractRole')?.setValue(ContractLoginRes[0]);
-            this.setContractMenu(ContractLoginRes[0].RoleId);
-          } else {
-            this.noCON = true;
-          }
-          if (COCLoginRoleRes.length > 0) {
-            this.cocRoles = COCLoginRoleRes;
-            localStorage.setItem('CocDep', btoa(COCLoginRoleRes[0].RoleId));
-            this.roleForm.get('cocRole')?.setValue(COCLoginRoleRes[0]);
-
-            // Only first role for initial load
-            this.setCOCmenu(COCLoginRoleRes, true);
-          } else {
-            this.noCOC = true;
-          }
-
-          if (this.noRFC && this.noCMT && this.noCOC && this.noCON) {
-            this.norole = true;
-            this.router.navigate(['noaccess']);
-          }
-          //   this.cs.activeMenu = 'Dashboard';
-          // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
-          // this.navItems.forEach(n => n.isOpen = false);
-          // this.router.navigate(['/dashboard']);
+    forkJoin([RFPLogin, CommitteeLogin,
+      ContractLogin, COCLoginRole
+    ]).pipe(takeUntil(this._destroy)).subscribe(([RFPLoginRes, CommitteeLoginRes,
+      ContractLoginRes, COCLoginRoleRes
+    ]) => {
+      this.navItems.push(
+        {
+          Module: 'Dashboard',
+          ModuleAr: 'إدارة طلب المنافسات',
+          ModuleIcon: 'dashboard',
+          link: 'rfp/dashboard'
         },
-        (error) => {
-          this.spinner.hide();
-          this.cs.createMessage('error', error.statusText);
+      )
+      if (RFPLoginRes) {
+        if (RFPLoginRes.d.results[0].MessageId != 'E') {
+          this.setRFPmenu(RFPLoginRes);
+          this.rfp.setRFPUserDetails(RFPLoginRes.d.results[0])
+        } else {
+          this.noRFC = true;
         }
-      );
+      }
+
+      if (CommitteeLoginRes.d.results.length > 0) {
+        this.committeeRoles = CommitteeLoginRes.d.results;
+        this.roleForm.get('committeeRole')?.setValue(CommitteeLoginRes.d.results[0]);
+        this.getCountData(CommitteeLoginRes, this.ProxyUserId.toUpperCase());
+      } else {
+        this.noCMT = true;
+      }
+
+      // if (COCLoginRes.d.RoleId) {
+      //   localStorage.setItem('RoleCOC', COCLoginRes.d.RoleId);
+      //   this.setCOCmenu(COCLoginRes.d.RoleId)
+      // } else {
+      //   this.noCOC = true;
+      // }
+
+      if (ContractLoginRes.length > 0) {
+        this.contractRoles = ContractLoginRes;
+        localStorage.setItem('ContractDep', btoa(ContractLoginRes[0].RoleId));
+        this.roleForm.get('contractRole')?.setValue(ContractLoginRes[0]);
+        this.setContractMenu(ContractLoginRes[0].RoleId);
+      } else {
+        this.noCON = true;
+      }
+      if (COCLoginRoleRes.length > 0) {
+        this.cocRoles = COCLoginRoleRes;
+        localStorage.setItem('CocDep', btoa(COCLoginRoleRes[0].RoleId));
+        this.roleForm.get('cocRole')?.setValue(COCLoginRoleRes[0]);
+
+        // Only first role for initial load
+        this.setCOCmenu(COCLoginRoleRes, true);
+      } else {
+        this.noCOC = true;
+      }
+
+      if (this.noRFC && this.noCMT && this.noCOC && this.noCON) {
+        this.norole = true;
+        this.router.navigate(['noaccess']);
+      }
+      //   this.cs.activeMenu = 'Dashboard';
+      // if (typeof this.openParentsForActive === 'function') { this.openParentsForActive(); }
+      // this.navItems.forEach(n => n.isOpen = false);
+      // this.router.navigate(['/dashboard']);
+    },
+      (error) => {
+        this.spinner.hide()
+        this.cs.createMessage("error", error.statusText);
+      });
   }
+
 
   async roleTest(RoleIdf: string) {
     if (RoleIdf === 'Requestor') {
       localStorage.setItem('ROLERFP', btoa(RoleIdf));
       this.rqter = true;
       // this.router.navigate(['rfp/myrfp'])
-    } else if (RoleIdf === 'Approver') {
+    }
+    else if (RoleIdf === 'Approver') {
       this.appr = true;
-    } else if (RoleIdf === 'Budallocator') {
+    }
+    else if (RoleIdf === 'Budallocator') {
       localStorage.setItem('ROLEBUD', btoa(RoleIdf));
       this.budalltr = true;
-    } else if (RoleIdf == 'Manager') {
+    }
+    else if (RoleIdf == 'Manager') {
       this.manager = true;
-    } else if (RoleIdf == 'Approver&Manager') {
+    }
+    else if (RoleIdf == 'Approver&Manager') {
       this.apprmanager = true;
     }
+
 
     if (this.rqter) {
       this.navItems.push(
@@ -930,184 +780,14 @@ export class AppComponent {
     }
 
     if (this.appr) {
-      this.navItems.push({
-        Module: 'RFP - Approver',
-        ModuleAr: 'الموافقة على المنافسات',
-        ModuleIcon: 'mail',
-        isOpen: false,
-        navItem: [
-          {
-            name: 'list',
-            iconName: IconList.search,
-            text: 'Search RFP',
-            textAr: 'منافساتي',
-            link: 'rfp/list',
-          },
-
-          // {
-          //   name: 'dashboard',
-          //   iconName: IconList.dashboard,
-          //   text: 'Dashboard',
-          //   textAr: 'لوحة القيادة',
-          //   link: 'rfp/dashboard',
-          // },
-          {
-            name: 'myinbox',
-            iconName: IconList.inbox,
-            text: 'My Inbox',
-            textAr: 'الطلبات الواردة',
-            link: 'rfp/myinbox',
-          },
-        ],
-      });
-    }
-
-    if (this.budalltr) {
-      this.navItems.push({
-        Module: 'RFP - Budget Allocation',
-        ModuleAr: 'الميزانية',
-        ModuleIcon: 'mail',
-        navItem: [
-          {
-            name: 'budgetrequest',
-            iconName: IconList.hand,
-            text: 'Budget Requests',
-            textAr: 'طلبات الميزانية',
-            link: 'rfp/budgetrequest',
-          },
-
-          // {
-          //   name: 'list',
-          //   iconName: 'mail',
-          //   text: 'Search RFP',
-          //   textAr: 'منافساتي',
-          //   link: 'rfp/list',
-          // },
-
-          // {
-          //   name: 'myinbox',
-          //   iconName: 'mail',
-          //   text: 'My Inbox',
-          //   textAr: 'الطلبات الواردة',
-          //   link: 'rfp/myinbox',
-          // },
-        ],
-      });
-    }
-
-    if (this.manager) {
-      this.navItems.push({
-        Module: 'RFP - Dashboard',
-        ModuleAr: 'حالة المنافسات',
-        ModuleIcon: 'mail',
-        navItem: [
-          {
-            name: 'dashboard',
-            iconName: IconList.dashboard,
-            text: 'Dashboard',
-            textAr: 'لوحة القيادة',
-            link: 'rfp/dashboard',
-          },
-        ],
-      });
-    }
-
-    if (this.apprmanager) {
-      this.navItems.push({
-        Module: 'RFP - Approver',
-        ModuleAr: 'الموافقة على المنافسات',
-        ModuleIcon: 'mail',
-        navItem: [
-          {
-            name: 'dashboard',
-            iconName: IconList.dashboard,
-            text: 'Dashboard',
-            textAr: 'لوحة القيادة',
-            link: 'rfp/dashboard',
-          },
-
-          {
-            name: 'myinbox',
-            iconName: IconList.inbox,
-            text: 'My Inbox',
-            textAr: 'الطلبات الواردة',
-            link: 'rfp/myinbox',
-          },
-        ],
-      });
-    }
-
-    if (this.isAdmin) {
-      this.addRFPAdminNavItem(this.isAdminFullAccess);
-    }
-  }
-
-  /**
-   * Sets the RFP menu based on the Login API.
-   *
-   * @param res Response from RFP login API
-   *
-   * @returns void
-   *
-   */
-  async setRFPmenu(res: any) {
-    if (res.d.results[0].MessageId != 'E') {
-      this.role = res.d.RoleIdf;
-      res.d.results.forEach((element: any) => {
-        localStorage.setItem('Dep', btoa(element.DeptId));
-        localStorage.setItem('DepTxt', element.DeptText);
-        localStorage.setItem('CC', element.CostCenter);
-        localStorage.setItem('CA', element.ControllingArea);
-
-        // // navITems with role
-        if (element.RoleIdf === 'Requestor') {
-          localStorage.setItem('ROLERFP', btoa(element.RoleIdf));
-          this.rqter = true;
-          // this.router.navigate(['rfp/myrfp'])
-        } else if (element.RoleIdf === 'Approver') {
-          this.appr = true;
-        } else if (element.RoleIdf === 'Budallocator') {
-          localStorage.setItem('ROLEBUD', btoa(element.RoleIdf));
-          this.budalltr = true;
-        } else if (element.RoleIdf == 'Manager') {
-          this.manager = true;
-        } else if (element.RoleIdf == 'Approver&Manager') {
-          this.apprmanager = true;
-        }
-      });
-
-      if (this.rqter) {
-        this.navItems.push({
-          Module: 'RFP - Requester',
-          ModuleAr: 'إدارة طلب المنافسات',
-          ModuleIcon: 'mail',
-          isOpen: true,
-          navItem: [
-            {
-              name: 'create',
-              iconName: IconList.create,
-              text: 'Create RFP',
-              textAr: 'انشاء منافسة',
-              link: 'rfp/create',
-            },
-            {
-              name: 'myrfp',
-              iconName: IconList.myRequest,
-              text: 'My RFP Requests',
-              textAr: 'منافساتي',
-              link: 'rfp/myrfp',
-            },
-          ],
-        });
-      }
-
-      if (this.appr) {
-        this.navItems.push({
+      this.navItems.push(
+        {
           Module: 'RFP - Approver',
           ModuleAr: 'الموافقة على المنافسات',
           ModuleIcon: 'mail',
           isOpen: false,
           navItem: [
+
             {
               name: 'list',
               iconName: IconList.search,
@@ -1131,15 +811,18 @@ export class AppComponent {
               link: 'rfp/myinbox',
             },
           ],
-        });
-      }
+        },
+      )
+    }
 
-      if (this.budalltr) {
-        this.navItems.push({
+    if (this.budalltr) {
+      this.navItems.push(
+        {
           Module: 'RFP - Budget Allocation',
           ModuleAr: 'الميزانية',
           ModuleIcon: 'mail',
           navItem: [
+
             {
               name: 'budgetrequest',
               iconName: IconList.hand,
@@ -1163,16 +846,20 @@ export class AppComponent {
             //   textAr: 'الطلبات الواردة',
             //   link: 'rfp/myinbox',
             // },
-          ],
-        });
-      }
 
-      if (this.manager) {
-        this.navItems.push({
+          ],
+        },
+      )
+    }
+
+    if (this.manager) {
+      this.navItems.push(
+        {
           Module: 'RFP - Dashboard',
           ModuleAr: 'حالة المنافسات',
           ModuleIcon: 'mail',
           navItem: [
+
             {
               name: 'dashboard',
               iconName: IconList.dashboard,
@@ -1181,15 +868,18 @@ export class AppComponent {
               link: 'rfp/dashboard',
             },
           ],
-        });
-      }
+        },
+      )
+    }
 
-      if (this.apprmanager) {
-        this.navItems.push({
+    if (this.apprmanager) {
+      this.navItems.push(
+        {
           Module: 'RFP - Approver',
           ModuleAr: 'الموافقة على المنافسات',
           ModuleIcon: 'mail',
           navItem: [
+
             {
               name: 'dashboard',
               iconName: IconList.dashboard,
@@ -1206,7 +896,201 @@ export class AppComponent {
               link: 'rfp/myinbox',
             },
           ],
-        });
+        },
+      )
+    }
+
+    if (this.isAdmin) {
+      this.addRFPAdminNavItem(this.isAdminFullAccess);
+    }
+  }
+
+  /**
+   * Sets the RFP menu based on the Login API.
+   * 
+   * @param res Response from RFP login API
+   * 
+   * @returns void
+   * 
+   */
+  async setRFPmenu(res: any) {
+
+    if (res.d.results[0].MessageId != 'E') {
+
+      this.role = res.d.RoleIdf;
+      res.d.results.forEach((element: any) => {
+        localStorage.setItem('Dep', btoa(element.DeptId));
+        localStorage.setItem("DepTxt", element.DeptText);
+        localStorage.setItem("CC", element.CostCenter);
+        localStorage.setItem("CA", element.ControllingArea);
+
+        // // navITems with role
+        if (element.RoleIdf === 'Requestor') {
+          localStorage.setItem('ROLERFP', btoa(element.RoleIdf));
+          this.rqter = true;
+          // this.router.navigate(['rfp/myrfp'])
+        }
+        else if (element.RoleIdf === 'Approver') {
+          this.appr = true;
+        }
+        else if (element.RoleIdf === 'Budallocator') {
+          localStorage.setItem('ROLEBUD', btoa(element.RoleIdf));
+          this.budalltr = true;
+        }
+        else if (element.RoleIdf == 'Manager') {
+          this.manager = true;
+        }
+        else if (element.RoleIdf == 'Approver&Manager') {
+          this.apprmanager = true;
+        }
+      });
+
+      if (this.rqter) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Requester',
+            ModuleAr: 'إدارة طلب المنافسات',
+            ModuleIcon: 'mail',
+            isOpen: true,
+            navItem: [
+              {
+                name: 'create',
+                iconName: IconList.create,
+                text: 'Create RFP',
+                textAr: 'انشاء منافسة',
+                link: 'rfp/create',
+              },
+              {
+                name: 'myrfp',
+                iconName: IconList.myRequest,
+                text: 'My RFP Requests',
+                textAr: 'منافساتي',
+                link: 'rfp/myrfp',
+              }
+            ],
+          },
+        )
+      }
+
+      if (this.appr) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Approver',
+            ModuleAr: 'الموافقة على المنافسات',
+            ModuleIcon: 'mail',
+            isOpen: false,
+            navItem: [
+
+              {
+                name: 'list',
+                iconName: IconList.search,
+                text: 'Search RFP',
+                textAr: 'منافساتي',
+                link: 'rfp/list',
+              },
+
+              // {
+              //   name: 'dashboard',
+              //   iconName: IconList.dashboard,
+              //   text: 'Dashboard',
+              //   textAr: 'لوحة القيادة',
+              //   link: 'rfp/dashboard',
+              // },
+              {
+                name: 'myinbox',
+                iconName: IconList.inbox,
+                text: 'My Inbox',
+                textAr: 'الطلبات الواردة',
+                link: 'rfp/myinbox',
+              },
+            ],
+          },
+        )
+      }
+
+      if (this.budalltr) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Budget Allocation',
+            ModuleAr: 'الميزانية',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'budgetrequest',
+                iconName: IconList.hand,
+                text: 'Budget Requests',
+                textAr: 'طلبات الميزانية',
+                link: 'rfp/budgetrequest',
+              },
+
+              // {
+              //   name: 'list',
+              //   iconName: 'mail',
+              //   text: 'Search RFP',
+              //   textAr: 'منافساتي',
+              //   link: 'rfp/list',
+              // },
+
+              // {
+              //   name: 'myinbox',
+              //   iconName: 'mail',
+              //   text: 'My Inbox',
+              //   textAr: 'الطلبات الواردة',
+              //   link: 'rfp/myinbox',
+              // },
+
+            ],
+          },
+        )
+      }
+
+      if (this.manager) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Dashboard',
+            ModuleAr: 'حالة المنافسات',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'dashboard',
+                iconName: IconList.dashboard,
+                text: 'Dashboard',
+                textAr: 'لوحة القيادة',
+                link: 'rfp/dashboard',
+              },
+            ],
+          },
+        )
+      }
+
+      if (this.apprmanager) {
+        this.navItems.push(
+          {
+            Module: 'RFP - Approver',
+            ModuleAr: 'الموافقة على المنافسات',
+            ModuleIcon: 'mail',
+            navItem: [
+
+              {
+                name: 'dashboard',
+                iconName: IconList.dashboard,
+                text: 'Dashboard',
+                textAr: 'لوحة القيادة',
+                link: 'rfp/dashboard',
+              },
+
+              {
+                name: 'myinbox',
+                iconName: IconList.inbox,
+                text: 'My Inbox',
+                textAr: 'الطلبات الواردة',
+                link: 'rfp/myinbox',
+              },
+            ],
+          },
+        )
       }
 
       if (this.isAdmin) {
@@ -1216,16 +1100,17 @@ export class AppComponent {
   }
 
   /**
-   * Adds the Admin Nav Item to Chairman Screens
-   */
+ * Adds the Admin Nav Item to Chairman Screens
+ */
   addRFPAdminNavItem(adminFullAccess?: boolean): void {
+
     const RFPAdminNavItem = {
       name: `RFPMaintenance`,
       iconName: IconList.tool,
       text: `RFP Maintenance`,
       textAr: `صيانة طلب تقديم العروض`,
       link: `admin/rfpMaintenance`,
-      adminFullAccess: adminFullAccess,
+      adminFullAccess: adminFullAccess
     };
 
     if (this.navItems[0]?.Module !== 'Admin') {
@@ -1234,7 +1119,7 @@ export class AppComponent {
         ModuleId: '03',
         Module: 'Admin',
         ModuleAr: 'مسؤل',
-        navItem: [RFPAdminNavItem],
+        navItem: [RFPAdminNavItem]
       });
     } else {
       this.navItems[0].navItem.splice(0, 0, RFPAdminNavItem);
@@ -1243,24 +1128,18 @@ export class AppComponent {
 
   /**
    * Sets the COC menu based on the Login API.
-   *
+   * 
    * @param res Response from COC login API
-   *
+   * 
    * @returns void
-   *
+   * 
    */
   setCOCmenu(res: any, initialLoad = false): void {
     // Remove previous COC menus
-    this.navItems = this.navItems.filter(
-      (item) => item.Module !== 'Certificate Of Completion'
-    );
+    this.navItems = this.navItems.filter(item => item.Module !== 'Certificate Of Completion');
 
     const roleInfo = res?.d?.results ?? res;
-    const roles = Array.isArray(roleInfo)
-      ? roleInfo
-      : roleInfo
-        ? [roleInfo]
-        : [];
+    const roles = Array.isArray(roleInfo) ? roleInfo : roleInfo ? [roleInfo] : [];
 
     // Only set true when more than one role; don’t reset it to false
     if (roles.length > 1) {
@@ -1277,42 +1156,37 @@ export class AppComponent {
   }
 
   constructCOCmenu(role: any): void {
-    const roleId = role.RoleId;
+    const roleId = role.RoleId
 
     // TODO : Get the admin users and assign the admin nav items only to them
     // this.addAdminNavItem('COC');
-    if (this.navItems.some((item) => item.Module === 'Certificate Of Completion')) {
-      return;
-    }
     switch (roleId) {
       case 'FO': {
         this.navItems.push({
           ModuleIcon: 'dashboard',
           Module: 'Certificate Of Completion',
           ModuleAr: 'إدارة العقود',
-          navItem: [
-            {
-              name: 'listofdepartment',
-              iconName: 'user',
-              text: 'Create',
-              textAr: 'يخلق',
-              link: 'coc/listofdept',
-            },
-            {
-              name: 'projectowner',
-              iconName: 'user',
-              text: 'COC Action',
-              textAr: 'عقودي',
-              link: 'coc/OwnerDashboard',
-            },
-            {
-              name: 'mycoc',
-              iconName: 'folder',
-              text: 'Certificate of Completion List',
-              textAr: 'قائمة شهادات الإنجاز',
-              link: 'coc/coclist',
-            },
-          ],
+          navItem: [{
+            name: 'listofdepartment',
+            iconName: 'user',
+            text: 'Create',
+            textAr: 'يخلق',
+            link: 'coc/listofdept',
+          },
+          {
+            name: 'projectowner',
+            iconName: 'user',
+            text: 'COC Action',
+            textAr: 'عقودي',
+            link: 'coc/OwnerDashboard',
+          },
+          {
+            name: 'mycoc',
+            iconName: 'folder',
+            text: 'Certificate of Completion List',
+            textAr: 'قائمة شهادات الإنجاز',
+            link: 'coc/coclist',
+          }]
         });
         break;
       }
@@ -1329,45 +1203,44 @@ export class AppComponent {
               textAr: 'انشاء صحيفة ادخال الخدمة',
               external: true,
               linkAr: environment.sapCreateSesArUrl,
-              linkEn: environment.sapCreateSesUrl,
-            },
-          ],
+              linkEn: environment.sapCreateSesUrl
+            }]
         });
         break;
       }
 
       case 'PM':
-      case 'HU': {
-        this.navItems.push({
-          ModuleIcon: 'dashboard',
-          Module: 'Certificate Of Completion',
-          ModuleAr: 'إدارة العقود',
-          navItem: [
-            {
-              name: 'projectowner',
-              iconName: 'user',
-              text: 'COC Action',
-              textAr: 'عقودي',
-              link: 'coc/OwnerDashboard',
-            },
-            {
-              name: 'mycoc',
-              iconName: 'folder',
-              text: 'Certificate of Completion List',
-              textAr: 'قائمة شهادات الإنجاز',
-              link: 'coc/coclist',
-            },
-            {
-              name: 'SignatureUpload',
-              iconName: 'upload',
-              text: 'Signature Upload',
-              textAr: 'تحميل التوقيع',
-              link: 'coc/signature_upload',
-            },
-          ],
-        });
-        break;
-      }
+      case 'HU':
+        {
+          this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Certificate Of Completion',
+            ModuleAr: 'إدارة العقود',
+            navItem: [
+              {
+                name: 'projectowner',
+                iconName: 'user',
+                text: 'COC Action',
+                textAr: 'عقودي',
+                link: 'coc/OwnerDashboard',
+              },
+              {
+                name: 'mycoc',
+                iconName: 'folder',
+                text: 'Certificate of Completion List',
+                textAr: 'قائمة شهادات الإنجاز',
+                link: 'coc/coclist',
+              },
+              {
+                name: 'SignatureUpload',
+                iconName: 'upload',
+                text: 'Signature Upload',
+                textAr: 'تحميل التوقيع',
+                link: 'coc/signature_upload',
+              }]
+          });
+          break;
+        }
       case 'CE':
       case 'DI':
       case 'DM':
@@ -1376,68 +1249,53 @@ export class AppComponent {
       case 'VP':
       case 'MN':
       case 'OF':
-      case 'FI': {
-        this.navItems.push({
-          ModuleIcon: 'dashboard',
-          Module: 'Certificate Of Completion',
-          ModuleAr: 'إدارة العقود',
-          navItem: [
-            {
-              name: 'projectowner',
-              iconName: 'user',
-              text: 'COC Action',
-              textAr: 'عقودي',
-              link: 'coc/OwnerDashboard',
-            },
-            {
-              name: 'mycoc',
-              iconName: 'folder',
-              text: 'Certificate of Completion List',
-              textAr: 'قائمة شهادات الإنجاز',
-              link: 'coc/coclist',
-            },
-          ],
-        });
-        break;
-      }
+      case 'FI':
+        {
+          this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Certificate Of Completion',
+            ModuleAr: 'إدارة العقود',
+            navItem: [
+              {
+                name: 'projectowner',
+                iconName: 'user',
+                text: 'COC Action',
+                textAr: 'عقودي',
+                link: 'coc/OwnerDashboard',
+              },
+              {
+                name: 'mycoc',
+                iconName: 'folder',
+                text: 'Certificate of Completion List',
+                textAr: 'قائمة شهادات الإنجاز',
+                link: 'coc/coclist',
+              }]
+          });
+          break;
+        }
     }
   }
 
+
   /**
    * Make an API to fetch Item count of each committee menu.
-   *
+   * 
    * @param res Response of Committee Login API
    * @param username Current Logged In Username
-   *
+   * 
    * @returns void
-   *
+   * 
    */
   getCountData(res: any, username: any): void {
     let role = res?.d?.results.length > 0 ? res?.d?.results[0] : res;
     if (role.CommitteeId == '05') {
-      let reqcomtobeapproved = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidstobeapproved'
-      );
-      let reqcombidlist = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidslist'
-      );
-      const reqVendorList = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'vendorlist'
-      );
+      let reqcomtobeapproved = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidstobeapproved');
+      let reqcombidlist = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidslist');
+      const reqVendorList = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'vendorlist')
       this.spinner.show();
-      forkJoin([
-        this.api.post('OCOM_BID_TO_Dash_CNT', reqcomtobeapproved),
-        this.api.post('OCOM_BID_TO_Dash_CNT', reqcombidlist),
-        this.api.post('OCOM_BID_TO_Dash_CNT', reqVendorList),
+      forkJoin([this.api.post('OCOM_BID_TO_Dash_CNT', reqcomtobeapproved),
+      this.api.post("OCOM_BID_TO_Dash_CNT", reqcombidlist),
+      this.api.post("OCOM_BID_TO_Dash_CNT", reqVendorList)
       ]).subscribe(([restobeappr, resplist, reqVendorListCount]) => {
         this.spinner.hide();
         this.bidsToBeApprovedCount = restobeappr;
@@ -1446,122 +1304,39 @@ export class AppComponent {
         this.setCMTmenu(res);
       });
     } else {
-      let reqToBeApprovedData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidstobeapproved'
-      );
-      let reqFinancialData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidsforfinancialoffer'
-      );
-      let reqbidOpenData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidstobeopen'
-      );
-      let reqbidEvalData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidstobeeval'
-      );
-      let reqListData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidslist'
-      );
-      let reqfromQualData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidsfromqual'
-      );
-      let reqfinalApprovalData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidsfinalapproval'
-      );
-      let reqPendingReview = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'pendingreview'
-      );
-      let reqOpeningMember = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'openingmember'
-      );
-      let reqbidEvaluatedData = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidstobeevaluated'
-      );
-      const reqBidsFromTechMem = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidsfromtechmem'
-      );
-      const reqBidsFromTechnicalEvaluationCommittee = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'bidsFromTechnicalEvaluationCommittee'
-      );
-      const reqBidsFromfinancialControllerApproval = this.getreqData(
-        username,
-        role.CommitteeId,
-        role.CommitteeRole,
-        'financialControllerApproval'
-      );
+      let reqToBeApprovedData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidstobeapproved');
+      let reqFinancialData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidsforfinancialoffer');
+      let reqbidOpenData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidstobeopen');
+      let reqbidEvalData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidstobeeval');
+      let reqListData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidslist');
+      let reqfromQualData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidsfromqual');
+      let reqfinalApprovalData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidsfinalapproval');
+      let reqPendingReview = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'pendingreview');
+      let reqOpeningMember = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'openingmember');
+      let reqbidEvaluatedData = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidstobeevaluated');
+      const reqBidsFromTechMem = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidsfromtechmem');
+      const reqBidsFromTechnicalEvaluationCommittee = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'bidsFromTechnicalEvaluationCommittee');
+      const reqBidsFromfinancialControllerApproval = this.getreqData(username, role.CommitteeId, role.CommitteeRole, 'financialControllerApproval');
 
       this.spinner.show();
-      forkJoin([
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqToBeApprovedData),
-        this.api.post('OCOM_BID_LIST_GET_COUNT', reqListData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqFinancialData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqbidOpenData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqbidEvalData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqfromQualData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqfinalApprovalData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqPendingReview),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqOpeningMember),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqbidEvaluatedData),
-        this.api.post('OCOM_BID_TO_ACT_COUNT', reqBidsFromTechMem),
-        this.api.post(
-          'OCOM_BID_TO_ACT_COUNT',
-          reqBidsFromTechnicalEvaluationCommittee
-        ),
-        this.api.post(
-          'OCOM_BID_TO_ACT_COUNT',
-          reqBidsFromfinancialControllerApproval
-        ),
-      ]).subscribe(
-        ([
-          restobBeApproved,
-          resList,
-          resFinancial,
-          resBidOpen,
-          resBidEval,
-          resfromQual,
-          resfinalApproval,
-          respendingReview,
-          resOpeningMember,
-          resEvaluated,
-          resBidsFromTechMem,
-          reqBidsFromTechnicalEvaluationCommitteeCount,
-          reqBidsFromfinancialControllerApprovalCount,
-        ]) => {
+      forkJoin([this.api.post("OCOM_BID_TO_ACT_COUNT", reqToBeApprovedData),
+      this.api.post("OCOM_BID_LIST_GET_COUNT", reqListData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqFinancialData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqbidOpenData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqbidEvalData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqfromQualData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqfinalApprovalData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqPendingReview),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqOpeningMember),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqbidEvaluatedData),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromTechMem),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromTechnicalEvaluationCommittee),
+      this.api.post("OCOM_BID_TO_ACT_COUNT", reqBidsFromfinancialControllerApproval)
+      ])
+        .subscribe(([restobBeApproved, resList, resFinancial, resBidOpen,
+          resBidEval, resfromQual, resfinalApproval, respendingReview,
+          resOpeningMember, resEvaluated, resBidsFromTechMem, reqBidsFromTechnicalEvaluationCommitteeCount,
+          reqBidsFromfinancialControllerApprovalCount]) => {
           this.spinner.hide();
           this.bidsToBeApprovedCount = restobBeApproved;
           this.bidsListCount = resList;
@@ -1574,24 +1349,21 @@ export class AppComponent {
           this.openingMemberCount = resOpeningMember;
           this.bidsToBeEvaluatedData = resEvaluated;
           this.bidsFromTechMem = resBidsFromTechMem;
-          this.bidsFromTechnicalEvalCount =
-            reqBidsFromTechnicalEvaluationCommitteeCount;
-          this.bidsFromfinancialControllerApprovalCount =
-            reqBidsFromfinancialControllerApprovalCount;
+          this.bidsFromTechnicalEvalCount = reqBidsFromTechnicalEvaluationCommitteeCount;
+          this.bidsFromfinancialControllerApprovalCount = reqBidsFromfinancialControllerApprovalCount;
           this.setCMTmenu(res);
           // make your last http request here.
-        }
-      );
+        });
     }
   }
 
   /**
    * Open and close Multiple Role Model.
-   *
+   * 
    * ```ts
    * this.openMdl = !this.openMdl;
    * ```
-   *
+   * 
    * @returns void
    */
   openUsrMdl(): void {
@@ -1604,28 +1376,14 @@ export class AppComponent {
    */
   okOnbehalf(): void {
     this.navItems = this.navItems.filter(function (item) {
-      if (
-        item.ModuleId !== '01' &&
-        item.ModuleId !== '02' &&
-        item.ModuleId !== '03' &&
-        item.ModuleId !== '04' &&
-        item.ModuleId !== '05' &&
-        item.ModuleId !== '06' &&
-        item.Module !== 'CONTRACT' &&
-        item.Module !== 'Certificate Of Completion'
-      ) {
-        return item;
+      if (item.ModuleId !== "01" && item.ModuleId !== "02" && item.ModuleId !== "03"
+        && item.ModuleId !== "04" && item.ModuleId !== "05" && item.ModuleId !== "06" && item.Module !== 'CONTRACT' && item.Module !== 'Certificate Of Completion') {
+        return item
       }
     });
     this.openMdl = false;
-    this.getCountData(
-      this.roleForm.get('committeeRole')?.value,
-      this.ProxyUserId.toUpperCase()
-    );
-    localStorage.setItem(
-      'ContractDep',
-      btoa(this.roleForm.get('contractRole')?.value.RoleId)
-    );
+    this.getCountData(this.roleForm.get('committeeRole')?.value, this.ProxyUserId.toUpperCase());
+    localStorage.setItem('ContractDep', btoa(this.roleForm.get('contractRole')?.value.RoleId));
     this.setContractMenu(this.roleForm.get('contractRole')?.value.RoleId);
 
     const cocRole = this.roleForm.get('cocRole')?.value;
@@ -1636,21 +1394,21 @@ export class AppComponent {
   }
 
   /**
-   * Sets the Committee menu based on the API response
-   *
+   * Sets the Committee menu based on the API response 
+   * 
    * @param {any} res Response of Committee Login API response
-   *
+   * 
    * @returns void
-   *
+   * 
    * @beta API Response structure `res?.d?.results`
-   *
+   * 
    * Multi role selection structure `res`
-   *
+   * 
    * Below Logic determains the Committe Menu :
    * ```ts
    * const roleInfo = res?.d?.results ?? res;
    * ```
-   *
+   * 
    */
   setCMTmenu(res: any): void {
     this.spinner.hide();
@@ -1663,31 +1421,30 @@ export class AppComponent {
       });
     } else if (roleInfo.length === 1) {
       this.constructCommitteeMenu(roleInfo[0]);
-    } else {
+    }
+    else {
       this.constructCommitteeMenu(roleInfo);
     }
   }
 
   /**
    * Constructs Committee menu based on Committee ID and Role
-   *
+   * 
    * @param role : Role of the current user
-   *
+   * 
    * @returns void
    */
   constructCommitteeMenu(role: any): void {
     // global if
     if (
-      role.CommitteeId ===
-      this.roleForm.get('committeeRole')?.value.CommitteeId &&
-      role.CommitteeRole ===
-      this.roleForm.get('committeeRole')?.value.CommitteeRole
+      role.CommitteeId === this.roleForm.get('committeeRole')?.value.CommitteeId &&
+      role.CommitteeRole === this.roleForm.get('committeeRole')?.value.CommitteeRole
     ) {
       localStorage.setItem('CommitteeName', role.CommitteeName);
       localStorage.setItem('LogdInUsrID', role.LogdInUsrID);
       localStorage.setItem('CMTID', role.CommitteeId);
 
-      this.role = role.CommitteeRole;
+      this.role = role.CommitteeRole
       if (role.CommitteeId === '01') {
         localStorage.setItem('ROLEOP', role.CommitteeRole);
 
@@ -1727,22 +1484,14 @@ export class AppComponent {
                 name: 'bidstobeopen',
                 iconName: IconList.folderopen,
                 text: 'Bids to be Opened (' + this.bidsToBeOpenedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
+                textAr: ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
                 link: 'committee/bo_chair_dashboard',
               },
               {
                 name: 'bidsforfinancialoffer',
                 iconName: IconList.percentagehand,
-                text:
-                  'Bids for financial offer (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات لفتح العرض المالي',
+                text: 'Bids for financial offer (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لفتح العرض المالي',
                 link: 'committee/bids_financial_offer',
               },
               {
@@ -1755,13 +1504,8 @@ export class AppComponent {
               {
                 name: 'bidtobeapproved',
                 iconName: IconList.starcheck,
-                text:
-                  'Bids to be approved (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' +
-                  this.bidsToBeApprovedCount +
-                  ') ' +
-                  'منافسات للاعتماد و الاحالة للجنة الفحص',
+                text: 'Bids to be approved (' + this.bidsToBeApprovedCount + ')',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد و الاحالة للجنة الفحص',
                 link: 'committee/bids_to_be_approved',
               },
               {
@@ -1770,10 +1514,12 @@ export class AppComponent {
                 text: 'Signature Upload',
                 textAr: 'تحميل التوقيع',
                 link: 'committee/signature_upload',
-              },
+              }
             ],
           });
+
         } else if (this.role === 'OF') {
+
           this.navItems.push({
             ModuleIcon: 'dashboard',
             ModuleId: '01',
@@ -1784,22 +1530,14 @@ export class AppComponent {
                 name: 'bidstobeopen',
                 iconName: IconList.folderopen,
                 text: 'Bids to be Opened (' + this.bidsToBeOpenedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
+                textAr: ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
                 link: 'committee/bo_officer_dashboard',
               },
               {
                 name: 'bidsforfinancialoffer',
                 iconName: 'money-collect',
-                text:
-                  'Bids for financial officer (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات لفتح العرض المالي',
+                text: 'Bids for financial officer (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لفتح العرض المالي',
                 link: 'committee/Bid_tobe_Financial_Offer',
               },
               {
@@ -1835,15 +1573,8 @@ export class AppComponent {
               {
                 name: 'bidsforfinancialoffer',
                 iconName: IconList.percentagehand,
-                text:
-                  'Bids for financial offer (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات لفتح العرض المالي',
+                text: 'Bids for financial offer (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لفتح العرض المالي',
                 link: 'committee/bids_financial_offer_member',
               },
               {
@@ -1867,7 +1598,7 @@ export class AppComponent {
       // * Bid evaluation committee Nav Items
       else if (role.CommitteeId === '02') {
         localStorage.setItem('ROLEEV', role.CommitteeRole);
-        if (this.role === 'CH') {
+        if (this.role === "CH") {
           this.addAdminNavItem('COMM'); // ? Admin access for Chairman
           this.navItems.push({
             ModuleIcon: 'dashboard',
@@ -1886,74 +1617,43 @@ export class AppComponent {
               {
                 name: 'bidsforfinancialoffer',
                 iconName: 'money-collect',
-                text:
-                  'Bids for financial offer (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات لوضع العروض المالية ',
+                text: 'Bids for financial offer (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لوضع العروض المالية ',
                 link: 'committee/be_chair_dashboard/bids_financial_offer',
               },
               {
                 name: 'bidsFromTechnicalEvaluationCommittee',
                 iconName: IconList.starcheck,
-                text:
-                  'Bids From Technical Evaluation (' +
-                  this.bidsFromTechnicalEvalCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFromTechnicalEvalCount +
-                  ') ' +
-                  'موافقة المراقب المالي',
+                text: 'Bids From Technical Evaluation (' + this.bidsFromTechnicalEvalCount + ')',
+                textAr: ' (' + this.bidsFromTechnicalEvalCount + ') ' + 'موافقة المراقب المالي',
                 link: 'committee/be_chair_dashboard/bids_from_technical_evaluation',
               },
               {
                 name: 'bidtobeapproved',
                 iconName: IconList.starcheck,
-                text:
-                  'Bids to be approved (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' +
-                  this.bidsToBeApprovedCount +
-                  ') ' +
-                  'منافسات للاعتماد و الاحاله للجنه الفتح او التأهيل',
+                text: 'Bids to be approved (' + this.bidsToBeApprovedCount + ')',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد و الاحاله للجنه الفتح او التأهيل',
                 link: 'committee/be_chair_dashboard/bids_to_be_approved',
               },
               {
                 name: 'financialControllerApproval',
                 iconName: IconList.starcheck,
-                text:
-                  'External Signature Pending (' +
-                  this.bidsFromfinancialControllerApprovalCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFromfinancialControllerApprovalCount +
-                  ') ' +
-                  'معتمد من رئيس اللجنة و ارسل الي العضوين الخارجيين',
+                text: 'External Signature Pending (' + this.bidsFromfinancialControllerApprovalCount + ')',
+                textAr: ' (' + this.bidsFromfinancialControllerApprovalCount + ') ' + 'معتمد من رئيس اللجنة و ارسل الي العضوين الخارجيين',
                 link: 'committee/be_chair_dashboard/financial_controller_approval',
               },
               {
                 name: 'fromqualificationCommittee',
                 iconName: 'container',
                 text: 'From Qualification (' + this.bidsfromQualCount + ')',
-                textAr:
-                  ' (' + this.bidsfromQualCount + ') ' + 'من لجنة التأهيل',
+                textAr: ' (' + this.bidsfromQualCount + ') ' + 'من لجنة التأهيل',
                 link: 'committee/be_chair_dashboard/from_qualification_committee',
               },
               {
                 name: 'finalapproval',
                 iconName: 'check-square',
                 text: 'Final Approval (' + this.bidsfinalApprovalCount + ')',
-                textAr:
-                  ' (' +
-                  this.bidsfinalApprovalCount +
-                  ') ' +
-                  'اعتماد محضر لجنة الفحص',
+                textAr: ' (' + this.bidsfinalApprovalCount + ') ' + 'اعتماد محضر لجنة الفحص',
                 link: 'committee/be_chair_dashboard/bids_final_approval',
               },
               {
@@ -1969,10 +1669,13 @@ export class AppComponent {
                 text: 'Signature Upload',
                 textAr: 'تحميل التوقيع',
                 link: 'committee/signature_upload',
-              },
+              }
+
             ],
           });
-        } else if (this.role === 'OF') {
+
+        }
+        else if (this.role === "OF") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '02',
@@ -1989,15 +1692,8 @@ export class AppComponent {
               {
                 name: 'bidsforfinancialoffer',
                 iconName: IconList.percentagehand,
-                text:
-                  'Bids for financial offer (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات لوضع العروض المالية ',
+                text: 'Bids for financial offer (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات لوضع العروض المالية ',
                 link: 'committee/be_chair_dashboard/bids_financial_offer',
               },
 
@@ -2018,23 +1714,15 @@ export class AppComponent {
               {
                 name: 'bidsFromTechnicalEvaluationCommittee',
                 iconName: IconList.starcheck,
-                text:
-                  'Bids From Technical Evaluation (' +
-                  this.bidsFromTechnicalEvalCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFromTechnicalEvalCount +
-                  ') ' +
-                  'موافقة المراقب المالي',
+                text: 'Bids From Technical Evaluation (' + this.bidsFromTechnicalEvalCount + ')',
+                textAr: ' (' + this.bidsFromTechnicalEvalCount + ') ' + 'موافقة المراقب المالي',
                 link: 'committee/be_chair_dashboard/bids_from_technical_evaluation',
               },
               {
                 name: 'fromqualificationCommittee',
                 iconName: 'container',
                 text: 'From Qualification (' + this.bidsfromQualCount + ')',
-                textAr:
-                  ' (' + this.bidsfromQualCount + ') ' + 'من لجنة التأهيل',
+                textAr: ' (' + this.bidsfromQualCount + ') ' + 'من لجنة التأهيل',
                 link: 'committee/be_chair_dashboard/from_qualification_committee',
               },
               // {
@@ -2053,7 +1741,8 @@ export class AppComponent {
               // }
             ],
           });
-        } else if (this.role === 'LM') {
+        }
+        else if (this.role === "LM") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '02',
@@ -2083,7 +1772,8 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'PM') {
+        }
+        else if (this.role === 'PM') {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '02',
@@ -2093,15 +1783,8 @@ export class AppComponent {
               {
                 name: 'bidsfromfinancialmember',
                 iconName: 'money-collect',
-                text:
-                  'Bids from financial member (' +
-                  this.bidsFinancialOfferCount +
-                  ')',
-                textAr:
-                  ' (' +
-                  this.bidsFinancialOfferCount +
-                  ') ' +
-                  'منافسات مرسلة من العضو المالي',
+                text: 'Bids from financial member (' + this.bidsFinancialOfferCount + ')',
+                textAr: ' (' + this.bidsFinancialOfferCount + ') ' + 'منافسات مرسلة من العضو المالي',
                 link: 'committee/be_chair_dashboard/bids_from_financial',
               },
               {
@@ -2120,7 +1803,8 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'FM') {
+        }
+        else if (this.role === "FM") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '02',
@@ -2147,10 +1831,11 @@ export class AppComponent {
                 text: 'Signature Upload',
                 textAr: 'تحميل التوقيع',
                 link: 'committee/signature_upload',
-              },
+              }
             ],
           });
-        } else if (this.role === 'MM') {
+        }
+        else if (this.role === "MM") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '02',
@@ -2185,7 +1870,7 @@ export class AppComponent {
       // * Qualification committee Nav Items
       else if (role.CommitteeId === '03') {
         localStorage.setItem('ROLEQP', role.CommitteeRole);
-        if (this.role === 'CH') {
+        if (this.role === "CH") {
           this.addAdminNavItem('COMM'); // ? Admin access for Chairman
           this.navItems.push({
             ModuleIcon: 'user',
@@ -2197,17 +1882,14 @@ export class AppComponent {
                 name: 'bidstobeevaluated',
                 iconName: 'bars',
                 text: 'Bids to be Qualified (' + this.bidsToBeEvaluated + ')',
-                textAr:
-                  ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتأهيل',
+                textAr: ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتأهيل',
                 link: 'committee/bq_chair_dashboard/bid_to_evaluate',
               },
               {
                 name: 'bidtobeapproved',
                 iconName: 'check',
-                text:
-                  'Pending for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'بانتظار الاعتماد',
+                text: 'Pending for Approval (' + this.bidsToBeApprovedCount + ')',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'بانتظار الاعتماد',
                 link: 'committee/bq_chair_dashboard/pending_approval',
               },
               {
@@ -2223,10 +1905,11 @@ export class AppComponent {
                 text: 'Signature Upload',
                 textAr: 'تحميل التوقيع',
                 link: 'committee/signature_upload',
-              },
+              }
             ],
           });
-        } else if (this.role === 'OF') {
+
+        } else if (this.role === "OF") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '03',
@@ -2237,8 +1920,7 @@ export class AppComponent {
                 name: 'bidstobeevaluated',
                 iconName: 'bars',
                 text: 'Bids to be Qualified (' + this.bidsToBeEvaluated + ')',
-                textAr:
-                  ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتأهيل',
+                textAr: ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتأهيل',
                 link: 'committee/bq_chair_dashboard/bid_to_evaluate',
               },
               // {
@@ -2257,11 +1939,7 @@ export class AppComponent {
               },
             ],
           });
-        } else if (
-          this.role === 'PM' ||
-          this.role === 'FM' ||
-          this.role === 'MR'
-        ) {
+        } else if (this.role === "PM" || this.role === "FM" || this.role === "MR") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '03',
@@ -2271,10 +1949,8 @@ export class AppComponent {
               {
                 name: 'bidtobeapproved',
                 iconName: 'check',
-                text:
-                  'Pending for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'بانتظار الاعتماد',
+                text: 'Pending for Approval (' + this.bidsToBeApprovedCount + ')',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'بانتظار الاعتماد',
                 link: 'committee/bq_chair_dashboard/pending_approval',
               },
               {
@@ -2298,7 +1974,7 @@ export class AppComponent {
       // * DP evaluation committee Nav Items
       else if (role.CommitteeId === '04') {
         localStorage.setItem('ROLEDP', role.CommitteeRole);
-        if (this.role === 'CH') {
+        if (this.role === "CH") {
           this.addAdminNavItem('COMM'); // ? Admin access for Chairman
           this.navItems.push({
             ModuleIcon: 'user',
@@ -2310,8 +1986,7 @@ export class AppComponent {
                 name: 'bidstobeopen',
                 iconName: IconList.folderopen,
                 text: 'Bids to be Opened (' + this.bidsToBeOpenedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
+                textAr: ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
                 link: 'committee/dp-evaluation/bids-to-be-opened',
               },
               {
@@ -2325,8 +2000,7 @@ export class AppComponent {
                 name: 'bidtobeapproved',
                 iconName: 'check',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/dp-evaluation/bids-to-be-approved',
               },
               {
@@ -2345,7 +2019,7 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'OF') {
+        } else if (this.role === "OF") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '04',
@@ -2356,8 +2030,7 @@ export class AppComponent {
                 name: 'bidstobeopen',
                 iconName: IconList.folderopen,
                 text: 'Bids to be Opened (' + this.bidsToBeOpenedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
+                textAr: ' (' + this.bidsToBeOpenedCount + ') ' + 'منافسات للفتح',
                 link: 'committee/dp-evaluation/bids-to-be-opened',
               },
               {
@@ -2371,19 +2044,14 @@ export class AppComponent {
                 name: 'bidtobeapproved',
                 iconName: 'check',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/dp-evaluation/bids-to-be-approved',
               },
               {
                 name: 'finalapproval',
                 iconName: 'check-square',
                 text: 'Final Approval (' + this.bidsfinalApprovalCount + ')',
-                textAr:
-                  ' (' +
-                  this.bidsfinalApprovalCount +
-                  ') ' +
-                  'اعتماد محضر لجنة الفحص',
+                textAr: ' (' + this.bidsfinalApprovalCount + ') ' + 'اعتماد محضر لجنة الفحص',
                 link: 'committee/dp-evaluation/final-approval',
               },
               {
@@ -2402,7 +2070,7 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'MR') {
+        } else if (this.role === "MR") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '04',
@@ -2432,12 +2100,7 @@ export class AppComponent {
               },
             ],
           });
-        } else if (
-          this.role === 'LM' ||
-          this.role === 'TM' ||
-          this.role === 'FM' ||
-          this.role === 'PM'
-        ) {
+        } else if (this.role === "LM" || this.role === "TM" || this.role === "FM" || this.role === "PM") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '04',
@@ -2463,8 +2126,7 @@ export class AppComponent {
                 name: 'bidtobeapproved',
                 iconName: 'check',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/dp-evaluation/bids-to-be-approved',
               },
               {
@@ -2481,7 +2143,7 @@ export class AppComponent {
       // ceo dashboards
       else if (role.CommitteeId === '05') {
         localStorage.setItem('ROLEMG', role.CommitteeRole);
-        if (this.role === 'CO' || this.role === 'PR' || this.role === 'PU') {
+        if (this.role === "CO" || this.role === "PR" || this.role === "PU") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '05',
@@ -2492,8 +2154,7 @@ export class AppComponent {
                 name: 'bidstobeapproved',
                 iconName: 'user',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/finalapproval',
               },
               {
@@ -2512,7 +2173,8 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'VP') {
+        }
+        else if (this.role === "VP") {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '05',
@@ -2523,8 +2185,7 @@ export class AppComponent {
                 name: 'bidtobeapproved',
                 iconName: 'user',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/finalapproval',
               },
               {
@@ -2544,7 +2205,9 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'SS') {
+        }
+        else if (this.role === "SS") {
+
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '05',
@@ -2555,8 +2218,7 @@ export class AppComponent {
                 name: 'bidtobeapproved',
                 iconName: 'user',
                 text: 'Bids for Approval (' + this.bidsToBeApprovedCount + ')',
-                textAr:
-                  ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
+                textAr: ' (' + this.bidsToBeApprovedCount + ') ' + 'منافسات للاعتماد',
                 link: 'committee/finalapproval',
               },
               {
@@ -2576,7 +2238,8 @@ export class AppComponent {
               },
             ],
           });
-        } else if (this.role === 'FO') {
+        }
+        else if (this.role === 'FO') {
           this.navItems.push({
             ModuleIcon: 'user',
             ModuleId: '05',
@@ -2590,8 +2253,8 @@ export class AppComponent {
                 textAr: ' (' + this.vendorListCount + ') ' + 'قائمة البائعين',
                 link: 'committee/vendor/vendor-list',
               },
-            ],
-          });
+            ]
+          })
         }
       }
       // * Technical Evaluation Committee
@@ -2605,32 +2268,27 @@ export class AppComponent {
               name: 'techbidstobeevaluated',
               iconName: 'bars',
               text: 'Bids to be Evaluated (' + this.bidsToBeEvaluated + ')',
-              textAr:
-                ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني',
+              textAr: ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني',
               link: 'committee/technical-evaluation/bids-to-be-evaluated',
             },
             {
               name: 'bidsfromtechmem',
               iconName: 'laptop',
-              text:
-                'Bids From Technical Members (' + this.bidsFromTechMem + ')',
-              textAr:
-                ' (' +
-                this.bidsFromTechMem +
-                ') ' +
-                'نتائج التحليل الفني المرسله من الأعضاء',
+              text: 'Bids From Technical Members (' + this.bidsFromTechMem + ')',
+              textAr: ' (' + this.bidsFromTechMem + ') ' + 'نتائج التحليل الفني المرسله من الأعضاء',
               link: 'committee/technical-evaluation/bids-from-tech-members',
             }
-          );
+          )
         } else if (this.role === 'TM') {
-          navItem.push({
-            name: 'techbidstobeevaluated',
-            iconName: 'bars',
-            text: 'Bids to be Evaluated (' + this.bidsToBeEvaluated + ')',
-            textAr:
-              ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني',
-            link: 'committee/technical-evaluation/bids-to-be-evaluated',
-          });
+          navItem.push(
+            {
+              name: 'techbidstobeevaluated',
+              iconName: 'bars',
+              text: 'Bids to be Evaluated (' + this.bidsToBeEvaluated + ')',
+              textAr: ' (' + this.bidsToBeEvaluated + ') ' + 'منافسات للتحليل الفني',
+              link: 'committee/technical-evaluation/bids-to-be-evaluated',
+            }
+          )
         }
         navItem.push(
           {
@@ -2654,9 +2312,10 @@ export class AppComponent {
           ModuleId: '06',
           Module: 'Technical Evaluation Committee',
           ModuleAr: 'لجنة التقييم الفني',
-          navItem: navItem,
-        });
+          navItem: navItem
+        })
       }
+
     }
   }
 
@@ -2664,6 +2323,7 @@ export class AppComponent {
    * Adds the Admin Nav Item to Chairman Screens
    */
   addCommitteeAdminNavItem(): void {
+
     const committeeAdminNavItems = [
       {
         name: 'Delgation',
@@ -2678,7 +2338,7 @@ export class AppComponent {
         text: 'Committee Member Maintenance',
         textAr: 'Committee Member Maintenance',
         link: 'admin/committeeMemberMaintenance',
-        adminFullAccess: this.isAdminFullAccess,
+        adminFullAccess: this.isAdminFullAccess
       },
       {
         name: 'SLA',
@@ -2686,7 +2346,7 @@ export class AppComponent {
         text: 'SLA',
         textAr: 'وفد',
         link: 'admin/sla',
-      },
+      }
     ];
 
     if (this.navItems[0]?.Module !== 'Admin') {
@@ -2695,177 +2355,148 @@ export class AppComponent {
         ModuleId: '03',
         Module: 'Admin',
         ModuleAr: 'مسؤل',
-        navItem: committeeAdminNavItems,
+        navItem: committeeAdminNavItems
       });
     } else {
       this.navItems[0]?.navItem.push(...committeeAdminNavItems);
     }
   }
 
+
   /**
    * Constructs and returns payload for Count API
-   *
+   * 
    * Check the above methode for its usage {@linkcode AppComponent.getCountData}
-   *
-   * @param username
+   * 
+   * @param username 
    * @param committeeId
-   * @param committeeRole
+   * @param committeeRole 
    * @param navItemId Menu Item Code
-   *
+   * 
    * @returns {Object} Payload Object for Committe Count API
    */
-  getreqData(
-    username: string,
-    committeeId: string,
-    committeeRole: string,
-    navItemId: string
-  ): any | null {
+  getreqData(username: string, committeeId: string, committeeRole: string, navItemId: string): any | null {
     let reqData = {
-      UserName: username,
-      CommitteeId: committeeId,
-      CommitteeRole: committeeRole,
-      CommitteeAction: '',
+      "UserName": username,
+      "CommitteeId": committeeId,
+      "CommitteeRole": committeeRole,
+      "CommitteeAction": ""
     };
     if (navItemId == 'bidslist') {
-      return { UserName: username, CommitteeAction: 'BLST' };
+      return { "UserName": username, CommitteeAction: 'BLST' };
     }
     if (committeeId == '01') {
       if (navItemId == 'bidstobeopen') {
-        reqData.CommitteeAction = 'BOPN';
+        reqData.CommitteeAction = "BOPN";
       } else if (navItemId == 'bidstobeeval') {
-        reqData.CommitteeAction = 'BOPN';
+        reqData.CommitteeAction = "BOPN";
       } else if (navItemId == 'bidstobeapproved') {
-        reqData.CommitteeAction = 'BAPR';
+        reqData.CommitteeAction = "BAPR";
       } else if (navItemId == 'bidsforfinancialoffer') {
-        reqData.CommitteeAction = 'BFNC';
+        reqData.CommitteeAction = "BFNC";
       } else if (navItemId == 'pendingreview') {
-        reqData.CommitteeAction = 'BPRV';
+        reqData.CommitteeAction = "BPRV";
       } else if (navItemId == 'openingmember') {
-        reqData.CommitteeAction = 'BOMR';
+        reqData.CommitteeAction = "BOMR";
       }
     } else if (committeeId == '02') {
       if (committeeRole == 'FM') {
         if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BEMR';
+          reqData.CommitteeAction = "BEMR";
         } else if (navItemId == 'bidsforfinancialoffer') {
-          reqData.CommitteeAction = 'BOFR';
+          reqData.CommitteeAction = "BOFR";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         }
       }
-      if (
-        committeeRole == 'CH' ||
-        committeeRole == 'OF' ||
-        committeeRole === 'PM'
-      ) {
+      if (committeeRole == 'CH' || committeeRole == 'OF' || committeeRole === 'PM') {
         if (navItemId == 'bidstobeopen') {
-          reqData.CommitteeAction = 'BOPN';
+          reqData.CommitteeAction = "BOPN";
         } else if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BOPN';
+          reqData.CommitteeAction = "BOPN";
         } else if (navItemId == 'bidstobeapproved') {
           if (committeeRole === 'PM') {
-            reqData.CommitteeAction = 'BFAP';
+            reqData.CommitteeAction = "BFAP";
           } else {
-            reqData.CommitteeAction = 'BAPR';
+            reqData.CommitteeAction = "BAPR";
           }
-        } else if (
-          navItemId == 'bidsforfinancialoffer' &&
-          committeeRole != 'PM'
-        ) {
-          reqData.CommitteeAction = 'BOFR';
+
+        } else if (navItemId == 'bidsforfinancialoffer' && committeeRole != 'PM') {
+          reqData.CommitteeAction = "BOFR";
         } else if (navItemId == 'bidsfromqual') {
-          reqData.CommitteeAction = 'BFQC';
+          reqData.CommitteeAction = "BFQC";
         } else if (navItemId == 'bidsfinalapproval') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         } else if (navItemId == 'bidstobeevaluated') {
-          reqData.CommitteeAction = 'BEMR';
-        } else if (navItemId == 'bidsforfinancialoffer') {
-          reqData.CommitteeAction = 'BEFM';
+          reqData.CommitteeAction = "BEMR";
+        }
+        else if (navItemId == 'bidsforfinancialoffer') {
+          reqData.CommitteeAction = "BEFM";
         } else if (navItemId == 'bidsFromTechnicalEvaluationCommittee') {
           reqData.CommitteeAction = 'BFTC';
-        } else if (navItemId == 'financialControllerApproval') {
+        }
+        else if (navItemId == 'financialControllerApproval') {
           reqData.CommitteeAction = 'BPFC';
         }
-      } else if (
-        committeeRole == 'LM' ||
-        committeeRole == 'TM' ||
-        committeeRole == 'PM' ||
-        committeeRole == 'RM'
-      ) {
+      } else if (committeeRole == 'LM' || committeeRole == 'TM' || committeeRole == 'PM' || committeeRole == 'RM') {
         if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BEMR';
+          reqData.CommitteeAction = "BEMR";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         } else if (navItemId == 'bidsforfinancialoffer') {
-          reqData.CommitteeAction = 'BOFR';
+          reqData.CommitteeAction = "BOFR";
         }
       }
     } else if (committeeId == '03') {
-      if (
-        committeeRole == 'CH' ||
-        committeeRole == 'OF' ||
-        committeeRole == 'PM' ||
-        committeeRole == 'FM' ||
-        committeeRole == 'MR'
-      ) {
+      if (committeeRole == 'CH' || committeeRole == 'OF' || committeeRole == 'PM' || committeeRole == 'FM' || committeeRole == 'MR') {
         if (navItemId == 'bidstobeopen') {
-          reqData.CommitteeAction = 'BOPN';
+          reqData.CommitteeAction = "BOPN";
         } else if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BTEV';
+          reqData.CommitteeAction = "BTEV";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'QAPR';
+          reqData.CommitteeAction = "QAPR";
         } else if (navItemId == 'bidsforfinancialoffer') {
-          reqData.CommitteeAction = 'BFNC';
+          reqData.CommitteeAction = "BFNC";
         }
       }
     } else if (committeeId == '04') {
-      if (
-        committeeRole == 'CH' ||
-        committeeRole == 'PM' ||
-        committeeRole == 'FM'
-      ) {
+      if (committeeRole == 'CH' || committeeRole == 'PM' || committeeRole == 'FM') {
         if (navItemId == 'bidstobeopen') {
-          reqData.CommitteeAction = 'BOPN';
+          reqData.CommitteeAction = "BOPN";
         } else if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BEMR';
+          reqData.CommitteeAction = "BEMR";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BAPR';
+          reqData.CommitteeAction = "BAPR";
         } else if (navItemId == 'bidsforfinancialoffer') {
-          reqData.CommitteeAction = 'BFNC';
+          reqData.CommitteeAction = "BFNC";
         } else if (navItemId == 'bidsfinalapproval') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         } else if (navItemId === `bidsfromqual`) {
-          reqData.CommitteeAction = 'BFQC';
+          reqData.CommitteeAction = "BFQC";
         }
       } else if (committeeRole == 'LM' || committeeRole == 'TM') {
         if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BEMR';
+          reqData.CommitteeAction = "BEMR";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         }
       } else if (committeeRole == 'OF' || committeeRole === 'MR') {
         if (navItemId == 'bidstobeopen') {
-          reqData.CommitteeAction = 'BOPN';
+          reqData.CommitteeAction = "BOPN";
         } else if (navItemId == 'bidstobeeval') {
-          reqData.CommitteeAction = 'BEMR';
+          reqData.CommitteeAction = "BEMR";
         } else if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         } else if (navItemId === `bidsfromqual`) {
-          reqData.CommitteeAction = 'BFQC';
+          reqData.CommitteeAction = "BFQC";
         } else if (navItemId === 'bidsfinalapproval') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP"
         }
       }
     } else if (committeeId == '05') {
-      if (
-        committeeRole == 'CO' ||
-        committeeRole == 'VP' ||
-        committeeRole == 'SS' ||
-        committeeRole == 'PR' ||
-        committeeRole == 'PU'
-      ) {
+      if (committeeRole == 'CO' || committeeRole == 'VP' || committeeRole == 'SS' || committeeRole == 'PR' || committeeRole == 'PU') {
         if (navItemId == 'bidstobeapproved') {
-          reqData.CommitteeAction = 'BFAP';
+          reqData.CommitteeAction = "BFAP";
         }
       } else if (committeeRole === 'FO') {
         if (navItemId === 'vendorlist') {
@@ -2876,9 +2507,9 @@ export class AppComponent {
     // * Technical Evaluation Committee
     else if (committeeId === '06') {
       if (navItemId === 'bidstobeeval') {
-        reqData.CommitteeAction = 'BTTE';
+        reqData.CommitteeAction = 'BTTE'
       } else if (navItemId === 'bidsfromtechmem') {
-        reqData.CommitteeAction = 'BFTM';
+        reqData.CommitteeAction = 'BFTM'
       }
     }
     return reqData;
@@ -2886,12 +2517,13 @@ export class AppComponent {
 
   /**
    * Consturcts the Contract Menu based on the Login API response
-   *
+   * 
    * @param role Role of the current User
-   *
+   * 
    * @returns void
    */
   setContractMenu(role: string): void {
+
     if (role === 'CH') {
       this.navItems.push({
         ModuleIcon: 'dashboard',
@@ -2968,7 +2600,7 @@ export class AppComponent {
             text: 'Contract List',
             textAr: 'قائمة العقود',
             link: '/contract/ContractList',
-          },
+          }
         ],
       });
     } else if (role === 'LM') {
@@ -2997,7 +2629,7 @@ export class AppComponent {
             text: 'Contract List',
             textAr: 'قائمة العقود',
             link: '/contract/ContractList',
-          },
+          }
         ],
       });
     } else if (role === 'LH') {
@@ -3026,7 +2658,7 @@ export class AppComponent {
             text: 'Contract List',
             textAr: 'قائمة العقود',
             link: '/contract/ContractList',
-          },
+          }
         ],
       });
     } else if (role === 'LO') {
@@ -3091,7 +2723,7 @@ export class AppComponent {
             text: 'Contract List',
             textAr: 'قائمة العقود',
             link: '/contract/ContractList',
-          },
+          }
         ],
       });
     } else if (role === 'PM') {
@@ -3186,7 +2818,7 @@ export class AppComponent {
             text: 'Create Contract',
             textAr: 'عقود للموافقة',
             link: '/contract/create-contract',
-          },
+          }
         ],
       });
     }
@@ -3195,9 +2827,9 @@ export class AppComponent {
   // TODO : Remove when all the icons has been integrated
   /**
    * Methods to find the existence of new Icon
-   * @param iconName
+   * @param iconName 
    * @returns
-   *
+   *  
    */
   getIsNewIcon(iconName: IconList): boolean {
     if (Object.values(IconList).includes(iconName)) {
@@ -3209,9 +2841,9 @@ export class AppComponent {
 
   /**
    * Changes the application to user selected language and Direction of the application
-   *
+   * 
    * @param lang Selected Language
-   *
+   * 
    * @returns void
    */
   onChangeLang(lang: string): void {
@@ -3235,14 +2867,23 @@ export class AppComponent {
     ) {
       htmlElement.removeAttribute('dir');
       bodyElement.removeAttribute('dir');
-    } else if (lang === 'ar' && !htmlElement.hasAttribute('dir')) {
+    } else if (
+      lang === 'ar' &&
+      !htmlElement.hasAttribute('dir')
+    ) {
       htmlElement.setAttribute('dir', 'rtl');
       bodyElement.setAttribute('dir', 'rtl');
     }
 
-    if (lang !== 'ar' && htmlElement.hasAttribute('lang')) {
+    if (
+      lang !== 'ar' &&
+      htmlElement.hasAttribute('lang')
+    ) {
       htmlElement.removeAttribute('lang');
-    } else if (lang === 'ar' && !htmlElement.hasAttribute('lang')) {
+    } else if (
+      lang === 'ar' &&
+      !htmlElement.hasAttribute('lang')
+    ) {
       htmlElement.setAttribute('lang', lang);
     }
 
@@ -3263,8 +2904,8 @@ export class AppComponent {
 
   /**
    * Adds Auth configuration and tries to Login
-   *
-   * @returns void
+   * 
+   * @returns void 
    */
   private configure(): void {
     this.oauthService.configure(authConfig);
@@ -3277,7 +2918,7 @@ export class AppComponent {
 
   /**
    * Gets the Proxy User Id for OAuthService and returns the user display name.
-   *
+   * 
    * @returns Logged in user's display name
    */
   name() {
@@ -3286,11 +2927,11 @@ export class AppComponent {
       return null;
     }
     if (claims) {
-      this.ProxyUserId = claims.upn.split('@')[0].toUpperCase();
+      this.ProxyUserId = claims.upn.split("@")[0].toUpperCase()
       if (this.ProxyUserId) {
         // console.log(this.ProxyUserId)
         this.isUserLoggedIn = true;
-        this.dispname = claims.upn;
+        this.dispname = claims.upn
       }
     }
 
@@ -3300,7 +2941,7 @@ export class AppComponent {
   openHandler(item: any) {
     for (const navItem of this.navItems) {
       if (navItem.Module !== item.Module) {
-        navItem.isOpen = false;
+        navItem.isOpen = false
       }
     }
   }
@@ -3319,19 +2960,19 @@ export class AppComponent {
       htmlElement.removeAttribute('data-theme');
       localStorage.setItem('theme', 'light');
     }
-    console.log(
-      'HTML element data-theme:',
-      htmlElement.getAttribute('data-theme')
-    );
+    console.log('HTML element data-theme:', htmlElement.getAttribute('data-theme'));
   }
 
   get shouldShowHelpIcon(): boolean {
+    if (!this.isUserLoggedIn) {
+      return false;
+    }
     const userRole = localStorage.getItem('username');
     if (userRole) {
       const decodedRole = atob(userRole);
-      return decodedRole !== 'ADMIN';
+      return decodedRole === 'SCMENDUSER';
     }
-    return true;
+    return false;
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {
@@ -3342,7 +2983,7 @@ export class AppComponent {
         text: `RFP Maintenance`,
         textAr: `صيانة طلب تقديم العروض`,
         link: `admin/rfpMaintenance`,
-        rfpAdminFullAccess: isRfpAdminFullAcces,
+        rfpAdminFullAccess: isRfpAdminFullAcces
       };
 
       if (this.navItems[0]?.Module !== 'Admin') {
@@ -3351,7 +2992,7 @@ export class AppComponent {
           ModuleId: '03',
           Module: 'Admin',
           ModuleAr: 'مسؤل',
-          navItem: [RFPAdminNavItem],
+          navItem: [RFPAdminNavItem]
         });
       } else {
         this.navItems[0].navItem.splice(0, 0, RFPAdminNavItem);
@@ -3373,7 +3014,7 @@ export class AppComponent {
           text: 'Committee Member Maintenance',
           textAr: 'Committee Member Maintenance',
           link: 'admin/committeeMemberMaintenance',
-          adminFullAccess: this.isAdminFullAccess,
+          adminFullAccess: this.isAdminFullAccess
         },
         {
           name: 'SLA',
@@ -3381,7 +3022,7 @@ export class AppComponent {
           text: 'SLA',
           textAr: 'وفد',
           link: 'admin/sla',
-        },
+        }
       ];
 
       if (this.navItems[0]?.Module !== 'Admin') {
@@ -3390,15 +3031,11 @@ export class AppComponent {
           ModuleId: '03',
           Module: 'Admin',
           ModuleAr: 'مسؤل',
-          navItem: committeeAdminNavItems,
+          navItem: committeeAdminNavItems
         });
       } else {
-        if (
-          this.navItems[0]?.navItem.find((item: any) => item.name === 'SLA')
-        ) {
-          const itemsToBePushed = committeeAdminNavItems.filter(
-            (committeeAdminNavItem) => committeeAdminNavItem.name != 'SLA'
-          );
+        if (this.navItems[0]?.navItem.find((item: any) => item.name === 'SLA')) {
+          const itemsToBePushed = committeeAdminNavItems.filter((committeeAdminNavItem) => committeeAdminNavItem.name != 'SLA');
           itemsToBePushed?.forEach((item) => {
             this.navItems[0]?.navItem.push(item);
           });
@@ -3421,7 +3058,7 @@ export class AppComponent {
           text: 'SLA',
           textAr: 'وفد',
           link: 'admin/sla',
-        },
+        }
       ];
 
       if (this.navItems[0]?.Module !== 'Admin') {
@@ -3430,13 +3067,11 @@ export class AppComponent {
           ModuleId: '03',
           Module: 'Admin',
           ModuleAr: 'مسؤل',
-          navItem: COCAdminNavItems,
+          navItem: COCAdminNavItems
         });
       } else {
         this.cs.updateSLAOption(PROCESS_TYPES.COC);
-        if (
-          this.navItems[0]?.navItem.find((item: any) => item.name !== 'SLA')
-        ) {
+        if (this.navItems[0]?.navItem.find((item: any) => item.name !== 'SLA')) {
           this.navItems[0]?.navItem.push(...COCAdminNavItems);
         }
       }
@@ -3452,13 +3087,14 @@ export class AppComponent {
   //   // }
   //   // return false;
   // }
+
 }
 
 /**
  * @description Configuration of Auth Config
- *
+ * 
  * @interface AuthConfig
- *
+ * 
  */
 export const authConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -3497,7 +3133,8 @@ export const authConfig: AuthConfig = {
     ],
     token_endpoint_auth_methods_supported: [
       'client_secret_post',
-      'client_secret_basic',
+      'client_secret_basic'
     ],
   },
-};
+
+}
