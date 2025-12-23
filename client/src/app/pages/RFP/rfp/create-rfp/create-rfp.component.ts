@@ -73,9 +73,7 @@ export class CreateRFPComponent implements OnInit {
   showScope = false;
   attachmentsActive = false;
 
-
   selectedCoordinatorName: string | null = null;
-
 
   // Collapse panel states
   basicInfoActive = true;
@@ -158,7 +156,7 @@ export class CreateRFPComponent implements OnInit {
   directPurchaseOptions = [
     // { value: 'below100k', label: 'Less than 100k' },
     { value: 'Emergency', label: 'Emergency' },
-    { value: 'GovernmentToG', label: 'Government Contract​' },
+    { value: 'GovernmentToG', label: 'Government Contract' },
     { value: 'oneSupplier', label: 'One Supplier' },
     { value: 'sensitiveSecurity', label: 'Sensitive security project' },
   ];
@@ -167,7 +165,7 @@ export class CreateRFPComponent implements OnInit {
     // { value: 'below500k', label: 'Less than 500k' },
     { value: 'urgent', label: 'Urgent' },
     { value: 'Except', label: 'Except' },
-    { value: 'Consultative​', label: 'Consultative' },
+    { value: 'Consultative', label: 'Consultative' },
   ];
 
   // threshold constant
@@ -180,55 +178,55 @@ export class CreateRFPComponent implements OnInit {
     path: string;
     filename?: string;
   }> = [
-      {
-        key: 'الشروط الخاصة المواد والمعدات',
-        label: 'الشروط الخاصة المواد والمعدات.docx',
-        path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx', // or rename and remove spaces
-        filename: 'الشروط الخاصة المواد والمعدات.docx',
-      },
-      {
-        key: 'نموذج اتفاقية إطارية',
-        label: 'نموذج اتفاقية إطارية.docx',
-        path: 'assets/forms/نموذج اتفاقية إطارية.docx', // or rename and remove spaces
-        filename: 'نموذج اتفاقية إطارية.docx',
-      },
-      {
-        key: 'الشروط الخاصة بالعمالة',
-        label: 'الشروط الخاصة بالعمالة.docx',
-        path: 'assets/forms/الشروط الخاصة بالعمالة.docx', // or rename and remove spaces
-        filename: 'الشروط الخاصة بالعمالة.docx',
-      },
-      {
-        key: 'الملحق الاسترشادي',
-        label: 'الملحق الاسترشادي.docx',
-        path: 'assets/forms/الملحق الاسترشادي.docx', // or rename and remove spaces
-        filename: 'الملحق الاسترشادي.docx',
-      },
-      {
-        key: 'آلية تقديم العطاء وخطاب تقديم العروض',
-        label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
-        path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx', // or rename and remove spaces
-        filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
-      },
-      {
-        key: 'شـهادة زيـارة الموقع 2024',
-        label: 'شـهادة زيـارة الموقع 2024.docx',
-        path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx', // or rename and remove spaces
-        filename: 'شـهادة زيـارة الموقع 2024.docx',
-      },
-      {
-        key: 'كيفية تنفيذ الأعمال والخدمات',
-        label: 'كيفية تنفيذ الأعمال والخدمات.docx',
-        path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx', // or rename and remove spaces
-        filename: 'كيفية تنفيذ الأعمال والخدمات.docx',
-      },
-      {
-        key: 'معايير تقييم العروض الفنية _',
-        label: 'معايير تقييم العروض الفنية _.docx',
-        path: 'assets/forms/معايير تقييم العروض الفنية _.docx', // or rename and remove spaces
-        filename: 'معايير تقييم العروض الفنية _.docx',
-      },
-    ];
+    {
+      key: 'الشروط الخاصة المواد والمعدات',
+      label: 'الشروط الخاصة المواد والمعدات.docx',
+      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx', // or rename and remove spaces
+      filename: 'الشروط الخاصة المواد والمعدات.docx',
+    },
+    {
+      key: 'نموذج اتفاقية إطارية',
+      label: 'نموذج اتفاقية إطارية.docx',
+      path: 'assets/forms/نموذج اتفاقية إطارية.docx', // or rename and remove spaces
+      filename: 'نموذج اتفاقية إطارية.docx',
+    },
+    {
+      key: 'الشروط الخاصة بالعمالة',
+      label: 'الشروط الخاصة بالعمالة.docx',
+      path: 'assets/forms/الشروط الخاصة بالعمالة.docx', // or rename and remove spaces
+      filename: 'الشروط الخاصة بالعمالة.docx',
+    },
+    {
+      key: 'الملحق الاسترشادي',
+      label: 'الملحق الاسترشادي.docx',
+      path: 'assets/forms/الملحق الاسترشادي.docx', // or rename and remove spaces
+      filename: 'الملحق الاسترشادي.docx',
+    },
+    {
+      key: 'آلية تقديم العطاء وخطاب تقديم العروض',
+      label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx', // or rename and remove spaces
+      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+    },
+    {
+      key: 'شـهادة زيـارة الموقع 2024',
+      label: 'شـهادة زيـارة الموقع 2024.docx',
+      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx', // or rename and remove spaces
+      filename: 'شـهادة زيـارة الموقع 2024.docx',
+    },
+    {
+      key: 'كيفية تنفيذ الأعمال والخدمات',
+      label: 'كيفية تنفيذ الأعمال والخدمات.docx',
+      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx', // or rename and remove spaces
+      filename: 'كيفية تنفيذ الأعمال والخدمات.docx',
+    },
+    {
+      key: 'معايير تقييم العروض الفنية _',
+      label: 'معايير تقييم العروض الفنية _.docx',
+      path: 'assets/forms/معايير تقييم العروض الفنية _.docx', // or rename and remove spaces
+      filename: 'معايير تقييم العروض الفنية _.docx',
+    },
+  ];
 
   selectedFormKey: string | null = null;
 
@@ -419,7 +417,7 @@ export class CreateRFPComponent implements OnInit {
       'subactivity',
       'projectJustification',
       'Necessity',
-      'Impact'
+      'Impact',
     ];
 
     // Check base fields
@@ -611,128 +609,137 @@ export class CreateRFPComponent implements OnInit {
     // Add your draft save logic here
   }
 
-saveAndContinue(): void {
-  if (!this.basicInfoValid) {
-    return;
-  }
+  saveAndContinue(): void {
+    if (!this.basicInfoValid) {
+      return;
+    }
 
-  this.spinner.show();
+    this.spinner.show();
 
-  // STEP 1: Generate RFP Number
-  this.api.get('CreateRFPSet')
-    .pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: (rfpResponse: any) => {
-        const rfpNumber = rfpResponse?.d?.results?.[0]?.RFPNO;
+    // STEP 1: Generate RFP Number
+    this.api
+      .get('CreateRFPSet')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (rfpResponse: any) => {
+          const rfpNumber = rfpResponse?.d?.results?.[0]?.RFPNO;
 
-        if (!rfpNumber) {
-          this.spinner.hide();
-          this.cs.createMessage('error', 'Failed to generate RFP number');
-          return;
-        }
-
-        // Patch RFP Number into form
-        this.rfpForm.patchValue({ rfpNumber });
-
-        const formValues = this.rfpForm.value;
-
-        // STEP 2: Build Technical Committee (FormArray → OData results[])
-        // const technicalCommResults = this.members.controls
-        //   .filter(ctrl => ctrl.get('name')?.value) // ignore empty rows
-        //   .map(ctrl => ({
-        //     Rfpno: rfpNumber,
-        //     Role: ctrl.get('role')?.value || '',
-        //     Name: ctrl.get('name')?.value || '',
-        //     ExtNo: ctrl.get('extension')?.value || '',
-        //     JobTitle: ctrl.get('jobTitle')?.value || ''
-        //   }));
-        const technicalCommResults = this.members.controls
-  .map(ctrl => ({
-    Rfpno: rfpNumber,
-    Role: ctrl.get('role')?.value,
-    Name: ctrl.get('name')?.value,
-    ExtNo: ctrl.get('extension')?.value,
-    JobTitle: ctrl.get('jobTitle')?.value
-  }))
-  .filter(row => row.Name);
-  console.log('Members FormArray value:', this.members.value);
-console.log('Members length:', this.members.length);
-
-        // STEP 3: Build FULL Deep Insert Payload
-        const payload = {
-          Rfpno: rfpNumber,
-          Comptype: '02',
-          Encompdesc: '',
-          Arcompdesc: '',
-          Prjname: formValues.competitionName || '',
-          Estcost: formValues.estimatedCost?.toString() || '0',
-          Dirpur: formValues.directPurchaseType || '00',
-          Endirdes: '',
-          Ardirdes: '',
-          Limcomp: formValues.limitedType || '00',
-          Enlimcomp: '',
-          Arlimcomp: '',
-          Invite: formValues.invite || '',
-          Durtype: formValues.DurationType || '',
-          Durperiod: formValues.ProjDur || 0,
-          Workloc: Array.isArray(formValues.workLocation)
-            ? formValues.workLocation.join(',')
-            : formValues.workLocation || '',
-          Activity: formValues.activity || '',
-          Subactivity: formValues.subactivity || '',
-          Coordinator: formValues.coordinatorName || '',
-          CoordinatorPhNo: formValues.coordinatorNumber || '',
-          CoordinatorEmail: formValues.coordinatorEmail || '',
-          ProjectConti: formValues.projectContinuous ? 'X' : '',
-          ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
-          PrevPrjNo: formValues.number?.toString() || '',
-          SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
-          SiteVisitUid: formValues.userId || '',
-          SiteVisitEmail: formValues.email || '',
-          SiteVisitContact: formValues.contactNumber || '',
-          PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
-          Justification: formValues.projectJustification || '',
-          Necessity: formValues.Necessity || '',
-          Impact: formValues.Impact || '',
-          ExpePjctEffi: '',
-          Msgid: '',
-          Msgv1: '',
-
-          
-          BasicInformationToTechnicalComm: {
-            results: technicalCommResults
+          if (!rfpNumber) {
+            this.spinner.hide();
+            this.cs.createMessage('error', 'Failed to generate RFP number');
+            return;
           }
-        };
 
-        console.log('Deep Insert Payload:', payload);
+          // Patch RFP Number into form
+          this.rfpForm.patchValue({ rfpNumber });
 
-        // STEP 4: POST Deep Insert
-        this.api.post('BasicInformationDetailsSet', payload)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: () => {
-              this.spinner.hide();
-              this.cs.createMessage('success', 'Basic Information saved successfully');
+          const formValues = this.rfpForm.value;
 
-              this.basicInfoSaved = true;
-              this.step = 1;
-              this.activateCollapse('scopeOfWork');
-              this.showScopeOfWork = true;
-              this.showBasicInfo = false;
+          // STEP 2: Build Technical Committee (FormArray → OData results[])
+          // const technicalCommResults = this.members.controls
+          //   .filter(ctrl => ctrl.get('name')?.value) // ignore empty rows
+          //   .map(ctrl => ({
+          //     Rfpno: rfpNumber,
+          //     Role: ctrl.get('role')?.value || '',
+          //     Name: ctrl.get('name')?.value || '',
+          //     ExtNo: ctrl.get('extension')?.value || '',
+          //     JobTitle: ctrl.get('jobTitle')?.value || ''
+          //   }));
+          const technicalCommResults = this.members.controls
+            .map((ctrl) => ({
+              Rfpno: rfpNumber,
+              Role: ctrl.get('role')?.value,
+              Name: ctrl.get('name')?.value,
+              ExtNo: ctrl.get('extension')?.value,
+              JobTitle: ctrl.get('jobTitle')?.value,
+            }))
+            .filter((row) => row.Name);
+          console.log('Members FormArray value:', this.members.value);
+          console.log('Members length:', this.members.length);
+
+          // STEP 3: Build FULL Deep Insert Payload
+          const payload = {
+            Rfpno: rfpNumber,
+            Comptype: '02',
+            Encompdesc: '',
+            Arcompdesc: '',
+            Prjname: formValues.competitionName || '',
+            Estcost: formValues.estimatedCost?.toString() || '0',
+            Dirpur: formValues.directPurchaseType || '00',
+            Endirdes: '',
+            Ardirdes: '',
+            Limcomp: formValues.limitedType || '00',
+            Enlimcomp: '',
+            Arlimcomp: '',
+            Invite: formValues.invite || '',
+            Durtype: formValues.DurationType || '',
+            Durperiod: formValues.ProjDur || 0,
+            Workloc: Array.isArray(formValues.workLocation)
+              ? formValues.workLocation.join(',')
+              : formValues.workLocation || '',
+            Activity: formValues.activity || '',
+            Subactivity: formValues.subactivity || '',
+            Coordinator: formValues.coordinatorName || '',
+            CoordinatorPhNo: formValues.coordinatorNumber || '',
+            CoordinatorEmail: formValues.coordinatorEmail || '',
+            ProjectConti: formValues.projectContinuous ? 'X' : '',
+            ProjectRelaunch: formValues.projectRelaunched ? 'X' : '',
+            PrevPrjNo: formValues.number?.toString() || '',
+            SiteVisit: formValues.requiresSiteVisit ? 'X' : '',
+            SiteVisitUid: formValues.userId || '',
+            SiteVisitEmail: formValues.email || '',
+            SiteVisitContact: formValues.contactNumber || '',
+            PrequalProcess: formValues.prequalificationRequired ? 'X' : '',
+            Justification: formValues.projectJustification || '',
+            Necessity: formValues.Necessity || '',
+            Impact: formValues.Impact || '',
+            ExpePjctEffi: '',
+            Msgid: '',
+            Msgv1: '',
+
+            BasicInformationToTechnicalComm: {
+              results: technicalCommResults,
             },
-            error: (error) => {
-              this.spinner.hide();
-              this.cs.createMessage('error', error?.message || 'Failed to save Basic Information');
-            }
-          });
-      },
-      error: (error) => {
-        this.spinner.hide();
-        this.cs.createMessage('error', error?.message || 'Failed to generate RFP number');
-      }
-    });
-}
+          };
 
+          console.log('Deep Insert Payload:', payload);
+
+          // STEP 4: POST Deep Insert
+          this.api
+            .post('BasicInformationDetailsSet', payload)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: () => {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'success',
+                  'Basic Information saved successfully'
+                );
+
+                this.basicInfoSaved = true;
+                this.step = 1;
+                this.activateCollapse('scopeOfWork');
+                this.showScopeOfWork = true;
+                this.showBasicInfo = false;
+              },
+              error: (error) => {
+                this.spinner.hide();
+                this.cs.createMessage(
+                  'error',
+                  error?.message || 'Failed to save Basic Information'
+                );
+              },
+            });
+        },
+        error: (error) => {
+          this.spinner.hide();
+          this.cs.createMessage(
+            'error',
+            error?.message || 'Failed to generate RFP number'
+          );
+        },
+      });
+  }
 
   saveAndContinueScope(): void {
     if (this.scopeOfWorkValid) {
@@ -751,30 +758,37 @@ console.log('Members length:', this.members.length);
 
       const payload = {
         Rfpno: rfpNumber,
-        RFPKeyCriteriaNav: this.TechReqListData.map((item: any, index: number) => ({
-          Rfpno: rfpNumber,
-          Sino: index + 1,
-          Keyascr: item.Descr || '',
-          Pasfal: item.Pasfal || ''
-        })),
-        RFPMainCriteria: this.evalCriteriaItems.value.map((item: any, index: number) => ({
-          Rfpno: rfpNumber,
-          Sino: (index + 1),
-          Headline: item.Headline || '',
-          Weightage: parseInt(item.Percentage) || 0,
-          MainSubCriteria: item.subCriteriaList ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
+        RFPKeyCriteriaNav: this.TechReqListData.map(
+          (item: any, index: number) => ({
             Rfpno: rfpNumber,
-            Sino: (index + 1),
-            Subsino: subIndex + 1,
-            Description: subItem.Descr || '',
-            Weightage: parseInt(subItem.Percentage) || 0
-          })) : []
-        }))
+            Sino: index + 1,
+            Keyascr: item.Descr || '',
+            Pasfal: item.Pasfal || '',
+          })
+        ),
+        RFPMainCriteria: this.evalCriteriaItems.value.map(
+          (item: any, index: number) => ({
+            Rfpno: rfpNumber,
+            Sino: index + 1,
+            Headline: item.Headline || '',
+            Weightage: parseInt(item.Percentage) || 0,
+            MainSubCriteria: item.subCriteriaList
+              ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
+                  Rfpno: rfpNumber,
+                  Sino: index + 1,
+                  Subsino: subIndex + 1,
+                  Description: subItem.Descr || '',
+                  Weightage: parseInt(subItem.Percentage) || 0,
+                }))
+              : [],
+          })
+        ),
       };
 
       console.log('Standards payload:', payload);
       this.spinner.show();
-      this.api.post('RFPNoSet', payload)
+      this.api
+        .post('RFPNoSet', payload)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (response: any) => {
@@ -788,15 +802,19 @@ console.log('Members length:', this.members.length);
           },
           (error) => {
             this.spinner.hide();
-            this.cs.createMessage('error', error.message || 'Failed to save Standards');
+            this.cs.createMessage(
+              'error',
+              error.message || 'Failed to save Standards'
+            );
           }
         );
     } else {
-      this.cs.createMessage('error', 'Please complete all required fields in the Standards section');
+      this.cs.createMessage(
+        'error',
+        'Please complete all required fields in the Standards section'
+      );
     }
   }
-
-
 
   saveAndContinueBOQ(): void {
     if (this.billOfQuantityValid) {
@@ -807,7 +825,10 @@ console.log('Members length:', this.members.length);
       const rfpNumber = formValues.rfpNumber || '';
 
       if (!rfpNumber) {
-        this.cs.createMessage('error', 'RFP Number is required. Please complete Basic Information first.');
+        this.cs.createMessage(
+          'error',
+          'RFP Number is required. Please complete Basic Information first.'
+        );
         return;
       }
 
@@ -815,87 +836,114 @@ console.log('Members length:', this.members.length);
         Rfpno: rfpNumber,
         Compfrag: formValues.competitionFragmentation ? 'X' : '',
         Numyear: formValues.noOfYears?.toString() || '',
-        HeaderToPack: this.competitionFragmentationItems.value.map((pkg: any, index: number) => ({
-          Rfpno: rfpNumber,
-          Packid: `P${String(index + 1).padStart(2, '0')}`,
-          Packname: pkg.package || '',
-          Packdes: pkg.description || '',
-          Packclas: pkg.classificationField || '',
-          PackToWorkforce: (pkg.workforceRows || [])
-            .filter((row: any) => row.jobTitle || row.itemDescription)
-            .map((row: any, rowIndex: number) => ({
-              Rfpno: rfpNumber,
-              Packid: `P${String(index + 1).padStart(2, '0')}`,
-              Slno: String(rowIndex + 1).padStart(3, '0'),
-              Jobtitle: row.jobTitle || '',
-              Itemdes: row.itemDescription || '',
-              Leastelgb: row.leastEligibility || '',
-              Minyears: row.minYears?.toString() || '0',
-              BasicHrsY1: row.basicHoursY1?.toString() || row.quantityY1?.toString() || '0',
-              OtHrsY1: row.otHoursY1?.toString() || '0',
-              BasicHrsY2: row.basicHoursY2?.toString() || row.quantityY2?.toString() || '0',
-              OtHrsY2: row.otHoursY2?.toString() || '0',
-              BasicHrsY3: row.basicHoursY3?.toString() || row.quantityY3?.toString() || '0',
-              OtHrsY3: row.otHoursY3?.toString() || '0',
-              BasicHrsY4: row.basicHoursY4?.toString() || row.quantityY4?.toString() || '0',
-              OtHrsY4: row.otHoursY4?.toString() || '0',
-              BasicHrsY5: row.basicHoursY5?.toString() || row.quantityY5?.toString() || '0',
-              OtHrsY5: row.otHoursY5?.toString() || '0'
-            })),
-          PackToMaterial: (pkg.materialsRows || [])
-            .filter((row: any) => row.item || row.itemDescription || row.category)
-            .map((row: any, rowIndex: number) => ({
-              Rfpno: rfpNumber,
-              Packid: `P${String(index + 1).padStart(2, '0')}`,
-              Slno: String(rowIndex + 1).padStart(3, '0'),
-              Item: row.item || '',
-              Uom: row.uom || '',
-              MquanY1: row.quantityY1?.toString() || '0',
-              MquanY2: row.quantityY2?.toString() || '0',
-              MquanY3: row.quantityY3?.toString() || '0',
-              MquanY4: row.quantityY4?.toString() || '0',
-              MquanY5: row.quantityY5?.toString() || '0'
-            })),
-          PackToEquipment: (pkg.equipmentRows || [])
-            .filter((row: any) => row.item || row.itemDescription || row.category)
-            .map((row: any, rowIndex: number) => ({
-              Rfpno: rfpNumber,
-              Packid: `P${String(index + 1).padStart(2, '0')}`,
-              Slno: String(rowIndex + 1).padStart(3, '0'),
-              Item: row.item || '',
-              Uom: row.uom || '',
-              EquanY1: row.quantityY1?.toString() || '0',
-              EquanY2: row.quantityY2?.toString() || '0',
-              EquanY3: row.quantityY3?.toString() || '0',
-              EquanY4: row.quantityY4?.toString() || '0',
-              EquanY5: row.quantityY5?.toString() || '0'
-            })),
-          PackToService: (pkg.serviceRows || [])
-            .filter((row: any) => row.item || row.itemDescription || row.category)
-            .map((row: any, rowIndex: number) => ({
-              Rfpno: rfpNumber,
-              Packid: `P${String(index + 1).padStart(2, '0')}`,
-              Slno: String(rowIndex + 1).padStart(3, '0'),
-              Item: row.item || '',
-              Uom: row.uom || '',
-              SquanY1: row.quantityY1?.toString() || '0',
-              SquanY2: row.quantityY2?.toString() || '0',
-              SquanY3: row.quantityY3?.toString() || '0',
-              SquanY4: row.quantityY4?.toString() || '0',
-              SquanY5: row.quantityY5?.toString() || '0'
-            }))
-        }))
+        HeaderToPack: this.competitionFragmentationItems.value.map(
+          (pkg: any, index: number) => ({
+            Rfpno: rfpNumber,
+            Packid: `P${String(index + 1).padStart(2, '0')}`,
+            Packname: pkg.package || '',
+            Packdes: pkg.description || '',
+            Packclas: pkg.classificationField || '',
+            PackToWorkforce: (pkg.workforceRows || [])
+              .filter((row: any) => row.jobTitle || row.itemDescription)
+              .map((row: any, rowIndex: number) => ({
+                Rfpno: rfpNumber,
+                Packid: `P${String(index + 1).padStart(2, '0')}`,
+                Slno: String(rowIndex + 1).padStart(3, '0'),
+                Jobtitle: row.jobTitle || '',
+                Itemdes: row.itemDescription || '',
+                Leastelgb: row.leastEligibility || '',
+                Minyears: row.minYears?.toString() || '0',
+                BasicHrsY1:
+                  row.basicHoursY1?.toString() ||
+                  row.quantityY1?.toString() ||
+                  '0',
+                OtHrsY1: row.otHoursY1?.toString() || '0',
+                BasicHrsY2:
+                  row.basicHoursY2?.toString() ||
+                  row.quantityY2?.toString() ||
+                  '0',
+                OtHrsY2: row.otHoursY2?.toString() || '0',
+                BasicHrsY3:
+                  row.basicHoursY3?.toString() ||
+                  row.quantityY3?.toString() ||
+                  '0',
+                OtHrsY3: row.otHoursY3?.toString() || '0',
+                BasicHrsY4:
+                  row.basicHoursY4?.toString() ||
+                  row.quantityY4?.toString() ||
+                  '0',
+                OtHrsY4: row.otHoursY4?.toString() || '0',
+                BasicHrsY5:
+                  row.basicHoursY5?.toString() ||
+                  row.quantityY5?.toString() ||
+                  '0',
+                OtHrsY5: row.otHoursY5?.toString() || '0',
+              })),
+            PackToMaterial: (pkg.materialsRows || [])
+              .filter(
+                (row: any) => row.item || row.itemDescription || row.category
+              )
+              .map((row: any, rowIndex: number) => ({
+                Rfpno: rfpNumber,
+                Packid: `P${String(index + 1).padStart(2, '0')}`,
+                Slno: String(rowIndex + 1).padStart(3, '0'),
+                Item: row.item || '',
+                Uom: row.uom || '',
+                MquanY1: row.quantityY1?.toString() || '0',
+                MquanY2: row.quantityY2?.toString() || '0',
+                MquanY3: row.quantityY3?.toString() || '0',
+                MquanY4: row.quantityY4?.toString() || '0',
+                MquanY5: row.quantityY5?.toString() || '0',
+              })),
+            PackToEquipment: (pkg.equipmentRows || [])
+              .filter(
+                (row: any) => row.item || row.itemDescription || row.category
+              )
+              .map((row: any, rowIndex: number) => ({
+                Rfpno: rfpNumber,
+                Packid: `P${String(index + 1).padStart(2, '0')}`,
+                Slno: String(rowIndex + 1).padStart(3, '0'),
+                Item: row.item || '',
+                Uom: row.uom || '',
+                EquanY1: row.quantityY1?.toString() || '0',
+                EquanY2: row.quantityY2?.toString() || '0',
+                EquanY3: row.quantityY3?.toString() || '0',
+                EquanY4: row.quantityY4?.toString() || '0',
+                EquanY5: row.quantityY5?.toString() || '0',
+              })),
+            PackToService: (pkg.serviceRows || [])
+              .filter(
+                (row: any) => row.item || row.itemDescription || row.category
+              )
+              .map((row: any, rowIndex: number) => ({
+                Rfpno: rfpNumber,
+                Packid: `P${String(index + 1).padStart(2, '0')}`,
+                Slno: String(rowIndex + 1).padStart(3, '0'),
+                Item: row.item || '',
+                Uom: row.uom || '',
+                SquanY1: row.quantityY1?.toString() || '0',
+                SquanY2: row.quantityY2?.toString() || '0',
+                SquanY3: row.quantityY3?.toString() || '0',
+                SquanY4: row.quantityY4?.toString() || '0',
+                SquanY5: row.quantityY5?.toString() || '0',
+              })),
+          })
+        ),
       };
 
       console.log('BOQ payload:', payload);
 
       this.spinner.show();
-      this.api.post('BoqHeaderSet', payload)
+      this.api
+        .post('BoqHeaderSet', payload)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.cs.createMessage('success', 'Bill of Quantity saved successfully');
+            this.cs.createMessage(
+              'success',
+              'Bill of Quantity saved successfully'
+            );
             this.billOfQuantitySaved = true;
             this.step = 4;
             this.activateCollapse('attachments');
@@ -904,11 +952,17 @@ console.log('Members length:', this.members.length);
           },
           (error) => {
             this.spinner.hide();
-            this.cs.createMessage('error', error.message || 'Failed to save Bill of Quantity');
+            this.cs.createMessage(
+              'error',
+              error.message || 'Failed to save Bill of Quantity'
+            );
           }
         );
     } else {
-      this.cs.createMessage('error', 'Please complete all required fields in the Bill of Quantity section');
+      this.cs.createMessage(
+        'error',
+        'Please complete all required fields in the Bill of Quantity section'
+      );
     }
   }
   //   get attachmentsValid(): boolean {
@@ -1183,7 +1237,7 @@ console.log('Members length:', this.members.length);
     this.isSubCriteriaEdit = false;
   }
 
-  onReannounceChange(value: string) { }
+  onReannounceChange(value: string) {}
   onCompetitionChange(value: string) {
     console.log(value, 'afreen =========');
 
@@ -1536,14 +1590,14 @@ console.log('Members length:', this.members.length);
   //     })
   //   );
   // }
-// addMember(index: number): FormGroup {
-//   return this.fb.group({
-//     role: [''],
-//     name: [null],        // 👈 MUST EXIST
-//     extension: [''],
-//     jobTitle: ['']
-//   });
-// }
+  // addMember(index: number): FormGroup {
+  //   return this.fb.group({
+  //     role: [''],
+  //     name: [null],        // 👈 MUST EXIST
+  //     extension: [''],
+  //     jobTitle: ['']
+  //   });
+  // }
 
   // Delete row
   deleteMember(index: number): void {
@@ -1651,7 +1705,7 @@ console.log('Members length:', this.members.length);
       workforceRows: [[{}]],
       materialsRows: [[{}]],
       equipmentRows: [[{}]],
-      serviceRows: [[{}]]
+      serviceRows: [[{}]],
     });
   }
 
@@ -1697,13 +1751,15 @@ console.log('Members length:', this.members.length);
 
   saveCurrentPackageData(): void {
     if (this.selectedBundleIndex !== null) {
-      const currentPackage = this.competitionFragmentationItems.at(this.selectedBundleIndex);
+      const currentPackage = this.competitionFragmentationItems.at(
+        this.selectedBundleIndex
+      );
       if (currentPackage) {
         currentPackage.patchValue({
           workforceRows: this.workforceRows,
           materialsRows: this.materialsRows,
           equipmentRows: this.equipmentRows,
-          serviceRows: this.serviceRows
+          serviceRows: this.serviceRows,
         });
       }
     }
@@ -1724,10 +1780,10 @@ console.log('Members length:', this.members.length);
       const equipment = selectedPackage.get('equipmentRows')?.value;
       const service = selectedPackage.get('serviceRows')?.value;
 
-      this.workforceRows = (workforce && workforce.length > 0) ? workforce : [{}];
-      this.materialsRows = (materials && materials.length > 0) ? materials : [{}];
-      this.equipmentRows = (equipment && equipment.length > 0) ? equipment : [{}];
-      this.serviceRows = (service && service.length > 0) ? service : [{}];
+      this.workforceRows = workforce && workforce.length > 0 ? workforce : [{}];
+      this.materialsRows = materials && materials.length > 0 ? materials : [{}];
+      this.equipmentRows = equipment && equipment.length > 0 ? equipment : [{}];
+      this.serviceRows = service && service.length > 0 ? service : [{}];
     }
   }
 
@@ -1850,14 +1906,8 @@ console.log('Members length:', this.members.length);
         '',
         [Validators.required, Validators.maxLength(500)],
       ],
-      Necessity: [
-        '',
-        [Validators.required, Validators.maxLength(500)],
-      ],
-      Impact: [
-        '',
-        [Validators.required, Validators.maxLength(500)],
-      ],
+      Necessity: ['', [Validators.required, Validators.maxLength(500)]],
+      Impact: ['', [Validators.required, Validators.maxLength(500)]],
 
       projectContinuous: [false, [Validators.required]],
 
@@ -2281,10 +2331,9 @@ console.log('Members length:', this.members.length);
       this.showExcept = value === 'Except';
       this.showConsultative = value === 'Consultative';
     });
-    this.rfpForm.get('coordinatorName')?.valueChanges.subscribe(value => {
-    this.updateCoordinatorDetails(value);
-  });
-
+    this.rfpForm.get('coordinatorName')?.valueChanges.subscribe((value) => {
+      this.updateCoordinatorDetails(value);
+    });
 
     compCtrl.valueChanges
       .pipe(startWith(compCtrl.value), takeUntil(this.destroy$))
@@ -2402,13 +2451,13 @@ console.log('Members length:', this.members.length);
     //   }
 
     // });
-this.rfpForm.get('coordinatorName')?.valueChanges
-  .pipe(takeUntil(this.destroy$))
-  .subscribe((name: string) => {
-    this.selectedCoordinatorName = name || null;
-    // ❌ DO NOT PATCH MEMBERS
-  });
-
+    this.rfpForm
+      .get('coordinatorName')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((name: string) => {
+        this.selectedCoordinatorName = name || null;
+        // ❌ DO NOT PATCH MEMBERS
+      });
   }
   private isDirectCompetitionSelected(): boolean {
     const compVal = this.rfpForm.get('competitionType')?.value;
@@ -2843,13 +2892,13 @@ this.rfpForm.get('coordinatorName')?.valueChanges
               ].substr(0, 3),
               OtherTxt:
                 element[node.checklist_name_en + 'Group'][
-                node.checklist_name_en +
-                childList.checklist_id +
-                'OtherComment'
+                  node.checklist_name_en +
+                    childList.checklist_id +
+                    'OtherComment'
                 ],
               ChecklistCmnts:
                 element[node.checklist_name_en + 'Group'][
-                node.checklist_name_en + childList.checklist_id + 'Comment'
+                  node.checklist_name_en + childList.checklist_id + 'Comment'
                 ],
               CreatedBy: '',
               CreatedAt: '',
@@ -4348,9 +4397,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
       this.cs.createMessage(
         'error',
         totEvalPer +
-        (subCriteria
-          ? this.translate.instant('RFP.SubCritval')
-          : this.translate.instant('RFP.EvalCritVal'))
+          (subCriteria
+            ? this.translate.instant('RFP.SubCritval')
+            : this.translate.instant('RFP.EvalCritVal'))
       );
 
       return totEvalPer;
@@ -4855,13 +4904,13 @@ this.rfpForm.get('coordinatorName')?.valueChanges
             DocTypeId: '',
             EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
               ? this.cs.removeCommas(
-                this.rfpForm.controls['estPrice'].value.toString()
-              )
+                  this.rfpForm.controls['estPrice'].value.toString()
+                )
               : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(
-                this.rfpForm.controls['estPriceVAT'].value.toString()
-              )
+                  this.rfpForm.controls['estPriceVAT'].value.toString()
+                )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4894,9 +4943,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
             ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
             ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
               ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-                ...rest,
-                SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
-              }))
+                  ...rest,
+                  SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+                }))
               : [],
             ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
               ? this.TechReqListData
@@ -4904,9 +4953,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
               ? this.rfpService.getTechnicalMemberFormat(
-                this.rfpForm.controls['MemName'].value,
-                this.managerSubId
-              )
+                  this.rfpForm.controls['MemName'].value,
+                  this.managerSubId
+                )
               : [],
             TechEvalWatage: this.rfpForm
               .get([
@@ -5033,13 +5082,13 @@ this.rfpForm.get('coordinatorName')?.valueChanges
             DocTypeId: '',
             EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
               ? this.cs.removeCommas(
-                this.rfpForm.controls['estPrice'].value.toString()
-              )
+                  this.rfpForm.controls['estPrice'].value.toString()
+                )
               : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(
-                this.rfpForm.controls['estPriceVAT'].value.toString()
-              )
+                  this.rfpForm.controls['estPriceVAT'].value.toString()
+                )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5077,9 +5126,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
               ? this.rfpService.getTechnicalMemberFormat(
-                this.rfpForm.controls['MemName'].value,
-                this.managerSubId
-              )
+                  this.rfpForm.controls['MemName'].value,
+                  this.managerSubId
+                )
               : [],
             TechEvalWatage: this.rfpForm
               .get([
@@ -5276,13 +5325,13 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         DocTypeId: '',
         EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
           ? this.cs.removeCommas(
-            this.rfpForm.controls['estPrice'].value.toString()
-          )
+              this.rfpForm.controls['estPrice'].value.toString()
+            )
           : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(
-            this.rfpForm.controls['estPriceVAT'].value.toString()
-          )
+              this.rfpForm.controls['estPriceVAT'].value.toString()
+            )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5312,9 +5361,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
         ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
           ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-            ...rest,
-            SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
-          }))
+              ...rest,
+              SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+            }))
           : [],
         ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
           ? this.TechReqListData
@@ -5322,9 +5371,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
           ? this.rfpService.getTechnicalMemberFormat(
-            this.rfpForm.controls['MemName'].value,
-            this.managerSubId
-          )
+              this.rfpForm.controls['MemName'].value,
+              this.managerSubId
+            )
           : [],
         TechEvalWatage: this.rfpForm
           .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
@@ -5420,13 +5469,13 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         DocTypeId: '',
         EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
           ? this.cs.removeCommas(
-            this.rfpForm.controls['estPrice'].value.toString()
-          )
+              this.rfpForm.controls['estPrice'].value.toString()
+            )
           : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(
-            this.rfpForm.controls['estPriceVAT'].value.toString()
-          )
+              this.rfpForm.controls['estPriceVAT'].value.toString()
+            )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5461,9 +5510,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
           ? this.rfpService.getTechnicalMemberFormat(
-            this.rfpForm.controls['MemName'].value,
-            this.managerSubId
-          )
+              this.rfpForm.controls['MemName'].value,
+              this.managerSubId
+            )
           : [],
         TechEvalWatage: this.rfpForm
           .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
@@ -5618,7 +5667,7 @@ this.rfpForm.get('coordinatorName')?.valueChanges
     return years;
   }
 
-  upload() { }
+  upload() {}
 
   deleteFile(value: any) {
     this.spinner.show();
@@ -5806,14 +5855,14 @@ this.rfpForm.get('coordinatorName')?.valueChanges
     const newPackage = {
       id: this.packageCounter,
       name: `Package ${this.packageCounter}`,
-      tableData: [] // Each package has its own table data
+      tableData: [], // Each package has its own table data
     };
     this.packages.push(newPackage);
   }
 
   // Remove package
   removePackage(packageId: number): void {
-    this.packages = this.packages.filter(pkg => pkg.id !== packageId);
+    this.packages = this.packages.filter((pkg) => pkg.id !== packageId);
   }
 
   // Add new method to update evaluation weights based on business rules
@@ -5908,7 +5957,8 @@ this.rfpForm.get('coordinatorName')?.valueChanges
   getCompetitionTypes(): void {
     this.spinner.show();
 
-    this.api.get('CompTypeSet')
+    this.api
+      .get('CompTypeSet')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (response: any) => {
@@ -5918,9 +5968,9 @@ this.rfpForm.get('coordinatorName')?.valueChanges
 
           // ✅ IMPORTANT: Map EXACT backend keys
           this.competitionTypes = results.map((o: any) => ({
-            id: o.Id,               // <-- capital I
-            value: o.Value,         // <-- capital V
-            valueAr: o.Valuear      // <-- exact key name
+            id: o.Id, // <-- capital I
+            value: o.Value, // <-- capital V
+            valueAr: o.Valuear, // <-- exact key name
           }));
 
           console.log('FINAL competitionTypes:', this.competitionTypes);
@@ -5956,10 +6006,10 @@ this.rfpForm.get('coordinatorName')?.valueChanges
   //   // this.rfpForm.patchValue({ competitionType: direct?.id });
   // }
 
-
   getCommunicationDetailsList(): void {
     this.spinner.show();
-    this.api.get('CommunicationDetailsSet')
+    this.api
+      .get('CommunicationDetailsSet')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (response: any) => {
@@ -5973,27 +6023,36 @@ this.rfpForm.get('coordinatorName')?.valueChanges
         (error) => {
           this.spinner.hide();
           console.error('Error fetching communication details:', error);
-          this.cs.createMessage('error', 'Failed to load communication details');
+          this.cs.createMessage(
+            'error',
+            'Failed to load communication details'
+          );
         }
       );
   }
   updateCoordinatorDetails(value: string): void {
-  const selectedItem = this.communicationDetailsList.find(
-    (item: any) => item.Uname === value
-  );
+    const selectedItem = this.communicationDetailsList.find(
+      (item: any) => item.Uname === value
+    );
 
-  if (selectedItem) {
-    this.rfpForm.patchValue({
-      coordinatorNumber: selectedItem.Pernr || '',
-      coordinatorEmail: selectedItem.Usridlong || ''
-    }, { emitEvent: false }); // prevent recursion
-  } else {
-    this.rfpForm.patchValue({
-      coordinatorNumber: '',
-      coordinatorEmail: ''
-    }, { emitEvent: false });
+    if (selectedItem) {
+      this.rfpForm.patchValue(
+        {
+          coordinatorNumber: selectedItem.Pernr || '',
+          coordinatorEmail: selectedItem.Usridlong || '',
+        },
+        { emitEvent: false }
+      ); // prevent recursion
+    } else {
+      this.rfpForm.patchValue(
+        {
+          coordinatorNumber: '',
+          coordinatorEmail: '',
+        },
+        { emitEvent: false }
+      );
+    }
   }
-}
 
   onCoordinatorSearch(value: string): void {
     if (!value) {
@@ -6004,7 +6063,7 @@ this.rfpForm.get('coordinatorName')?.valueChanges
       );
     }
   }
-  
+
   onCoordinatorSelect(value: string): void {
     const selectedItem = this.communicationDetailsList.find(
       (item: any) => item.Uname === value
@@ -6013,7 +6072,7 @@ this.rfpForm.get('coordinatorName')?.valueChanges
       this.rfpForm.patchValue({
         coordinatorName: selectedItem.Uname,
         coordinatorNumber: selectedItem.Pernr || '',
-        coordinatorEmail: selectedItem.Usridlong || ''
+        coordinatorEmail: selectedItem.Usridlong || '',
       });
     }
   }

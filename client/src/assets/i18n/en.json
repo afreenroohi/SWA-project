@@ -75,6 +75,8 @@
   },
 
   "RFP": {
+    "Create RFP for Services/Projects":"Create RFP for Services/Projects",
+    "Create Agreements":"Create Agreements",
     "Quantity": "Quantity",
     "Attachments": "Attachments",
     "Year Quantity": "Year Quantity",

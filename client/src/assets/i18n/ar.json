@@ -70,6 +70,8 @@
     "WfDeptDesc": "قسم سير العمل"
   },
   "RFP": {
+    "Create RFP for Services/Projects":" إعداد طلب تقديم عروض للخدمات/المشاريع",
+    "Create Agreements":"صياغة الاتفاقيات",
     "Action": "الإجراء",
     "Year Quantity": "كمية السنة",
     "Attachments": "المرفقات",

@@ -45,7 +45,7 @@
 }
 
 .rfp-header-box {
-  margin-left:20px;
+  margin-left: 20px;
   background: linear-gradient(135deg, #005c99 0%, #004a7a 100%);
   border-radius: 8px;
   padding: 5px 20px;
@@ -93,7 +93,6 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--card-color) 0%, var(--card-color-light) 100%);
   }
 
   &:hover {
@@ -147,23 +146,27 @@
 }
 
 .kpi-card-total {
-  --card-color: #1890ff;
-  --card-color-light: #40a9ff;
+  &::before {
+    background: linear-gradient(90deg, #1890ff 0%, #40a9ff 100%);
+  }
 }
 
 .kpi-card-open {
-  --card-color: #faad14;
-  --card-color-light: #ffc53d;
+  &::before {
+    background: linear-gradient(90deg, #faad14 0%, #ffc53d 100%);
+  }
 }
 
 .kpi-card-progress {
-  --card-color: #722ed1;
-  --card-color-light: #9254de;
+  &::before {
+    background: linear-gradient(90deg, #722ed1 0%, #9254de 100%);
+  }
 }
 
 .kpi-card-closed {
-  --card-color: #52c41a;
-  --card-color-light: #73d13d;
+  &::before {
+    background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);
+  }
 }
 
 .table-container {

@@ -55,6 +55,42 @@ export class RfptableComponent implements OnInit, OnChanges {
   showTransferModal = false;
   selectedRowData: any;
 
+  directProcurementCommittees = [
+    { en: "Direct Purchasing Committee", ar: "لجنة الشراء المباشر" },
+    { en: "Direct Procurement Committee - for Materials and Spare Parts, Head Office", ar: "لجنة الشراء المباشر - للمواد وقطع الغيار، المكتب الرئيسي" },
+    { en: "Direct Procurement Committee of the Agency for Research and Promising Technologies Management", ar: "لجنة الشراء المباشر لوكالة إدارة البحوث والتقنيات الواعدة" },
+    { en: "Direct Procurement Committee - Services and Projects Head Office", ar: "لجنة الشراء المباشر - الخدمات والمشاريع المكتب الرئيسي" },
+    { en: "Direct Procurement Committee of the Groundwater and Surface Water Desalination Agency", ar: "لجنة الشراء المباشر لوكالة تحلية المياه الجوفية والسطحية" },
+    { en: "Direct Procurement Committee for Business and Projects Related to Supply Chains", ar: "لجنة الشراء المباشر للأعمال والمشاريع المتعلقة بسلاسل الإمداد" }
+  ];
+
+  bidOpeningCommittees = [
+    { en: "Bid Opening Committee", ar: "لجنة فتح العروض" },
+    { en: "Envelope Opening Committee", ar: "لجنة فتح المظاريف" },
+    { en: "Bids Opening Committee for Materials and Spare Parts – Main Center and Coastal Branches", ar: "لجنة فتح العروض للمواد وقطع الغيار - المركز الرئيسي والفروع الساحلية" },
+    { en: "East Coast Competitions Opening Committee", ar: "لجنة فتح منافسات الساحل الشرقي" },
+    { en: "Bidding Opening Committee for West Coast Competitions", ar: "لجنة فتح العطاءات لمنافسات الساحل الغربي" }
+  ];
+
+  bidReviewCommittees = [
+    { en: "Bid Review Committee", ar: "لجنة فحص العروض" },
+    { en: "Bidding Committee for Competitions", ar: "لجنة العطاءات للمنافسات" },
+    { en: "Committee to examine bids for limited and public tenders for spare parts and materials at the main center", ar: "لجنة فحص العروض للمناقصات المحدودة والعامة لقطع الغيار والمواد بالمركز الرئيسي" },
+    { en: "Bids Review Committee for Operation and Maintenance", ar: "لجنة فحص العروض للتشغيل والصيانة" },
+    { en: "Committee for reviewing bids submitted for public and limited tenders for works and projects related to production systems on the West Coast", ar: "لجنة فحص العروض المقدمة للمناقصات العامة والمحدودة للأعمال والمشاريع المتعلقة بأنظمة الإنتاج بالساحل الغربي" },
+    { en: "Committee for reviewing bids submitted for public and limited tenders for works and projects related to production systems on the East Coast", ar: "لجنة فحص العروض المقدمة للمناقصات العامة والمحدودة للأعمال والمشاريع المتعلقة بأنظمة الإنتاج بالساحل الشرقي" },
+    { en: "Five-year capital portfolio projects and projects financed by public debt", ar: "مشاريع محفظة رأس المال الخمسية والمشاريع الممولة من الدين العام" },
+    { en: "Committee for reviewing bids for public and limited tenders related to the Research and Innovation Institute, the General Administration for Local Competency Projects, the Executive Administration of the Saudi Water Academy, and Shared Services Agency projects", ar: "لجنة فحص العروض للمناقصات العامة والمحدودة المتعلقة بمعهد البحوث والابتكار والإدارة العامة لمشاريع الكفاءة المحلية والإدارة التنفيذية لأكاديمية المياه السعودية ومشاريع وكالة الخدمات المشتركة" },
+    { en: "Committee for reviewing bids for public and limited tenders for works and purchases with an estimated cost not exceeding five hundred thousand riyals related to main center departments and transportation systems", ar: "لجنة فحص العروض للمناقصات العامة والمحدودة للأعمال والمشتريات بتكلفة تقديرية لا تتجاوز خمسمائة ألف ريال المتعلقة بإدارات المركز الرئيسي وأنظمة النقل" },
+    { en: "Committee for reviewing bids from the Groundwater and Surface Water Purification Agency", ar: "لجنة فحص العروض من وكالة تنقية المياه الجوفية والسطحية" },
+    { en: "Committee for the draft agreement on the disposal of treated wastewater, rainwater, and industrial cities", ar: "لجنة مشروع الاتفاقية الخاصة بالتخلص من مياه الصرف الصحي المعالجة ومياه الأمطار والمدن الصناعية" },
+    { en: "Committee for reviewing bids for supply chain and strategic transformation projects", ar: "لجنة فحص العروض لمشاريع سلسلة الإمداد والتحول الاستراتيجي" }
+  ];
+
+  selectedDirectCommittee: string = '';
+  selectedBidOpeningCommittee: string = '';
+  selectedBidReviewCommittee: string = '';
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -263,6 +299,9 @@ export class RfptableComponent implements OnInit, OnChanges {
 
   onActionClick(action: string, data: any): void {
     this.selectedRowData = data;
+    this.selectedDirectCommittee = '';
+    this.selectedBidOpeningCommittee = '';
+    this.selectedBidReviewCommittee = '';
     switch(action) {
       case 'approve':
         this.showApproveModal = true;
@@ -274,6 +313,14 @@ export class RfptableComponent implements OnInit, OnChanges {
         this.showTransferModal = true;
         break;
     }
+  }
+
+  isDirectPurchase(): boolean {
+    return this.selectedRowData?.CompetitionType === 'Direct Purchase';
+  }
+
+  getCommitteeLabel(committee: any): string {
+    return this.cs.userLanguage === 'en' ? committee.en : committee.ar;
   }
 
   handleApproveCancel(): void {

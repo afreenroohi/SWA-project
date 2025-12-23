@@ -153,7 +153,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
     this.username = encodedUsername ? atob(encodedUsername) : '';
     console.log('Username:', this.username);
     
-    this.isEndUser = this.username === 'ENDUSER';
+    this.isEndUser = this.username === 'ENDUSER' || this.username === 'SCMENDUSER';
     this.isPRQualUser = this.username === 'PRQUALUSER';
     
   this.rfp.setIsSearchRFPMenuActive(true);

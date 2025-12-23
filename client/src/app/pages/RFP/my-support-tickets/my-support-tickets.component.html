@@ -103,7 +103,7 @@
             </td>
             <td>
               <span class="status-tag" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">
-                {{ 'SupportTickets.' + ticket.status.replace('-', '') | translate }}
+                {{ 'SupportTickets.' + ticket.status.replace(' ', '').replace('-', '') | translate }}
               </span>
             </td>
             <td>
@@ -120,9 +120,7 @@
     <!-- Back Button -->
     <div class="row mt-4" style="margin-left: 20px">
       <div class="col-12">
-        <button nz-button nzType="default" (click)="goBack()" [ngStyle]="{
-          'margin-right': cs.userLanguage === 'ar' ? '15px' : '0'
-        }">
+        <button nz-button nzType="default" (click)="goBack()">
           <i nz-icon nzType="arrow-left"></i> {{ 'SupportTickets.Back' | translate }}
         </button>
       </div>
