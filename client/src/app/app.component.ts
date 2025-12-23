@@ -106,6 +106,8 @@ export class AppComponent {
   department = '';
 
   applicationVersion = '1.0.0';
+ 
+
 
   // logoSrc = "assets/logo/mwan_logo.png";
   logoSrc = 'assets/logo/swa-logo-dark.svg';
@@ -438,17 +440,18 @@ export class AppComponent {
    * @todo Make the changes according to the Process deployment.
    *
    */
-  private _enableTestLogon: boolean = true;
-  private hasUsedTestLogin: boolean = false;
+private _enableTestLogon: boolean = true;
+private hasUsedTestLogin: boolean = false;
 
-  get enableTestLogon(): boolean {
-    return true;
-  }
+get enableTestLogon(): boolean {
+  return this._enableTestLogon;
+}
 
-  set enableTestLogon(value: boolean) {
-    this._enableTestLogon = value;
-  }
+set enableTestLogon(value: boolean) {
+  this._enableTestLogon = value;
+}
   async getNavItem(userName: string) {
+    this.enableTestLogon = false;
     this.spinner.show();
     this.api.getLoginUserDetails(userName).subscribe(
       (response: any) => {
@@ -465,6 +468,7 @@ export class AppComponent {
         // this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
         if (response?.d?.Msgid === 'S' && response?.d?.Uname) {
           this.isUserLoggedIn = true;
+          
         } else {
           this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
           console.log('Login failed:', response?.d?.Message);
