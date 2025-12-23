@@ -48,6 +48,7 @@ export class AppComponent {
   currentYear = 2026
 
   isUserLoggedIn = false;
+  showHelpIcon = false;
   enableproxy = false;
   openMdl = false;
 
@@ -148,6 +149,7 @@ export class AppComponent {
    */
   private resetUserState(): void {
     this.isUserLoggedIn = false;
+    this.showHelpIcon = false;
     this.dispname = '';
     this.department = '';
     this.ProxyUserId = '';
@@ -575,6 +577,7 @@ export class AppComponent {
 
        if (role === 'SCMENDUSER'){
            this.roleTest('Requestor');
+           this.showHelpIcon = true;
 
           this.navItems.push({
             Module: 'Support',
@@ -2988,15 +2991,7 @@ export class AppComponent {
   }
 
   get shouldShowHelpIcon(): boolean {
-    if (!this.isUserLoggedIn) {
-      return false;
-    }
-    const userRole = localStorage.getItem('username');
-    if (userRole) {
-      const decodedRole = atob(userRole);
-      return decodedRole === 'SCMENDUSER';
-    }
-    return false;
+    return this.showHelpIcon;
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {

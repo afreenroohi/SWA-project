@@ -34,6 +34,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { PrequalificationComponent } from './prequalification/prequalification.component';
 import { PrequalificationViewComponent } from './prequalification-view/prequalification-view.component';
 import { MyprequalComponent } from './myprequal/myprequal.component';
+
 import { MySupportTicketsComponent } from './my-support-tickets/my-support-tickets.component';
 const routes: Routes = [
   {
