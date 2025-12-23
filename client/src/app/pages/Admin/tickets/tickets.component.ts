@@ -14,6 +14,10 @@ export class TicketsComponent implements OnInit {
   openTickets = 0;
   supportForm: FormGroup;
   loading = false;
+  showCloseModal = false;
+  selectedTicket: any = null;
+  closeMessage = '';
+  staticTicketsLoaded = false;
 
   constructor(private fb: FormBuilder) {
     this.supportForm = this.fb.group({
@@ -31,10 +35,8 @@ export class TicketsComponent implements OnInit {
   }
 
   loadTickets(): void {
-    const storedTickets = JSON.parse(localStorage.getItem('ticketList') || '[]');
-    
-    // Add static data if no tickets exist
-    if (storedTickets.length === 0) {
+    // Only load static data once
+    if (!this.staticTicketsLoaded) {
       this.tickets = [
         {
           id: 'TKT-001',
@@ -82,8 +84,7 @@ export class TicketsComponent implements OnInit {
           createdBy: 'Tom Brown'
         }
       ];
-    } else {
-      this.tickets = storedTickets;
+      this.staticTicketsLoaded = true;
     }
     
     this.calculateKPIs();
@@ -140,18 +141,33 @@ export class TicketsComponent implements OnInit {
   }
 
   toggleTicketStatus(ticket: any): void {
-    ticket.status = ticket.status === 'Open' ? 'Closed' : 'Open';
-    
-    // Update localStorage if tickets are stored there
-    const storedTickets = JSON.parse(localStorage.getItem('ticketList') || '[]');
-    if (storedTickets.length > 0) {
-      const index = storedTickets.findIndex((t: any) => t.id === ticket.id);
-      if (index !== -1) {
-        storedTickets[index].status = ticket.status;
-        localStorage.setItem('ticketList', JSON.stringify(storedTickets));
-      }
+    if (ticket.status === 'Open') {
+      // Show modal for closing ticket
+      this.selectedTicket = ticket;
+      this.showCloseModal = true;
+    } else {
+      // Directly reopen ticket
+      ticket.status = 'Open';
+      this.calculateKPIs();
     }
-    
-    this.calculateKPIs();
+  }
+
+  closeTicket(): void {
+    if (this.selectedTicket && this.closeMessage.trim()) {
+      this.selectedTicket.status = 'Closed';
+      this.selectedTicket.closeMessage = this.closeMessage;
+      this.selectedTicket.closedDate = new Date().toISOString();
+      
+      this.showCloseModal = false;
+      this.closeMessage = '';
+      this.selectedTicket = null;
+      this.calculateKPIs();
+    }
+  }
+
+  cancelClose(): void {
+    this.showCloseModal = false;
+    this.closeMessage = '';
+    this.selectedTicket = null;
   }
 }

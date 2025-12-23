@@ -2966,7 +2966,7 @@ export class AppComponent {
     const userRole = localStorage.getItem('username');
     if (userRole) {
       const decodedRole = atob(userRole);
-      return decodedRole !== 'ADMIN';
+      return decodedRole === 'SCMENDUSER';
     }
     return true;
   }
