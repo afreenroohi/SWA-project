@@ -1,12 +1,13 @@
-<ngx-spinner bdColor = "rgb(144, 212, 250)" size = "default" color = "#1971e5" type = "ball-grid-beat" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
-<nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="10"
-  [nzTotal]="1000" [nzPageIndex]="1" [nzFrontPagination]="true"
-  [nzPageSizeOptions]="[10,20,30,50]" nzBordered="true" nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" class="enhanced-table">
+<ngx-spinner bdColor="rgb(144, 212, 250)" size="default" color="#1971e5" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<nz-table #nzTable nzShowSizeChanger *ngIf="listArray" [nzData]="listOfDisplayData" [nzPageSize]="10" [nzTotal]="1000"
+  [nzPageIndex]="1" [nzFrontPagination]="true" [nzPageSizeOptions]="[10,20,30,50]" nzBordered="true"
+  nzNoResult="{{ 'RFP.Norecordsfound' | translate }}" class="enhanced-table">
   <thead>
     <tr>
       <th *ngFor="let column of listOfColumn; index as i" [nzSortFn]="column.sortFn"
-        [nzSortDirections]="column.sortDirections"
-        [nzFilterMultiple]="column.filterMultiple"
+        [nzSortDirections]="column.sortDirections" [nzFilterMultiple]="column.filterMultiple"
         [nzFilters]="cs.userLanguage === 'en' ? column.listOfFilter : column.listOfFilterAr"
         [nzFilterFn]="column.filterFn">
         {{ cs.userLanguage === 'en'? column.title : column.titleAr }}
@@ -17,11 +18,14 @@
     <ng-container *ngIf="isPRQualUser">
       <tr *ngFor="let data of nzTable.data">
         <td>{{ data.RequestID }}</td>
-        <td>{{ data.QualificationCallName }}</td>
-        <td>{{ data.TechnicalEntity }}</td>
-        <td>{{ data.QualificationCommittee }}</td>
-        <td>{{ data.Region }}</td>
-        <td>{{ data.Activity }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.QualificationCallName : (data.QualificationCallNameAr ||
+          data.QualificationCallName) }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.TechnicalEntity : (data.TechnicalEntityAr || data.TechnicalEntity) }}
+        </td>
+        <td>{{ cs.userLanguage === 'en' ? data.QualificationCommittee : (data.QualificationCommitteeAr ||
+          data.QualificationCommittee) }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.Region : (data.RegionAr || data.Region) }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.Activity : (data.ActivityAr || data.Activity) }}</td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
           <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
             (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
@@ -31,18 +35,19 @@
           </button>
         </td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-          <button nz-button nz-dropdown [nzDropdownMenu]="prqualActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+          <button nz-button nz-dropdown [nzDropdownMenu]="prqualActionMenu" nzPlacement="bottomRight"
+            class="action-dropdown-btn">
             <span nz-icon nzType="more" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #prqualActionMenu="nzDropdownMenu">
             <ul nz-menu>
               <li nz-menu-item (click)="onActionClick('approve', data)" style="color: #52c41a;">
                 <span nz-icon nzType="check-circle" nzTheme="outline" style="color: #52c41a;"></span>
-                Approve
+                {{ 'RFP.Approved' | translate }}
               </li>
               <li nz-menu-item (click)="onActionClick('decline', data)" style="color: #ff4d4f;">
                 <span nz-icon nzType="close-circle" nzTheme="outline" style="color: #ff4d4f;"></span>
-                Reject
+                {{ 'RFP.Declined' | translate }}
               </li>
             </ul>
           </nz-dropdown-menu>
@@ -52,20 +57,21 @@
 
     <ng-container *ngIf="isEndUser && !isPRQualUser">
       <tr *ngFor="let data of nzTable.data">
-        <td>{{ data.RfpName }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.RfpName : (data.RfpNameAr || data.RfpName) }}</td>
         <td>{{ data.RfpNo }}</td>
         <td>{{ data.RfpVersion }}</td>
         <td>{{ data.PurchaseReqNo }}</td>
         <td>{{ data.CreatedOn | date:'dd-MM-yyyy' }}</td>
-        <td>{{ data.DeptText }}</td>
-        <td>{{ data.PendingDept }}</td>
-        <td>{{ data.PendingUser }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.DeptText : (data.DeptTextAr || data.DeptText) }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.PendingDept : (data.PendingDeptAr || data.PendingDept) }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.PendingUser : (data.PendingUserAr || data.PendingUser) }}</td>
         <td [ngClass]="{
           'status-approved': data.RfpStatus === 'A',
           'status-draft': data.RfpStatus === 'D',
           'status-submitted': data.RfpStatus === 'S'
-        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
-          {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
+        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''">
+          {{ (data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ?
+          'Pending' : '') | translate }}
         </td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
           <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
@@ -76,26 +82,27 @@
           </button>
         </td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-          <button nz-button nz-dropdown [nzDropdownMenu]="endUserActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+          <button nz-button nz-dropdown [nzDropdownMenu]="endUserActionMenu" nzPlacement="bottomRight"
+            class="action-dropdown-btn">
             <span nz-icon nzType="more" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #endUserActionMenu="nzDropdownMenu">
             <ul nz-menu>
               <li nz-menu-item (click)="onActionClick('changebidopeningdate', data)">
                 <span nz-icon nzType="calendar" nzTheme="outline"></span>
-                Change Bid Opening Date
+                {{"RFP.Change Bill of Quantity" | translate}}
               </li>
               <li nz-menu-item (click)="onActionClick('extenddate', data)">
                 <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
-                Extend Bid Opening Date
+                {{"RFP.Extend Bill of Quantity" | translate}}
               </li>
               <li nz-menu-item (click)="onActionClick('addattachment', data)">
                 <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
-                Add More Attachments
+                {{"RFP.Add More Attachments" | translate}}
               </li>
               <li nz-menu-item (click)="onActionClick('invitecompanies', data)">
                 <span nz-icon nzType="user-add" nzTheme="outline"></span>
-                Invite More Companies
+                {{"RFP.Invite More Companies" | translate}}
               </li>
             </ul>
           </nz-dropdown-menu>
@@ -106,7 +113,7 @@
     <ng-container *ngIf="!isEndUser && !isPRQualUser">
       <tr *ngFor="let data of nzTable.data">
         <td>{{ data.PurchaseReqNo }}</td>
-        <td>{{ data.RfpName }}</td>
+        <td>{{ cs.userLanguage === 'en' ? data.RfpName : (data.RfpNameAr || data.RfpName) }}</td>
         <td>{{ data.DeptText }}</td>
         <td>{{ data.CompetitionType }}</td>
         <td>{{ data.Activity }}{{ data.SubActivity ? ' / ' + data.SubActivity : '' }}</td>
@@ -117,8 +124,9 @@
           'status-approved': data.RfpStatus === 'A',
           'status-draft': data.RfpStatus === 'D',
           'status-submitted': data.RfpStatus === 'S'
-        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''"> 
-          {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ? 'Pending' : '' }}
+        }" [style.color]="data.RfpStatus === 'S' ? '#ff4d4f' : ''">
+          {{ data.RfpStatus === 'A' ? 'Approved' : data.RfpStatus === 'S' ? 'Declined' : data.RfpStatus === 'D' ?
+          'Pending' : '' }}
         </td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
           <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
@@ -129,7 +137,8 @@
           </button>
         </td>
         <td *ngIf="dashboardType === 'my'" style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-          <button nz-button nz-dropdown [nzDropdownMenu]="procUserActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+          <button nz-button nz-dropdown [nzDropdownMenu]="procUserActionMenu" nzPlacement="bottomRight"
+            class="action-dropdown-btn">
             <span nz-icon nzType="more" nzTheme="outline"></span>
           </button>
           <nz-dropdown-menu #procUserActionMenu="nzDropdownMenu">
@@ -182,14 +191,19 @@
   </div>
 </nz-dropdown-menu>
 
-<nz-modal [(nzVisible)]="showApproveModal" [nzTitle]="isPRQualUser ? (cs.userLanguage === 'en' ? 'Approve Qualification' : 'الموافقة على التأهيل') : (cs.userLanguage === 'en' ? 'Approve Request' : 'الموافقة على الطلب')" [nzMaskClosable]="false" [nzClosable]="true" 
-  (nzOnCancel)="handleApproveCancel()" [nzFooter]="approveFooter" nzWidth="600px">
+<nz-modal [(nzVisible)]="showApproveModal"
+  [nzTitle]="isPRQualUser ? (cs.userLanguage === 'en' ? 'Approve Qualification' : 'الموافقة على التأهيل') : (cs.userLanguage === 'en' ? 'Approve Request' : 'الموافقة على الطلب')"
+  [nzMaskClosable]="false" [nzClosable]="true" (nzOnCancel)="handleApproveCancel()" [nzFooter]="approveFooter"
+  nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
     <form nz-form nzLayout="vertical" *ngIf="isPRQualUser">
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Etimad Prequalification Number' : 'رقم التأهيل المسبق في اعتماد' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Etimad Prequalification Number' : 'رقم
+          التأهيل المسبق في اعتماد' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <input nz-input [placeholder]="cs.userLanguage === 'en' ? 'Enter Etimad Prequalification Number' : 'أدخل رقم التأهيل المسبق في اعتماد'" style="height: 40px; border-radius: 6px;" />
+          <input nz-input
+            [placeholder]="cs.userLanguage === 'en' ? 'Enter Etimad Prequalification Number' : 'أدخل رقم التأهيل المسبق في اعتماد'"
+            style="height: 40px; border-radius: 6px;" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -206,44 +220,64 @@
     </form>
     <form nz-form nzLayout="vertical" *ngIf="!isPRQualUser">
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Etimad Ref Number' : 'الرقم المرجعي في اعتماد' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Etimad Ref Number' : 'الرقم المرجعي في
+          اعتماد' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <input nz-input [placeholder]="cs.userLanguage === 'en' ? 'Enter Etimad Reference Number' : 'أدخل الرقم المرجعي في اعتماد'" style="height: 40px; border-radius: 6px;" />
+          <input nz-input
+            [placeholder]="cs.userLanguage === 'en' ? 'Enter Etimad Reference Number' : 'أدخل الرقم المرجعي في اعتماد'"
+            style="height: 40px; border-radius: 6px;" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Open Date' : 'تاريخ فتح العطاء' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Open Date' : 'تاريخ فتح العطاء'
+          }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <nz-date-picker style="width: 100%; height: 40px; border-radius: 6px;" [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Date' : 'اختر التاريخ'"></nz-date-picker>
+          <nz-date-picker style="width: 100%; height: 40px; border-radius: 6px;"
+            [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Date' : 'اختر التاريخ'"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Technical Criteria' : 'المعايير الفنية للعطاء' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Technical Criteria' : 'المعايير
+          الفنية للعطاء' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <textarea nz-input rows="4" [placeholder]="cs.userLanguage === 'en' ? 'Enter technical criteria' : 'أدخل المعايير الفنية'" style="resize: none; border-radius: 6px;"></textarea>
+          <textarea nz-input rows="4"
+            [placeholder]="cs.userLanguage === 'en' ? 'Enter technical criteria' : 'أدخل المعايير الفنية'"
+            style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="isDirectPurchase()">
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Direct Procurement Committee' : 'لجنة الشراء المباشر' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Direct Procurement Committee' : 'لجنة
+          الشراء المباشر' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <nz-select [(ngModel)]="selectedDirectCommittee" [ngModelOptions]="{standalone: true}" [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'" style="width: 100%; height: 40px;" nzShowSearch>
-            <nz-option *ngFor="let committee of directProcurementCommittees" [nzValue]="committee.en" [nzLabel]="getCommitteeLabel(committee)"></nz-option>
+          <nz-select [(ngModel)]="selectedDirectCommittee" [ngModelOptions]="{standalone: true}"
+            [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'"
+            style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of directProcurementCommittees" [nzValue]="committee.en"
+              [nzLabel]="getCommitteeLabel(committee)"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="!isDirectPurchase()">
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Opening Committee' : 'لجنة فتح العروض' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Opening Committee' : 'لجنة فتح
+          العروض' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <nz-select [(ngModel)]="selectedBidOpeningCommittee" [ngModelOptions]="{standalone: true}" [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'" style="width: 100%; height: 40px;" nzShowSearch>
-            <nz-option *ngFor="let committee of bidOpeningCommittees" [nzValue]="committee.en" [nzLabel]="getCommitteeLabel(committee)"></nz-option>
+          <nz-select [(ngModel)]="selectedBidOpeningCommittee" [ngModelOptions]="{standalone: true}"
+            [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'"
+            style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of bidOpeningCommittees" [nzValue]="committee.en"
+              [nzLabel]="getCommitteeLabel(committee)"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="!isDirectPurchase()">
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Review Committee' : 'لجنة فحص العروض' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Review Committee' : 'لجنة فحص العروض'
+          }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <nz-select [(ngModel)]="selectedBidReviewCommittee" [ngModelOptions]="{standalone: true}" [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'" style="width: 100%; height: 40px;" nzShowSearch>
-            <nz-option *ngFor="let committee of bidReviewCommittees" [nzValue]="committee.en" [nzLabel]="getCommitteeLabel(committee)"></nz-option>
+          <nz-select [(ngModel)]="selectedBidReviewCommittee" [ngModelOptions]="{standalone: true}"
+            [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Committee' : 'اختر اللجنة'"
+            style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of bidReviewCommittees" [nzValue]="committee.en"
+              [nzLabel]="getCommitteeLabel(committee)"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -261,19 +295,28 @@
     </form>
   </div>
   <ng-template #approveFooter>
-    <button nz-button nzType="default" (click)="handleApproveCancel()" style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ? 'Cancel' : 'إلغاء' }}</button>
-    <button nz-button nzType="primary" (click)="handleApproveSubmit()" style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{ cs.userLanguage === 'en' ? 'Approve' : 'موافقة' }}</button>
+    <button nz-button nzType="default" (click)="handleApproveCancel()"
+      style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ?
+      'Cancel' : 'إلغاء' }}</button>
+    <button nz-button nzType="primary" (click)="handleApproveSubmit()"
+      style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{
+      cs.userLanguage === 'en' ? 'Approve' : 'موافقة' }}</button>
   </ng-template>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="showDeclineModal" [nzTitle]="isPRQualUser ? (cs.userLanguage === 'en' ? 'Reject Qualification' : 'رفض التأهيل') : (cs.userLanguage === 'en' ? 'Decline Request' : 'رفض الطلب')" [nzMaskClosable]="false" [nzClosable]="true" 
-  (nzOnCancel)="handleDeclineCancel()" [nzFooter]="declineFooter" nzWidth="600px">
+<nz-modal [(nzVisible)]="showDeclineModal"
+  [nzTitle]="isPRQualUser ? (cs.userLanguage === 'en' ? 'Reject Qualification' : 'رفض التأهيل') : (cs.userLanguage === 'en' ? 'Decline Request' : 'رفض الطلب')"
+  [nzMaskClosable]="false" [nzClosable]="true" (nzOnCancel)="handleDeclineCancel()" [nzFooter]="declineFooter"
+  nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
     <form nz-form nzLayout="vertical">
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? (isPRQualUser ? 'Reason for Rejection' : 'Reason for Decline') : (isPRQualUser ? 'سبب الرفض' : 'سبب الرفض') }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? (isPRQualUser ? 'Reason for Rejection' :
+          'Reason for Decline') : (isPRQualUser ? 'سبب الرفض' : 'سبب الرفض') }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <textarea nz-input rows="5" [placeholder]="cs.userLanguage === 'en' ? (isPRQualUser ? 'Enter reason for rejection' : 'Enter reason for decline') : (isPRQualUser ? 'أدخل سبب الرفض' : 'أدخل سبب الرفض')" style="resize: none; border-radius: 6px;"></textarea>
+          <textarea nz-input rows="5"
+            [placeholder]="cs.userLanguage === 'en' ? (isPRQualUser ? 'Enter reason for rejection' : 'Enter reason for decline') : (isPRQualUser ? 'أدخل سبب الرفض' : 'أدخل سبب الرفض')"
+            style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="!isPRQualUser">
@@ -290,25 +333,36 @@
     </form>
   </div>
   <ng-template #declineFooter>
-    <button nz-button nzType="default" (click)="handleDeclineCancel()" style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ? 'Cancel' : 'إلغاء' }}</button>
-    <button nz-button nzType="primary" (click)="handleDeclineSubmit()" style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{ cs.userLanguage === 'en' ? (isPRQualUser ? 'Reject' : 'Decline') : 'رفض' }}</button>
+    <button nz-button nzType="default" (click)="handleDeclineCancel()"
+      style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ?
+      'Cancel' : 'إلغاء' }}</button>
+    <button nz-button nzType="primary" (click)="handleDeclineSubmit()"
+      style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{
+      cs.userLanguage === 'en' ? (isPRQualUser ? 'Reject' : 'Decline') : 'رفض' }}</button>
   </ng-template>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="showTransferModal" [nzTitle]="cs.userLanguage === 'en' ? 'Transfer Request' : 'تحويل الطلب'" [nzMaskClosable]="false" [nzClosable]="true" 
-  (nzOnCancel)="handleTransferCancel()" [nzFooter]="transferFooter" nzWidth="500px">
+<nz-modal [(nzVisible)]="showTransferModal" [nzTitle]="cs.userLanguage === 'en' ? 'Transfer Request' : 'تحويل الطلب'"
+  [nzMaskClosable]="false" [nzClosable]="true" (nzOnCancel)="handleTransferCancel()" [nzFooter]="transferFooter"
+  nzWidth="500px">
   <div *nzModalContent style="padding: 24px;">
     <form nz-form nzLayout="vertical">
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Enter User ID' : 'أدخل معرف المستخدم' }}</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Enter User ID' : 'أدخل معرف المستخدم'
+          }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <input nz-input [placeholder]="cs.userLanguage === 'en' ? 'Enter User ID' : 'أدخل معرف المستخدم'" style="height: 40px; border-radius: 6px;" />
+          <input nz-input [placeholder]="cs.userLanguage === 'en' ? 'Enter User ID' : 'أدخل معرف المستخدم'"
+            style="height: 40px; border-radius: 6px;" />
         </nz-form-control>
       </nz-form-item>
     </form>
   </div>
   <ng-template #transferFooter>
-    <button nz-button nzType="default" (click)="handleTransferCancel()" style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ? 'Cancel' : 'إلغاء' }}</button>
-    <button nz-button nzType="primary" (click)="handleTransferSubmit()" style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{ cs.userLanguage === 'en' ? 'Transfer' : 'تحويل' }}</button>
+    <button nz-button nzType="default" (click)="handleTransferCancel()"
+      style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">{{ cs.userLanguage === 'en' ?
+      'Cancel' : 'إلغاء' }}</button>
+    <button nz-button nzType="primary" (click)="handleTransferSubmit()"
+      style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{
+      cs.userLanguage === 'en' ? 'Transfer' : 'تحويل' }}</button>
   </ng-template>
 </nz-modal>

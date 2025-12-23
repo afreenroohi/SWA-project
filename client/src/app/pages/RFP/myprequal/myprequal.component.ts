@@ -50,7 +50,7 @@ export class MyprequalComponent implements OnInit {
       status: new FormControl('')
     });
   }
-  
+
 
   ngOnInit(): void {
     this.listArray = [
@@ -60,6 +60,53 @@ export class MyprequalComponent implements OnInit {
       { RequestID: 'REQ-004', QualificationCallName: 'Maintenance Services Qualification', TechnicalEntity: 'Operations Department', QualificationCommittee: 'Technical Committee A', Region: 'Northern', Activity: 'Facility Maintenance', RfpStatus: 'A' },
       { RequestID: 'REQ-005', QualificationCallName: 'Security Systems Qualification', TechnicalEntity: 'Security Division', QualificationCommittee: 'Technical Committee D', Region: 'Central', Activity: 'Security Services', RfpStatus: 'S' }
     ];
+
+    const callNameMap: { [key: string]: string } = {
+      'Water Infrastructure Qualification': 'تأهيل البنية التحتية للمياه',
+      'IT Systems Qualification': 'تأهيل أنظمة تقنية المعلومات',
+      'Construction Qualification': 'تأهيل الإنشاءات',
+      'Maintenance Services Qualification': 'تأهيل خدمات الصيانة',
+      'Security Systems Qualification': 'تأهيل الأنظمة الأمنية'
+    };
+
+    const entityMap: { [key: string]: string } = {
+      'Engineering Division': 'القسم الفني',
+      'IT Department': 'قسم تقنية المعلومات',
+      'Construction Division': 'قسم الإنشاءات',
+      'Operations Department': 'قسم العمليات',
+      'Security Division': 'القسم الأمني'
+    };
+
+    const committeeMap: { [key: string]: string } = {
+      'Technical Committee A': 'اللجنة الفنية أ',
+      'Technical Committee B': 'اللجنة الفنية ب',
+      'Technical Committee C': 'اللجنة الفنية ج',
+      'Technical Committee D': 'اللجنة الفنية د'
+    };
+
+    const regionMap: { [key: string]: string } = {
+      'Central': 'الوسطى',
+      'Eastern': 'الشرقية',
+      'Western': 'الغربية',
+      'Northern': 'الشمالية'
+    };
+
+    const activityMap: { [key: string]: string } = {
+      'Water Treatment': 'معالجة المياه',
+      'IT Services': 'خدمات تقنية المعلومات',
+      'Building Construction': 'تشييد المباني',
+      'Facility Maintenance': 'صيانة المرافق',
+      'Security Services': 'الخدمات الأمنية'
+    };
+
+    this.listArray = this.listArray.map((item: any) => ({
+      ...item,
+      QualificationCallNameAr: callNameMap[item.QualificationCallName] || item.QualificationCallName,
+      TechnicalEntityAr: entityMap[item.TechnicalEntity] || item.TechnicalEntity,
+      QualificationCommitteeAr: committeeMap[item.QualificationCommittee] || item.QualificationCommittee,
+      RegionAr: regionMap[item.Region] || item.Region,
+      ActivityAr: activityMap[item.Activity] || item.Activity
+    }));
     this.rfpList = this.listArray;
     this.calculateStats();
     this.getData();
@@ -138,5 +185,5 @@ export class MyprequalComponent implements OnInit {
       ];
     }
   }
-  
+
 }
