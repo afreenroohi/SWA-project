@@ -230,7 +230,6 @@ nz-sider {
       line-height: 50px !important;
       display: flex !important;
       align-items: center !important;
-      padding-left: 0 !important;
 
       &:hover {
         color: #005c99 !important;
@@ -391,6 +390,8 @@ nz-sider {
       .ant-menu-submenu-arrow {
         color: $text-secondary !important;
         transition: all $transition-smooth !important;
+        right: 25px !important;
+        font-size: 14px !important;
       }
 
       &.ant-menu-submenu-open .ant-menu-submenu-arrow {
@@ -442,21 +443,61 @@ nz-sider {
       animation: bounce 0.6s ease-in-out;
     }
   }
+
+  // Submenu item icons
+  .ant-menu-item {
+    .anticon,
+    app-icon {
+      font-size: 1.5rem !important;
+    }
+  }
 }
 
-// RTL icon padding for sidebar menu items
+// Override all inline font-size styles for menu icons with highest specificity
+.menu ::ng-deep .menu-items .anticon,
+.menu ::ng-deep .menu-items app-icon,
+.menu ::ng-deep li[nz-menu-item] .anticon,
+.menu ::ng-deep li[nz-menu-item] app-icon,
+.menu ::ng-deep li[nz-submenu] .anticon,
+.menu ::ng-deep li[nz-submenu] app-icon,
+.menu ::ng-deep .ant-menu-submenu-title .anticon,
+.menu ::ng-deep .ant-menu-submenu-title app-icon,
+.menu ::ng-deep .ant-menu-item .anticon,
+.menu ::ng-deep .ant-menu-item app-icon {
+  font-size: 1.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  line-height: 1.5rem !important;
+}
+
+// RTL icon spacing - add gap between icon and text in Arabic
+[dir="rtl"] .menu-items .anticon + span,
+[dir="rtl"] .menu-items app-icon + span,
+.rtl-layout .menu-items .anticon + span,
+.rtl-layout .menu-items app-icon + span {
+  margin-right: 8px !important;
+}
+
+[dir="rtl"] .menu-items .ant-menu-submenu-title .anticon + span,
+[dir="rtl"] .menu-items .ant-menu-submenu-title app-icon + span,
+.rtl-layout .menu-items .ant-menu-submenu-title .anticon + span,
+.rtl-layout .menu-items .ant-menu-submenu-title app-icon + span {
+  margin-right: 8px !important;
+}
+
+// RTL icon alignment - add space to right of icons for proper collapsed alignment
 [dir="rtl"] .menu-items .anticon,
 [dir="rtl"] .menu-items app-icon,
 .rtl-layout .menu-items .anticon,
 .rtl-layout .menu-items app-icon {
-  padding-right: 20px !important;
+  margin-right: 25px !important;
 }
 
 [dir="rtl"] .menu-items .ant-menu-submenu-title .anticon,
 [dir="rtl"] .menu-items .ant-menu-submenu-title app-icon,
 .rtl-layout .menu-items .ant-menu-submenu-title .anticon,
 .rtl-layout .menu-items .ant-menu-submenu-title app-icon {
-  padding-right: 20px !important;
+  margin-right: 25px !important;
 }
 
 // RTL logo container padding
@@ -854,9 +895,7 @@ nz-content {
 :host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-submenu-title {
   padding: 0 !important;
 }
-:host ::ng-deep span[nz-icon][ng-reflect-nz-type="line-chart"] {
-  padding-left: 25px !important;
-}
+
 :host ::ng-deep .ant-menu-inline-collapsed > .ant-menu-submenu-title {
   padding: 0 !important;
 }
@@ -865,6 +904,11 @@ nz-content {
 }
 :host ::ng-deep .ant-menu-item,
 :host ::ng-deep .ant-menu-submenu-title {
+  padding: 0 0 0 12px !important;
+}
+
+:host ::ng-deep .ant-menu-inline-collapsed .ant-menu-item,
+:host ::ng-deep .ant-menu-inline-collapsed .ant-menu-submenu-title {
   padding: 0 0 0 25px !important;
 }
 
@@ -983,4 +1027,48 @@ nz-content {
 ::ng-deep .rtl-layout .ant-menu-submenu-arrow {
   right: auto !important;
   left: 16px !important;
+}
+
+::ng-deep .ant-menu-submenu-expand-icon,
+::ng-deep .ant-menu-submenu-arrow {
+  right: 2px !important;
+}
+
+::ng-deep app-icon {
+  font-size: 1.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+::ng-deep .ant-menu-inline .ant-menu-item app-icon {
+  font-size: 1.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+::ng-deep app-icon svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+::ng-deep .menu-items app-icon svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+::ng-deep .ant-menu-inline .ant-menu-item app-icon svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+// Force all menu icons to 1.5rem - highest specificity
+::ng-deep .menu ul li .anticon,
+::ng-deep .menu ul li app-icon,
+::ng-deep .menu .ant-menu-item .anticon,
+::ng-deep .menu .ant-menu-item app-icon,
+::ng-deep .menu .ant-menu-submenu-title .anticon,
+::ng-deep .menu .ant-menu-submenu-title app-icon {
+  font-size: 1.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }

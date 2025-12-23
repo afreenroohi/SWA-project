@@ -419,7 +419,7 @@ export class AppComponent {
   private hasUsedTestLogin: boolean = false;
 
   get enableTestLogon(): boolean {
-    return !this.hasUsedTestLogin;
+    return true;
   }
 
   set enableTestLogon(value: boolean) {
@@ -2930,6 +2930,15 @@ export class AppComponent {
       localStorage.setItem('theme', 'light');
     }
     console.log('HTML element data-theme:', htmlElement.getAttribute('data-theme'));
+  }
+
+  get shouldShowHelpIcon(): boolean {
+    const userRole = localStorage.getItem('username');
+    if (userRole) {
+      const decodedRole = atob(userRole);
+      return decodedRole !== 'ADMIN';
+    }
+    return true;
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {

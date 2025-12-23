@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DelegationComponent } from "./delegation/delegation.component";
 import { CommitteeMemberMaintenanceComponent } from './committee-member-maintenance/committee-member-maintenance.component';
 import { SharedCustomModule } from "src/app/shared/shared-custom.module";
+import { TicketsComponent } from './tickets/tickets.component';
 
 const routes: Routes = [
     {
@@ -28,6 +29,10 @@ const routes: Routes = [
     {
         path: 'committeeMemberMaintenance',
         component: CommitteeMemberMaintenanceComponent
+    },
+    {
+        path: 'tickets',
+        component: TicketsComponent
     }
 ]
 
@@ -36,7 +41,8 @@ const routes: Routes = [
         RFPMaintenanceComponent,
         DelegationComponent,
         SlaComponent,
-        CommitteeMemberMaintenanceComponent
+        CommitteeMemberMaintenanceComponent,
+        TicketsComponent
     ],
     imports: [
         CommonModule,

@@ -1,0 +1,98 @@
+<div class="tickets-container">
+  <nz-card nzTitle="Support Tickets">
+    
+    <!-- KPI Cards -->
+    <div class="kpi-cards">
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3>{{ totalTickets }}</h3>
+          <p>Total Tickets</p>
+        </div>
+      </nz-card>
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3 style="color: #f5222d">{{ highPriorityTickets }}</h3>
+          <p>High Priority</p>
+        </div>
+      </nz-card>
+      <nz-card class="kpi-card">
+        <div class="kpi-content">
+          <h3 style="color: #52c41a">{{ openTickets }}</h3>
+          <p>Open Tickets</p>
+        </div>
+      </nz-card>
+    </div>
+
+    <div class="actions-bar">
+      <button nz-button nzType="primary" (click)="showSupportForm = !showSupportForm">
+        {{ showSupportForm ? 'Hide Form' : 'Create Ticket' }}
+      </button>
+    </div>
+
+    <div *ngIf="showSupportForm" class="support-form">
+      <nz-card nzTitle="Create Support Ticket">
+        <form nz-form [formGroup]="supportForm" (ngSubmit)="onSubmit()">
+          
+          <nz-form-item>
+            <nz-form-label nzRequired>Subject</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="subject" placeholder="Enter subject" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label nzRequired>Description</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input formControlName="description" rows="4" placeholder="Describe your issue"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label>Priority</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="priority">
+                <nz-option nzValue="Low" nzLabel="Low"></nz-option>
+                <nz-option nzValue="Medium" nzLabel="Medium"></nz-option>
+                <nz-option nzValue="High" nzLabel="High"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+            </nz-form-control>
+          </nz-form-item>
+
+        </form>
+      </nz-card>
+    </div>
+
+    <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Subject</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Created Date</th>
+          <th>Created By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of ticketsTable.data">
+          <td>{{ ticket.id }}</td>
+          <td>{{ ticket.subject }}</td>
+          <td>
+            <span class="priority-badge" [ngClass]="'priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">{{ ticket.status }}</span>
+          </td>
+          <td>{{ ticket.createdDate | date:'short' }}</td>
+          <td>{{ ticket.createdBy }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+</div>
