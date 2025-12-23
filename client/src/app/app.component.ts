@@ -494,7 +494,7 @@ export class AppComponent {
         )
         if (role === 'ADMIN') {
 
-          this.constructCOCmenu({ RoleId: 'FI' })
+          // this.constructCOCmenu({ RoleId: 'FI' })
 
           // Add Ticket module for admin
           this.navItems.push({
@@ -513,28 +513,28 @@ export class AppComponent {
             ],
           });
 
-          this.navItems.push({
-            ModuleIcon: 'dashboard',
-            Module: 'Bid Opening Committee',
-            ModuleId: '01',
-            ModuleAr: 'لجنة فتح العروض ',
-            navItem: [
-              {
-                name: 'bidopeningform',
-                iconName: IconList.listcheck,
-                text: 'Bid opening Form',
-                textAr: 'نموذج فتح العروض',
-                link: 'committee/Bid_Create',
-              },
-              {
-                name: 'bidlist',
-                iconName: IconList.listnote,
-                text: 'Bids List (' + this.bidsListCount + ')',
-                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-                link: 'committee/BidList',
-              },
-            ],
-          });
+          // this.navItems.push({
+          //   ModuleIcon: 'dashboard',
+          //   Module: 'Bid Opening Committee',
+          //   ModuleId: '01',
+          //   ModuleAr: 'لجنة فتح العروض ',
+          //   navItem: [
+          //     {
+          //       name: 'bidopeningform',
+          //       iconName: IconList.listcheck,
+          //       text: 'Bid opening Form',
+          //       textAr: 'نموذج فتح العروض',
+          //       link: 'committee/Bid_Create',
+          //     },
+          //     {
+          //       name: 'bidlist',
+          //       iconName: IconList.listnote,
+          //       text: 'Bids List (' + this.bidsListCount + ')',
+          //       textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+          //       link: 'committee/BidList',
+          //     },
+          //   ],
+          // });
 
           this.router.navigate(['rfp/myinbox']);
         }
@@ -2966,7 +2966,7 @@ export class AppComponent {
     const userRole = localStorage.getItem('username');
     if (userRole) {
       const decodedRole = atob(userRole);
-      return decodedRole !== 'ADMIN';
+      return decodedRole === 'SCMENDUSER';
     }
     return true;
   }
