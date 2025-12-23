@@ -1318,12 +1318,42 @@ console.log('Members length:', this.members.length);
     console.log(value, 'valueeeeeeeeeeee');
     const detailsControl = this.rfpForm.get('prequalificationDetails');
     if (value) {
+      // Show modal popup when toggle is enabled
+      this.showPrequalificationModal();
       detailsControl?.setValidators([Validators.required]);
     } else {
       detailsControl?.clearValidators();
       detailsControl?.setValue('');
     }
     detailsControl?.updateValueAndValidity();
+  }
+
+  showPrequalificationModal(): void {
+    const modal = this.modal.confirm({
+      nzTitle: 'Prequalification',
+      nzContent: 'Do you have a prequalification number?',
+      nzCentered: true,
+      nzWidth: 500,
+      nzOkText: 'Yes, I have prequalification number',
+      nzOkType: 'primary',
+      nzOkDanger: false,
+      nzCancelText: 'No, I want to create',
+      nzOnOk: () => {
+        // User has prequalification number - keep the field visible
+        console.log('User has prequalification number');
+      },
+      nzOnCancel: () => {
+        // User wants to create - navigate to prequalification creation
+        console.log('User wants to create prequalification');
+        this.router.navigate(['/rfp/prequalification']).then(() => {
+          // Activate prequalification in sidebar
+          if (this.cs.activeMenu) {
+             this.cs.activeMenu = 'prequalification';
+          }
+        });
+      },
+      nzClassName: 'prequalification-modal'
+    });
   }
 
   test(value: boolean) {

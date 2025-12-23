@@ -9,11 +9,11 @@
                 <div class="header-content">
                     <i nz-icon nzType="dashboard" nzTheme="outline" class="header-icon"></i>
                     <div>
-                        <h1 class="dashboard-title">{{ isEndUser ? 'RFPs' : (currentDashboard === 'my' ? 'My Dashboard' : 'Procurement Dashboard') }}</h1>
-                        <p class="dashboard-subtitle">{{"RFP.Real-time RFP status and Summary"|translate}}</p>
+                        <h1 class="dashboard-title">{{ isPRQualUser ? 'Prequalification Documents' : (isEndUser ? 'RFPs' : (currentDashboard === 'my' ? 'My Dashboard' : 'Procurement Dashboard')) }}</h1>
+                        <p class="dashboard-subtitle">{{ isPRQualUser ? 'Review and manage vendor qualification submissions' : "RFP.Real-time RFP status and Summary"|translate }}</p>
                     </div>
                 </div>
-                <div class="toggle-container" *ngIf="!isEndUser">
+                <div class="toggle-container" *ngIf="!isEndUser && !isPRQualUser">
                     <button class="toggle-btn" [class.active]="!isProcurementDashboard" (click)="isProcurementDashboard = false; toggleDashboard()">
                         My Dashboard
                     </button>
@@ -33,9 +33,9 @@
                             <i nz-icon nzType="project" nzTheme="outline"></i>
                         </div>
                         <div class="stat-content">
-                            <div class="stat-label">{{'RFP.Total_Rfps'|translate}}</div>
+                            <div class="stat-label">{{ isPRQualUser ? 'Total Documents' : ('RFP.Total_Rfps'|translate) }}</div>
                             <div class="stat-value">{{ totalProjects }}</div>
-                            <div class="stat-trend">{{'RFP.All RFPs'|translate}}</div>
+                            <div class="stat-trend">{{ isPRQualUser ? 'All Qualification Documents' : ('RFP.All RFPs'|translate) }}</div>
                         </div>
                     </div>
                 </div>
@@ -85,12 +85,12 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
-                        {{ isEndUser ? 'Project Pending Department' : 'Total RFPs' }}
+                        {{ isPRQualUser ? 'Qualifications by Region' : (isEndUser ? 'Project Pending Department' : 'Total RFPs') }}
                     </h3>
                 </div>
                 <div class="chart-container">
                     <canvas baseChart
-                        [data]="isEndUser ? departmentBarChartData : barChartData"
+                        [data]="isPRQualUser ? regionBarChartData : (isEndUser ? departmentBarChartData : barChartData)"
                         [options]="barChartOptions"
                         type="bar">
                     </canvas>
@@ -104,12 +104,12 @@
                 <div class="chart-header">
                     <h3 class="chart-title">
                         <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
-                        {{ isEndUser ? 'Pending with Users' : 'Pending with Procurement Team Members' }}
+                        {{ isPRQualUser ? 'Qualifications by Committee' : (isEndUser ? 'Pending with Users' : 'Pending with Procurement Team Members') }}
                     </h3>
                 </div>
                 <div class="chart-container">
                     <canvas baseChart
-                        [data]="doughnutChartData"
+                        [data]="isPRQualUser ? committeeChartData : doughnutChartData"
                         [options]="doughnutChartOptions"
                         type="doughnut">
                     </canvas>
@@ -132,6 +132,65 @@
                 </div>
                 <form [formGroup]="repForm">
                     <div class="filter-content">
+                        <!-- PRQUALUSER Filters -->
+                        <div class="row g-3 align-items-end" *ngIf="isPRQualUser">
+                            <!-- * Request ID -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Request ID</label>
+                                    <nz-select formControlName="rfpNumber" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.RequestID"
+                                            [nzLabel]="o.RequestID"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Technical Entity -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Technical Entity</label>
+                                    <nz-select formControlName="dep" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.TechnicalEntity"
+                                            [nzLabel]="o.TechnicalEntity"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Region -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Region</label>
+                                    <nz-select formControlName="competition" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option *ngFor="let o of departmentList" [nzValue]="o.Region"
+                                            [nzLabel]="o.Region"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- * Status -->
+                            <div class="col-auto filter-col">
+                                <div class="filter-field-compact">
+                                    <label class="filter-label-compact">Status</label>
+                                    <nz-select formControlName="status" nzShowSearch nzPlaceHolder="Select" nzAllowClear>
+                                        <nz-option nzValue="A" nzLabel="Approved"></nz-option>
+                                        <nz-option nzValue="S" nzLabel="Declined"></nz-option>
+                                        <nz-option nzValue="D" nzLabel="Pending"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- Spacer -->
+                            <div class="col"></div>
+
+                            <!-- Search Button -->
+                            <div class="col-auto ms-auto">
+                                <button nz-button nzType="primary" class="search-btn-compact" (click)="filterSearch()">
+                                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                                    {{ 'RFP.search' | translate }}
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- ENDUSER Filters -->
                         <div class="row g-3 align-items-end" *ngIf="isEndUser">
                             <!-- * Project Name -->
@@ -206,7 +265,7 @@
                         </div>
 
                         <!-- PROCUSER Filters -->
-                        <div class="row g-3 align-items-end" *ngIf="!isEndUser">
+                        <div class="row g-3 align-items-end" *ngIf="!isEndUser && !isPRQualUser">
                             <!-- * PR Number -->
                             <div class="col-auto filter-col">
                                 <div class="filter-field-compact">
@@ -277,7 +336,7 @@
                     </h3>
                 </div>
                 <app-rfptable *ngIf="listArray?.length" [listOfColumn]="listOfColumnList" [listArray]="listArray"
-                    [Action]="currentDashboard" [dashboardType]="currentDashboard" [isEndUser]="isEndUser"></app-rfptable>
+                    [Action]="currentDashboard" [dashboardType]="currentDashboard" [isEndUser]="isEndUser" [isPRQualUser]="isPRQualUser"></app-rfptable>
                 <app-no-data-found *ngIf="!listArray?.length"></app-no-data-found>
             </div>
 

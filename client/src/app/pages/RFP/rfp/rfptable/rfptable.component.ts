@@ -31,6 +31,7 @@ export class RfptableComponent implements OnInit, OnChanges {
   @Input() isSearchRFPSelected: boolean = false;
   @Input() dashboardType: string = 'my';
   @Input() isEndUser: boolean = false;
+  @Input() isPRQualUser: boolean = false;
   readonly IconList = IconList;
 
   detArray: any;
@@ -175,25 +176,38 @@ export class RfptableComponent implements OnInit, OnChanges {
 
   openDetails(detail: any, Action: any) {
     console.log(detail,'detail=========')
-    this.router.navigate(['rfp/detail'], {
-      state: {
-        RfpNo: detail.RfpNo,
-        RfpVersion: detail.RfpVersion,
-        RfpDeptId: detail.DeptId,
-        WfFlowType: detail.WfFlowType,
-        CwfDept: detail.CwfDept,
-        CwfApprvLevel: detail.CwfApprvLevel,
-        CwfApprvRole: detail.CwfApprvRole,
-        NwfApprvDept: detail.NwfApprvDept,
-        NwfApprvLevel: detail.NwfApprvLevel,
-        NwfApprvRole: detail.NwfApprvRole,
-        NwfApprvId: detail.NwfApprvId,
-        NwfDept: detail.NwfDept,
-        WfReqComment: detail.WfReqComment,
-        Action: Action,
-        IsRfpRddApproved : detail.IsRfpRddApproved
-      },
-    });
+    if (this.isPRQualUser) {
+      this.router.navigate(['rfp/prequalification-view'], {
+        state: {
+          RequestID: detail.RequestID,
+          QualificationCallName: detail.QualificationCallName,
+          TechnicalEntity: detail.TechnicalEntity,
+          QualificationCommittee: detail.QualificationCommittee,
+          Region: detail.Region,
+          Activity: detail.Activity
+        }
+      });
+    } else {
+      this.router.navigate(['rfp/detail'], {
+        state: {
+          RfpNo: detail.RfpNo,
+          RfpVersion: detail.RfpVersion,
+          RfpDeptId: detail.DeptId,
+          WfFlowType: detail.WfFlowType,
+          CwfDept: detail.CwfDept,
+          CwfApprvLevel: detail.CwfApprvLevel,
+          CwfApprvRole: detail.CwfApprvRole,
+          NwfApprvDept: detail.NwfApprvDept,
+          NwfApprvLevel: detail.NwfApprvLevel,
+          NwfApprvRole: detail.NwfApprvRole,
+          NwfApprvId: detail.NwfApprvId,
+          NwfDept: detail.NwfDept,
+          WfReqComment: detail.WfReqComment,
+          Action: Action,
+          IsRfpRddApproved : detail.IsRfpRddApproved
+        },
+      });
+    }
   }
 
   close() {
@@ -275,12 +289,12 @@ export class RfptableComponent implements OnInit, OnChanges {
   }
 
   handleApproveSubmit(): void {
-    this.nzMessageService.success(`Approved: ${this.selectedRowData.RfpName}`);
+    this.nzMessageService.success(`Approved: ${this.selectedRowData.RfpName || this.selectedRowData.QualificationCallName}`);
     this.showApproveModal = false;
   }
 
   handleDeclineSubmit(): void {
-    this.nzMessageService.warning(`Declined: ${this.selectedRowData.RfpName}`);
+    this.nzMessageService.success('Rejected Successfully');
     this.showDeclineModal = false;
   }
 
