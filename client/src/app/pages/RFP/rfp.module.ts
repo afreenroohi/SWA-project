@@ -33,6 +33,7 @@ import { BudgetPlannerBOQTabelComponent } from './components/budget-planner-boq-
 import { NgChartsModule } from 'ng2-charts';
 import { PrequalificationComponent } from './prequalification/prequalification.component';
 import { PrequalificationViewComponent } from './prequalification-view/prequalification-view.component';
+import { MySupportTicketsComponent } from './my-support-tickets/my-support-tickets.component';
 
 
 const routes: Routes = [
@@ -129,6 +130,11 @@ const routes: Routes = [
     //   role: 'Approver',
     // },
   },
+  {
+    path: 'mysupporttickets',
+    component: MySupportTicketsComponent,
+    canActivate: [AuthGuardGuard],
+  },
 ];
 
 @NgModule({
@@ -154,6 +160,7 @@ const routes: Routes = [
     BudgetPlannerBOQTabelComponent,
     PrequalificationComponent,
     PrequalificationViewComponent,
+    MySupportTicketsComponent,
     // IconComponent
   ],
   imports: [

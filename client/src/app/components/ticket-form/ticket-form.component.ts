@@ -2,56 +2,56 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { RFPService } from 'src/app/service/RFP/rfp.service';
+import { CommonService } from '../../service/common.service';
 
 @Component({
   selector: 'app-ticket-form',
   template: `
     <form nz-form [formGroup]="ticketForm" (ngSubmit)="submitTicket()">
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzRequired>Issue Title</nz-form-label>
+        <nz-form-label [nzSpan]="6" nzRequired>{{ cs.userLanguage === 'ar' ? 'عنوان المشكلة' : 'Issue Title' }}</nz-form-label>
         <nz-form-control [nzSpan]="18">
-          <input nz-input formControlName="title" placeholder="Enter issue title" />
+          <input nz-input formControlName="title" [placeholder]="cs.userLanguage === 'ar' ? 'أدخل عنوان المشكلة' : 'Enter issue title'" />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzRequired>Description</nz-form-label>
+        <nz-form-label [nzSpan]="6" nzRequired>{{ cs.userLanguage === 'ar' ? 'الوصف' : 'Description' }}</nz-form-label>
         <nz-form-control [nzSpan]="18">
           <textarea nz-input formControlName="description" rows="4" 
-                    placeholder="Describe your issue"></textarea>
+                    [placeholder]="cs.userLanguage === 'ar' ? 'اوصف مشكلتك' : 'Describe your issue'"></textarea>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzRequired>Priority</nz-form-label>
+        <nz-form-label [nzSpan]="6" nzRequired>{{ cs.userLanguage === 'ar' ? 'الأولوية' : 'Priority' }}</nz-form-label>
         <nz-form-control [nzSpan]="18">
-          <nz-select formControlName="priority" nzPlaceHolder="Select priority">
-            <nz-option nzValue="Low" nzLabel="Low"></nz-option>
-            <nz-option nzValue="Medium" nzLabel="Medium"></nz-option>
-            <nz-option nzValue="High" nzLabel="High"></nz-option>
-            <nz-option nzValue="Critical" nzLabel="Critical"></nz-option>
+          <nz-select formControlName="priority" [nzPlaceHolder]="cs.userLanguage === 'ar' ? 'اختر الأولوية' : 'Select priority'">
+            <nz-option nzValue="Low" [nzLabel]="cs.userLanguage === 'ar' ? 'منخفضة' : 'Low'"></nz-option>
+            <nz-option nzValue="Medium" [nzLabel]="cs.userLanguage === 'ar' ? 'متوسطة' : 'Medium'"></nz-option>
+            <nz-option nzValue="High" [nzLabel]="cs.userLanguage === 'ar' ? 'عالية' : 'High'"></nz-option>
+            <nz-option nzValue="Critical" [nzLabel]="cs.userLanguage === 'ar' ? 'حرجة' : 'Critical'"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="6">Screenshot</nz-form-label>
+        <nz-form-label [nzSpan]="6">{{ cs.userLanguage === 'ar' ? 'لقطة الشاشة' : 'Screenshot' }}</nz-form-label>
         <nz-form-control [nzSpan]="18">
           <nz-upload nzAction="" [nzBeforeUpload]="beforeUpload" nzListType="picture">
             <button nz-button>
               <i nz-icon nzType="upload"></i>
-              Upload Screenshot
+              {{ cs.userLanguage === 'ar' ? 'رفع لقطة الشاشة' : 'Upload Screenshot' }}
             </button>
           </nz-upload>
         </nz-form-control>
       </nz-form-item>
 
       <div class="form-actions">
-        <button nz-button nzType="default" (click)="cancel()">Cancel</button>
+        <button nz-button nzType="default" (click)="cancel()">{{ cs.userLanguage === 'ar' ? 'إلغاء' : 'Cancel' }}</button>
         <button nz-button nzType="primary" [nzLoading]="loading" 
                 [disabled]="!ticketForm.valid" type="submit">
-          Submit Ticket
+          {{ cs.userLanguage === 'ar' ? 'إرسال التذكرة' : 'Submit Ticket' }}
         </button>
       </div>
     </form>
@@ -75,7 +75,7 @@ export class TicketFormComponent {
     private fb: FormBuilder,
     private modal: NzModalRef,
     private message: NzMessageService,
-    private rfpService: RFPService
+    public cs: CommonService
   ) {
     this.ticketForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -99,10 +99,18 @@ export class TicketFormComponent {
         screenshot: this.uploadedFile ? (this.uploadedFile.name || this.uploadedFile.fileName) : undefined
       };
 
-      const newTicket = this.rfpService.addTicket(ticketData);
+      // Simulate ticket creation
+      const newTicket = {
+        ticketNumber: 'TKT-' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+        ...ticketData,
+        createdDate: new Date(),
+        lastUpdated: new Date()
+      };
       
       this.loading = false;
-      this.message.success(`Ticket ${newTicket.ticketNumber} created successfully!`);
+      this.message.success(this.cs.userLanguage === 'ar' ? 
+        `تم إنشاء التذكرة ${newTicket.ticketNumber} بنجاح!` : 
+        `Ticket ${newTicket.ticketNumber} created successfully!`);
       this.modal.close(newTicket);
     }
   }

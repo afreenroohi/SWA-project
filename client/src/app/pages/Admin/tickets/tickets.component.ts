@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonService } from '../../../service/common.service';
 
 @Component({
   selector: 'app-tickets',
@@ -19,7 +20,7 @@ export class TicketsComponent implements OnInit {
   closeMessage = '';
   staticTicketsLoaded = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, public cs: CommonService) {
     this.supportForm = this.fb.group({
       subject: ['', Validators.required],
       description: ['', Validators.required],
@@ -40,48 +41,53 @@ export class TicketsComponent implements OnInit {
       this.tickets = [
         {
           id: 'TKT-001',
-          subject: 'Login Issues with RFP Module',
-          description: 'Users unable to access RFP module after recent update',
+          subject: 'SupportTickets.LoginIssue',
+          description: 'SupportTickets.LoginIssueDesc',
           priority: 'High',
           status: 'Open',
           createdDate: new Date('2024-01-15T10:30:00').toISOString(),
-          createdBy: 'John Smith'
+          createdBy: 'John Smith',
+          createdByAr: 'جون سميث'
         },
         {
           id: 'TKT-002',
-          subject: 'Committee Member Assignment Error',
-          description: 'Error when assigning committee members to evaluation process',
+          subject: 'SupportTickets.FeatureRequest',
+          description: 'SupportTickets.FeatureRequestDesc',
           priority: 'Medium',
           status: 'In Progress',
           createdDate: new Date('2024-01-14T14:20:00').toISOString(),
-          createdBy: 'Sarah Johnson'
+          createdBy: 'Sarah Johnson',
+          createdByAr: 'سارة جونسون'
         },
         {
           id: 'TKT-003',
-          subject: 'Contract Template Missing Fields',
-          description: 'Some required fields are missing from contract templates',
+          subject: 'SupportTickets.BugReport',
+          description: 'SupportTickets.BugReportDesc',
           priority: 'Low',
           status: 'Open',
           createdDate: new Date('2024-01-13T09:15:00').toISOString(),
-          createdBy: 'Mike Davis'
+          createdBy: 'Mike Davis',
+          createdByAr: 'مايك ديفيس'
         },
         {
           id: 'TKT-004',
-          subject: 'Report Generation Timeout',
-          description: 'System timeout when generating large reports',
+          subject: 'SupportTickets.GeneralInquiry',
+          description: 'SupportTickets.GeneralInquiryDesc',
           priority: 'High',
           status: 'Open',
           createdDate: new Date('2024-01-12T16:45:00').toISOString(),
-          createdBy: 'Lisa Wilson'
+          createdBy: 'Lisa Wilson',
+          createdByAr: 'ليزا ويلسون'
         },
         {
           id: 'TKT-005',
-          subject: 'Email Notification Delay',
-          description: 'Email notifications are being sent with significant delay',
+          subject: 'SupportTickets.PasswordReset',
+          description: 'SupportTickets.PasswordResetDesc',
           priority: 'Medium',
           status: 'Closed',
           createdDate: new Date('2024-01-11T11:30:00').toISOString(),
-          createdBy: 'Tom Brown'
+          createdBy: 'Tom Brown',
+          createdByAr: 'توم براون'
         }
       ];
       this.staticTicketsLoaded = true;

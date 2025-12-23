@@ -449,6 +449,33 @@ html[dir="rtl"] {
   }
 }
 
+/* Global menu arrow positioning - Maximum specificity */
+body .ant-menu-submenu-expand-icon,
+body .ant-menu-submenu-arrow {
+  right: 22px !important;
+  left: auto !important;
+}
+
+body [dir="rtl"] .ant-menu-submenu-expand-icon,
+body [dir="rtl"] .ant-menu-submenu-arrow,
+body .rtl-layout .ant-menu-submenu-expand-icon,
+body .rtl-layout .ant-menu-submenu-arrow {
+  right: 22px !important;
+  left: auto !important;
+}
+
+/* Ultra-specific targeting for Arabic menu arrows */
+html[dir="rtl"] body .ant-menu-submenu-expand-icon,
+html[dir="rtl"] body .ant-menu-submenu-arrow,
+html[dir="rtl"] .ant-layout-sider .ant-menu-submenu-expand-icon,
+html[dir="rtl"] .ant-layout-sider .ant-menu-submenu-arrow,
+html[dir="rtl"] .ant-menu-inline-collapsed .ant-menu-submenu-expand-icon,
+html[dir="rtl"] .ant-menu-inline-collapsed .ant-menu-submenu-arrow {
+  right: auto !important;
+  left: 22px !important;
+  position: absolute !important;
+}
+
 /* Responsive Form Styles */
 form {
   .create__form__section {

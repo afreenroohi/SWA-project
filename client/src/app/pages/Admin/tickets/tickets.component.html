@@ -1,24 +1,24 @@
 <div class="tickets-container">
-  <nz-card nzTitle="Support Tickets">
+  <nz-card [nzTitle]="'SupportTickets.MySupportTickets' | translate">
     
     <!-- KPI Cards -->
     <div class="kpi-cards">
       <nz-card class="kpi-card">
         <div class="kpi-content">
           <h3>{{ totalTickets }}</h3>
-          <p>Total Tickets</p>
+          <p>{{ 'SupportTickets.TotalTickets' | translate }}</p>
         </div>
       </nz-card>
       <nz-card class="kpi-card">
         <div class="kpi-content">
           <h3 style="color: #f5222d">{{ highPriorityTickets }}</h3>
-          <p>High Priority</p>
+          <p>{{ 'SupportTickets.High' | translate }} {{ 'SupportTickets.Priority' | translate }}</p>
         </div>
       </nz-card>
       <nz-card class="kpi-card">
         <div class="kpi-content">
           <h3 style="color: #52c41a">{{ openTickets }}</h3>
-          <p>Open Tickets</p>
+          <p>{{ 'SupportTickets.OpenTickets' | translate }}</p>
         </div>
       </nz-card>
     </div>
@@ -34,34 +34,38 @@
     <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Subject</th>
-          <th>Priority</th>
-          <th>Status</th>
-          <th>Created Date</th>
-          <th>Created By</th>
-          <th>Actions</th>
+          <th>{{ 'SupportTickets.TicketID' | translate }}</th>
+          <th>{{ 'SupportTickets.Subject' | translate }}</th>
+          <th>{{ 'SupportTickets.Priority' | translate }}</th>
+          <th>{{ 'SupportTickets.Status' | translate }}</th>
+          <th>{{ 'SupportTickets.CreatedDate' | translate }}</th>
+          <th>{{ 'SupportTickets.CreatedBy' | translate }}</th>
+          <th>{{ 'SupportTickets.Actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let ticket of ticketsTable.data">
           <td>{{ ticket.id }}</td>
-          <td>{{ ticket.subject }}</td>
+          <td>{{ ticket.subject | translate }}</td>
           <td>
-            <span class="priority-badge" [ngClass]="'priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span>
+            <span class="priority-badge" [ngClass]="'priority-' + ticket.priority.toLowerCase()">
+              {{ 'SupportTickets.' + ticket.priority | translate }}
+            </span>
           </td>
           <td>
-            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">{{ ticket.status }}</span>
+            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">
+              {{ 'SupportTickets.' + ticket.status.replace(' ', '') | translate }}
+            </span>
           </td>
           <td>{{ ticket.createdDate | date:'short' }}</td>
-          <td>{{ ticket.createdBy }}</td>
+          <td>{{ cs.userLanguage === 'ar' ? ticket.createdByAr : ticket.createdBy }}</td>
           <td>
             <button 
               nz-button 
               nzSize="small" 
               [nzType]="ticket.status === 'Open' ? 'primary' : 'default'"
               (click)="toggleTicketStatus(ticket)">
-              {{ ticket.status === 'Open' ? 'Close' : 'Reopen' }}
+              {{ (ticket.status === 'Open' ? 'SupportTickets.Close' : 'SupportTickets.Reopen') | translate }}
             </button>
           </td>
         </tr>
@@ -72,20 +76,20 @@
   <!-- Close Ticket Modal -->
   <nz-modal 
     [(nzVisible)]="showCloseModal" 
-    nzTitle="Close Ticket" 
+    [nzTitle]="'SupportTickets.Close' | translate" 
     (nzOnCancel)="cancelClose()" 
     (nzOnOk)="closeTicket()"
     [nzOkDisabled]="!closeMessage.trim()">
     <ng-container *nzModalContent>
-      <p><strong>Ticket:</strong> {{ selectedTicket?.subject }}</p>
+      <p><strong>{{ 'SupportTickets.TicketID' | translate }}:</strong> {{ selectedTicket?.subject | translate }}</p>
       <nz-form-item>
-        <nz-form-label nzRequired>Close Message</nz-form-label>
+        <nz-form-label nzRequired>{{ 'SupportTickets.CloseMessage' | translate }}</nz-form-label>
         <nz-form-control>
           <textarea 
             nz-input 
             [(ngModel)]="closeMessage" 
             rows="4" 
-            placeholder="Please provide a reason for closing this ticket...">
+            [placeholder]="'SupportTickets.CloseMessagePlaceholder' | translate">
           </textarea>
         </nz-form-control>
       </nz-form-item>

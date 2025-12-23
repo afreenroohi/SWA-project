@@ -267,23 +267,21 @@ nz-sider {
     // RTL menu item styling
     [dir="rtl"] .ant-menu-item.ant-menu-item-selected,
     .rtl-layout .ant-menu-item.ant-menu-item-selected {
+      background: #005c99 !important;
+      color: white !important;
       border-radius: 0 8px 8px 0 !important;
-      margin: 4px 0 4px 8px !important;
+      margin: 4px 8px 4px 0 !important;
       margin-left: -3px !important;
+      box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3);
+      padding-left: 0 !important;
+
+      &:hover {
+        background: #004a7a !important;
+      }
     }
   }
 
-  // Arabic version menu item styling
-  [dir="rtl"] .menu .ant-menu-item.ant-menu-item-selected,
-  .rtl-layout .menu .ant-menu-item.ant-menu-item-selected {
-    background: #005c99 !important;
-    color: white !important;
-    border-radius: 0px 8px 8px 0px !important;
-    margin: 4px 0 4px 8px !important;
-    margin-left: -3px !important;
-    box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3);
-    padding-left: 0 !important;
-  }
+  // Remove duplicate Arabic version menu item styling
 
   ::ng-deep {
     .ant-menu {
@@ -338,7 +336,6 @@ nz-sider {
       border-radius: 0 8px 8px 0 !important;
       margin: 4px 8px 4px 0 !important;
       margin-left: -3px !important;
-      margin-right: 8px !important;
     }
 
     [dir="rtl"] .ant-menu-inline-collapsed .ant-menu-item,
@@ -355,25 +352,7 @@ nz-sider {
       margin-right: 0 !important;
     }
 
-    .ant-menu-submenu {
-      color: #666 !important;
 
-      .ant-menu-submenu-title {
-        color: #666 !important;
-        transition: all $transition-smooth !important;
-        border-radius: 8px !important;
-        height: 50px !important;
-        line-height: 50px !important;
-        // margin: 4px 8px !important;
-        display: flex !important;
-        align-items: center !important;
-
-        &:hover {
-          color: #005c99 !important;
-          background: rgba(0, 92, 153, 0.1) !important;
-        }
-      }
-    }
 
     .ant-menu-inline-collapsed .ant-menu-submenu {
       .ant-menu-submenu-title {
@@ -390,8 +369,29 @@ nz-sider {
       .ant-menu-submenu-arrow {
         color: $text-secondary !important;
         transition: all $transition-smooth !important;
-        right: 25px !important;
+        right: 22px !important;
+        left: auto !important;
         font-size: 14px !important;
+      }
+
+      // Global arrow and expand icon positioning
+      .ant-menu-submenu-expand-icon {
+        right: 22px !important;
+        left: auto !important;
+      }
+
+      // RTL arrow positioning
+      [dir="rtl"] .ant-menu-submenu-arrow,
+      .rtl-layout .ant-menu-submenu-arrow {
+        left: 22px !important;
+        right: auto !important;
+      }
+
+      // RTL expand icon positioning
+      [dir="rtl"] .ant-menu-submenu-expand-icon,
+      .rtl-layout .ant-menu-submenu-expand-icon {
+        left: 22px !important;
+        right: auto !important;
       }
 
       &.ant-menu-submenu-open .ant-menu-submenu-arrow {
@@ -420,6 +420,19 @@ nz-sider {
     .rtl-layout .ant-menu-inline .ant-menu-item {
       padding-left: 16px !important;
       padding-right: 20px !important;
+    }
+
+    // Global menu arrow positioning
+    .ant-menu-submenu-expand-icon, .ant-menu-submenu-arrow {
+      right: 22px !important;
+      left: auto !important;
+    }
+
+    // RTL global menu arrow positioning
+    [dir="rtl"] .ant-menu-submenu-expand-icon, [dir="rtl"] .ant-menu-submenu-arrow,
+    .rtl-layout .ant-menu-submenu-expand-icon, .rtl-layout .ant-menu-submenu-arrow {
+      left: 22px !important;
+      right: auto !important;
     }
     }
   }
@@ -504,6 +517,52 @@ nz-sider {
 [dir="rtl"] .logo-container,
 .rtl-layout .logo-container {
   padding-left: 20px;
+}
+
+// Force menu arrow positioning with highest specificity
+body [dir="rtl"] .ant-menu-submenu-expand-icon, 
+body [dir="rtl"] .ant-menu-submenu-arrow, 
+body .rtl-layout .ant-menu-submenu-expand-icon, 
+body .rtl-layout .ant-menu-submenu-arrow {
+  left: 22px !important;
+  right: auto !important;
+}
+
+// RTL menu border override with highest specificity
+body [dir="rtl"] .ant-menu,
+body .rtl-layout .ant-menu {
+  border-left: none !important;
+  border-right: none !important;
+}[dir="rtl"] .ant-menu-submenu-arrow, 
+body .rtl-layout .ant-menu-submenu-expand-icon, 
+body .rtl-layout .ant-menu-submenu-arrow {
+  left: 22px !important;
+  right: auto !important;
+}[dir="rtl"] .ant-menu-submenu-arrow, 
+body .rtl-layout .ant-menu-submenu-expand-icon, 
+body .rtl-layout .ant-menu-submenu-arrow {
+  left: 22px !important;
+}n,
+body ::ng-deep [dir="rtl"] .ant-menu-submenu-arrow,
+body ::ng-deep .rtl-layout .ant-menu-submenu-expand-icon,
+body ::ng-deep .rtl-layout .ant-menu-submenu-arrow {
+  right: 22px !important;
+  left: auto !important;
+}
+
+body ::ng-deep .ant-menu-submenu-expand-icon,
+body ::ng-deep .ant-menu-submenu-arrow {
+  right: 22px !important;
+  left: auto !important;
+}
+
+// Even more specific for collapsed menu
+body ::ng-deep .ant-menu-inline-collapsed [dir="rtl"] .ant-menu-submenu-expand-icon,
+body ::ng-deep .ant-menu-inline-collapsed [dir="rtl"] .ant-menu-submenu-arrow,
+body ::ng-deep .ant-menu-inline-collapsed .rtl-layout .ant-menu-submenu-expand-icon,
+body ::ng-deep .ant-menu-inline-collapsed .rtl-layout .ant-menu-submenu-arrow {
+  right: 22px !important;
+  left: auto !important;
 }
 
 // Avatar animation
