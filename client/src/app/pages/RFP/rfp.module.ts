@@ -32,6 +32,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { BudgetPlannerBOQTabelComponent } from './components/budget-planner-boq-tabel/budget-planner-boq-tabel.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PrequalificationComponent } from './prequalification/prequalification.component';
+import { PrequalificationViewComponent } from './prequalification-view/prequalification-view.component';
 
 
 const routes: Routes = [
@@ -64,6 +65,12 @@ const routes: Routes = [
   {
     path: 'prequalification',
     component: PrequalificationComponent,
+    canActivate: [AuthGuardGuard],
+    // canActivate: [MsalGuard],
+  },
+  {
+    path: 'prequalification-view',
+    component: PrequalificationViewComponent,
     canActivate: [AuthGuardGuard],
     // canActivate: [MsalGuard],
   },
@@ -146,6 +153,7 @@ const routes: Routes = [
     BudgetPlannerStepTwoComponent,
     BudgetPlannerBOQTabelComponent,
     PrequalificationComponent,
+    PrequalificationViewComponent,
     // IconComponent
   ],
   imports: [

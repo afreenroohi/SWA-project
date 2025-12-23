@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CommonService } from 'src/app/service/common.service';
 import { ApiService } from 'src/app/service/RFP/api.service';
 import { RFPService } from 'src/app/service/RFP/rfp.service';
-import { listOfColumnRFPMG } from 'src/app/shared/shared';
+import { listOfColumnRFPMG, listOfColumnPRQUALUSER } from 'src/app/shared/shared';
 import { ChartConfiguration } from 'chart.js';
 
 @Component({
@@ -28,6 +28,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
   isProcurementDashboard = false;
   currentDashboard = 'my';
   isEndUser = false;
+  isPRQualUser = false;
   username = '';
 
   // Dashboard Stats
@@ -59,6 +60,28 @@ export class DashbardComponent implements OnInit, OnDestroy {
       barThickness: 40
     }]
   };
+
+  public regionBarChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Central', 'Eastern', 'Western', 'Northern'],
+    datasets: [{ 
+      data: [7, 3, 5, 2], 
+      label: 'Qualifications by Region', 
+      backgroundColor: ['#005c99', '#005c99', '#005c99', '#005c99'],
+      borderRadius: 8,
+      barThickness: 40
+    }]
+  };
+
+  public committeeChartData: ChartConfiguration<'doughnut'>['data'] = {
+    labels: ['Technical Committee A', 'Technical Committee B', 'Technical Committee C', 'Technical Committee D'],
+    datasets: [{
+      data: [6, 4, 3, 4],
+      backgroundColor: ['#005c99', '#0077c2', '#004a7a', '#003d66'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  };
+
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -131,11 +154,21 @@ export class DashbardComponent implements OnInit, OnDestroy {
     console.log('Username:', this.username);
     
     this.isEndUser = this.username === 'ENDUSER';
+    this.isPRQualUser = this.username === 'PRQUALUSER';
     
   this.rfp.setIsSearchRFPMenuActive(true);
   this.updateColumnList();
   
-  this.listArray = [
+  if (this.isPRQualUser) {
+    this.listArray = [
+      { RequestID: 'REQ-001', QualificationCallName: 'Water Infrastructure Qualification', TechnicalEntity: 'Engineering Division', QualificationCommittee: 'Technical Committee A', Region: 'Central', Activity: 'Water Treatment', RfpStatus: 'A' },
+      { RequestID: 'REQ-002', QualificationCallName: 'IT Systems Qualification', TechnicalEntity: 'IT Department', QualificationCommittee: 'Technical Committee B', Region: 'Eastern', Activity: 'IT Services', RfpStatus: 'S' },
+      { RequestID: 'REQ-003', QualificationCallName: 'Construction Qualification', TechnicalEntity: 'Construction Division', QualificationCommittee: 'Technical Committee C', Region: 'Western', Activity: 'Building Construction', RfpStatus: 'D' },
+      { RequestID: 'REQ-004', QualificationCallName: 'Maintenance Services Qualification', TechnicalEntity: 'Operations Department', QualificationCommittee: 'Technical Committee A', Region: 'Northern', Activity: 'Facility Maintenance', RfpStatus: 'A' },
+      { RequestID: 'REQ-005', QualificationCallName: 'Security Systems Qualification', TechnicalEntity: 'Security Division', QualificationCommittee: 'Technical Committee D', Region: 'Central', Activity: 'Security Services', RfpStatus: 'S' }
+    ];
+  } else {
+    this.listArray = [
   { RfpName: 'Water Treatment Expansion', PurchaseReqNo: 'PR-2025-1001', DeptText: 'Engineering Department', CompetitionType: 'General Competition', Activity: 'Water', SubActivity: 'Treatment', CoordinatorName: 'Ahmed Al-Rashid', CoordinatorContact: '+966-50-123-4567', AssignedTo: 'Mohammed Ali', RfpStatus: 'A', CreatedOn: '20250110', RfpNo: 'RFP-001', RfpVersion: '1', PendingDept: 'Procurement', PendingUser: 'Mohammed Ali' },
   { RfpName: 'Desalination Plant', PurchaseReqNo: 'PR-2025-1002', DeptText: 'Engineering Department', CompetitionType: 'Limited Competition', Activity: 'Water', SubActivity: 'Desalination', CoordinatorName: 'Fatima Al-Zahrani', CoordinatorContact: '+966-50-234-5678', AssignedTo: 'Fatima Noor', RfpStatus: 'D', CreatedOn: '20250109', RfpNo: 'RFP-002', RfpVersion: '2', PendingDept: 'Finance', PendingUser: 'Fatima Noor' },
   { RfpName: 'Pipeline Inspection', PurchaseReqNo: 'PR-2025-1003', DeptText: 'Engineering Department', CompetitionType: 'Direct Purchase', Activity: 'Pipeline', SubActivity: 'Inspection', CoordinatorName: 'Khalid Al-Mutairi', CoordinatorContact: '+966-50-345-6789', AssignedTo: 'John Smith', RfpStatus: 'S', CreatedOn: '20250108', RfpNo: 'RFP-003', RfpVersion: '1', PendingDept: 'Quality Control', PendingUser: 'John Smith' },
@@ -167,6 +200,7 @@ export class DashbardComponent implements OnInit, OnDestroy {
   { RfpName: 'Waste Management Services', PurchaseReqNo: 'PR-2025-1029', DeptText: 'Operations Department', CompetitionType: 'General Competition', Activity: 'Waste Management', CoordinatorName: 'Rana Al-Shammari', CoordinatorContact: '+966-50-901-2347', AssignedTo: 'Ghada Tarek', RfpStatus: 'S', CreatedOn: '20241212', RfpNo: 'RFP-029', RfpVersion: '1', PendingDept: 'Quality Control', PendingUser: 'Ghada Tarek' },
   { RfpName: 'Energy Management System', PurchaseReqNo: 'PR-2025-1030', DeptText: 'Engineering Department', CompetitionType: 'Framework Agreement', Activity: 'Energy Services', CoordinatorName: 'Hassan Al-Juhani', CoordinatorContact: '+966-50-012-3458', AssignedTo: 'Hazem Ashraf', RfpStatus: 'A', CreatedOn: '20241211', RfpNo: 'RFP-030', RfpVersion: '1', PendingDept: 'Procurement', PendingUser: 'Hazem Ashraf' }
 ];
+  }
 
 
 
@@ -260,7 +294,9 @@ this.rfpList = this.listArray;
   }
 
   updateColumnList(): void {
-    if (this.isEndUser) {
+    if (this.isPRQualUser) {
+      this.listOfColumnList = listOfColumnPRQUALUSER;
+    } else if (this.isEndUser) {
       this.listOfColumnList = [
         { id: 1, title: 'Project Name', titleAr: 'اسم المشروع' },
         { id: 2, title: 'RFP Number', titleAr: 'رقم RFP' },

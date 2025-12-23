@@ -1399,7 +1399,12 @@ export class CreateRFPComponent implements OnInit {
       nzOnCancel: () => {
         // User wants to create - navigate to prequalification creation
         console.log('User wants to create prequalification');
-        this.router.navigate(['/rfp/prequalification']);
+        this.router.navigate(['/rfp/prequalification']).then(() => {
+          // Activate prequalification in sidebar
+          if (this.cs.activeMenu) {
+             this.cs.activeMenu = 'prequalification';
+          }
+        });
       },
       nzClassName: 'prequalification-modal'
     });
