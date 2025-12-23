@@ -729,28 +729,37 @@ export class AppComponent {
     }
 
     if (this.rqter) {
-      this.navItems.push({
-        Module: 'RFP - Requester',
-        ModuleAr: 'إدارة طلب المنافسات',
-        ModuleIcon: 'file-text',
-        isOpen: false,
-        navItem: [
-          {
-            name: 'create',
-            iconName: IconList.create,
-            text: 'Create RFP',
-            textAr: 'انشاء منافسة',
-            link: 'rfp/create',
-          },
-          {
-            name: 'myrfp',
-            iconName: IconList.myRequest,
-            text: 'My RFP Requests',
-            textAr: 'منافساتي',
-            link: 'rfp/myrfp',
-          },
-        ],
-      });
+      this.navItems.push(
+        {
+          Module: 'RFP - Requester',
+          ModuleAr: 'إدارة طلب المنافسات',
+          ModuleIcon: 'file-text',
+          isOpen: false,
+          navItem: [
+            {
+              name: 'create',
+              iconName: IconList.create,
+              text: 'Create RFP',
+              textAr: 'انشاء منافسة',
+              link: 'rfp/create',
+            },
+            {
+              name: 'myrfp',
+              iconName: IconList.myRequest,
+              text: 'My RFP Requests',
+              textAr: 'منافساتي',
+              link: 'rfp/myrfp',
+            },
+            {
+              name: 'prequalification',
+              iconName: IconList.tool,
+              text: 'Prequalification',
+              textAr: 'التأهيل المسبق',
+              link: 'rfp/prequalification',
+            },
+          ],
+        },
+      )
     }
 
     if (this.appr) {
