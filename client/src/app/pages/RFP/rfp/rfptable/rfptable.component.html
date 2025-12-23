@@ -223,6 +223,30 @@
           <textarea nz-input rows="4" placeholder="Enter technical criteria" style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item *ngIf="isDirectPurchase()">
+        <nz-form-label nzRequired [nzSpan]="24">Direct Procurement Committee</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select [(ngModel)]="selectedDirectCommittee" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Select Committee" style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of directProcurementCommittees" [nzValue]="committee" [nzLabel]="committee"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="!isDirectPurchase()">
+        <nz-form-label nzRequired [nzSpan]="24">Bid Opening Committee</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select [(ngModel)]="selectedBidOpeningCommittee" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Select Committee" style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of bidOpeningCommittees" [nzValue]="committee" [nzLabel]="committee"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="!isDirectPurchase()">
+        <nz-form-label nzRequired [nzSpan]="24">Bid Review Committee</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select [(ngModel)]="selectedBidReviewCommittee" [ngModelOptions]="{standalone: true}" nzPlaceHolder="Select Committee" style="width: 100%; height: 40px;" nzShowSearch>
+            <nz-option *ngFor="let committee of bidReviewCommittees" [nzValue]="committee" [nzLabel]="committee"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="24">Attachment</nz-form-label>
         <nz-form-control [nzSpan]="24">

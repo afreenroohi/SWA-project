@@ -55,6 +55,42 @@ export class RfptableComponent implements OnInit, OnChanges {
   showTransferModal = false;
   selectedRowData: any;
 
+  directProcurementCommittees = [
+    "Direct Purchasing Committee",
+    "Direct Procurement Committee - for Materials and Spare Parts, Head Office",
+    "Direct Procurement Committee of the Agency for Research and Promising Technologies Management",
+    "Direct Procurement Committee - Services and Projects Head Office",
+    "Direct Procurement Committee of the Groundwater and Surface Water Desalination Agency",
+    "Direct Procurement Committee for Business and Projects Related to Supply Chains"
+  ];
+
+  bidOpeningCommittees = [
+    "Bid Opening Committee",
+    "Envelope Opening Committee",
+    "Bids Opening Committee for Materials and Spare Parts – Main Center and Coastal Branches",
+    "East Coast Competitions Opening Committee",
+    "Bidding Opening Committee for West Coast Competitions"
+  ];
+
+  bidReviewCommittees = [
+    "Bid Review Committee",
+    "Bidding Committee for Competitions",
+    "Committee to examine bids for limited and public tenders for spare parts and materials at the main center",
+    "Bids Review Committee for Operation and Maintenance",
+    "Committee for reviewing bids submitted for public and limited tenders for works and projects related to production systems on the West Coast",
+    "Committee for reviewing bids submitted for public and limited tenders for works and projects related to production systems on the East Coast",
+    "Five-year capital portfolio projects and projects financed by public debt",
+    "Committee for reviewing bids for public and limited tenders related to the Research and Innovation Institute, the General Administration for Local Competency Projects, the Executive Administration of the Saudi Water Academy, and Shared Services Agency projects",
+    "Committee for reviewing bids for public and limited tenders for works and purchases with an estimated cost not exceeding five hundred thousand riyals related to main center departments and transportation systems",
+    "Committee for reviewing bids from the Groundwater and Surface Water Purification Agency",
+    "Committee for the draft agreement on the disposal of treated wastewater, rainwater, and industrial cities",
+    "Committee for reviewing bids for supply chain and strategic transformation projects"
+  ];
+
+  selectedDirectCommittee: string = '';
+  selectedBidOpeningCommittee: string = '';
+  selectedBidReviewCommittee: string = '';
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -263,6 +299,9 @@ export class RfptableComponent implements OnInit, OnChanges {
 
   onActionClick(action: string, data: any): void {
     this.selectedRowData = data;
+    this.selectedDirectCommittee = '';
+    this.selectedBidOpeningCommittee = '';
+    this.selectedBidReviewCommittee = '';
     switch(action) {
       case 'approve':
         this.showApproveModal = true;
@@ -274,6 +313,10 @@ export class RfptableComponent implements OnInit, OnChanges {
         this.showTransferModal = true;
         break;
     }
+  }
+
+  isDirectPurchase(): boolean {
+    return this.selectedRowData?.CompetitionType === 'Direct Purchase';
   }
 
   handleApproveCancel(): void {
