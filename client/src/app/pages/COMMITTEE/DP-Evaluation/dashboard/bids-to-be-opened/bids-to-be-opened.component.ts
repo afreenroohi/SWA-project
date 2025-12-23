@@ -10,7 +10,7 @@ export class DpBidsToBeOpenedComponent implements OnInit {
   OptionSelected = "BidsToOpen";
 
   constructor() { }
-
+/////
   ngOnInit(): void {
   }
 
