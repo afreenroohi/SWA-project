@@ -861,6 +861,49 @@ export const listOfColumnRFPMG = [
   }
 ];
 
+export const listOfColumnPRQUALUSER = [
+  {
+    id: 1,
+    title: 'Request ID',
+    titleAr: 'معرف الطلب',
+  },
+  {
+    id: 2,
+    title: 'Name of the Qualification Call',
+    titleAr: 'اسم دعوة التأهيل',
+  },
+  {
+    id: 3,
+    title: 'Technical Entity',
+    titleAr: 'الجهة الفنية',
+  },
+  {
+    id: 4,
+    title: 'Qualification Committee',
+    titleAr: 'لجنة التأهيل',
+  },
+  {
+    id: 5,
+    title: 'Region',
+    titleAr: 'المنطقة',
+  },
+  {
+    id: 6,
+    title: 'Activity',
+    titleAr: 'النشاط',
+  },
+  {
+    id: 7,
+    title: 'View',
+    titleAr: 'عرض',
+  },
+  {
+    id: 8,
+    title: 'Action',
+    titleAr: 'الإجراء',
+  }
+];
+
 export const listOfColumnBudget = [
   {
     id: 1,

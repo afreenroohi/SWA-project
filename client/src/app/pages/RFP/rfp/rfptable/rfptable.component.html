@@ -14,7 +14,43 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngIf="isEndUser">
+    <ng-container *ngIf="isPRQualUser">
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{ data.RequestID }}</td>
+        <td>{{ data.QualificationCallName }}</td>
+        <td>{{ data.TechnicalEntity }}</td>
+        <td>{{ data.QualificationCommittee }}</td>
+        <td>{{ data.Region }}</td>
+        <td>{{ data.Activity }}</td>
+        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
+            (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
+            nzTooltipTitle="{{ 'RFP.View' | translate }}" nzTooltipPlacement="bottomLeft"
+            [nzTooltipArrowPointAtCenter]="true">
+            <span nz-icon nzType="eye" nzTheme="outline"></span>
+          </button>
+        </td>
+        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
+          <button nz-button nz-dropdown [nzDropdownMenu]="prqualActionMenu" nzPlacement="bottomRight" class="action-dropdown-btn">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+          </button>
+          <nz-dropdown-menu #prqualActionMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="onActionClick('approve', data)" style="color: #52c41a;">
+                <span nz-icon nzType="check-circle" nzTheme="outline" style="color: #52c41a;"></span>
+                Approve
+              </li>
+              <li nz-menu-item (click)="onActionClick('decline', data)" style="color: #ff4d4f;">
+                <span nz-icon nzType="close-circle" nzTheme="outline" style="color: #ff4d4f;"></span>
+                Reject
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+    </ng-container>
+
+    <ng-container *ngIf="isEndUser && !isPRQualUser">
       <tr *ngFor="let data of nzTable.data">
         <td>{{ data.RfpName }}</td>
         <td>{{ data.RfpNo }}</td>
@@ -67,7 +103,7 @@
       </tr>
     </ng-container>
 
-    <ng-container *ngIf="!isEndUser">
+    <ng-container *ngIf="!isEndUser && !isPRQualUser">
       <tr *ngFor="let data of nzTable.data">
         <td>{{ data.PurchaseReqNo }}</td>
         <td>{{ data.RfpName }}</td>
@@ -146,10 +182,29 @@
   </div>
 </nz-dropdown-menu>
 
-<nz-modal [(nzVisible)]="showApproveModal" nzTitle="Approve Request" [nzMaskClosable]="false" [nzClosable]="true" 
+<nz-modal [(nzVisible)]="showApproveModal" [nzTitle]="isPRQualUser ? 'Approve Qualification' : 'Approve Request'" [nzMaskClosable]="false" [nzClosable]="true" 
   (nzOnCancel)="handleApproveCancel()" [nzFooter]="approveFooter" nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
-    <form nz-form nzLayout="vertical">
+    <form nz-form nzLayout="vertical" *ngIf="isPRQualUser">
+      <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="24">Etimad Prequalification Number</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input placeholder="Enter Etimad Prequalification Number" style="height: 40px; border-radius: 6px;" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Attachment</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-upload nzAction="">
+            <button nz-button style="height: 40px; border-radius: 6px;">
+              <span nz-icon nzType="upload"></span>
+              Upload File
+            </button>
+          </nz-upload>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <form nz-form nzLayout="vertical" *ngIf="!isPRQualUser">
       <nz-form-item>
         <nz-form-label nzRequired [nzSpan]="24">Etimad Ref Number</nz-form-label>
         <nz-form-control [nzSpan]="24">
@@ -187,17 +242,17 @@
   </ng-template>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="showDeclineModal" nzTitle="Decline Request" [nzMaskClosable]="false" [nzClosable]="true" 
+<nz-modal [(nzVisible)]="showDeclineModal" [nzTitle]="isPRQualUser ? 'Reject Qualification' : 'Decline Request'" [nzMaskClosable]="false" [nzClosable]="true" 
   (nzOnCancel)="handleDeclineCancel()" [nzFooter]="declineFooter" nzWidth="600px">
   <div *nzModalContent style="padding: 24px;">
     <form nz-form nzLayout="vertical">
       <nz-form-item>
-        <nz-form-label nzRequired [nzSpan]="24">Reason</nz-form-label>
+        <nz-form-label nzRequired [nzSpan]="24">Reason for {{ isPRQualUser ? 'Rejection' : 'Decline' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
-          <textarea nz-input rows="5" placeholder="Enter reason for decline" style="resize: none; border-radius: 6px;"></textarea>
+          <textarea nz-input rows="5" placeholder="Enter reason for {{ isPRQualUser ? 'rejection' : 'decline' }}" style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <nz-form-item *ngIf="!isPRQualUser">
         <nz-form-label [nzSpan]="24">Attachment</nz-form-label>
         <nz-form-control [nzSpan]="24">
           <nz-upload nzAction="">
@@ -212,7 +267,7 @@
   </div>
   <ng-template #declineFooter>
     <button nz-button nzType="default" (click)="handleDeclineCancel()" style="height: 40px; padding: 0 32px; border-radius: 6px; margin-right: 8px;">Cancel</button>
-    <button nz-button nzType="primary" (click)="handleDeclineSubmit()" style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">Decline</button>
+    <button nz-button nzType="primary" (click)="handleDeclineSubmit()" style="background: #005c99; border-color: #005c99; height: 40px; padding: 0 32px; border-radius: 6px; font-weight: 500;">{{ isPRQualUser ? 'Reject' : 'Decline' }}</button>
   </ng-template>
 </nz-modal>
 

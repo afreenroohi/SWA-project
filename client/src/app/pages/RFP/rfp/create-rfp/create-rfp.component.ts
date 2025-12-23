@@ -1345,7 +1345,12 @@ console.log('Members length:', this.members.length);
       nzOnCancel: () => {
         // User wants to create - navigate to prequalification creation
         console.log('User wants to create prequalification');
-        this.router.navigate(['/rfp/prequalification']);
+        this.router.navigate(['/rfp/prequalification']).then(() => {
+          // Activate prequalification in sidebar
+          if (this.cs.activeMenu) {
+             this.cs.activeMenu = 'prequalification';
+          }
+        });
       },
       nzClassName: 'prequalification-modal'
     });

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prequalification',
@@ -11,10 +12,23 @@ export class PrequalificationComponent implements OnInit {
   placeOfExecution = 'inside';
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  showInitialBoxes = true;
 
-  constructor(private modal: NzModalService) { }
+  constructor(
+    private modal: NzModalService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  onBoxClick(type: string): void {
+    if (type === 'create') {
+      this.showInitialBoxes = false;
+    } else if (type === 'view') {
+      // Navigate to dashboard or list view
+      this.router.navigate(['/rfp/dashboard']);
+    }
   }
 
   goToStep(step: number): void {
@@ -39,8 +53,18 @@ export class PrequalificationComponent implements OnInit {
       nzContent: 'Form submitted successfully!',
       nzCentered: true,
       nzOkText: 'OK',
-      nzWidth: 400
+      nzWidth: 400,
+      nzOnOk: () => {
+        this.resetForm();
+      }
     });
+  }
+
+  resetForm(): void {
+    this.currentStep = 0;
+    this.placeOfExecution = 'inside';
+    this.selectedFileName = '';
+    this.selectedFile = null;
   }
 
 }
