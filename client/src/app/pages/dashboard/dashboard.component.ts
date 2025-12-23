@@ -290,7 +290,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     responsive: true,
     onClick: (event: ChartEvent, elements: ActiveElement[], chart: Chart) => {
       if (!elements.length || elements[0].index === undefined) return;
-      this.renderVendorPopup(this.topVendorsIds[elements[0].index] ?? '')
+      this.renderVendorPopup(this.topVendorsIds[elements[0].index] || '')
     },
     plugins: {
       legend: {
@@ -575,7 +575,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.rfpByDeptFilterSet[2].dropDown = [
         ...this.rfpByOrgUnitApiData.xValues.map((value: MultiLang, index: number): Dropdown => {
           return {
-            value: this.rfpByOrgUnitApiData.xIds?.[index] ?? '',
+            value: (this.rfpByOrgUnitApiData.xIds && this.rfpByOrgUnitApiData.xIds[index]) || '',
             label: value
           }
         })
@@ -1008,7 +1008,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.topVendorsApiData.yAxis.en : this.topVendorsApiData.yAxis.ar;
     this.topVendorsChartData.datasets[0].data = [...this.topVendorsApiData.yValues
       .map((value: MultiLang) => this.commonService.userLanguage === 'en' ? Number(value.en) : Number(value.ar))];
-    this.topVendorsIds = [...(this.topVendorsApiData.xIds ?? [])]
+    this.topVendorsIds = [...(this.topVendorsApiData.xIds || [])]
 
     // * Contract by month  
     this.contractByMonthsChartData = {
@@ -1065,8 +1065,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       return;
     }
     this.loadedCharts = false;
-    forkJoin(chartRequests).subscribe({
-      next: (results) => {
+    forkJoin(chartRequests).subscribe(
+      (results) => {
         this.loadedCharts = true;
         this.checkAllLoaded();
         results.forEach(({ key, data }) => {
@@ -1078,7 +1078,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 this.rfpByDeptFilterSet[2].dropDown = [
                   ...this.rfpByOrgUnitApiData.xValues.map((value: MultiLang, index: number): Dropdown => {
                     return {
-                      value: this.rfpByOrgUnitApiData.xIds?.[index] ?? '',
+                      value: (this.rfpByOrgUnitApiData.xIds && this.rfpByOrgUnitApiData.xIds[index]) || '',
                       label: value
                     }
                   })
@@ -1120,7 +1120,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.setChartData();
       }
-    });
+    );
   }
 
   buildTableQuery(value: TableSort[] | TableFilter[]): string {
