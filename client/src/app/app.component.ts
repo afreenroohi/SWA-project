@@ -533,15 +533,18 @@ set enableTestLogon(value: boolean) {
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
         console.log(this.dispname, 'displayyyyyyyyyyyy')
-        if (role === 'ENDUSER') {
-          localStorage.setItem('username', btoa('ENDUSER'))
-        } else if (role === 'PRUSER') {
-          localStorage.setItem('username', btoa('PROCUSER'))
-        } else if (role === 'PRQUALUSER') {
-          localStorage.setItem('username', btoa('PRQUALUSER'))
-        } else {
-          localStorage.setItem('username', btoa('ADMIN'))
+        if(role){
+          localStorage.setItem('username', btoa(role))
         }
+        // if (role === 'ENDUSER') {
+        //   localStorage.setItem('username', btoa('ENDUSER'))
+        // } else if (role === 'PRUSER') {
+        //   localStorage.setItem('username', btoa('PROCUSER'))
+        // } else if (role === 'PRQUALUSER') {
+        //   localStorage.setItem('username', btoa('PRQUALUSER'))
+        // } else {
+        //   localStorage.setItem('username', btoa('ADMIN'))
+        // }
         this.department = response?.d?.Planstxt || 'N/A'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
@@ -678,6 +681,33 @@ set enableTestLogon(value: boolean) {
         }
         if (role === 'PRQUALUSER') {
           this.router.navigate(['rfp/dashboard'])
+        }
+        if(role === 'BIDOPEN'){
+          this.cs.activeMenu = 'Dashboard';
+          this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Bid Opening Committee',
+            ModuleId: '01',
+            ModuleAr: 'لجنة فتح العروض ',
+            navItem: [
+              {
+                name: 'bidopeningform',
+                iconName: IconList.listcheck,
+                text: 'Bid opening Form',
+                textAr: 'نموذج فتح العروض',
+                link: 'committee/Bid_Create',
+              },
+              {
+                name: 'bidlist',
+                iconName: IconList.listnote,
+                text: 'Bids List (' + this.bidsListCount + ')',
+                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+                link: 'committee/BidList',
+              },
+            ],
+          });
+
+          this.router.navigate(['rfp/dashboard']);
         }
         if (role === 'ENDUSER') {
           this.roleTest('Requestor');
