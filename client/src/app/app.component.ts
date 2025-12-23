@@ -106,7 +106,7 @@ export class AppComponent {
   department = '';
 
   applicationVersion = '1.0.0';
- 
+
 
 
   // logoSrc = "assets/logo/mwan_logo.png";
@@ -440,16 +440,16 @@ export class AppComponent {
    * @todo Make the changes according to the Process deployment.
    *
    */
-private _enableTestLogon: boolean = true;
-private hasUsedTestLogin: boolean = false;
+  private _enableTestLogon: boolean = true;
+  private hasUsedTestLogin: boolean = false;
 
-get enableTestLogon(): boolean {
-  return this._enableTestLogon;
-}
+  get enableTestLogon(): boolean {
+    return this._enableTestLogon;
+  }
 
-set enableTestLogon(value: boolean) {
-  this._enableTestLogon = value;
-}
+  set enableTestLogon(value: boolean) {
+    this._enableTestLogon = value;
+  }
   async getNavItem(userName: string) {
     this.enableTestLogon = false;
     this.spinner.show();
@@ -477,49 +477,6 @@ set enableTestLogon(value: boolean) {
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
         let role = response?.d?.Addfield5
 
-    
-    // Create session token
-    const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
-    const userDetails = {
-      username: userName,
-      displayName: this.dispname,
-      department: response?.d?.Planstxt || 'undefined',
-      loginTime: new Date().toISOString()
-    };
-    
-    // Set session with 8 hours expiry
-    this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
-    console.log(this.dispname,'displayyyyyyyyyyyy')
-    if(role === 'ENDUSER'){
-      localStorage.setItem('username', btoa('ENDUSER'))
-    }else if(role === 'PRUSER'){
-      localStorage.setItem('username', btoa('PROCUSER'))
-    }else{
-      localStorage.setItem('username', btoa('ADMIN'))
-    }
-    this.department = response?.d?.Planstxt || 'N/A'
-    this.ProxyUserId = userName.toUpperCase();
-    this.hasUsedTestLogin = true;
-    this.isCollapsed = true;
-
-    // console.log(userName,'userName==')
-    this.navItems = [];
-    this.navItems.push(
-      {
-        Module: 'Dashboard',
-        ModuleAr: 'إدارة طلب المنافسات',
-        ModuleIcon: 'line-chart',
-        link: 'rfp/dashboard'
-      },
-    )
-    if(role === 'PRUSER'){
-      this.router.navigate(['rfp/dashboard'])
-    }
-    // if(userName === 'OALMAGHRABI'){  'KAAR-758'
-    if (role === 'ENDUSER') {
-      this.roleTest('Requestor');
-
-
 
         // Create session token
         const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
@@ -533,104 +490,81 @@ set enableTestLogon(value: boolean) {
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
         console.log(this.dispname, 'displayyyyyyyyyyyy')
-        if(role){
-          localStorage.setItem('username', btoa(role))
+        if (role === 'ENDUSER') {
+          localStorage.setItem('username', btoa('ENDUSER'))
+        } else if (role === 'PRUSER') {
+          localStorage.setItem('username', btoa('PROCUSER'))
+        } else {
+          localStorage.setItem('username', btoa('ADMIN'))
         }
-        // if (role === 'ENDUSER') {
-        //   localStorage.setItem('username', btoa('ENDUSER'))
-        // } else if (role === 'PRUSER') {
-        //   localStorage.setItem('username', btoa('PROCUSER'))
-        // } else if (role === 'PRQUALUSER') {
-        //   localStorage.setItem('username', btoa('PRQUALUSER'))
-        // } else {
-        //   localStorage.setItem('username', btoa('ADMIN'))
-        // }
         this.department = response?.d?.Planstxt || 'N/A'
         this.ProxyUserId = userName.toUpperCase();
         this.hasUsedTestLogin = true;
         this.isCollapsed = true;
 
-
-      // ensure Dashboard is the active/selected menu key
-      this.cs.activeMenu = 'Dashboard';
-
-      // close any open submenus so the Dashboard top-level looks highlighted
-      this.navItems.forEach(nav => nav.isOpen = false);
-
-      // navigate to dashboard
-      this.router.navigate(['rfp/dashboard']);
-    }
-    else if (userName === 'SALSUBKI') {
-      this.roleTest('Approver')
-      this.router.navigate(['rfp/myinbox']);
-    }
-    else if (userName === 'AALSALEM') {
-
-      this.constructCOCmenu({ RoleId: 'FI' })
-      
-      // Add Ticket module for admin
-      this.navItems.push({
-        ModuleIcon: 'customer-service',
-        Module: 'Support Tickets',
-        ModuleId: '99',
-        ModuleAr: 'تذاكر الدعم',
-        navItem: [
+        // console.log(userName,'userName==')
+        this.navItems = [];
+        this.navItems.push(
           {
-            name: 'ticketlist',
-            iconName: IconList.listnote,
-            text: 'Ticket List',
-            textAr: 'قائمة التذاكر',
-            link: 'admin/tickets',
+            Module: 'Dashboard',
+            ModuleAr: 'إدارة طلب المنافسات',
+            ModuleIcon: 'line-chart',
+            link: 'rfp/dashboard'
           },
+        )
+        if (role === 'PRUSER') {
+          this.router.navigate(['rfp/dashboard'])
+        }
+        // if(userName === 'OALMAGHRABI'){  'KAAR-758'
+        if (role === 'ENDUSER') {
+          this.roleTest('Requestor');
 
-        ],
-      });
 
-      this.navItems.push({
-        ModuleIcon: 'dashboard',
-        Module: 'Bid Opening Committee',
-        ModuleId: '01',
-        ModuleAr: 'لجنة فتح العروض ',
-        navItem: [
-          {
-            name: 'bidopeningform',
-            iconName: IconList.listcheck,
-            text: 'Bid opening Form',
-            textAr: 'نموذج فتح العروض',
-            link: 'committee/Bid_Create',
-          },
-          {
-            name: 'bidlist',
-            iconName: IconList.listnote,
-            text: 'Bids List (' + this.bidsListCount + ')',
-            textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-            link: 'committee/BidList',
-          },
-        ],
-      });
-      
-      // Add Ticket module for admin
-      // this.navItems.push({
-      //   ModuleIcon: 'customer-service',
-      //   Module: 'Support Tickets',
-      //   ModuleId: '99',
-      //   ModuleAr: 'تذاكر الدعم',
-      //   navItem: [
-      //     {
-      //       name: 'ticketlist',
-      //       iconName: IconList.listnote,
-      //       text: 'Ticket List',
-      //       textAr: 'قائمة التذاكر',
-      //       link: 'admin/tickets',
-      //     },
-      //   ],
-      // });
-      // Budallocator Manager Approver&Manager
-      this.router.navigate(['rfp/myinbox']);
-    }
 
-        
-        if (role === 'ADMIN') {
+          // Create session token
+          const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+          const userDetails = {
+            username: userName,
+            displayName: this.dispname,
+            department: response?.d?.Planstxt || 'undefined',
+            loginTime: new Date().toISOString()
+          };
+
+          // Set session with 8 hours expiry
+          this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
+          console.log(this.dispname, 'displayyyyyyyyyyyy')
+          if (role) {
+            localStorage.setItem('username', btoa(role))
+          }
+          // if (role === 'ENDUSER') {
+          //   localStorage.setItem('username', btoa('ENDUSER'))
+          // } else if (role === 'PRUSER') {
+          //   localStorage.setItem('username', btoa('PROCUSER'))
+          // } else if (role === 'PRQUALUSER') {
+          //   localStorage.setItem('username', btoa('PRQUALUSER'))
+          // } else {
+          //   localStorage.setItem('username', btoa('ADMIN'))
+          // }
+          this.department = response?.d?.Planstxt || 'N/A'
+          this.ProxyUserId = userName.toUpperCase();
+          this.hasUsedTestLogin = true;
+          this.isCollapsed = true;
+
+
+          // ensure Dashboard is the active/selected menu key
+          this.cs.activeMenu = 'Dashboard';
+
+          // close any open submenus so the Dashboard top-level looks highlighted
+          this.navItems.forEach(nav => nav.isOpen = false);
+
+          // navigate to dashboard
+          this.router.navigate(['rfp/dashboard']);
+        }
+        else if (userName === 'SALSUBKI') {
+          this.roleTest('Approver')
+          this.router.navigate(['rfp/myinbox']);
+        }
+        else if (userName === 'AALSALEM') {
 
           this.constructCOCmenu({ RoleId: 'FI' })
 
@@ -648,6 +582,7 @@ set enableTestLogon(value: boolean) {
                 textAr: 'قائمة التذاكر',
                 link: 'admin/tickets',
               },
+
             ],
           });
 
@@ -674,6 +609,75 @@ set enableTestLogon(value: boolean) {
             ],
           });
 
+          // Add Ticket module for admin
+          // this.navItems.push({
+          //   ModuleIcon: 'customer-service',
+          //   Module: 'Support Tickets',
+          //   ModuleId: '99',
+          //   ModuleAr: 'تذاكر الدعم',
+          //   navItem: [
+          //     {
+          //       name: 'ticketlist',
+          //       iconName: IconList.listnote,
+          //       text: 'Ticket List',
+          //       textAr: 'قائمة التذاكر',
+          //       link: 'admin/tickets',
+          //     },
+          //   ],
+          // });
+          // Budallocator Manager Approver&Manager
+          this.router.navigate(['rfp/myinbox']);
+        }
+
+
+        if (role === 'ADMIN') {
+
+          this.constructCOCmenu({ RoleId: 'FI' })
+
+          // Add Ticket module for admin
+          if (!this.navItems.some(item => item.Module === 'Support Tickets')) {
+            this.navItems.push({
+              ModuleIcon: 'customer-service',
+              Module: 'Support Tickets',
+              ModuleId: '99',
+              ModuleAr: 'تذاكر الدعم',
+              navItem: [
+                {
+                  name: 'ticketlist',
+                  iconName: IconList.listnote,
+                  text: 'Ticket List',
+                  textAr: 'قائمة التذاكر',
+                  link: 'admin/tickets',
+                },
+              ],
+            });
+          }
+
+          if (!this.navItems.some(item => item.Module === 'Bid Opening Committee')) {
+            this.navItems.push({
+              ModuleIcon: 'dashboard',
+              Module: 'Bid Opening Committee',
+              ModuleId: '01',
+              ModuleAr: 'لجنة فتح العروض ',
+              navItem: [
+                {
+                  name: 'bidopeningform',
+                  iconName: IconList.listcheck,
+                  text: 'Bid opening Form',
+                  textAr: 'نموذج فتح العروض',
+                  link: 'committee/Bid_Create',
+                },
+                {
+                  name: 'bidlist',
+                  iconName: IconList.listnote,
+                  text: 'Bids List (' + this.bidsListCount + ')',
+                  textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+                  link: 'committee/BidList',
+                },
+              ],
+            });
+          }
+
           this.router.navigate(['rfp/myinbox']);
         }
         if (role === 'PRUSER') {
@@ -682,7 +686,7 @@ set enableTestLogon(value: boolean) {
         if (role === 'PRQUALUSER') {
           this.router.navigate(['rfp/dashboard'])
         }
-        if(role === 'BIDOPEN'){
+        if (role === 'BIDOPEN') {
           this.cs.activeMenu = 'Dashboard';
           this.navItems.push({
             ModuleIcon: 'dashboard',
@@ -728,7 +732,7 @@ set enableTestLogon(value: boolean) {
         this.spinner.hide();
       }
     );
-  
+
 
 
     //     this.cs.activeMenu = 'Dashboard';
@@ -1255,8 +1259,8 @@ set enableTestLogon(value: boolean) {
     const roles = Array.isArray(roleInfo)
       ? roleInfo
       : roleInfo
-      ? [roleInfo]
-      : [];
+        ? [roleInfo]
+        : [];
 
     // Only set true when more than one role; don’t reset it to false
     if (roles.length > 1) {
@@ -1277,6 +1281,9 @@ set enableTestLogon(value: boolean) {
 
     // TODO : Get the admin users and assign the admin nav items only to them
     // this.addAdminNavItem('COC');
+    if (this.navItems.some((item) => item.Module === 'Certificate Of Completion')) {
+      return;
+    }
     switch (roleId) {
       case 'FO': {
         this.navItems.push({
@@ -1672,9 +1679,9 @@ set enableTestLogon(value: boolean) {
     // global if
     if (
       role.CommitteeId ===
-        this.roleForm.get('committeeRole')?.value.CommitteeId &&
+      this.roleForm.get('committeeRole')?.value.CommitteeId &&
       role.CommitteeRole ===
-        this.roleForm.get('committeeRole')?.value.CommitteeRole
+      this.roleForm.get('committeeRole')?.value.CommitteeRole
     ) {
       localStorage.setItem('CommitteeName', role.CommitteeName);
       localStorage.setItem('LogdInUsrID', role.LogdInUsrID);

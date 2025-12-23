@@ -27,7 +27,7 @@ export class PrequalificationComponent implements OnInit {
       this.showInitialBoxes = false;
     } else if (type === 'view') {
       // Navigate to dashboard or list view
-      this.router.navigate(['/rfp/dashboard']);
+      this.router.navigate(['/rfp/myprequal']);
     }
   }
 
