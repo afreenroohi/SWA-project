@@ -100,7 +100,10 @@
     "NameOfTechnicalEntry":"NameOfTechnicalEntry",
     "NameOfQualificationCall":"NameOfQualificationCall",
     "SaveAsDraft":"Save As Draft",
-    "SaveContinue":"Save & Continue"
+    "SaveContinue":"Save & Continue",
+    "EnterCallName":"Enter Call Name",
+    "SelectTechnicalEntry":"Select Technical Entry",
+    "SelectCommittee":"Select Committee"
 
     
     
