@@ -467,8 +467,7 @@ set enableTestLogon(value: boolean) {
         // this.isUserLoggedIn = true;
         // this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined'
         if (response?.d?.Msgid === 'S' && response?.d?.Uname) {
-          this.isUserLoggedIn = true;
-          
+          this.isUserLoggedIn
         } else {
           this.cs.createMessage("error", response?.d?.Message || 'User Not Found');
           console.log('Login failed:', response?.d?.Message);
@@ -477,6 +476,49 @@ set enableTestLogon(value: boolean) {
         }
         this.dispname = response?.d?.Uname ? response?.d?.Uname.toUpperCase() : 'undefined';
         let role = response?.d?.Addfield5
+
+    
+    // Create session token
+    const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+    const userDetails = {
+      username: userName,
+      displayName: this.dispname,
+      department: response?.d?.Planstxt || 'undefined',
+      loginTime: new Date().toISOString()
+    };
+    
+    // Set session with 8 hours expiry
+    this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
+    console.log(this.dispname,'displayyyyyyyyyyyy')
+    if(role === 'ENDUSER'){
+      localStorage.setItem('username', btoa('ENDUSER'))
+    }else if(role === 'PRUSER'){
+      localStorage.setItem('username', btoa('PROCUSER'))
+    }else{
+      localStorage.setItem('username', btoa('ADMIN'))
+    }
+    this.department = response?.d?.Planstxt || 'N/A'
+    this.ProxyUserId = userName.toUpperCase();
+    this.hasUsedTestLogin = true;
+    this.isCollapsed = true;
+
+    // console.log(userName,'userName==')
+    this.navItems = [];
+    this.navItems.push(
+      {
+        Module: 'Dashboard',
+        ModuleAr: 'إدارة طلب المنافسات',
+        ModuleIcon: 'line-chart',
+        link: 'rfp/dashboard'
+      },
+    )
+    if(role === 'PRUSER'){
+      this.router.navigate(['rfp/dashboard'])
+    }
+    // if(userName === 'OALMAGHRABI'){  'KAAR-758'
+    if (role === 'ENDUSER') {
+      this.roleTest('Requestor');
+
 
 
         // Create session token
@@ -506,19 +548,88 @@ set enableTestLogon(value: boolean) {
         this.isCollapsed = true;
 
 
-        // console.log(userName,'userName==')
-        this.navItems = [];
-        this.navItems.push(
+      // ensure Dashboard is the active/selected menu key
+      this.cs.activeMenu = 'Dashboard';
+
+      // close any open submenus so the Dashboard top-level looks highlighted
+      this.navItems.forEach(nav => nav.isOpen = false);
+
+      // navigate to dashboard
+      this.router.navigate(['rfp/dashboard']);
+    }
+    else if (userName === 'SALSUBKI') {
+      this.roleTest('Approver')
+      this.router.navigate(['rfp/myinbox']);
+    }
+    else if (userName === 'AALSALEM') {
+
+      this.constructCOCmenu({ RoleId: 'FI' })
+      
+      // Add Ticket module for admin
+      this.navItems.push({
+        ModuleIcon: 'customer-service',
+        Module: 'Support Tickets',
+        ModuleId: '99',
+        ModuleAr: 'تذاكر الدعم',
+        navItem: [
           {
-            Module: 'Dashboard',
-            ModuleAr: 'إدارة طلب المنافسات',
-            ModuleIcon: 'line-chart',
-            link: 'rfp/dashboard'
+            name: 'ticketlist',
+            iconName: IconList.listnote,
+            text: 'Ticket List',
+            textAr: 'قائمة التذاكر',
+            link: 'admin/tickets',
           },
-        )
+
+        ],
+      });
+
+      this.navItems.push({
+        ModuleIcon: 'dashboard',
+        Module: 'Bid Opening Committee',
+        ModuleId: '01',
+        ModuleAr: 'لجنة فتح العروض ',
+        navItem: [
+          {
+            name: 'bidopeningform',
+            iconName: IconList.listcheck,
+            text: 'Bid opening Form',
+            textAr: 'نموذج فتح العروض',
+            link: 'committee/Bid_Create',
+          },
+          {
+            name: 'bidlist',
+            iconName: IconList.listnote,
+            text: 'Bids List (' + this.bidsListCount + ')',
+            textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+            link: 'committee/BidList',
+          },
+        ],
+      });
+      
+      // Add Ticket module for admin
+      // this.navItems.push({
+      //   ModuleIcon: 'customer-service',
+      //   Module: 'Support Tickets',
+      //   ModuleId: '99',
+      //   ModuleAr: 'تذاكر الدعم',
+      //   navItem: [
+      //     {
+      //       name: 'ticketlist',
+      //       iconName: IconList.listnote,
+      //       text: 'Ticket List',
+      //       textAr: 'قائمة التذاكر',
+      //       link: 'admin/tickets',
+      //     },
+      //   ],
+      // });
+      // Budallocator Manager Approver&Manager
+      this.router.navigate(['rfp/myinbox']);
+    }
+
+        
         if (role === 'ADMIN') {
 
-          // this.constructCOCmenu({ RoleId: 'FI' })
+          this.constructCOCmenu({ RoleId: 'FI' })
 
           // Add Ticket module for admin
           this.navItems.push({
@@ -537,28 +648,28 @@ set enableTestLogon(value: boolean) {
             ],
           });
 
-          // this.navItems.push({
-          //   ModuleIcon: 'dashboard',
-          //   Module: 'Bid Opening Committee',
-          //   ModuleId: '01',
-          //   ModuleAr: 'لجنة فتح العروض ',
-          //   navItem: [
-          //     {
-          //       name: 'bidopeningform',
-          //       iconName: IconList.listcheck,
-          //       text: 'Bid opening Form',
-          //       textAr: 'نموذج فتح العروض',
-          //       link: 'committee/Bid_Create',
-          //     },
-          //     {
-          //       name: 'bidlist',
-          //       iconName: IconList.listnote,
-          //       text: 'Bids List (' + this.bidsListCount + ')',
-          //       textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-          //       link: 'committee/BidList',
-          //     },
-          //   ],
-          // });
+          this.navItems.push({
+            ModuleIcon: 'dashboard',
+            Module: 'Bid Opening Committee',
+            ModuleId: '01',
+            ModuleAr: 'لجنة فتح العروض ',
+            navItem: [
+              {
+                name: 'bidopeningform',
+                iconName: IconList.listcheck,
+                text: 'Bid opening Form',
+                textAr: 'نموذج فتح العروض',
+                link: 'committee/Bid_Create',
+              },
+              {
+                name: 'bidlist',
+                iconName: IconList.listnote,
+                text: 'Bids List (' + this.bidsListCount + ')',
+                textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
+                link: 'committee/BidList',
+              },
+            ],
+          });
 
           this.router.navigate(['rfp/myinbox']);
         }
@@ -587,6 +698,7 @@ set enableTestLogon(value: boolean) {
         this.spinner.hide();
       }
     );
+  
 
 
     //     this.cs.activeMenu = 'Dashboard';
