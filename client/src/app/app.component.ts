@@ -571,7 +571,7 @@ export class AppComponent {
 
           this.router.navigate(['rfp/dashboard']);
         }
-        if (role === 'ENDUSER') {
+        if (role === 'ENDUSER' || role === 'SCMENDUSER') {
           this.roleTest('Requestor');
 
           // ensure Dashboard is the active/selected menu key
@@ -2963,12 +2963,15 @@ export class AppComponent {
   }
 
   get shouldShowHelpIcon(): boolean {
+    if (!this.isUserLoggedIn) {
+      return false;
+    }
     const userRole = localStorage.getItem('username');
     if (userRole) {
       const decodedRole = atob(userRole);
       return decodedRole === 'SCMENDUSER';
     }
-    return true;
+    return false;
   }
 
   addAdminNavItem(processId: 'RFP' | 'COMM' | 'COC' | 'CONT', isRfpAdminFullAcces = false): void {
