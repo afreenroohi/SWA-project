@@ -419,13 +419,14 @@ export class AppComponent {
   private hasUsedTestLogin: boolean = false;
 
   get enableTestLogon(): boolean {
-    return true;
+    return this._enableTestLogon;
   }
 
   set enableTestLogon(value: boolean) {
     this._enableTestLogon = value;
   }
   async getNavItem(userName: string) {
+    this.enableTestLogon = false;
     this.spinner.show();
     this.api.getLoginUserDetails(userName).subscribe(
       (response: any) => {
