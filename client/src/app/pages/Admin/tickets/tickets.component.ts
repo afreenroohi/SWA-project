@@ -138,4 +138,20 @@ export class TicketsComponent implements OnInit {
       default: return 'default';
     }
   }
+
+  toggleTicketStatus(ticket: any): void {
+    ticket.status = ticket.status === 'Open' ? 'Closed' : 'Open';
+    
+    // Update localStorage if tickets are stored there
+    const storedTickets = JSON.parse(localStorage.getItem('ticketList') || '[]');
+    if (storedTickets.length > 0) {
+      const index = storedTickets.findIndex((t: any) => t.id === ticket.id);
+      if (index !== -1) {
+        storedTickets[index].status = ticket.status;
+        localStorage.setItem('ticketList', JSON.stringify(storedTickets));
+      }
+    }
+    
+    this.calculateKPIs();
+  }
 }

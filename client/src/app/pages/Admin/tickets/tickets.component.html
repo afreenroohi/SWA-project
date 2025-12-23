@@ -29,44 +29,7 @@
       </button>
     </div>
 
-    <div *ngIf="showSupportForm" class="support-form">
-      <nz-card nzTitle="Create Support Ticket">
-        <form nz-form [formGroup]="supportForm" (ngSubmit)="onSubmit()">
-          
-          <nz-form-item>
-            <nz-form-label nzRequired>Subject</nz-form-label>
-            <nz-form-control>
-              <input nz-input formControlName="subject" placeholder="Enter subject" />
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-label nzRequired>Description</nz-form-label>
-            <nz-form-control>
-              <textarea nz-input formControlName="description" rows="4" placeholder="Describe your issue"></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-label>Priority</nz-form-label>
-            <nz-form-control>
-              <nz-select formControlName="priority">
-                <nz-option nzValue="Low" nzLabel="Low"></nz-option>
-                <nz-option nzValue="Medium" nzLabel="Medium"></nz-option>
-                <nz-option nzValue="High" nzLabel="High"></nz-option>
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-control>
-              <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
-            </nz-form-control>
-          </nz-form-item>
-
-        </form>
-      </nz-card>
-    </div>
+    
 
     <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
       <thead>
@@ -77,6 +40,7 @@
           <th>Status</th>
           <th>Created Date</th>
           <th>Created By</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -91,6 +55,15 @@
           </td>
           <td>{{ ticket.createdDate | date:'short' }}</td>
           <td>{{ ticket.createdBy }}</td>
+          <td>
+            <button 
+              nz-button 
+              nzSize="small" 
+              [nzType]="ticket.status === 'Open' ? 'primary' : 'default'"
+              (click)="toggleTicketStatus(ticket)">
+              {{ ticket.status === 'Open' ? 'Close' : 'Reopen' }}
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
