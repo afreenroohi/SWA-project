@@ -513,33 +513,43 @@ export class AppComponent {
                 textAr: 'قائمة التذاكر',
                 link: 'admin/tickets',
               },
+              {
+                name: 'initiativelist',
+                iconName: IconList.create,
+                text: 'Initiative List',
+                textAr: 'قائمة المبادرات',
+                link: 'admin/initiatives',
+              },
             ],
           });
 
-          // this.navItems.push({
-          //   ModuleIcon: 'dashboard',
-          //   Module: 'Bid Opening Committee',
-          //   ModuleId: '01',
-          //   ModuleAr: 'لجنة فتح العروض ',
-          //   navItem: [
-          //     {
-          //       name: 'bidopeningform',
-          //       iconName: IconList.listcheck,
-          //       text: 'Bid opening Form',
-          //       textAr: 'نموذج فتح العروض',
-          //       link: 'committee/Bid_Create',
-          //     },
-          //     {
-          //       name: 'bidlist',
-          //       iconName: IconList.listnote,
-          //       text: 'Bids List (' + this.bidsListCount + ')',
-          //       textAr: '(' + this.bidsListCount + ') ' + 'قائمة المنافسات',
-          //       link: 'committee/BidList',
-          //     },
-          //   ],
-          // });
-
           this.router.navigate(['rfp/myinbox']);
+        }
+        if (role === 'SUSER') {
+          this.navItems.push({
+            ModuleIcon: 'customer-service',
+            Module: 'Support Tickets',
+            ModuleId: '99',
+            ModuleAr: 'تذاكر الدعم',
+            navItem: [
+              {
+                name: 'ticketlist',
+                iconName: IconList.listnote,
+                text: 'Ticket List',
+                textAr: 'قائمة التذاكر',
+                link: 'suser/tickets',
+              },
+              {
+                name: 'initiativelist',
+                iconName: IconList.create,
+                text: 'Initiative List',
+                textAr: 'قائمة المبادرات',
+                link: 'suser/initiatives',
+              },
+            ],
+          });
+
+          this.router.navigate(['rfp/dashboard']);
         }
         if (role === 'PRUSER') {
           this.router.navigate(['rfp/dashboard'])
@@ -580,15 +590,15 @@ export class AppComponent {
            this.showHelpIcon = true;
 
           this.navItems.push({
-            Module: 'Support',
-            ModuleAr: 'الدعم',
+            Module: 'Support & Initiatives',
+            ModuleAr: 'الدعم والمبادرات',
             ModuleIcon: 'customer-service',
             isOpen: false,
             navItem: [
               {
                 name: 'mysupporttickets',
                 iconName: IconList.listnote,
-                text: 'My Support Tickets',
+                text: 'Need Support?',
                 textAr: 'تذاكر الدعم الخاصة بي',
                 link: 'rfp/mysupporttickets',
               },

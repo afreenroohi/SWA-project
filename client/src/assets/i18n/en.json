@@ -1883,6 +1883,7 @@
     "Description": "Description",
     "Priority": "Priority",
     "Status": "Status",
+    "AssignedTo": "Assigned To",
     "AdminMessage": "Admin Message",
     "CreatedDate": "Created Date",
     "CreatedBy": "Created By",

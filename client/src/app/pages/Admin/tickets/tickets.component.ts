@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonService } from '../../../service/common.service';
 
 @Component({
@@ -20,7 +21,20 @@ export class TicketsComponent implements OnInit {
   closeMessage = '';
   staticTicketsLoaded = false;
 
-  constructor(private fb: FormBuilder, public cs: CommonService) {
+  // Action modal properties
+  showActionModal = false;
+  currentAction = '';
+  actionText = '';
+  transferId = '';
+  actionModalTitle = '';
+
+  // RFP KPI values
+  totalRfp = Math.floor(Math.random() * 100) + 50;
+  totalContracts = Math.floor(Math.random() * 80) + 30;
+  totalBidsOpen = Math.floor(Math.random() * 60) + 20;
+  totalBidsEvaluated = Math.floor(Math.random() * 40) + 15;
+
+  constructor(private fb: FormBuilder, public cs: CommonService, private router: Router) {
     this.supportForm = this.fb.group({
       subject: ['', Validators.required],
       description: ['', Validators.required],
@@ -45,6 +59,8 @@ export class TicketsComponent implements OnInit {
           description: 'SupportTickets.LoginIssueDesc',
           priority: 'High',
           status: 'Open',
+          assignedTo: 's1',
+          adminMessage: 'Please check user credentials',
           createdDate: new Date('2024-01-15T10:30:00').toISOString(),
           createdBy: 'John Smith',
           createdByAr: 'جون سميث'
@@ -55,6 +71,8 @@ export class TicketsComponent implements OnInit {
           description: 'SupportTickets.FeatureRequestDesc',
           priority: 'Medium',
           status: 'In Progress',
+          assignedTo: 's2',
+          adminMessage: 'Under review by development team',
           createdDate: new Date('2024-01-14T14:20:00').toISOString(),
           createdBy: 'Sarah Johnson',
           createdByAr: 'سارة جونسون'
@@ -65,6 +83,8 @@ export class TicketsComponent implements OnInit {
           description: 'SupportTickets.BugReportDesc',
           priority: 'Low',
           status: 'Open',
+          assignedTo: 'admin',
+          adminMessage: '',
           createdDate: new Date('2024-01-13T09:15:00').toISOString(),
           createdBy: 'Mike Davis',
           createdByAr: 'مايك ديفيس'
@@ -75,6 +95,8 @@ export class TicketsComponent implements OnInit {
           description: 'SupportTickets.GeneralInquiryDesc',
           priority: 'High',
           status: 'Open',
+          assignedTo: 's1',
+          adminMessage: 'Escalated to senior support',
           createdDate: new Date('2024-01-12T16:45:00').toISOString(),
           createdBy: 'Lisa Wilson',
           createdByAr: 'ليزا ويلسون'
@@ -85,6 +107,8 @@ export class TicketsComponent implements OnInit {
           description: 'SupportTickets.PasswordResetDesc',
           priority: 'Medium',
           status: 'Closed',
+          assignedTo: 's2',
+          adminMessage: 'Password reset completed successfully',
           createdDate: new Date('2024-01-11T11:30:00').toISOString(),
           createdBy: 'Tom Brown',
           createdByAr: 'توم براون'
@@ -175,5 +199,77 @@ export class TicketsComponent implements OnInit {
     this.showCloseModal = false;
     this.closeMessage = '';
     this.selectedTicket = null;
+  }
+
+  openActionModal(action: string, ticket: any): void {
+    this.selectedTicket = ticket;
+    this.currentAction = action;
+    this.actionText = '';
+    this.transferId = '';
+    
+    switch(action) {
+      case 'approve':
+        this.actionModalTitle = 'Approve Ticket';
+        break;
+      case 'reject':
+        this.actionModalTitle = 'Reject Ticket';
+        break;
+      case 'transfer':
+        this.actionModalTitle = 'Transfer Ticket';
+        break;
+      case 'moreInfo':
+        this.actionModalTitle = 'More Information';
+        break;
+    }
+    
+    this.showActionModal = true;
+  }
+
+  submitAction(): void {
+    if (this.actionText.trim() && (this.currentAction !== 'transfer' || this.transferId.trim())) {
+      console.log(`${this.currentAction} action for ticket ${this.selectedTicket.id}:`, {
+        message: this.actionText,
+        transferId: this.currentAction === 'transfer' ? this.transferId : undefined
+      });
+      
+      this.cancelAction();
+    }
+  }
+
+  cancelAction(): void {
+    this.showActionModal = false;
+    this.currentAction = '';
+    this.actionText = '';
+    this.transferId = '';
+    this.selectedTicket = null;
+  }
+
+  isUserRoute(): boolean {
+    return this.router.url.includes('/suser/');
+  }
+
+  takeTicket(ticket: any): void {
+    console.log('Taking ticket:', ticket.id);
+    // Add take ticket logic here
+  }
+
+  approveTicket(ticket: any): void {
+    console.log('Approving ticket:', ticket.id);
+    // Add approval logic here
+  }
+
+  rejectTicket(ticket: any): void {
+    console.log('Rejecting ticket:', ticket.id);
+    // Add rejection logic here
+  }
+
+  transferTicket(ticket: any): void {
+    console.log('Transferring ticket:', ticket.id);
+    // Add transfer logic here
+  }
+
+  showMoreInfo(ticket: any): void {
+    console.log('Showing more info for ticket:', ticket.id);
+    // Add more info logic here
   }
 }

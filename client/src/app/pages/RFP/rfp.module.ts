@@ -31,11 +31,12 @@ import { BudgetPlannerStepTwoComponent } from './components/budget-planner-step-
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { BudgetPlannerBOQTabelComponent } from './components/budget-planner-boq-tabel/budget-planner-boq-tabel.component';
 import { NgChartsModule } from 'ng2-charts';
-import { PrequalificationComponent } from './prequalification/prequalification.component';
+import { PrequalificationComponent } from './dashbard/prequalification/prequalification.component';
 import { PrequalificationViewComponent } from './prequalification-view/prequalification-view.component';
 import { MyprequalComponent } from './myprequal/myprequal.component';
-
 import { MySupportTicketsComponent } from './my-support-tickets/my-support-tickets.component';
+import { RaiseInitiativeComponent } from './raise-initiative/raise-initiative.component';
+import { InitiativeFormComponent } from '../../components/initiative-form/initiative-form.component';
 const routes: Routes = [
   {
     path: 'create',
@@ -142,6 +143,11 @@ const routes: Routes = [
     component: MySupportTicketsComponent,
     canActivate: [AuthGuardGuard],
   },
+  {
+    path: 'raiseinitiative',
+    component: RaiseInitiativeComponent,
+    canActivate: [AuthGuardGuard],
+  },
 ];
 
 @NgModule({
@@ -168,7 +174,9 @@ const routes: Routes = [
     PrequalificationComponent,
     PrequalificationViewComponent,
     MyprequalComponent,
-    MySupportTicketsComponent
+    MySupportTicketsComponent,
+    RaiseInitiativeComponent,
+    InitiativeFormComponent
   ],
   imports: [
     CommonModule,

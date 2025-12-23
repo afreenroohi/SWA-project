@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { TicketFormComponent } from '../../../components/ticket-form/ticket-form.component';
+import { InitiativeFormComponent } from '../../../components/initiative-form/initiative-form.component';
 import { CommonService } from '../../../service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,6 +20,12 @@ export class MySupportTicketsComponent implements OnInit {
   inProgressTickets = 0;
   closedTickets = 0;
 
+  // Initiative KPI Data
+  totalInitiatives = 0;
+  submittedInitiatives = 0;
+  inReviewInitiatives = 0;
+  approvedInitiatives = 0;
+
   // Sample ticket data
   tickets = [
     {
@@ -27,6 +34,7 @@ export class MySupportTicketsComponent implements OnInit {
       description: 'SupportTickets.LoginIssueDesc',
       priority: 'High',
       status: 'Open',
+      assignedTo: 'suser1',
       createdDate: new Date('2024-01-15'),
       lastUpdated: new Date('2024-01-16'),
       adminMessage: null
@@ -37,6 +45,7 @@ export class MySupportTicketsComponent implements OnInit {
       description: 'SupportTickets.FeatureRequestDesc',
       priority: 'Medium',
       status: 'In-Progress',
+      assignedTo: 'admin',
       createdDate: new Date('2024-01-10'),
       lastUpdated: new Date('2024-01-14'),
       adminMessage: null
@@ -47,6 +56,7 @@ export class MySupportTicketsComponent implements OnInit {
       description: 'SupportTickets.BugReportDesc',
       priority: 'High',
       status: 'Closed',
+      assignedTo: 'suser2',
       createdDate: new Date('2024-01-05'),
       lastUpdated: new Date('2024-01-12'),
       adminMessage: 'SupportTickets.BugReportAdminMsg'
@@ -57,6 +67,7 @@ export class MySupportTicketsComponent implements OnInit {
       description: 'SupportTickets.GeneralInquiryDesc',
       priority: 'Low',
       status: 'Open',
+      assignedTo: 'suser1',
       createdDate: new Date('2024-01-08'),
       lastUpdated: new Date('2024-01-09'),
       adminMessage: null
@@ -67,9 +78,47 @@ export class MySupportTicketsComponent implements OnInit {
       description: 'SupportTickets.PasswordResetDesc',
       priority: 'Medium',
       status: 'Closed',
+      assignedTo: 'admin',
       createdDate: new Date('2024-01-12'),
       lastUpdated: new Date('2024-01-15'),
       adminMessage: 'SupportTickets.PasswordResetAdminMsg'
+    }
+  ];
+
+  // Sample initiative data
+  initiatives = [
+    {
+      id: 'INI-001',
+      title: 'Process Automation Initiative',
+      description: 'Automate manual processes to improve efficiency',
+      category: 'Process Improvement',
+      status: 'Submitted',
+      assignedTo: 's1',
+      createdDate: new Date('2024-01-15'),
+      lastUpdated: new Date('2024-01-16'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-002',
+      title: 'Cost Reduction Program',
+      description: 'Identify areas for cost optimization',
+      category: 'Cost Reduction',
+      status: 'In-Review',
+      assignedTo: 'admin',
+      createdDate: new Date('2024-01-10'),
+      lastUpdated: new Date('2024-01-14'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-003',
+      title: 'Digital Innovation Project',
+      description: 'Implement new digital solutions',
+      category: 'Innovation',
+      status: 'Approved',
+      assignedTo: 's2',
+      createdDate: new Date('2024-01-05'),
+      lastUpdated: new Date('2024-01-12'),
+      adminMessage: 'Initiative approved for implementation'
     }
   ];
 
@@ -77,24 +126,41 @@ export class MySupportTicketsComponent implements OnInit {
 
   ngOnInit(): void {
     this.calculateKPIs();
+    this.calculateInitiativeKPIs();
   }
 
   onBoxClick(action: string): void {
-    if (action === 'create') {
+    if (action === 'create-ticket') {
       this.openTicketForm();
-    } else if (action === 'view') {
-      this.selectedAction = action;
+    } else if (action === 'view-tickets') {
+      this.selectedAction = 'view-tickets';
+      this.showInitialBoxes = false;
+    } else if (action === 'create-initiative') {
+      this.openInitiativeForm();
+    } else if (action === 'view-initiatives') {
+      this.selectedAction = 'view-initiatives';
       this.showInitialBoxes = false;
     }
   }
 
   openTicketForm(): void {
-    this.modal.create({
-      nzTitle: this.translate.instant('SupportTickets.SubmitSupportTicket'),
-      nzContent: TicketFormComponent,
-      nzFooter: null,
-      nzWidth: 600
-    });
+    try {
+      const modal = this.modal.create({
+        nzTitle: 'Submit Support Ticket', // Fallback title
+        nzContent: TicketFormComponent,
+        nzFooter: null,
+        nzWidth: 600
+      });
+      
+      modal.afterClose.subscribe(result => {
+        if (result) {
+          // Refresh tickets if a new ticket was created
+          console.log('New ticket created:', result);
+        }
+      });
+    } catch (error) {
+      console.error('Error opening ticket form:', error);
+    }
   }
 
   calculateKPIs(): void {
@@ -102,6 +168,32 @@ export class MySupportTicketsComponent implements OnInit {
     this.openTickets = this.tickets.filter(t => t.status === 'Open').length;
     this.inProgressTickets = this.tickets.filter(t => t.status === 'In-Progress').length;
     this.closedTickets = this.tickets.filter(t => t.status === 'Closed').length;
+  }
+
+  openInitiativeForm(): void {
+    try {
+      const modal = this.modal.create({
+        nzTitle: 'Submit New Initiative',
+        nzContent: InitiativeFormComponent,
+        nzFooter: null,
+        nzWidth: 600
+      });
+      
+      modal.afterClose.subscribe(result => {
+        if (result) {
+          console.log('New initiative created:', result);
+        }
+      });
+    } catch (error) {
+      console.error('Error opening initiative form:', error);
+    }
+  }
+
+  calculateInitiativeKPIs(): void {
+    this.totalInitiatives = this.initiatives.length;
+    this.submittedInitiatives = this.initiatives.filter(i => i.status === 'Submitted').length;
+    this.inReviewInitiatives = this.initiatives.filter(i => i.status === 'In-Review').length;
+    this.approvedInitiatives = this.initiatives.filter(i => i.status === 'Approved').length;
   }
 
   viewTicket(ticket: any): void {
