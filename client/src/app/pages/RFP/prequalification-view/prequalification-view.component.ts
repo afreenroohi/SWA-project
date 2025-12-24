@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-prequalification-view',
@@ -13,7 +14,8 @@ export class PrequalificationViewComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private location: Location
+    private location: Location,
+    public cs: CommonService
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {

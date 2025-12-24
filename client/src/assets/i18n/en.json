@@ -73,11 +73,66 @@
     "SI No": "SI No",
     "Description": "Description"
   },
+  "Prequalification": {
+    "TotalDocuments": "Total Documents",
+    "AllQualificationDocuments": "All Qualification Documents",
+    "PrequalificationDocuments": "Prequalification Documents",
+    "DashboardSubtitle": "Dashboard Subtitle",
+    "DashboardTitle": "Dashboard Title",
+    "DashboardDescription": "Dashboard Description",
+    "CreateNewRequest": "Create New Request",
+    "ShowMyRequests":"Show My Requests",
+    "Prequalification":"Prequalification",
+    "BasicInformation":"Basic Information",
+    "SupportingDocuments":"Supporting Documents",
+    "Detail":"Detail",
+    "Attachments":"Attachments",
+    "ActivityDescription":"Activity Description",
+    "Activity":"Activity",
+    "MaintenanceOperation":"Maintenance Operation",
+    "PlaceOfExecution":"Place Of Execution",
+    "OutsideKingdom":"Outside Kingdom",
+    "InsideKingdom":"Inside Kingdom",
+    "Regions":"Regions",
+    "Construction":"Construction",
+    "ClassificationAreaImplementation":"Classification Area Implementation",
+    "QualificationCommittee":"Qualification Committee",
+    "NameOfTechnicalEntry":"Name Of Technical Entry",
+    "NameOfQualificationCall":"Name Of Qualification Call",
+    "SaveAsDraft":"Save As Draft",
+    "SaveContinue":"Save & Continue",
+    "EnterCallName":"Enter Call Name",
+    "SelectTechnicalEntry":"Select Technical Entry",
+    "SelectCommittee":"Select Committee",
+    "SelectFile": "Select File",
+    "AllowedFormats": "Allowed formats: .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg",
+    "Details":"Details",
+    "Submit":"Submit"
+
+    
+    
+  },
+  
+  "COMMON": {
+    "SUCCESS": "Success",
+    "OK": "OK"
+  },
+  "FORM": {
+    "SUBMIT_SUCCESS": "Form submitted successfully!"
+  }
+,
+
 
   "RFP": {
-    "Create RFP From":"Create RFP From",
-    "Create PR for Manual CRs":"Create PR for Manual CRs",
-    "Create PR for Automated CRs":"Create PR for Automated CRs",
+    "Extend Bid Opening Date": "Extend Bid Opening Date",
+    
+    "Create RFP From": "Create RFP From",
+    "Create Manual RFP": "Create Manual RFP",
+    "Create Automated RFP": "Create Automated RFP",
+    "Change Bill of Quantity":"Change Bill of Quantity",
+    "Extend Bill of Quantity":"Extend Bill of Quantity",
+    "Add More Attachments":"Add More Attachments",
+    "Invite More Companies":"Invite More Companies",
     "Create RFP for Services/Projects":"Create RFP for Services/Projects",
     "Create Agreements":"Create Agreements",
     "Quantity": "Quantity",
@@ -102,6 +157,11 @@
     "Attachments": "Attachments",
     "Emergency documents":"Emergency documents",
     "Id": "Id",
+    "Procurement": "Procurement",
+    "RFPs": "RFPs",
+    "of total": "of total",
+    "Declined":"Declined",
+    "My Dashboard": "My Dashboard",
     "View": "View",
     "Edit": "Edit",
     "Assign to Legal": "Assign to Legal",
