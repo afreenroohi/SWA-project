@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-prequalification',
@@ -16,7 +18,8 @@ export class PrequalificationComponent implements OnInit {
 
   constructor(
     private modal: NzModalService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -47,18 +50,18 @@ export class PrequalificationComponent implements OnInit {
     }
   }
 
-  submitForm(): void {
-    this.modal.success({
-      nzTitle: 'Success',
-      nzContent: 'Form submitted successfully!',
-      nzCentered: true,
-      nzOkText: 'OK',
-      nzWidth: 400,
-      nzOnOk: () => {
-        this.resetForm();
-      }
-    });
-  }
+submitForm(): void {
+  this.modal.success({
+    nzTitle: this.translate.instant('COMMON.SUCCESS'),
+    nzContent: this.translate.instant('FORM.SUBMIT_SUCCESS'),
+    nzCentered: true,
+    nzOkText: this.translate.instant('COMMON.OK'),
+    nzWidth: 400,
+    nzOnOk: () => {
+      this.resetForm();
+    }
+  });
+}
 
   resetForm(): void {
     this.currentStep = 0;

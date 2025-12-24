@@ -584,8 +584,8 @@
             <div class="col-12">
               <label class="field-label">{{ "RFP.Quantity Tables" | translate }}</label>
               <nz-collapse [nzBordered]="true">
-                <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue"
-                  [nzHeader]="( 'RFP.RFP Budget Year' | translate ) + ': ' + group.key">
+                <nz-collapse-panel *ngFor="let group of groupBOQItemsBasedonBudgetingYears | keyvalue; let i = index"
+                  [nzHeader]="i === 0 ? 'Material' : i === 1 ? 'Quantity' : 'Labor'">
                   <nz-table #boqTable [nzData]="group.value" [nzShowPagination]="false" [nzBordered]="true">
                     <thead>
                       <tr>

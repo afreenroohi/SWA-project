@@ -4,6 +4,7 @@
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #005c99;
 }
 
 .custom-stepper {
@@ -13,9 +14,10 @@
 .stepper-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 .step-item {

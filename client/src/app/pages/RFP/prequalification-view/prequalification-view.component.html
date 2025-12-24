@@ -1,14 +1,16 @@
-<ngx-spinner bdColor="rgb(144, 212, 250)" size="default" color="#1971e5" type="ball-grid-beat" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner>
+<ngx-spinner bdColor="rgb(144, 212, 250)" size="default" color="#1971e5" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
 <div class="container-fluid p-4" *ngIf="qualificationData">
   <!-- Header with Back Button -->
   <div class="row mb-4 align-items-center">
     <div class="col-6">
-      <h2 class="page-title">Prequalification Document Details</h2>
+      <h2 class="page-title">{{ 'Prequalification.DocumentDetails' | translate }}</h2>
     </div>
     <div class="col-6 text-end">
       <button nz-button nzType="primary" (click)="back()" class="back-button">
         <span nz-icon nzType="arrow-left"></span>
-        Back
+        {{ 'Prequalification.Back' | translate }}
       </button>
     </div>
   </div>
@@ -19,15 +21,15 @@
       <div class="vertical-stepper">
         <div class="stepper-item" [class.active]="activePanels[0]" (click)="scrollToSection(0)">
           <div class="stepper-circle">1</div>
-          <div class="stepper-label">Basic Information</div>
+          <div class="stepper-label">{{ 'Prequalification.BasicInformation' | translate }}</div>
         </div>
         <div class="stepper-item" [class.active]="activePanels[1]" (click)="scrollToSection(1)">
           <div class="stepper-circle">2</div>
-          <div class="stepper-label">Classification Area</div>
+          <div class="stepper-label">{{ 'Prequalification.ClassificationAreaImplementation' | translate }}</div>
         </div>
         <div class="stepper-item" [class.active]="activePanels[2]" (click)="scrollToSection(2)">
           <div class="stepper-circle">3</div>
-          <div class="stepper-label">Attachments</div>
+          <div class="stepper-label">{{ 'Prequalification.Attachments' | translate }}</div>
         </div>
       </div>
     </div>
@@ -36,77 +38,96 @@
     <div class="col-md-10">
       <nz-collapse [nzBordered]="false" class="custom-collapse">
         <!-- Basic Information Panel -->
-        <nz-collapse-panel nzHeader="Basic Information" [(nzActive)]="activePanels[0]" class="custom-panel">
+        <nz-collapse-panel [nzHeader]="'Prequalification.BasicInformation' | translate" [(nzActive)]="activePanels[0]"
+          class="custom-panel">
           <div class="panel-content">
             <div class="row">
               <div class="col-4 mb-3">
-                <label class="field-label">Request ID</label>
+                <label class="field-label">{{ 'Prequalification.RequestID' | translate }}</label>
                 <div class="field-value">{{ qualificationData.RequestID }}</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Qualification Call Name</label>
-                <div class="field-value">{{ qualificationData.QualificationCallName }}</div>
+                <label class="field-label">{{ 'Prequalification.NameOfQualificationCall' | translate }}</label>
+                <div class="field-value">{{ cs.userLanguage === 'en' ? qualificationData.QualificationCallName :
+                  (qualificationData.QualificationCallNameAr || qualificationData.QualificationCallName) }}</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Technical Entity</label>
-                <div class="field-value">{{ qualificationData.TechnicalEntity }}</div>
+                <label class="field-label">{{ 'Prequalification.NameOfTechnicalEntry' | translate }}</label>
+                <div class="field-value">{{ cs.userLanguage === 'en' ? qualificationData.TechnicalEntity :
+                  (qualificationData.TechnicalEntityAr || qualificationData.TechnicalEntity) }}</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Qualification Committee</label>
-                <div class="field-value">{{ qualificationData.QualificationCommittee }}</div>
+                <label class="field-label">{{ 'Prequalification.QualificationCommittee' | translate }}</label>
+                <div class="field-value">{{ cs.userLanguage === 'en' ? qualificationData.QualificationCommittee :
+                  (qualificationData.QualificationCommitteeAr || qualificationData.QualificationCommittee) }}</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Region</label>
-                <div class="field-value">{{ qualificationData.Region }}</div>
+                <label class="field-label">{{ 'Prequalification.Regions' | translate }}</label>
+                <div class="field-value">{{ cs.userLanguage === 'en' ? qualificationData.Region :
+                  (qualificationData.RegionAr || qualificationData.Region) }}</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Activity</label>
-                <div class="field-value">{{ qualificationData.Activity }}</div>
+                <label class="field-label">{{ 'Prequalification.Activity' | translate }}</label>
+                <div class="field-value">{{ cs.userLanguage === 'en' ? qualificationData.Activity :
+                  (qualificationData.ActivityAr || qualificationData.Activity) }}</div>
               </div>
             </div>
           </div>
         </nz-collapse-panel>
 
         <!-- Classification Area Implementation Panel -->
-        <nz-collapse-panel nzHeader="Classification Area Implementation" [(nzActive)]="activePanels[1]" class="custom-panel">
+        <nz-collapse-panel [nzHeader]="'Prequalification.ClassificationAreaImplementation' | translate"
+          [(nzActive)]="activePanels[1]" class="custom-panel">
           <div class="panel-content">
             <div class="row">
               <div class="col-4 mb-3">
-                <label class="field-label">Construction <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.Construction' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">-SELECT-</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Regions <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.Regions' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">-SELECT-</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Place of execution <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.PlaceOfExecution' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">
-                  <label><input type="radio" name="place" disabled> Outside the Kingdom</label>
-                  <label style="margin-left: 20px;"><input type="radio" name="place" checked disabled> Inside the Kingdom</label>
+                  <label><input type="radio" name="place" disabled> {{ 'Prequalification.OutsideKingdom' | translate
+                    }}</label>
+                  <label style="margin-left: 20px;"><input type="radio" name="place" checked disabled> {{
+                    'Prequalification.InsideKingdom' | translate }}</label>
                 </div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Activity Description <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.ActivityDescription' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value" style="min-height: 100px;">Enter Activity Description</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Activity <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.Activity' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">-SELECT-</div>
               </div>
               <div class="col-4 mb-3">
-                <label class="field-label">Maintenance & Operation <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.MaintenanceOperation' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">-SELECT-</div>
               </div>
               <div class="col-12 mb-3">
-                <label class="field-label">Details <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.Details' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value" style="min-height: 120px;">Enter Details</div>
               </div>
               <div class="col-12 mb-3">
-                <label class="field-label">Supporting Documents <span style="color: red;">*</span></label>
+                <label class="field-label">{{ 'Prequalification.SupportingDocuments' | translate }} <span
+                    style="color: red;">*</span></label>
                 <div class="field-value">
-                  <button nz-button nzType="primary" style="background: #0c5a9e; border-color: #0c5a9e;">SELECT A FILE</button>
-                  <span style="margin-left: 10px; color: #8c8c8c; font-size: 12px;">Allowed file formats: pdf,zip</span>
+                  <button nz-button nzType="primary" style="background: #0c5a9e; border-color: #0c5a9e;">{{
+                    'Prequalification.SelectFile' | translate }}</button>
+                  <span style="margin-left: 10px; color: #8c8c8c; font-size: 12px;">{{ 'Prequalification.AllowedFormats'
+                    | translate }}</span>
                 </div>
               </div>
             </div>
@@ -114,16 +135,17 @@
         </nz-collapse-panel>
 
         <!-- Attachments Panel -->
-        <nz-collapse-panel nzHeader="Attachments" [(nzActive)]="activePanels[2]" class="custom-panel">
+        <nz-collapse-panel [nzHeader]="'Prequalification.Attachments' | translate" [(nzActive)]="activePanels[2]"
+          class="custom-panel">
           <div class="panel-content">
-            <label class="field-label">Attachments</label>
+            <label class="field-label">{{ 'Prequalification.Attachments' | translate }}</label>
             <ul class="custom-uploaded-list">
               <li class="uploaded-file-item">
                 <div class="file-info">
                   <i nz-icon nzType="paper-clip"></i>
                   <span class="file-name">Qualification_Document.pdf</span>
                 </div>
-                <a nz-tooltip nzTooltipTitle="Download" class="download-link">
+                <a nz-tooltip [nzTooltipTitle]="'Prequalification.Download' | translate" class="download-link">
                   <i nz-icon nzType="download"></i>
                 </a>
               </li>
