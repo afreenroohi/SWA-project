@@ -1,16 +1,19 @@
-<ngx-spinner bdColor="rgb(144, 212, 250)" size="default" color="#1971e5" type="ball-grid-beat" [fullScreen]="true"><p style="color: white">Loading...</p></ngx-spinner>
+<ngx-spinner bdColor="rgb(144, 212, 250)" size="default" color="#1971e5" type="ball-grid-beat" [fullScreen]="true">
+  <p style="color: white">{{ "RFP.Loading" | translate }}...</p>
+</ngx-spinner>
 
 <!-- Initial Selection Boxes -->
 <div class="initial-selection-container" *ngIf="showInitialBoxes">
   <div class="selection-boxes-wrapper">
     <div class="selection-box" (click)="onBoxClick('create')">
       <i nz-icon nzType="bulb" nzTheme="outline" class="box-icon"></i>
-      <h3>Create Initiative</h3>
+      <h3>{{"RFP.Create Initiative"| translate}}</h3>
+
     </div>
 
     <div class="selection-box" (click)="onBoxClick('view')">
       <i nz-icon nzType="unordered-list" nzTheme="outline" class="box-icon"></i>
-      <h3>My Initiatives</h3>
+      <h3>{{"RFP.MyInitiatives" | translate}}</h3>
     </div>
   </div>
 </div>
@@ -23,7 +26,7 @@
       <div class="rfp-header-content">
         <i nz-icon nzType="unordered-list" nzTheme="outline" class="rfp-header-icon"></i>
         <div>
-          <h1 class="rfp-header-title">My Initiatives</h1>
+          <h1 class="rfp-header-title">{{"RFP.Initiatives" | translate}}</h1>
         </div>
       </div>
     </div>
@@ -37,7 +40,7 @@
               <i nz-icon nzType="file-text" class="kpi-icon" style="color: #1890ff"></i>
               <div class="kpi-text">
                 <div class="kpi-value">{{ totalInitiatives }}</div>
-                <div class="kpi-title">Total Initiatives</div>
+                <div class="kpi-title">{{ "RFP.TotalInitiatives" | translate }}</div>
               </div>
             </div>
           </div>
@@ -48,7 +51,7 @@
               <i nz-icon nzType="clock-circle" class="kpi-icon" style="color: #faad14"></i>
               <div class="kpi-text">
                 <div class="kpi-value">{{ submittedInitiatives }}</div>
-                <div class="kpi-title">Submitted</div>
+                <div class="kpi-title">{{ "RFP.Submitted" | translate }}</div>
               </div>
             </div>
           </div>
@@ -59,7 +62,7 @@
               <i nz-icon nzType="sync" class="kpi-icon" style="color: #722ed1"></i>
               <div class="kpi-text">
                 <div class="kpi-value">{{ inReviewInitiatives }}</div>
-                <div class="kpi-title">In Review</div>
+                <div class="kpi-title">{{ "RFP.InReview" | translate }}</div>
               </div>
             </div>
           </div>
@@ -70,7 +73,7 @@
               <i nz-icon nzType="check-circle" class="kpi-icon" style="color: #52c41a"></i>
               <div class="kpi-text">
                 <div class="kpi-value">{{ approvedInitiatives }}</div>
-                <div class="kpi-title">Approved</div>
+                <div class="kpi-title">{{ "RFP.Approved" | translate }}</div>
               </div>
             </div>
           </div>
@@ -83,34 +86,34 @@
       <nz-table #initiativesTable [nzData]="initiatives" [nzPageSize]="10" [nzShowPagination]="true">
         <thead>
           <tr>
-            <th>Initiative ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Priority</th>
-            <th>Status</th>
-            <th>Admin Message</th>
+            <th>{{ "RFP.InitiativeID" | translate }}</th>
+            <th>{{ "RFP.Title" | translate }}</th>
+            <th>{{ "RFP.Des" | translate }}</th>
+            <th>{{ "RFP.Category" | translate }}</th>
+            <th>{{ "RFP.Priority" | translate }}</th>
+            <th>{{ "RFP.Status" | translate }}</th>
+            <th>{{ "RFP.AdminMessage" | translate }}</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let initiative of initiativesTable.data">
             <td>{{ initiative.id }}</td>
-            <td>{{ initiative.title }}</td>
-            <td>{{ initiative.description }}</td>
-            <td>{{ initiative.category }}</td>
+            <td>{{ ('RFP.' + initiative.title) | translate }}</td>
+            <td>{{ ('RFP.' + initiative.description) | translate }}</td>
+            <td>{{ ('RFP.' + initiative.category) | translate }}</td>
             <td>
               <span class="priority-tag" [ngClass]="'priority-' + initiative.priority.toLowerCase()">
-                {{ initiative.priority }}
+                {{ ('RFP.' + initiative.priority) | translate }}
               </span>
             </td>
             <td>
-              <span class="status-tag" [ngClass]="'status-' + initiative.status.toLowerCase().replace(' ', '-')">
-                {{ initiative.status }}
+              <span class="status-badge" [ngClass]="'status-' + initiative.status.toLowerCase().replace(' ', '-')">
+                {{ ('RFP.' + initiative.status) | translate }}
               </span>
             </td>
             <td>
               <span *ngIf="initiative.status === 'Approved' && initiative.adminMessage" class="admin-message">
-                {{ initiative.adminMessage }}
+                {{ ('RFP.' + initiative.adminMessage) | translate }}
               </span>
               <span *ngIf="initiative.status !== 'Approved'" class="no-message">-</span>
             </td>
@@ -123,7 +126,7 @@
     <div class="row mt-4" style="margin-left: 20px">
       <div class="col-12">
         <button nz-button nzType="default" (click)="goBack()">
-          <i nz-icon nzType="arrow-left"></i> Back
+          <i nz-icon nzType="arrow-left"></i> {{ "COMMON.Back" | translate }}
         </button>
       </div>
     </div>

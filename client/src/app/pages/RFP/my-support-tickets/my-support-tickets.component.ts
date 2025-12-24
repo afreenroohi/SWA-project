@@ -89,8 +89,8 @@ export class MySupportTicketsComponent implements OnInit {
   initiatives = [
     {
       id: 'INI-001',
-      title: 'Process Automation Initiative',
-      description: 'Automate manual processes to improve efficiency',
+      title: 'ProcessAutomationInitiative',
+      description: 'AutomateManualProcesses',
       category: 'Process Improvement',
       status: 'Submitted',
       assignedTo: 's1',
@@ -100,8 +100,8 @@ export class MySupportTicketsComponent implements OnInit {
     },
     {
       id: 'INI-002',
-      title: 'Cost Reduction Program',
-      description: 'Identify areas for cost optimization',
+      title: 'CostReductionProgram',
+      description: 'IdentifyCostOptimization',
       category: 'Cost Reduction',
       status: 'In-Review',
       assignedTo: 'admin',
@@ -111,18 +111,18 @@ export class MySupportTicketsComponent implements OnInit {
     },
     {
       id: 'INI-003',
-      title: 'Digital Innovation Project',
-      description: 'Implement new digital solutions',
+      title: 'DigitalInnovationProject',
+      description: 'ImplementDigitalSolutions',
       category: 'Innovation',
       status: 'Approved',
       assignedTo: 's2',
       createdDate: new Date('2024-01-05'),
       lastUpdated: new Date('2024-01-12'),
-      adminMessage: 'Initiative approved for implementation'
+      adminMessage: 'InitiativeApprovedMsg'
     }
   ];
 
-  constructor(private modal: NzModalService, public cs: CommonService, private translate: TranslateService) {}
+  constructor(private modal: NzModalService, public cs: CommonService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.calculateKPIs();
@@ -151,7 +151,7 @@ export class MySupportTicketsComponent implements OnInit {
         nzFooter: null,
         nzWidth: 600
       });
-      
+
       modal.afterClose.subscribe(result => {
         if (result) {
           // Refresh tickets if a new ticket was created
@@ -178,7 +178,7 @@ export class MySupportTicketsComponent implements OnInit {
         nzFooter: null,
         nzWidth: 600
       });
-      
+
       modal.afterClose.subscribe(result => {
         if (result) {
           console.log('New initiative created:', result);

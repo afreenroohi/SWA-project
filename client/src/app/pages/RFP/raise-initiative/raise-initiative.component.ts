@@ -23,8 +23,8 @@ export class RaiseInitiativeComponent implements OnInit {
   initiatives = [
     {
       id: 'INI-001',
-      title: 'Process Automation Initiative',
-      description: 'Automate manual processes to improve efficiency',
+      title: 'ProcessAutomationInitiative',
+      description: 'AutomateManualProcesses',
       priority: 'High',
       category: 'Process Improvement',
       status: 'Submitted',
@@ -34,8 +34,8 @@ export class RaiseInitiativeComponent implements OnInit {
     },
     {
       id: 'INI-002',
-      title: 'Cost Reduction Program',
-      description: 'Identify areas for cost optimization',
+      title: 'CostReductionProgram',
+      description: 'IdentifyCostOptimization',
       priority: 'Medium',
       category: 'Cost Reduction',
       status: 'In-Review',
@@ -45,18 +45,18 @@ export class RaiseInitiativeComponent implements OnInit {
     },
     {
       id: 'INI-003',
-      title: 'Digital Innovation Project',
-      description: 'Implement new digital solutions',
+      title: 'DigitalInnovationProject',
+      description: 'ImplementDigitalSolutions',
       priority: 'High',
       category: 'Innovation',
       status: 'Approved',
       createdDate: new Date('2024-01-05'),
       lastUpdated: new Date('2024-01-12'),
-      adminMessage: 'Initiative approved for implementation'
+      adminMessage: 'InitiativeApprovedMsg'
     }
   ];
 
-  constructor(private modal: NzModalService, public cs: CommonService, private translate: TranslateService) {}
+  constructor(private modal: NzModalService, public cs: CommonService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.calculateKPIs();
