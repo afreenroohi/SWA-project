@@ -533,6 +533,7 @@ export class AppComponent {
             Module: 'Support Tickets',
             ModuleId: '99',
             ModuleAr: 'تذاكر الدعم',
+            isOpen: true,
             navItem: [
               {
                 name: 'ticketlist',

@@ -136,9 +136,9 @@
           <th>Description</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
           <th>{{ 'SupportTickets.Status' | translate }}</th>
+          <th>Admin Message</th>
           <th>Assign To</th>
           <th>{{ 'SupportTickets.Actions' | translate }}</th>
-          <th>Admin Message</th>
         </tr>
       </thead>
       <tbody>
@@ -157,47 +157,57 @@
             </span>
           </td>
           <td>
-            <ng-container *ngIf="isUserRoute()">
-              <ng-container *ngIf="ticket.status === 'Open'; else staticUser">
-                <button nz-button nzSize="small" nzType="primary" (click)="takeTicket(ticket)">
-                  Take Ticket
-                </button>
-              </ng-container>
-              <ng-template #staticUser>
-                <span>{{ ticket.assignedTo }}</span>
-              </ng-template>
-            </ng-container>
-            <ng-container *ngIf="!isUserRoute()">
-              <nz-select [(ngModel)]="ticket.assignedTo" style="width: 100px;">
-                <nz-option nzValue="s1" nzLabel="s1"></nz-option>
-                <nz-option nzValue="s2" nzLabel="s2"></nz-option>
-                <nz-option nzValue="admin" nzLabel="admin"></nz-option>
-              </nz-select>
-            </ng-container>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button nz-button nzSize="small" nzType="primary" (click)="openActionModal('approve', ticket)">
-                Approve
-              </button>
-              <button nz-button nzSize="small" nzType="default" nzDanger (click)="openActionModal('reject', ticket)">
-                Reject
-              </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('transfer', ticket)">
-                Transfer
-              </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('moreInfo', ticket)">
-                More Info
-              </button>
-            </div>
-          </td>
-          <td>
             <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
               {{ ticket.adminMessage }}
             </span>
             <ng-template #noMessage>
               <span class="no-message">No message</span>
             </ng-template>
+          </td>
+          <td>
+            <ng-container *ngIf="isUserRoute()">
+              <ng-container *ngIf="ticket.status === 'Open'; else staticUser">
+                <button nz-button nzSize="small" class="take-ticket-btn" (click)="takeTicket(ticket)">
+                  <span nz-icon nzType="user-add"></span>
+                  Take Ticket
+                </button>
+              </ng-container>
+              <ng-template #staticUser>
+                <span class="assigned-user"><span nz-icon nzType="user"></span> {{ ticket.assignedTo }}</span>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="!isUserRoute()">
+              <nz-select [(ngModel)]="ticket.assignedTo" nzPlaceHolder="Select User" class="assign-select">
+                <nz-option nzValue="suser1" nzLabel="suser1"></nz-option>
+                <nz-option nzValue="suser2" nzLabel="suser2"></nz-option>
+                <nz-option nzValue="self" nzLabel="Self"></nz-option>
+              </nz-select>
+            </ng-container>
+          </td>
+          <td>
+            <button nz-button nzSize="small" nz-dropdown [nzDropdownMenu]="actionMenu">
+              <span nz-icon nzType="more"></span>
+            </button>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="openActionModal('approve', ticket)">
+                  <span nz-icon nzType="check"></span>
+                  Approve
+                </li>
+                <li nz-menu-item (click)="openActionModal('reject', ticket)">
+                  <span nz-icon nzType="close"></span>
+                  Reject
+                </li>
+                <li nz-menu-item (click)="openActionModal('transfer', ticket)">
+                  <span nz-icon nzType="swap"></span>
+                  Transfer
+                </li>
+                <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
+                  <span nz-icon nzType="info-circle"></span>
+                  More Info
+                </li>
+              </ul>
+            </nz-dropdown-menu>
           </td>
         </tr>
       </tbody>
