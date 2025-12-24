@@ -47,7 +47,9 @@
     "Do you want to proceed": "هل تريد الاستمرار ؟",
     "select role": "اختر السكرتير",
     "Select an option": "اختر",
-    "Do you want to Assign back": "هل تريد إعادة التعيين؟"
+    "Do you want to Assign back": "هل تريد إعادة التعيين؟",
+    "SUCCESS": "نجاح",
+    "OK": "حسنًا"
   },
   "Table": {
     "SI No": "الرقم التسلسلي",
@@ -69,22 +71,11 @@
     "Select SLA list": "قائمة اتفاقية مستوى الخدمة SLA",
     "WfDeptDesc": "قسم سير العمل"
   },
-  
-  "COMMON": {
-    "SUCCESS": "نجاح",
-    "OK": "حسنًا"
-  },
   "FORM": {
     "SUBMIT_SUCCESS": "تم إرسال النموذج بنجاح!"
-  }
-
-,
-"COMMON":{
-  "CopyrightAllRightsReserved":"جميع الحقوق محفوظة",
-  "Version":"الإصدار",
-  "Select":"اختر"
-},
+  },
   "RFP": {
+    "CreateInitiative": "إنشاء مبادرة",
     "Extend Bid Opening Date": "تمديد تاريخ فتح العطاءات",
     "RFPs": "المنافسات",
     "Change Bill of Quantity": "تغيير جدول الكميات",
@@ -622,6 +613,31 @@
     "Max of 20 Characters": "الحد الأقصى 20 حرفًا",
     "Qualifications by Region": "المؤهلات حسب المنطقة",
     "Qualifications by Committee": "المؤهلات حسب اللجنة",
+    "CreateInitiative": "إنشاء مبادرة",
+    "MyInitiatives": "مبادراتي",
+    "Initiatives": "المبادرات",
+    "TotalInitiatives": "إجمالي المبادرات",
+    "InReview": "قيد المراجعة",
+    "In-Review": "قيد المراجعة",
+    "InitiativeID": "رقم المبادرة",
+    "Title": "العنوان",
+    "Priority": "الأولوية",
+    "AdminMessage": "رسالة المسؤول",
+    "High": "عالي",
+    "Medium": "متوسط",
+    "Low": "منخفض",
+    "Process Improvement": "تحسين العمليات",
+    "Cost Reduction": "تقليل التكلفة",
+    "Innovation": "ابتكار",
+    "ProcessAutomationInitiative": "مبادرة أتمتة العمليات",
+    "AutomateManualProcesses": "أتمتة العمليات اليدوية لتحسين الكفاءة",
+    "CostReductionProgram": "برنامج خفض التكاليف",
+    "IdentifyCostOptimization": "تحديد مجالات تحسين التكلفة",
+    "DigitalInnovationProject": "مشروع الابتكار الرقمي",
+    "ImplementDigitalSolutions": "تنفيذ حلول رقمية جديدة",
+    "InitiativeApprovedMsg": "تمت الموافقة على المبادرة للتنفيذ",
+    "Loading": "جار التحميل",
+    "AssignedTo": "تعيين إلى",
     "Pending with Procurement Team Members": "قيد الانتظار مع أعضاء فريق المشتريات",
     "Attachmentss": "5. المرفقات",
     "Bill ofQuantity": "4. جدول الكميات",
