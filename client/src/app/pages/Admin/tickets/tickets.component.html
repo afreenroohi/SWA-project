@@ -169,27 +169,36 @@
             </ng-container>
             <ng-container *ngIf="!isUserRoute()">
               <nz-select [(ngModel)]="ticket.assignedTo" style="width: 100px;">
-                <nz-option nzValue="s1" nzLabel="s1"></nz-option>
-                <nz-option nzValue="s2" nzLabel="s2"></nz-option>
+                <nz-option nzValue="suser1" nzLabel="suser1"></nz-option>
+                <nz-option nzValue="suser2" nzLabel="suser2"></nz-option>
                 <nz-option nzValue="admin" nzLabel="admin"></nz-option>
               </nz-select>
             </ng-container>
           </td>
           <td>
-            <div class="action-buttons">
-              <button nz-button nzSize="small" nzType="primary" (click)="openActionModal('approve', ticket)">
-                Approve
-              </button>
-              <button nz-button nzSize="small" nzType="default" nzDanger (click)="openActionModal('reject', ticket)">
-                Reject
-              </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('transfer', ticket)">
-                Transfer
-              </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('moreInfo', ticket)">
-                More Info
-              </button>
-            </div>
+            <button nz-button nzSize="small" nz-dropdown [nzDropdownMenu]="actionMenu">
+              <span nz-icon nzType="more"></span>
+            </button>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="openActionModal('approve', ticket)">
+                  <span nz-icon nzType="check"></span>
+                  Approve
+                </li>
+                <li nz-menu-item (click)="openActionModal('reject', ticket)">
+                  <span nz-icon nzType="close"></span>
+                  Reject
+                </li>
+                <li nz-menu-item (click)="openActionModal('transfer', ticket)">
+                  <span nz-icon nzType="swap"></span>
+                  Transfer
+                </li>
+                <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
+                  <span nz-icon nzType="info-circle"></span>
+                  More Info
+                </li>
+              </ul>
+            </nz-dropdown-menu>
           </td>
           <td>
             <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
