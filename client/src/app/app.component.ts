@@ -806,7 +806,7 @@ export class AppComponent {
             },
             {
               name: 'prequalification',
-              iconName: IconList.tool,
+              iconName: IconList.truefolder,
               text: 'Prequalification',
               textAr: 'التأهيل المسبق',
               link: 'rfp/prequalification',

@@ -91,11 +91,14 @@
 
 // Header Box Styles
 .rfp-header-box {
-  background: linear-gradient(135deg, #005c99 0%, #0077cc 100%);
+  background: #005c99;
   border-radius: 12px;
-  padding: 24px 32px;
+  padding: 12px 24px;
   margin-left: 20px;
   box-shadow: 0 4px 12px rgba(0, 92, 153, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .rfp-header-content {
@@ -105,15 +108,26 @@
 }
 
 .rfp-header-icon {
-  font-size: 36px;
+  font-size: 28px;
   color: white;
 }
 
 .rfp-header-title {
   color: white;
   margin: 0;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 600;
+}
+
+.header-back-btn {
+  background: white !important;
+  color: #005c99 !important;
+  border: none !important;
+  font-weight: 500;
+
+  &:hover {
+    background: #f0f0f0 !important;
+  }
 }
 
 // Button Styles

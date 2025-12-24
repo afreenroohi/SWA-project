@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/service/RFP/api.service';
 import { RFPService } from 'src/app/service/RFP/rfp.service';
 import { listOfColumnRFPMG, listOfColumnPRQUALUSER } from 'src/app/shared/shared';
 import { ChartConfiguration } from 'chart.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-myprequal',
@@ -38,7 +39,8 @@ export class MyprequalComponent implements OnInit {
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     private rfp: RFPService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private router: Router
   ) {
     this.repForm = this.fb.group({
       rfpNo: new FormControl(''),
@@ -184,6 +186,10 @@ export class MyprequalComponent implements OnInit {
         { id: 10, title: 'Actions', titleAr: 'الإجراءات' }
       ];
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/rfp/prequalification']);
   }
 
 }

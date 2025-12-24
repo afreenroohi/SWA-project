@@ -74,6 +74,7 @@
     "Description": "Description"
   },
   "Prequalification": {
+    "Back":"Back",
     "TotalDocuments": "Total Documents",
     "AllQualificationDocuments": "All Qualification Documents",
     "PrequalificationDocuments": "Prequalification Documents",
