@@ -531,6 +531,7 @@ export class AppComponent {
             Module: 'Support Tickets',
             ModuleId: '99',
             ModuleAr: 'تذاكر الدعم',
+            isOpen: true,
             navItem: [
               {
                 name: 'ticketlist',
@@ -549,7 +550,8 @@ export class AppComponent {
             ],
           });
 
-          this.router.navigate(['rfp/dashboard']);
+          this.cs.activeMenu = 'ticketlist';
+          this.router.navigate(['suser/tickets']);
         }
         if (role === 'PRUSER') {
           this.router.navigate(['rfp/dashboard'])
