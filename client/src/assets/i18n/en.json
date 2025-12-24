@@ -124,7 +124,8 @@
 ,
 "COMMON":{
   "CopyrightAllRightsReserved":"Copyright All Rights Reserved",
-  "Version":"Version"
+  "Version":"Version",
+  "Select":"Select"
 },
 
   "RFP": {
