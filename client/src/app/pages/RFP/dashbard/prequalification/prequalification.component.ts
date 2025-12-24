@@ -58,7 +58,7 @@ submitForm(): void {
     nzOkText: this.translate.instant('COMMON.OK'),
     nzWidth: 400,
     nzOnOk: () => {
-      this.resetForm();
+      this.router.navigate(['/rfp/myprequal']);
     }
   });
 }
@@ -68,6 +68,11 @@ submitForm(): void {
     this.placeOfExecution = 'inside';
     this.selectedFileName = '';
     this.selectedFile = null;
+  }
+
+  goBack(): void {
+    this.showInitialBoxes = true;
+    this.resetForm();
   }
 
 }
