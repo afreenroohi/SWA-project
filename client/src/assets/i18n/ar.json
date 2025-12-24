@@ -81,7 +81,8 @@
 ,
 "COMMON":{
   "CopyrightAllRightsReserved":"جميع الحقوق محفوظة",
-  "Version":"الإصدار"
+  "Version":"الإصدار",
+  "Select":"اختر"
 },
   "RFP": {
     "Extend Bid Opening Date": "تمديد تاريخ فتح العطاءات",
