@@ -121,10 +121,15 @@
     "SUBMIT_SUCCESS": "Form submitted successfully!"
   }
 ,
-
+"COMMON":{
+  "CopyrightAllRightsReserved":"Copyright All Rights Reserved",
+  "Version":"Version"
+},
 
   "RFP": {
     "Extend Bid Opening Date": "Extend Bid Opening Date",
+    "Qualifications by Committee": "Qualifications by Committee",
+    "Qualifications by Region": "Qualifications by Region",
     
     "Create RFP From": "Create RFP From",
     "Create Manual RFP": "Create Manual RFP",

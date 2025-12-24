@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+﻿/* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import './variables';
 @import './responsive-utilities';
@@ -14,6 +14,7 @@ $breakpoints: (
   xl: 1200px,
   xxl: 1400px
 );
+
 :root {
   --primary-color: #1890ff;
   --success-color: #52c41a;
@@ -791,7 +792,7 @@ html[dir="rtl"] {
 //   z-index: 999999; /* high, but do not force display/position */
 // }
 
-// /* Recommended overlay styling — uses the library's overlay element */
+// /* Recommended overlay styling â€” uses the library's overlay element */
 // ngx-spinner .spinner-overlay,
 // .ngx-spinner-overlay {
 //   position: fixed;
@@ -809,7 +810,7 @@ html[dir="rtl"] {
 // }
 
 // /* When the spinner component is hidden, it should not block pointer events.
-//    The library usually removes/hides the overlay — but if you need a safety rule: */
+//    The library usually removes/hides the overlay â€” but if you need a safety rule: */
 // ngx-spinner.ngx-hide .spinner-overlay,
 // ngx-spinner.ngx-hide .ngx-spinner-overlay {
 //   pointer-events: none;
@@ -1004,7 +1005,7 @@ html[dir="rtl"] {
 // }
 
 // /* When the spinner component is hidden, it should not block pointer events.
-//    The library usually removes/hides the overlay — but if you need a safety rule: */
+//    The library usually removes/hides the overlay â€” but if you need a safety rule: */
 // ngx-spinner.ngx-hide .spinner-overlay,
 // ngx-spinner.ngx-hide .ngx-spinner-overlay {
 //   pointer-events: none;
@@ -1524,7 +1525,23 @@ html[dir="rtl"] {
       color: #8b949e !important;
     }
 
-    /* Fix for select dropdowns if they are attached to body but we can try to target them if they are inside */
-    /* Note: Dropdowns attached to body need global overrides, which are already present in styles.scss */
+    color: #e6e6e6 !important;
   }
 }
+
+/* Fix for Subcriteria Drawer to ensure it is above the Sidebar */
+.sub-criteria-drawer {
+  z-index: 2000 !important;
+}
+
+/* Fix for Sidebar visibility - Lower Z-index to allow mask to cover it */
+nz-sider.menu-sidebar {
+  z-index: 900 !important;
+}
+
+
+/* Completely hide sidebar when drawer is open (controlled by TS class) */
+body.hide-app-sidebar nz-sider {
+  display: none !important;
+}
+

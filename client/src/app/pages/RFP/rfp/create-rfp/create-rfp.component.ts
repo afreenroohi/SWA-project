@@ -178,55 +178,55 @@ export class CreateRFPComponent implements OnInit {
     path: string;
     filename?: string;
   }> = [
-    {
-      key: 'الشروط الخاصة المواد والمعدات',
-      label: 'الشروط الخاصة المواد والمعدات.docx',
-      path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx', // or rename and remove spaces
-      filename: 'الشروط الخاصة المواد والمعدات.docx',
-    },
-    {
-      key: 'نموذج اتفاقية إطارية',
-      label: 'نموذج اتفاقية إطارية.docx',
-      path: 'assets/forms/نموذج اتفاقية إطارية.docx', // or rename and remove spaces
-      filename: 'نموذج اتفاقية إطارية.docx',
-    },
-    {
-      key: 'الشروط الخاصة بالعمالة',
-      label: 'الشروط الخاصة بالعمالة.docx',
-      path: 'assets/forms/الشروط الخاصة بالعمالة.docx', // or rename and remove spaces
-      filename: 'الشروط الخاصة بالعمالة.docx',
-    },
-    {
-      key: 'الملحق الاسترشادي',
-      label: 'الملحق الاسترشادي.docx',
-      path: 'assets/forms/الملحق الاسترشادي.docx', // or rename and remove spaces
-      filename: 'الملحق الاسترشادي.docx',
-    },
-    {
-      key: 'آلية تقديم العطاء وخطاب تقديم العروض',
-      label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
-      path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx', // or rename and remove spaces
-      filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
-    },
-    {
-      key: 'شـهادة زيـارة الموقع 2024',
-      label: 'شـهادة زيـارة الموقع 2024.docx',
-      path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx', // or rename and remove spaces
-      filename: 'شـهادة زيـارة الموقع 2024.docx',
-    },
-    {
-      key: 'كيفية تنفيذ الأعمال والخدمات',
-      label: 'كيفية تنفيذ الأعمال والخدمات.docx',
-      path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx', // or rename and remove spaces
-      filename: 'كيفية تنفيذ الأعمال والخدمات.docx',
-    },
-    {
-      key: 'معايير تقييم العروض الفنية _',
-      label: 'معايير تقييم العروض الفنية _.docx',
-      path: 'assets/forms/معايير تقييم العروض الفنية _.docx', // or rename and remove spaces
-      filename: 'معايير تقييم العروض الفنية _.docx',
-    },
-  ];
+      {
+        key: 'الشروط الخاصة المواد والمعدات',
+        label: 'الشروط الخاصة المواد والمعدات.docx',
+        path: 'assets/forms/الشروط الخاصة المواد والمعدات.docx', // or rename and remove spaces
+        filename: 'الشروط الخاصة المواد والمعدات.docx',
+      },
+      {
+        key: 'نموذج اتفاقية إطارية',
+        label: 'نموذج اتفاقية إطارية.docx',
+        path: 'assets/forms/نموذج اتفاقية إطارية.docx', // or rename and remove spaces
+        filename: 'نموذج اتفاقية إطارية.docx',
+      },
+      {
+        key: 'الشروط الخاصة بالعمالة',
+        label: 'الشروط الخاصة بالعمالة.docx',
+        path: 'assets/forms/الشروط الخاصة بالعمالة.docx', // or rename and remove spaces
+        filename: 'الشروط الخاصة بالعمالة.docx',
+      },
+      {
+        key: 'الملحق الاسترشادي',
+        label: 'الملحق الاسترشادي.docx',
+        path: 'assets/forms/الملحق الاسترشادي.docx', // or rename and remove spaces
+        filename: 'الملحق الاسترشادي.docx',
+      },
+      {
+        key: 'آلية تقديم العطاء وخطاب تقديم العروض',
+        label: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+        path: 'assets/forms/آلية تقديم العطاء وخطاب تقديم العروض.docx', // or rename and remove spaces
+        filename: 'آلية تقديم العطاء وخطاب تقديم العروض.docx',
+      },
+      {
+        key: 'شـهادة زيـارة الموقع 2024',
+        label: 'شـهادة زيـارة الموقع 2024.docx',
+        path: 'assets/forms/شـهادة زيـارة الموقع 2024.docx', // or rename and remove spaces
+        filename: 'شـهادة زيـارة الموقع 2024.docx',
+      },
+      {
+        key: 'كيفية تنفيذ الأعمال والخدمات',
+        label: 'كيفية تنفيذ الأعمال والخدمات.docx',
+        path: 'assets/forms/كيفية تنفيذ الأعمال والخدمات.docx', // or rename and remove spaces
+        filename: 'كيفية تنفيذ الأعمال والخدمات.docx',
+      },
+      {
+        key: 'معايير تقييم العروض الفنية _',
+        label: 'معايير تقييم العروض الفنية _.docx',
+        path: 'assets/forms/معايير تقييم العروض الفنية _.docx', // or rename and remove spaces
+        filename: 'معايير تقييم العروض الفنية _.docx',
+      },
+    ];
 
   selectedFormKey: string | null = null;
 
@@ -361,10 +361,42 @@ export class CreateRFPComponent implements OnInit {
 
   editTotTechEval: boolean = true;
 
-  isSubCriteria: boolean = false;
+
+  // isSubCriteria: boolean = false;
+  private _isSubCriteria: boolean = false;
+  get isSubCriteria(): boolean {
+    return this._isSubCriteria;
+  }
+  set isSubCriteria(value: boolean) {
+    this._isSubCriteria = value;
+    if (value) {
+      document.body.classList.add('hide-app-sidebar');
+    } else {
+      // Only remove if both are false
+      if (!this._isSubCriteria && !this._isSubCriteriaEdit) {
+        document.body.classList.remove('hide-app-sidebar');
+      }
+    }
+  }
+
   isSubCriteriaToggle: boolean = false;
 
-  isSubCriteriaEdit: boolean = false;
+  // isSubCriteriaEdit: boolean = false;
+  private _isSubCriteriaEdit: boolean = false;
+  get isSubCriteriaEdit(): boolean {
+    return this._isSubCriteriaEdit;
+  }
+  set isSubCriteriaEdit(value: boolean) {
+    this._isSubCriteriaEdit = value;
+    if (value) {
+      document.body.classList.add('hide-app-sidebar');
+    } else {
+      // Only remove if both are false
+      if (!this._isSubCriteria && !this._isSubCriteriaEdit) {
+        document.body.classList.remove('hide-app-sidebar');
+      }
+    }
+  }
   listOfBudgetingYears: number[] = [];
   groupBOQItemsBasedonBudgetingYears: any[] = [];
   selectedBOQItemForLookUp: any;
@@ -774,12 +806,12 @@ export class CreateRFPComponent implements OnInit {
             Weightage: parseInt(item.Percentage) || 0,
             MainSubCriteria: item.subCriteriaList
               ? item.subCriteriaList.map((subItem: any, subIndex: number) => ({
-                  Rfpno: rfpNumber,
-                  Sino: index + 1,
-                  Subsino: subIndex + 1,
-                  Description: subItem.Descr || '',
-                  Weightage: parseInt(subItem.Percentage) || 0,
-                }))
+                Rfpno: rfpNumber,
+                Sino: index + 1,
+                Subsino: subIndex + 1,
+                Description: subItem.Descr || '',
+                Weightage: parseInt(subItem.Percentage) || 0,
+              }))
               : [],
           })
         ),
@@ -1237,7 +1269,7 @@ export class CreateRFPComponent implements OnInit {
     this.isSubCriteriaEdit = false;
   }
 
-  onReannounceChange(value: string) {}
+  onReannounceChange(value: string) { }
   onCompetitionChange(value: string) {
     console.log(value, 'afreen =========');
 
@@ -1402,7 +1434,7 @@ export class CreateRFPComponent implements OnInit {
         this.router.navigate(['/rfp/prequalification']).then(() => {
           // Activate prequalification in sidebar
           if (this.cs.activeMenu) {
-             this.cs.activeMenu = 'prequalification';
+            this.cs.activeMenu = 'prequalification';
           }
         });
       },
@@ -2892,13 +2924,13 @@ export class CreateRFPComponent implements OnInit {
               ].substr(0, 3),
               OtherTxt:
                 element[node.checklist_name_en + 'Group'][
-                  node.checklist_name_en +
-                    childList.checklist_id +
-                    'OtherComment'
+                node.checklist_name_en +
+                childList.checklist_id +
+                'OtherComment'
                 ],
               ChecklistCmnts:
                 element[node.checklist_name_en + 'Group'][
-                  node.checklist_name_en + childList.checklist_id + 'Comment'
+                node.checklist_name_en + childList.checklist_id + 'Comment'
                 ],
               CreatedBy: '',
               CreatedAt: '',
@@ -4397,9 +4429,9 @@ export class CreateRFPComponent implements OnInit {
       this.cs.createMessage(
         'error',
         totEvalPer +
-          (subCriteria
-            ? this.translate.instant('RFP.SubCritval')
-            : this.translate.instant('RFP.EvalCritVal'))
+        (subCriteria
+          ? this.translate.instant('RFP.SubCritval')
+          : this.translate.instant('RFP.EvalCritVal'))
       );
 
       return totEvalPer;
@@ -4904,13 +4936,13 @@ export class CreateRFPComponent implements OnInit {
             DocTypeId: '',
             EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
               ? this.cs.removeCommas(
-                  this.rfpForm.controls['estPrice'].value.toString()
-                )
+                this.rfpForm.controls['estPrice'].value.toString()
+              )
               : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(
-                  this.rfpForm.controls['estPriceVAT'].value.toString()
-                )
+                this.rfpForm.controls['estPriceVAT'].value.toString()
+              )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -4943,9 +4975,9 @@ export class CreateRFPComponent implements OnInit {
             ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
             ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
               ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-                  ...rest,
-                  SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
-                }))
+                ...rest,
+                SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+              }))
               : [],
             ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
               ? this.TechReqListData
@@ -4953,9 +4985,9 @@ export class CreateRFPComponent implements OnInit {
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
               ? this.rfpService.getTechnicalMemberFormat(
-                  this.rfpForm.controls['MemName'].value,
-                  this.managerSubId
-                )
+                this.rfpForm.controls['MemName'].value,
+                this.managerSubId
+              )
               : [],
             TechEvalWatage: this.rfpForm
               .get([
@@ -5082,13 +5114,13 @@ export class CreateRFPComponent implements OnInit {
             DocTypeId: '',
             EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
               ? this.cs.removeCommas(
-                  this.rfpForm.controls['estPrice'].value.toString()
-                )
+                this.rfpForm.controls['estPrice'].value.toString()
+              )
               : '',
             EstPrice: this.rfpForm.controls['estPriceVAT'].value
               ? this.cs.removeCommas(
-                  this.rfpForm.controls['estPriceVAT'].value.toString()
-                )
+                this.rfpForm.controls['estPriceVAT'].value.toString()
+              )
               : '',
             ProjDuration: this.rfpForm.controls['ProjDur'].value
               ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5126,9 +5158,9 @@ export class CreateRFPComponent implements OnInit {
             ReqToAttchNavg: this.fileNetList,
             ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
               ? this.rfpService.getTechnicalMemberFormat(
-                  this.rfpForm.controls['MemName'].value,
-                  this.managerSubId
-                )
+                this.rfpForm.controls['MemName'].value,
+                this.managerSubId
+              )
               : [],
             TechEvalWatage: this.rfpForm
               .get([
@@ -5325,13 +5357,13 @@ export class CreateRFPComponent implements OnInit {
         DocTypeId: '',
         EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
           ? this.cs.removeCommas(
-              this.rfpForm.controls['estPrice'].value.toString()
-            )
+            this.rfpForm.controls['estPrice'].value.toString()
+          )
           : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(
-              this.rfpForm.controls['estPriceVAT'].value.toString()
-            )
+            this.rfpForm.controls['estPriceVAT'].value.toString()
+          )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5361,9 +5393,9 @@ export class CreateRFPComponent implements OnInit {
         ReqToWorkNavg: this.isConsult ? this.ConsultListData : [],
         ReqToTechNavg: this.rfpForm.controls['Evalcrt'].value
           ? this.EvalListData.map(({ SubCriFlg, expand, ...rest }) => ({
-              ...rest,
-              SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
-            }))
+            ...rest,
+            SubCriFlg: SubCriFlg === 'y' ? '' : SubCriFlg,
+          }))
           : [],
         ReqToTreqNavg: this.rfpForm.controls['RfpTreq'].value
           ? this.TechReqListData
@@ -5371,9 +5403,9 @@ export class CreateRFPComponent implements OnInit {
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
           ? this.rfpService.getTechnicalMemberFormat(
-              this.rfpForm.controls['MemName'].value,
-              this.managerSubId
-            )
+            this.rfpForm.controls['MemName'].value,
+            this.managerSubId
+          )
           : [],
         TechEvalWatage: this.rfpForm
           .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
@@ -5469,13 +5501,13 @@ export class CreateRFPComponent implements OnInit {
         DocTypeId: '',
         EstmPriceWithoutVat: this.rfpForm.controls['estPrice'].value
           ? this.cs.removeCommas(
-              this.rfpForm.controls['estPrice'].value.toString()
-            )
+            this.rfpForm.controls['estPrice'].value.toString()
+          )
           : '',
         EstPrice: this.rfpForm.controls['estPriceVAT'].value
           ? this.cs.removeCommas(
-              this.rfpForm.controls['estPriceVAT'].value.toString()
-            )
+            this.rfpForm.controls['estPriceVAT'].value.toString()
+          )
           : '',
         ProjDuration: this.rfpForm.controls['ProjDur'].value
           ? this.rfpForm.controls['ProjDur'].value.toString()
@@ -5510,9 +5542,9 @@ export class CreateRFPComponent implements OnInit {
         ReqToAttchNavg: this.fileNetList,
         ReqToTmbrNavg: this.rfpForm.controls['MemName'].value
           ? this.rfpService.getTechnicalMemberFormat(
-              this.rfpForm.controls['MemName'].value,
-              this.managerSubId
-            )
+            this.rfpForm.controls['MemName'].value,
+            this.managerSubId
+          )
           : [],
         TechEvalWatage: this.rfpForm
           .get(['vendorEvaluationWeightage', 'technicalEvaluationWeightage'])
@@ -5667,7 +5699,7 @@ export class CreateRFPComponent implements OnInit {
     return years;
   }
 
-  upload() {}
+  upload() { }
 
   deleteFile(value: any) {
     this.spinner.show();
