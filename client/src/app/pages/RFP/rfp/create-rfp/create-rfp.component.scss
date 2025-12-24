@@ -975,7 +975,7 @@ input::selection {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
   margin-top: -10px;
   border: 3px solid #005bbd;
-  background-color: #E0E0E0;
+  background-color: #F5F5F5;
 }
 
 /* Stepper Container */
@@ -3861,3 +3861,45 @@ nz-collapse {
 
 
 
+
+// Custom Drawer Styling
+::ng-deep .sub-criteria-drawer {
+  .ant-drawer-header {
+    background: #005c99 !important;
+    border-radius: 0 !important;
+    padding: 16px 24px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .ant-drawer-title {
+    color: white !important;
+  }
+
+  .ant-drawer-close {
+    color: white !important;
+  }
+
+  // Ensure our custom title template is also white
+  .drawer-title {
+    color: white !important;
+    
+    div {
+      color: white !important;
+    }
+
+    button {
+       background: transparent !important; 
+       border: none !important;
+       box-shadow: none !important;
+       
+       span {
+         color: white !important;
+         font-size: 18px;
+       }
+
+       &:hover {
+         background: rgba(255,255,255,0.1) !important;
+       }
+    }
+  }
+}

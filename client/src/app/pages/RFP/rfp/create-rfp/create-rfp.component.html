@@ -1,4 +1,5 @@
-<nz-drawer [nzClosable]="false" [nzVisible]="isSubCriteria || isSubCriteriaEdit" nzPlacement="right"
+﻿<nz-drawer [nzClosable]="false" [nzVisible]="isSubCriteria || isSubCriteriaEdit"
+  [nzPlacement]="cs.userLanguage === 'ar' ? 'left' : 'right'" nzClassName="sub-criteria-drawer"
   (nzOnClose)="closeSubCriteria()" [nzTitle]="subCriteriaTitle" [nzFooter]="subCriteriaFooter" [nzWidth]="570">
   <ng-template #subCriteriaTitle>
     <div class="drawer-title">
@@ -630,17 +631,17 @@
                   [nzLabel]="'RFP.Al-Madinah Region/Al-Furaysh' | translate"></nz-option>
                 <nz-option nzValue="Al-Madinah/Abyar Al-Mashi"
                   [nzLabel]="'RFP.Al-Madinah Region/Abyar Al-Mashi' | translate"></nz-option>
-                <nz-option nzValue="Al-Qassim/Shari – Al-Qassim" [nzLabel]="
-                    'RFP.Al-Qassim Region/Shari – Al-Qassim' | translate
+                <nz-option nzValue="Al-Qassim/Shari â€“ Al-Qassim" [nzLabel]="
+                    'RFP.Al-Qassim Region/Shari â€“ Al-Qassim' | translate
                   "></nz-option>
-                <nz-option nzValue="Al-Qassim/Al-Dhybiyah – Al-Qassim" [nzLabel]="
-                    'RFP.Al-Qassim Region/Al-Dhybiyah – Al-Qassim' | translate
+                <nz-option nzValue="Al-Qassim/Al-Dhybiyah â€“ Al-Qassim" [nzLabel]="
+                    'RFP.Al-Qassim Region/Al-Dhybiyah â€“ Al-Qassim' | translate
                   "></nz-option>
                 <nz-option nzValue="Al-Qassim/Al-Khurma"
                   [nzLabel]="'RFP.Al-Qassim Region/Al-Khurma' | translate"></nz-option>
                 <nz-option nzValue="Eastern/Tarout" [nzLabel]="'RFP.Eastern Region/Tarout' | translate"></nz-option>
-                <nz-option nzValue="Eastern/Al-Ju’aymah"
-                  [nzLabel]="'RFP.Eastern Region/Al-Ju’aymah' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Al-Juâ€™aymah"
+                  [nzLabel]="'RFP.Eastern Region/Al-Juâ€™aymah' | translate"></nz-option>
                 <nz-option nzValue="Eastern/Shedgum" [nzLabel]="'RFP.Eastern Region/Shedgum' | translate"></nz-option>
                 <nz-option nzValue="Asir Region/Rijal Alma"
                   [nzLabel]="'RFP.Asir Region/Rijal Alma' | translate"></nz-option>
@@ -1831,8 +1832,8 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>الرقم / Serial Number</th>
-                    <th>رقم المستند / Document Number</th>
+                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
+                    <th>Ø±Ù‚Ù… Ø§Ù„Ù…Ø³ØªÙ†Ø¯ / Document Number</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -1883,11 +1884,11 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>الرقم / Serial Number</th>
-                    <th>المسمى الوظيفي / Job Title</th>
-                    <th>أقل مؤهل للقبول / Minimum Qualification</th>
+                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
+                    <th>Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ / Job Title</th>
+                    <th>Ø£Ù‚Ù„ Ù…Ø¤Ù‡Ù„ Ù„Ù„Ù‚Ø¨ÙˆÙ„ / Minimum Qualification</th>
                     <th>
-                      الحد الأدني لسنوات الخبرة / Minimum Years of Experience
+                      Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†ÙŠ Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø®Ø¨Ø±Ø© / Minimum Years of Experience
                     </th>
                     <th>Action</th>
                   </tr>
@@ -1946,10 +1947,10 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>الرقم / Serial Number</th>
-                    <th>المادة / Material</th>
-                    <th>المواصفات / Specifications</th>
-                    <th>وحدة القياس / Unit of Measurement</th>
+                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
+                    <th>Ø§Ù„Ù…Ø§Ø¯Ø© / Material</th>
+                    <th>Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª / Specifications</th>
+                    <th>ÙˆØ­Ø¯Ø© Ø§Ù„Ù‚ÙŠØ§Ø³ / Unit of Measurement</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -2007,10 +2008,10 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>الرقم / Serial Number</th>
-                    <th>الآلة / Machine</th>
-                    <th>المواصفات / Specifications</th>
-                    <th>وحدة القياس / Unit of Measurement</th>
+                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
+                    <th>Ø§Ù„Ø¢Ù„Ø© / Machine</th>
+                    <th>Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª / Specifications</th>
+                    <th>ÙˆØ­Ø¯Ø© Ø§Ù„Ù‚ÙŠØ§Ø³ / Unit of Measurement</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -3183,7 +3184,7 @@
         style="margin-left: 20px">
         <nz-collapse-panel [nzActive]="attachmentsCollapseActive" [nzHeader]="'RFP.Attachments' | translate">
           <div class="attachment-body">
-            <!-- ROW 1 — Select Form + Download button (same row) -->
+            <!-- ROW 1 â€” Select Form + Download button (same row) -->
             <!-- <div class="attachment-row">
               <div class="attachment-select">
                 <label class="field-label">Download a Template</label>
@@ -3201,7 +3202,7 @@
               </div>
             </div> -->
 
-            <!-- ROW 2 — Upload area (below the select row) -->
+            <!-- ROW 2 â€” Upload area (below the select row) -->
             <label class="field-label">Upload</label>
             <div class="section" style="margin-top: 12px">
               <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
@@ -3662,100 +3663,3 @@
   </ng-template>
 </nz-modal>
 
-<nz-drawer [nzClosable]="false" [nzVisible]="isSubCriteria || isSubCriteriaEdit" nzPlacement="right"
-  (nzOnClose)="closeSubCriteria()" [nzTitle]="subCriteriaTitle" [nzFooter]="subCriteriaFooter" [nzWidth]="570">
-  <ng-template #subCriteriaTitle>
-    <div class="drawer-title">
-      <div>
-        {{
-        isSubCriteria
-        ? ("RFP.Add Sub Criteria" | translate)
-        : ("RFP.Edit Sub Criteria" | translate)
-        }}
-      </div>
-      <button nz-button nzType="primary" nzShape="circle" (click)="closeSubCriteria()">
-        <span nz-icon nzType="close"></span>
-      </button>
-    </div>
-  </ng-template>
-  <ng-container *nzDrawerContent>
-    <nz-form [formGroup]="subCriteriaForm">
-      <ng-container formArrayName="subCriterias">
-        <ng-container *ngFor="
-            let subCriteria of subCriterias.controls;
-            let index = index;
-            let last = last
-          ">
-          <div [formGroupName]="index" class="row">
-            <div class="col-2">
-              <nz-form-label nzRequired for="SubItemNo">{{
-                "RFP.slNo" | translate
-                }}</nz-form-label>
-              <input class="equal-height" nz-input formControlName="SubItemNo" />
-              <small *ngIf="
-                  subCriteria.get('SubItemNo')?.touched &&
-                  subCriteria.get('SubItemNo')?.invalid
-                ">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
-            </div>
-            <div class="col-5">
-              <nz-form-label nzRequired for="Percentage">{{
-                "RFP.Weightage" | translate
-                }}</nz-form-label>
-              <nz-input-number class="equal-height" style="width: 100%" formControlName="Percentage" [nzMin]="1"
-                [nzMax]="
-                  isSubCriteria
-                    ? rfpForm?.controls?.EvalCriteria?.get('Percentage')
-                        ?.value ?? 100
-                    : rfpForm?.controls?.EvalCriteriaEdit?.get('Percentage')
-                        ?.value ?? 100
-                "></nz-input-number>
-              <small *ngIf="
-                  subCriteria.get('Percentage')?.touched &&
-                  subCriteria.get('Percentage')?.invalid
-                ">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
-            </div>
-            <div class="mt-3">
-              <nz-form-label nzRequired for="Descr">{{
-                "RFP.Des" | translate
-                }}</nz-form-label>
-              <textarea nzAutosize rows="2" nz-input formControlName="Descr"></textarea>
-              <small *ngIf="
-                  subCriteria.get('Descr')?.touched &&
-                  subCriteria.get('Descr')?.invalid
-                ">
-                {{ "RFP.FieldIsRequired" | translate }}
-              </small>
-              <small *ngIf="subCriteria.get('Descr')?.errors?.maxlength">
-                {{ "RFP.DescrMaxLen" | translate }}
-              </small>
-            </div>
-          </div>
-
-          <button *ngIf="!last" nz-button nzType="default" nzDanger nzSize="default" class="mt-3"
-            (click)="deleteSubCriteria(index)" nzShape="circle">
-            <span nz-icon nzType="delete"></span>
-          </button>
-          <button *ngIf="last" nz-button nzType="primary" nzSize="default" class="add-criteria-btn mt-3"
-            [disabled]="subCriteria.invalid" (click)="addSubCriteria()">
-            <span nz-icon nzType="plus"></span>
-          </button>
-        </ng-container>
-      </ng-container>
-    </nz-form>
-  </ng-container>
-  <ng-template #subCriteriaFooter>
-    <div class="d-flex justify-content-end gap-1">
-      <button *ngIf="isSubCriteria" nz-button nzType="primary" nzSize="default" nzGhost (click)="cancelSubCriteria()">
-        <span>{{ "RFP.Cancel" | translate }}</span>
-      </button>
-      <button [disabled]="subCriterias.invalid" nz-button nzType="primary" nzSize="default"
-        (click)="isSubCriteria ? addEval('sub') : saveEditEval('sub')">
-        <span>{{ "contract.buttons.Save" | translate }}</span>
-      </button>
-    </div>
-  </ng-template>
-</nz-drawer>
