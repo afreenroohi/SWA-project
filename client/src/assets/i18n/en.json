@@ -75,6 +75,9 @@
   },
 
   "RFP": {
+    "Create RFP From":"Create RFP From",
+    "Create PR for Manual CRs":"Create PR for Manual CRs",
+    "Create PR for Automated CRs":"Create PR for Automated CRs",
     "Create RFP for Services/Projects":"Create RFP for Services/Projects",
     "Create Agreements":"Create Agreements",
     "Quantity": "Quantity",

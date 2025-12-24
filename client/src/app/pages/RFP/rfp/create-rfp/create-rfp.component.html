@@ -188,7 +188,7 @@
 <div class="custom-popup-overlay" *ngIf="showPopup" (click)="closePopup()">
   <div class="custom-popup-container" (click)="$event.stopPropagation()">
     <div class="custom-popup-header">
-      <h2>Create RFP From</h2>
+      <h2>{{"RFP.Create RFP From" | translate}}</h2>
       <button class="close-btn" (click)="closePopup()">
         <i nz-icon nzType="close" nzTheme="outline"></i>
       </button>
@@ -196,14 +196,14 @@
     <div class="custom-popup-content">
       <button class="custom-popup-btn" (click)="onPopupButtonClick('manual')">
         <i nz-icon nzType="edit" nzTheme="outline"></i>
-        <span>Create PR for Manual CRs</span>
+        <span>{{"RFP.Create PR for Manual CRs" | translate}}</span>
       </button>
       <button
         class="custom-popup-btn"
         (click)="onPopupButtonClick('automated')"
       >
         <i nz-icon nzType="robot" nzTheme="outline"></i>
-        <span>Create PR for Automated CRs</span>
+        <span>{{"RFP.Create PR for Automated CRs" | translate}}</span>
       </button>
     </div>
   </div>
