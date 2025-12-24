@@ -69,6 +69,16 @@
     "Select SLA list": "قائمة اتفاقية مستوى الخدمة SLA",
     "WfDeptDesc": "قسم سير العمل"
   },
+  
+  "COMMON": {
+    "SUCCESS": "نجاح",
+    "OK": "حسنًا"
+  },
+  "FORM": {
+    "SUBMIT_SUCCESS": "تم إرسال النموذج بنجاح!"
+  }
+
+,
   "RFP": {
     "RFPs": "المنافسات",
     "Change Bill of Quantity": "تغيير جدول الكميات",

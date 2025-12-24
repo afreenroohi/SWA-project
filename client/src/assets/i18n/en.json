@@ -89,27 +89,44 @@
     "Attachments":"Attachments",
     "ActivityDescription":"Activity Description",
     "Activity":"Activity",
-    "MaintenanceOperation":"MaintenanceOperation",
-    "PlaceOfExecution":"PlaceOfExecution",
-    "OutsideKingdom":"OutsideKingdom",
-    "InsideKingdom":"InsideKingdom",
+    "MaintenanceOperation":"Maintenance Operation",
+    "PlaceOfExecution":"Place Of Execution",
+    "OutsideKingdom":"Outside Kingdom",
+    "InsideKingdom":"Inside Kingdom",
     "Regions":"Regions",
     "Construction":"Construction",
-    "ClassificationAreaImplementation":"ClassificationAreaImplementation",
-    "QualificationCommittee":"QualificationCommittee",
-    "NameOfTechnicalEntry":"NameOfTechnicalEntry",
-    "NameOfQualificationCall":"NameOfQualificationCall",
+    "ClassificationAreaImplementation":"Classification Area Implementation",
+    "QualificationCommittee":"Qualification Committee",
+    "NameOfTechnicalEntry":"Name Of Technical Entry",
+    "NameOfQualificationCall":"Name Of Qualification Call",
     "SaveAsDraft":"Save As Draft",
     "SaveContinue":"Save & Continue",
     "EnterCallName":"Enter Call Name",
     "SelectTechnicalEntry":"Select Technical Entry",
-    "SelectCommittee":"Select Committee"
+    "SelectCommittee":"Select Committee",
+    "SelectFile": "Select File",
+    "AllowedFormats": "Allowed formats: .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg",
+    "Details":"Details",
+    "Submit":"Submit"
 
     
     
   },
+  
+  "COMMON": {
+    "SUCCESS": "Success",
+    "OK": "OK"
+  },
+  "FORM": {
+    "SUBMIT_SUCCESS": "Form submitted successfully!"
+  }
+,
+
 
   "RFP": {
+    "Create RFP From": "Create RFP From",
+    "Create Manual RFP": "Create Manual RFP",
+    "Create Automated RFP": "Create Automated RFP",
     "Change Bill of Quantity":"Change Bill of Quantity",
     "Extend Bill of Quantity":"Extend Bill of Quantity",
     "Add More Attachments":"Add More Attachments",
