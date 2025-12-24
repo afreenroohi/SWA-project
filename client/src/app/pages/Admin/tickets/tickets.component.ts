@@ -28,6 +28,38 @@ export class TicketsComponent implements OnInit {
   transferId = '';
   actionModalTitle = '';
 
+  // Stats visibility
+  showRfpStats = false;
+  showContractStats = false;
+
+  // Mock Data for Stats
+  rfpStats = [
+    { user: 'Raufa', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 0, closed: 1 },
+    { user: 'Sampath', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 1, closed: 0 },
+    { user: 'Afreen', department: 'Procurement', total: 4, inProgress: 1, approved: 1, rejected: 1, closed: 1 }
+  ];
+
+  contractStats = [
+    { user: 'Raufa', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 0, closed: 1 },
+    { user: 'Sampath', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 1, closed: 0 },
+    { user: 'Afreen', department: 'Procurement', total: 4, inProgress: 1, approved: 1, rejected: 1, closed: 1 }
+  ];
+
+  showBidOpeningStats = false;
+  showBidEvaluationStats = false;
+
+  bidOpeningStats = [
+    { user: 'Raufa', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 0, closed: 1 },
+    { user: 'Sampath', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 1, closed: 0 },
+    { user: 'Afreen', department: 'Procurement', total: 4, inProgress: 1, approved: 1, rejected: 1, closed: 1 }
+  ];
+
+  bidEvaluationStats = [
+    { user: 'Raufa', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 0, closed: 1 },
+    { user: 'Sampath', department: 'Procurement', total: 3, inProgress: 1, approved: 1, rejected: 1, closed: 0 },
+    { user: 'Afreen', department: 'Procurement', total: 4, inProgress: 1, approved: 1, rejected: 1, closed: 1 }
+  ];
+
   // RFP KPI values
   totalRfp = Math.floor(Math.random() * 100) + 50;
   totalContracts = Math.floor(Math.random() * 80) + 30;
@@ -116,7 +148,7 @@ export class TicketsComponent implements OnInit {
       ];
       this.staticTicketsLoaded = true;
     }
-    
+
     this.calculateKPIs();
   }
 
@@ -129,7 +161,7 @@ export class TicketsComponent implements OnInit {
   onSubmit(): void {
     if (this.supportForm.valid) {
       this.loading = true;
-      
+
       const ticketData = {
         id: Date.now().toString(),
         subject: this.supportForm.value.subject,
@@ -187,7 +219,7 @@ export class TicketsComponent implements OnInit {
       this.selectedTicket.status = 'Closed';
       this.selectedTicket.closeMessage = this.closeMessage;
       this.selectedTicket.closedDate = new Date().toISOString();
-      
+
       this.showCloseModal = false;
       this.closeMessage = '';
       this.selectedTicket = null;
@@ -206,8 +238,8 @@ export class TicketsComponent implements OnInit {
     this.currentAction = action;
     this.actionText = '';
     this.transferId = '';
-    
-    switch(action) {
+
+    switch (action) {
       case 'approve':
         this.actionModalTitle = 'Approve Ticket';
         break;
@@ -221,7 +253,7 @@ export class TicketsComponent implements OnInit {
         this.actionModalTitle = 'More Information';
         break;
     }
-    
+
     this.showActionModal = true;
   }
 
@@ -231,7 +263,7 @@ export class TicketsComponent implements OnInit {
         message: this.actionText,
         transferId: this.currentAction === 'transfer' ? this.transferId : undefined
       });
-      
+
       this.cancelAction();
     }
   }
@@ -271,5 +303,33 @@ export class TicketsComponent implements OnInit {
   showMoreInfo(ticket: any): void {
     console.log('Showing more info for ticket:', ticket.id);
     // Add more info logic here
+  }
+
+  toggleRfpStats(): void {
+    this.showRfpStats = !this.showRfpStats;
+    this.showContractStats = false;
+    this.showBidOpeningStats = false;
+    this.showBidEvaluationStats = false;
+  }
+
+  toggleContractStats(): void {
+    this.showContractStats = !this.showContractStats;
+    this.showRfpStats = false;
+    this.showBidOpeningStats = false;
+    this.showBidEvaluationStats = false;
+  }
+
+  toggleBidOpeningStats(): void {
+    this.showBidOpeningStats = !this.showBidOpeningStats;
+    this.showRfpStats = false;
+    this.showContractStats = false;
+    this.showBidEvaluationStats = false;
+  }
+
+  toggleBidEvaluationStats(): void {
+    this.showBidEvaluationStats = !this.showBidEvaluationStats;
+    this.showRfpStats = false;
+    this.showContractStats = false;
+    this.showBidOpeningStats = false;
   }
 }

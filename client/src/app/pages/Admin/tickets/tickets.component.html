@@ -3,7 +3,7 @@
   <div class="rfp-header-box" *ngIf="!isUserRoute()">
     <div class="rfp-header-content">
       <span nz-icon nzType="file-text" class="rfp-header-icon"></span>
-      <h2 class="rfp-header-title">RFP Dashboard</h2>
+      <h2 class="rfp-header-title">{{ 'RFP.DashboardTitle' | translate }}</h2>
     </div>
   </div>
 
@@ -11,53 +11,53 @@
   <div class="kpi-container" *ngIf="!isUserRoute()">
     <nz-row [nzGutter]="[16, 16]">
       <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-total">
+        <nz-card class="kpi-card kpi-card-total" (click)="toggleRfpStats()" style="cursor: pointer;">
           <div class="kpi-content">
             <div class="kpi-icon">
               <span nz-icon nzType="file-text"></span>
             </div>
             <div class="kpi-text">
               <div class="kpi-value">{{ totalRfp }}</div>
-              <div class="kpi-title">Total RFP</div>
+              <div class="kpi-title">{{ 'RFP.Total_Rfps' | translate }}</div>
             </div>
           </div>
         </nz-card>
       </nz-col>
       <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-open">
+        <nz-card class="kpi-card kpi-card-open" (click)="toggleContractStats()" style="cursor: pointer;">
           <div class="kpi-content">
             <div class="kpi-icon">
               <span nz-icon nzType="file-protect"></span>
             </div>
             <div class="kpi-text">
               <div class="kpi-value">{{ totalContracts }}</div>
-              <div class="kpi-title">Total Contracts</div>
+              <div class="kpi-title">{{ 'RFP.TotalContracts' | translate }}</div>
             </div>
           </div>
         </nz-card>
       </nz-col>
       <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-progress">
+        <nz-card class="kpi-card kpi-card-progress" (click)="toggleBidOpeningStats()" style="cursor: pointer;">
           <div class="kpi-content">
             <div class="kpi-icon">
               <span nz-icon nzType="folder-open"></span>
             </div>
             <div class="kpi-text">
               <div class="kpi-value">{{ totalBidsOpen }}</div>
-              <div class="kpi-title">Total Bids Open</div>
+              <div class="kpi-title">{{ 'RFP.TotalBidOpenings' | translate }}</div>
             </div>
           </div>
         </nz-card>
       </nz-col>
       <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-closed">
+        <nz-card class="kpi-card kpi-card-closed" (click)="toggleBidEvaluationStats()" style="cursor: pointer;">
           <div class="kpi-content">
             <div class="kpi-icon">
               <span nz-icon nzType="check-circle"></span>
             </div>
             <div class="kpi-text">
               <div class="kpi-value">{{ totalBidsEvaluated }}</div>
-              <div class="kpi-title">Total Bid Evaluated</div>
+              <div class="kpi-title">{{ 'RFP.TotalBidEvaluations' | translate }}</div>
             </div>
           </div>
         </nz-card>
@@ -65,11 +65,127 @@
     </nz-row>
   </div>
 
+  <!-- RFP Stats Table -->
+  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showRfpStats">
+    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.Total_Rfps' | translate }}</h3>
+    <nz-table #rfpTable [nzData]="rfpStats" [nzShowPagination]="false" nzSize="small">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Department</th>
+          <th>Total RFPs</th>
+          <th>In Progress</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Closed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stat of rfpTable.data">
+          <td>{{ stat.user }}</td>
+          <td>{{ stat.department }}</td>
+          <td>{{ stat.total }}</td>
+          <td>{{ stat.inProgress }}</td>
+          <td>{{ stat.approved }}</td>
+          <td>{{ stat.rejected }}</td>
+          <td>{{ stat.closed }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <!-- Contract Stats Table -->
+  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showContractStats">
+    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalContracts' | translate }}</h3>
+    <nz-table #contractTable [nzData]="contractStats" [nzShowPagination]="false" nzSize="small">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Department</th>
+          <th>Total Contracts</th>
+          <th>In Progress</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Closed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stat of contractTable.data">
+          <td>{{ stat.user }}</td>
+          <td>{{ stat.department }}</td>
+          <td>{{ stat.total }}</td>
+          <td>{{ stat.inProgress }}</td>
+          <td>{{ stat.approved }}</td>
+          <td>{{ stat.rejected }}</td>
+          <td>{{ stat.closed }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <!-- Bid Opening Stats Table -->
+  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showBidOpeningStats">
+    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalBidOpenings' | translate }}</h3>
+    <nz-table #bidOpenTable [nzData]="bidOpeningStats" [nzShowPagination]="false" nzSize="small">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Department</th>
+          <th>Total Bid Openings</th>
+          <th>In Progress</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Closed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stat of bidOpenTable.data">
+          <td>{{ stat.user }}</td>
+          <td>{{ stat.department }}</td>
+          <td>{{ stat.total }}</td>
+          <td>{{ stat.inProgress }}</td>
+          <td>{{ stat.approved }}</td>
+          <td>{{ stat.rejected }}</td>
+          <td>{{ stat.closed }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <!-- Bid Evaluation Stats Table -->
+  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showBidEvaluationStats">
+    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalBidEvaluations' | translate }}</h3>
+    <nz-table #bidEvalTable [nzData]="bidEvaluationStats" [nzShowPagination]="false" nzSize="small">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Department</th>
+          <th>Total Bid Evaluations</th>
+          <th>In Progress</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Closed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stat of bidEvalTable.data">
+          <td>{{ stat.user }}</td>
+          <td>{{ stat.department }}</td>
+          <td>{{ stat.total }}</td>
+          <td>{{ stat.inProgress }}</td>
+          <td>{{ stat.approved }}</td>
+          <td>{{ stat.rejected }}</td>
+          <td>{{ stat.closed }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
   <!-- Support Tickets Header -->
   <div class="rfp-header-box">
     <div class="rfp-header-content">
       <span nz-icon nzType="customer-service" class="rfp-header-icon"></span>
-      <h2 class="rfp-header-title">Support Tickets</h2>
+      <h2 class="rfp-header-title">{{ 'SupportTickets.Title' | translate }}</h2>
     </div>
   </div>
 
@@ -97,7 +213,8 @@
             </div>
             <div class="kpi-text">
               <div class="kpi-value" style="color: #f5222d">{{ highPriorityTickets }}</div>
-              <div class="kpi-title">{{ 'SupportTickets.High' | translate }} {{ 'SupportTickets.Priority' | translate }}</div>
+              <div class="kpi-title">{{ 'SupportTickets.High' | translate }} {{ 'SupportTickets.Priority' | translate }}
+              </div>
             </div>
           </div>
         </nz-card>
@@ -126,19 +243,19 @@
       </button>
     </div> -->
 
-    
+
 
     <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
       <thead>
         <tr>
           <th>{{ 'SupportTickets.TicketID' | translate }}</th>
           <th>{{ 'SupportTickets.Subject' | translate }}</th>
-          <th>Description</th>
+          <th>{{ 'SupportTickets.Description' | translate }}</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
           <th>{{ 'SupportTickets.Status' | translate }}</th>
-          <th>Assign To</th>
+          <th>{{ 'SupportTickets.AssignedTo' | translate }}</th>
           <th>{{ 'SupportTickets.Actions' | translate }}</th>
-          <th>Admin Message</th>
+          <th>{{ 'SupportTickets.AdminMessage' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -160,7 +277,7 @@
             <ng-container *ngIf="isUserRoute()">
               <ng-container *ngIf="ticket.status === 'Open'; else staticUser">
                 <button nz-button nzSize="small" nzType="primary" (click)="takeTicket(ticket)">
-                  Take Ticket
+                  {{ 'SupportTickets.TakeTicket' | translate }}
                 </button>
               </ng-container>
               <ng-template #staticUser>
@@ -183,19 +300,19 @@
               <ul nz-menu>
                 <li nz-menu-item (click)="openActionModal('approve', ticket)">
                   <span nz-icon nzType="check"></span>
-                  Approve
+                  {{ 'SupportTickets.Approve' | translate }}
                 </li>
                 <li nz-menu-item (click)="openActionModal('reject', ticket)">
                   <span nz-icon nzType="close"></span>
-                  Reject
+                  {{ 'SupportTickets.Reject' | translate }}
                 </li>
                 <li nz-menu-item (click)="openActionModal('transfer', ticket)">
                   <span nz-icon nzType="swap"></span>
-                  Transfer
+                  {{ 'SupportTickets.Transfer' | translate }}
                 </li>
                 <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
                   <span nz-icon nzType="info-circle"></span>
-                  More Info
+                  {{ 'SupportTickets.MoreInfo' | translate }}
                 </li>
               </ul>
             </nz-dropdown-menu>
@@ -205,7 +322,7 @@
               {{ ticket.adminMessage }}
             </span>
             <ng-template #noMessage>
-              <span class="no-message">No message</span>
+              <span class="no-message">{{ 'SupportTickets.NoMessage' | translate }}</span>
             </ng-template>
           </td>
         </tr>
@@ -214,21 +331,14 @@
   </nz-card>
 
   <!-- Close Ticket Modal -->
-  <nz-modal 
-    [(nzVisible)]="showCloseModal" 
-    [nzTitle]="'SupportTickets.Close' | translate" 
-    (nzOnCancel)="cancelClose()" 
-    (nzOnOk)="closeTicket()"
-    [nzOkDisabled]="!closeMessage.trim()">
+  <nz-modal [(nzVisible)]="showCloseModal" [nzTitle]="'SupportTickets.Close' | translate" (nzOnCancel)="cancelClose()"
+    (nzOnOk)="closeTicket()" [nzOkDisabled]="!closeMessage.trim()">
     <ng-container *nzModalContent>
       <p><strong>{{ 'SupportTickets.TicketID' | translate }}:</strong> {{ selectedTicket?.subject | translate }}</p>
       <nz-form-item>
         <nz-form-label nzRequired>{{ 'SupportTickets.CloseMessage' | translate }}</nz-form-label>
         <nz-form-control>
-          <textarea 
-            nz-input 
-            [(ngModel)]="closeMessage" 
-            rows="4" 
+          <textarea nz-input [(ngModel)]="closeMessage" rows="4"
             [placeholder]="'SupportTickets.CloseMessagePlaceholder' | translate">
           </textarea>
         </nz-form-control>
@@ -237,32 +347,23 @@
   </nz-modal>
 
   <!-- Action Modal -->
-  <nz-modal 
-    [(nzVisible)]="showActionModal" 
-    [nzTitle]="actionModalTitle" 
-    (nzOnCancel)="cancelAction()" 
+  <nz-modal [(nzVisible)]="showActionModal" [nzTitle]="actionModalTitle" (nzOnCancel)="cancelAction()"
     (nzOnOk)="submitAction()"
     [nzOkDisabled]="!actionText.trim() || (currentAction === 'transfer' && !transferId.trim())">
     <ng-container *nzModalContent>
-      <p><strong>Ticket ID:</strong> {{ selectedTicket?.id }}</p>
+      <p><strong>{{ 'SupportTickets.TicketID' | translate }}:</strong> {{ selectedTicket?.id }}</p>
       <nz-form-item>
-        <nz-form-label nzRequired>Message</nz-form-label>
+        <nz-form-label nzRequired>{{ 'SupportTickets.Message' | translate }}</nz-form-label>
         <nz-form-control>
-          <textarea 
-            nz-input 
-            [(ngModel)]="actionText" 
-            rows="4" 
-            placeholder="Enter your message...">
+          <textarea nz-input [(ngModel)]="actionText" rows="4"
+            [placeholder]="'SupportTickets.EnterMessage' | translate">
           </textarea>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="currentAction === 'transfer'">
-        <nz-form-label nzRequired>Transfer ID</nz-form-label>
+        <nz-form-label nzRequired>{{ 'SupportTickets.TransferID' | translate }}</nz-form-label>
         <nz-form-control>
-          <input 
-            nz-input 
-            [(ngModel)]="transferId" 
-            placeholder="Enter transfer ID...">
+          <input nz-input [(ngModel)]="transferId" [placeholder]="'SupportTickets.EnterTransferID' | translate">
         </nz-form-control>
       </nz-form-item>
     </ng-container>
