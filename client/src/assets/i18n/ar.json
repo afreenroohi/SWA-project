@@ -711,10 +711,10 @@
     "SaveAsDraft": "حفظ كمسودة",
     "SaveContinue": "حفظ ومتابعة",
     "NameOfQualificationCall": "اسم دعوة التأهيل",
-    "NameOfTechnicalEntry": "اسم الكيان الفني",
+    "NameOfTechnicalEntry": "اسم الكيان التقني",
     "QualificationCommittee": "لجنة التأهيل",
     "EnterCallName": "أدخل اسم دعوة التأهيل",
-    "SelectTechnicalEntry": "اختر الكيان الفني",
+    "SelectTechnicalEntry": "ادارة التأهيل",
     "SelectCommittee": "اختر اللجنة",
     "DocumentDetails": "تفاصيل وثيقة التأهيل",
     "Back": "عودة",
@@ -1910,6 +1910,9 @@
     "No Data Label2": "حاول في وقت لاحق"
   },
   "SupportTickets": {
+    "SupportTicket": "تذكرة دعم",
+    "Initiative": "مبادرة",
+    "SCMInitiative": "مبادرة إدارة سلسلة التوريد",
     "SubmitNewSupportTicket": "إرسال تذكرة دعم جديدة",
     "ViewMySupportTickets": "عرض تذاكر الدعم الخاصة بي",
     "MySupportTickets": "تذاكر الدعم الخاصة بي",

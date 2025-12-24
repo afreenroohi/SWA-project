@@ -236,7 +236,7 @@
             [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Date' : 'اختر التاريخ'"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <!-- <nz-form-item>
         <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Technical Criteria' : 'المعايير
           الفنية للعطاء' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
@@ -244,7 +244,7 @@
             [placeholder]="cs.userLanguage === 'en' ? 'Enter technical criteria' : 'أدخل المعايير الفنية'"
             style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
-      </nz-form-item>
+      </nz-form-item> -->
       <nz-form-item *ngIf="isDirectPurchase()">
         <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Direct Procurement Committee' : 'لجنة
           الشراء المباشر' }}</nz-form-label>

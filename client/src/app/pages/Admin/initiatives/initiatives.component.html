@@ -128,7 +128,7 @@
           <th>Status</th>
           <th>Assign To</th>
           <th>Actions</th>
-          <th>Admin Message</th>
+          <th *ngIf="!isUserRoute()">Admin Message</th>
         </tr>
       </thead>
       <tbody>
@@ -185,7 +185,7 @@
               </ul>
             </nz-dropdown-menu>
           </td>
-          <td>
+          <td *ngIf="!isUserRoute()">
             <span class="admin-message" *ngIf="initiative.adminMessage; else noMessage">
               {{ initiative.adminMessage }}
             </span>

@@ -2,8 +2,23 @@
   <p style="color: white">Loading...</p>
 </ngx-spinner>
 
-<!-- Initial Selection Boxes -->
+<!-- Initial Category Selection Boxes -->
 <div class="initial-selection-container" *ngIf="showInitialBoxes">
+  <div class="selection-boxes-wrapper">
+    <div class="selection-box" (click)="onCategoryClick('support-ticket')">
+      <i nz-icon nzType="customer-service" nzTheme="outline" class="box-icon"></i>
+      <h3>{{ 'SupportTickets.SupportTicket' | translate }}</h3>
+    </div>
+
+    <div class="selection-box" (click)="onCategoryClick('initiative')">
+      <i nz-icon nzType="bulb" nzTheme="outline" class="box-icon"></i>
+      <h3>{{ 'SupportTickets.Initiative' | translate }}</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Support Ticket Sub-Options -->
+<div class="initial-selection-container" *ngIf="showCategoryBoxes && selectedCategory === 'support-ticket'">
   <div class="selection-boxes-wrapper">
     <div class="selection-box" (click)="onBoxClick('create-ticket')">
       <i nz-icon nzType="customer-service" nzTheme="outline" class="box-icon"></i>
@@ -14,7 +29,20 @@
       <i nz-icon nzType="unordered-list" nzTheme="outline" class="box-icon"></i>
       <h3>{{ 'SupportTickets.ViewMySupportTickets' | translate }}</h3>
     </div>
+  </div>
+  
+  <div class="row mt-4" style="margin-left: 20px">
+    <div class="col-12">
+      <button nz-button nzType="default" (click)="goBack()">
+        <i nz-icon nzType="arrow-left"></i> {{ 'SupportTickets.Back' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
 
+<!-- Initiative Sub-Options -->
+<div class="initial-selection-container" *ngIf="showCategoryBoxes && selectedCategory === 'initiative'">
+  <div class="selection-boxes-wrapper">
     <div class="selection-box" (click)="onBoxClick('create-initiative')">
       <i nz-icon nzType="bulb" nzTheme="outline" class="box-icon"></i>
       <h3>{{ "RFP.CreateInitiative" | translate }}</h3>
@@ -24,11 +52,24 @@
       <i nz-icon nzType="project" nzTheme="outline" class="box-icon"></i>
       <h3>{{ "RFP.MyInitiatives" | translate }}</h3>
     </div>
+
+    <div class="selection-box" (click)="onBoxClick('scm-initiative')">
+      <i nz-icon nzType="deployment-unit" nzTheme="outline" class="box-icon"></i>
+      <h3>{{ "SupportTickets.SCMInitiative" | translate }}</h3>
+    </div>
+  </div>
+  
+  <div class="row mt-4" style="margin-left: 20px">
+    <div class="col-12">
+      <button nz-button nzType="default" (click)="goBack()">
+        <i nz-icon nzType="arrow-left"></i> {{ 'SupportTickets.Back' | translate }}
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- Ticket List Section -->
-<div class="col-12" *ngIf="!showInitialBoxes && selectedAction === 'view-tickets'">
+<div class="col-12" *ngIf="!showInitialBoxes && !showCategoryBoxes && selectedAction === 'view-tickets'">
   <div class="p-2">
     <!-- Header Box -->
     <div class="rfp-header-box">
@@ -143,7 +184,7 @@
 </div>
 
 <!-- Initiative List Section -->
-<div class="col-12" *ngIf="!showInitialBoxes && selectedAction === 'view-initiatives'">
+<div class="col-12" *ngIf="!showInitialBoxes && !showCategoryBoxes && selectedAction === 'view-initiatives'">
   <div class="p-2">
     <!-- Header Box -->
     <div class="rfp-header-box">
@@ -213,29 +254,44 @@
             <th>{{ "RFP.InitiativeID" | translate }}</th>
             <th>{{ "RFP.Title" | translate }}</th>
             <th>{{ "RFP.Des" | translate }}</th>
-            <th>{{ "RFP.Category" | translate }}</th>
             <th>{{ "RFP.Status" | translate }}</th>
             <th>{{ "RFP.AssignedTo" | translate }}</th>
+            <th>{{ "RFP.Actions" | translate }}</th>
             <th>{{ "RFP.AdminMessage" | translate }}</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let initiative of initiativesTable.data">
             <td>{{ initiative.id }}</td>
-            <td>{{ ('RFP.' + initiative.title) | translate }}</td>
-            <td>{{ ('RFP.' + initiative.description) | translate }}</td>
-            <td>{{ ('RFP.' + initiative.category) | translate }}</td>
+            <td>{{ initiative.title }}</td>
+            <td>{{ initiative.description }}</td>
+
             <td>
               <span class="status-tag" [ngClass]="'status-' + initiative.status.toLowerCase().replace(' ', '-')">
-                {{ ('RFP.' + initiative.status) | translate }}
+                {{ initiative.status }}
               </span>
             </td>
-            <td>{{ initiative.assignedTo }}</td>
             <td>
-              <span *ngIf="initiative.status === 'Approved' && initiative.adminMessage" class="admin-message">
-                {{ ('RFP.' + initiative.adminMessage) | translate }}
+              <button *ngIf="initiative.assignedTo === 'Analyse Initiative'" nz-button nzType="primary" nzSize="small">
+                Analyse Initiative
+              </button>
+              <span *ngIf="initiative.assignedTo !== 'Analyse Initiative'">{{ initiative.assignedTo }}</span>
+            </td>
+            <td>
+              <button nz-button nzType="text" nz-dropdown [nzDropdownMenu]="scmMenu">
+                <i nz-icon nzType="more" nzTheme="outline"></i>
+              </button>
+              <nz-dropdown-menu #scmMenu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item>View Details</li>
+                  <li nz-menu-item>Edit</li>
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+            <td>
+              <span class="admin-message" [style.color]="initiative.adminMessage === 'No message' ? '#999' : '#52c41a'">
+                {{ initiative.adminMessage }}
               </span>
-              <span *ngIf="initiative.status !== 'Approved'" class="no-message">-</span>
             </td>
           </tr>
         </tbody>
@@ -246,7 +302,116 @@
     <div class="row mt-4" style="margin-left: 20px">
       <div class="col-12">
         <button nz-button nzType="default" (click)="goBack()">
-          <i nz-icon nzType="arrow-left"></i> {{ "COMMON.Back" | translate }}
+          <i nz-icon nzType="arrow-left"></i> {{ 'Prequalification.Back' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCM Initiative List Section -->
+<div class="col-12" *ngIf="!showInitialBoxes && !showCategoryBoxes && selectedAction === 'scm-initiative'">
+  <div class="p-2">
+    <!-- Header Box -->
+    <div class="rfp-header-box">
+      <div class="rfp-header-content">
+        <i nz-icon nzType="deployment-unit" nzTheme="outline" class="rfp-header-icon"></i>
+        <div>
+          <h1 class="rfp-header-title">{{ "SupportTickets.SCMInitiative" | translate }}</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-container mt-4" style="margin-left: 20px">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-total">
+            <div class="kpi-content">
+              <i nz-icon nzType="bulb" class="kpi-icon" style="color: #1890ff"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ totalSCMInitiatives }}</div>
+                <div class="kpi-title">{{ "RFP.TotalInitiatives" | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-open">
+            <div class="kpi-content">
+              <i nz-icon nzType="clock-circle" class="kpi-icon" style="color: #ff4d4f"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ highPrioritySCMInitiatives }}</div>
+                <div class="kpi-title">{{ "RFP.HighPriority" | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-progress">
+            <div class="kpi-content">
+              <i nz-icon nzType="folder-open" class="kpi-icon" style="color: #52c41a"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ openSCMInitiatives }}</div>
+                <div class="kpi-title">{{ "RFP.OpenInitiatives" | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCM Initiatives Table -->
+    <div class="table-container mt-4" style="margin-left: 20px">
+      <nz-table #scmInitiativesTable [nzData]="scmInitiatives" [nzPageSize]="10" [nzShowPagination]="true">
+        <thead>
+          <tr>
+            <th>{{ "RFP.InitiativeID" | translate }}</th>
+            <th>{{ "RFP.Title" | translate }}</th>
+            <th>{{ "RFP.Des" | translate }}</th>
+            <th>{{ "RFP.Status" | translate }}</th>
+            <th>{{ "RFP.AssignedTo" | translate }}</th>
+            <th>{{ "RFP.Actions" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let initiative of scmInitiativesTable.data">
+            <td>{{ initiative.id }}</td>
+            <td>{{ initiative.title }}</td>
+            <td>{{ initiative.description }}</td>
+
+            <td>
+              <span class="status-tag" [ngClass]="'status-' + initiative.status.toLowerCase().replace(' ', '-')">
+                {{ initiative.status }}
+              </span>
+            </td>
+            <td>
+              <button *ngIf="initiative.assignedTo === 'Take Initiative'" nz-button nzType="primary" nzSize="small">
+                Take Initiative
+              </button>
+              <span *ngIf="initiative.assignedTo !== 'Take Initiative'">{{ initiative.assignedTo }}</span>
+            </td>
+            <td>
+              <button nz-button nzType="text" nz-dropdown [nzDropdownMenu]="scmActionsMenu">
+                <i nz-icon nzType="more" nzTheme="outline"></i>
+              </button>
+              <nz-dropdown-menu #scmActionsMenu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item>View Details</li>
+                  <li nz-menu-item>Edit</li>
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+
+    <!-- Back Button -->
+    <div class="row mt-4" style="margin-left: 20px">
+      <div class="col-12">
+        <button nz-button nzType="default" (click)="goBack()">
+          <i nz-icon nzType="arrow-left"></i> {{ 'Prequalification.Back' | translate }}
         </button>
       </div>
     </div>

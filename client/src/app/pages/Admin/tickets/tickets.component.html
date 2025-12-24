@@ -136,7 +136,7 @@
           <th>Description</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
           <th>{{ 'SupportTickets.Status' | translate }}</th>
-          <th>Admin Message</th>
+          <th *ngIf="!isUserRoute()">Admin Message</th>
           <th>Assign To</th>
           <th>{{ 'SupportTickets.Actions' | translate }}</th>
         </tr>
@@ -156,7 +156,7 @@
               {{ 'SupportTickets.' + ticket.status.replace(' ', '') | translate }}
             </span>
           </td>
-          <td>
+          <td *ngIf="!isUserRoute()">
             <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
               {{ ticket.adminMessage }}
             </span>
@@ -204,7 +204,7 @@
                 </li>
                 <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
                   <span nz-icon nzType="info-circle"></span>
-                  More Info
+                  Get More Info
                 </li>
               </ul>
             </nz-dropdown-menu>
