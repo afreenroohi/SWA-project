@@ -1,4 +1,4 @@
-.tickets-container {
+.initiatives-container {
   padding: 20px;
 }
 
@@ -129,26 +129,10 @@
   }
 }
 
-// Original ticket styling
-.kpi-cards {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
 .action-buttons {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-}
-
-.actions-bar {
-  margin-bottom: 20px;
-}
-
-.support-form {
-  margin-bottom: 20px;
 }
 
 .priority-badge, .status-badge {
@@ -166,3 +150,17 @@
 .status-open { background: #e6f7ff; color: #1890ff; }
 .status-closed { background: #f6ffed; color: #52c41a; }
 .status-in-progress { background: #fff3e0; color: #fa8c16; }
+
+.admin-message {
+  font-style: italic;
+  color: #52c41a;
+  font-size: 12px;
+  max-width: 200px;
+  display: block;
+  word-wrap: break-word;
+}
+
+.no-message {
+  color: #999;
+  font-style: italic;
+}

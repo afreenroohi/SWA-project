@@ -1900,6 +1900,7 @@
     "Description": "الوصف",
     "Priority": "الأولوية",
     "Status": "الحالة",
+    "AssignedTo": "مُعيَّن إلى",
     "AdminMessage": "رسالة المسؤول",
     "CreatedDate": "تاريخ الإنشاء",
     "CreatedBy": "أنشئ بواسطة",

@@ -13,6 +13,8 @@ import { CommitteeMemberMaintenanceComponent } from './committee-member-maintena
 import { SharedCustomModule } from "src/app/shared/shared-custom.module";
 import { TicketsComponent } from './tickets/tickets.component';
 
+import { InitiativesComponent } from './initiatives/initiatives.component';
+
 const routes: Routes = [
     {
         path: 'delegation',
@@ -33,6 +35,10 @@ const routes: Routes = [
     {
         path: 'tickets',
         component: TicketsComponent
+    },
+    {
+        path: 'initiatives',
+        component: InitiativesComponent
     }
 ]
 
@@ -42,7 +48,8 @@ const routes: Routes = [
         DelegationComponent,
         SlaComponent,
         CommitteeMemberMaintenanceComponent,
-        TicketsComponent
+        TicketsComponent,
+        InitiativesComponent
     ],
     imports: [
         CommonModule,

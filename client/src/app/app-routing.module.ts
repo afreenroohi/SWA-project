@@ -26,7 +26,9 @@ const routes: Routes = [
 
   { path: 'contract', loadChildren: () => import('./pages/CONTRACT/contract.module').then(m => m.ContractModule), canActivate: [AuthGuardGuard] },
 
-  { path: 'admin', loadChildren: () => import('./pages/Admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuardGuard] },
+  { path: 'admin', loadChildren: () => import('./pages/Admin/admin.module').then(m => m.AdminModule) }, // canActivate: [AuthGuardGuard] },
+
+  { path: 'suser', loadChildren: () => import('./pages/suser/suser.module').then(m => m.SuserModule) },
 
   { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AuthGuardGuard] },
 

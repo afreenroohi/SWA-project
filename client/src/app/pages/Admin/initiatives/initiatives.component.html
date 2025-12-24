@@ -1,4 +1,4 @@
-<div class="tickets-container">
+<div class="initiatives-container">
   <!-- RFP Header -->
   <div class="rfp-header-box" *ngIf="!isUserRoute()">
     <div class="rfp-header-content">
@@ -65,26 +65,26 @@
     </nz-row>
   </div>
 
-  <!-- Support Tickets Header -->
+  <!-- Initiatives Header -->
   <div class="rfp-header-box">
     <div class="rfp-header-content">
-      <span nz-icon nzType="customer-service" class="rfp-header-icon"></span>
-      <h2 class="rfp-header-title">Support Tickets</h2>
+      <span nz-icon nzType="bulb" class="rfp-header-icon"></span>
+      <h2 class="rfp-header-title">Initiatives</h2>
     </div>
   </div>
 
-  <!-- Support Tickets KPI Cards -->
+  <!-- Initiatives KPI Cards -->
   <div class="kpi-container">
     <nz-row [nzGutter]="[16, 16]">
       <nz-col [nzSpan]="8">
         <nz-card class="kpi-card kpi-card-total">
           <div class="kpi-content">
             <div class="kpi-icon">
-              <span nz-icon nzType="file-text"></span>
+              <span nz-icon nzType="bulb"></span>
             </div>
             <div class="kpi-text">
-              <div class="kpi-value">{{ totalTickets }}</div>
-              <div class="kpi-title">{{ 'SupportTickets.TotalTickets' | translate }}</div>
+              <div class="kpi-value">{{ totalInitiatives }}</div>
+              <div class="kpi-title">Total Initiatives</div>
             </div>
           </div>
         </nz-card>
@@ -96,8 +96,8 @@
               <span nz-icon nzType="exclamation-circle"></span>
             </div>
             <div class="kpi-text">
-              <div class="kpi-value" style="color: #f5222d">{{ highPriorityTickets }}</div>
-              <div class="kpi-title">{{ 'SupportTickets.High' | translate }} {{ 'SupportTickets.Priority' | translate }}</div>
+              <div class="kpi-value" style="color: #f5222d">{{ highPriorityInitiatives }}</div>
+              <div class="kpi-title">High Priority</div>
             </div>
           </div>
         </nz-card>
@@ -109,8 +109,8 @@
               <span nz-icon nzType="folder-open"></span>
             </div>
             <div class="kpi-text">
-              <div class="kpi-value" style="color: #52c41a">{{ openTickets }}</div>
-              <div class="kpi-title">{{ 'SupportTickets.OpenTickets' | translate }}</div>
+              <div class="kpi-value" style="color: #52c41a">{{ openInitiatives }}</div>
+              <div class="kpi-title">Open Initiatives</div>
             </div>
           </div>
         </nz-card>
@@ -119,56 +119,41 @@
   </div>
 
   <nz-card>
-
-    <!-- <div class="actions-bar">
-      <button nz-button nzType="primary" (click)="showSupportForm = !showSupportForm">
-        {{ showSupportForm ? 'Hide Form' : 'Create Ticket' }}
-      </button>
-    </div> -->
-
-    
-
-    <nz-table #ticketsTable [nzData]="tickets" [nzPageSize]="10">
+    <nz-table #initiativesTable [nzData]="initiatives" [nzPageSize]="10">
       <thead>
         <tr>
-          <th>{{ 'SupportTickets.TicketID' | translate }}</th>
-          <th>{{ 'SupportTickets.Subject' | translate }}</th>
+          <th>Initiative ID</th>
+          <th>Title</th>
           <th>Description</th>
-          <th>{{ 'SupportTickets.Priority' | translate }}</th>
-          <th>{{ 'SupportTickets.Status' | translate }}</th>
+          <th>Status</th>
           <th>Assign To</th>
-          <th>{{ 'SupportTickets.Actions' | translate }}</th>
+          <th>Actions</th>
           <th>Admin Message</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ticket of ticketsTable.data">
-          <td>{{ ticket.id }}</td>
-          <td>{{ ticket.subject | translate }}</td>
-          <td>{{ ticket.description | translate }}</td>
+        <tr *ngFor="let initiative of initiativesTable.data">
+          <td>{{ initiative.id }}</td>
+          <td>{{ initiative.title }}</td>
+          <td>{{ initiative.description }}</td>
           <td>
-            <span class="priority-badge" [ngClass]="'priority-' + ticket.priority.toLowerCase()">
-              {{ 'SupportTickets.' + ticket.priority | translate }}
-            </span>
-          </td>
-          <td>
-            <span class="status-badge" [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">
-              {{ 'SupportTickets.' + ticket.status.replace(' ', '') | translate }}
+            <span class="status-badge" [ngClass]="'status-' + initiative.status.toLowerCase().replace(' ', '-')">
+              {{ initiative.status }}
             </span>
           </td>
           <td>
             <ng-container *ngIf="isUserRoute()">
-              <ng-container *ngIf="ticket.status === 'Open'; else staticUser">
-                <button nz-button nzSize="small" nzType="primary" (click)="takeTicket(ticket)">
-                  Take Ticket
+              <ng-container *ngIf="initiative.status === 'Open'; else staticUser">
+                <button nz-button nzSize="small" nzType="primary" (click)="analyseInitiative(initiative)">
+                  Analyse Initiative
                 </button>
               </ng-container>
               <ng-template #staticUser>
-                <span>{{ ticket.assignedTo }}</span>
+                <span>{{ initiative.assignedTo }}</span>
               </ng-template>
             </ng-container>
             <ng-container *ngIf="!isUserRoute()">
-              <nz-select [(ngModel)]="ticket.assignedTo" style="width: 100px;">
+              <nz-select [(ngModel)]="initiative.assignedTo" style="width: 100px;">
                 <nz-option nzValue="s1" nzLabel="s1"></nz-option>
                 <nz-option nzValue="s2" nzLabel="s2"></nz-option>
                 <nz-option nzValue="admin" nzLabel="admin"></nz-option>
@@ -177,23 +162,23 @@
           </td>
           <td>
             <div class="action-buttons">
-              <button nz-button nzSize="small" nzType="primary" (click)="openActionModal('approve', ticket)">
+              <button nz-button nzSize="small" nzType="primary" (click)="openActionModal('approve', initiative)">
                 Approve
               </button>
-              <button nz-button nzSize="small" nzType="default" nzDanger (click)="openActionModal('reject', ticket)">
+              <button nz-button nzSize="small" nzType="default" nzDanger (click)="openActionModal('reject', initiative)">
                 Reject
               </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('transfer', ticket)">
+              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('transfer', initiative)">
                 Transfer
               </button>
-              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('moreInfo', ticket)">
+              <button nz-button nzSize="small" nzType="default" (click)="openActionModal('moreInfo', initiative)">
                 More Info
               </button>
             </div>
           </td>
           <td>
-            <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
-              {{ ticket.adminMessage }}
+            <span class="admin-message" *ngIf="initiative.adminMessage; else noMessage">
+              {{ initiative.adminMessage }}
             </span>
             <ng-template #noMessage>
               <span class="no-message">No message</span>
@@ -204,29 +189,6 @@
     </nz-table>
   </nz-card>
 
-  <!-- Close Ticket Modal -->
-  <nz-modal 
-    [(nzVisible)]="showCloseModal" 
-    [nzTitle]="'SupportTickets.Close' | translate" 
-    (nzOnCancel)="cancelClose()" 
-    (nzOnOk)="closeTicket()"
-    [nzOkDisabled]="!closeMessage.trim()">
-    <ng-container *nzModalContent>
-      <p><strong>{{ 'SupportTickets.TicketID' | translate }}:</strong> {{ selectedTicket?.subject | translate }}</p>
-      <nz-form-item>
-        <nz-form-label nzRequired>{{ 'SupportTickets.CloseMessage' | translate }}</nz-form-label>
-        <nz-form-control>
-          <textarea 
-            nz-input 
-            [(ngModel)]="closeMessage" 
-            rows="4" 
-            [placeholder]="'SupportTickets.CloseMessagePlaceholder' | translate">
-          </textarea>
-        </nz-form-control>
-      </nz-form-item>
-    </ng-container>
-  </nz-modal>
-
   <!-- Action Modal -->
   <nz-modal 
     [(nzVisible)]="showActionModal" 
@@ -235,7 +197,7 @@
     (nzOnOk)="submitAction()"
     [nzOkDisabled]="!actionText.trim() || (currentAction === 'transfer' && !transferId.trim())">
     <ng-container *nzModalContent>
-      <p><strong>Ticket ID:</strong> {{ selectedTicket?.id }}</p>
+      <p><strong>Initiative ID:</strong> {{ selectedInitiative?.id }}</p>
       <nz-form-item>
         <nz-form-label nzRequired>Message</nz-form-label>
         <nz-form-control>
