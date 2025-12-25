@@ -550,15 +550,15 @@
                 }}</nz-form-label>
 
               <nz-form-control>
-                <nz-select formControlName="DurationType" [nzPlaceHolder]="'RFP.Select Duration Type' | translate"
+                <nz-select [nzDisabled]="true" formControlName="DurationType" [nzPlaceHolder]="'RFP.day' | translate"
                   style="width: 100%" nzAllowClear>
-                  <nz-option *ngFor="let o of durationTypes" [nzValue]="o.id"
-                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                  <!-- <nz-option *ngFor="let o of durationTypes" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option> -->
                 </nz-select>
-                <small *ngIf="
+                <!-- <small *ngIf="
                     rfpForm.controls.DurationType.touched &&
                     rfpForm.controls.DurationType.hasError('required')
-                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small>
+                  " style="margin-top: 8px; color: red">{{ "RFP.FieldIsRequired" | translate }}</small> -->
               </nz-form-control>
             </div>
 

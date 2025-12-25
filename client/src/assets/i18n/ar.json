@@ -75,6 +75,7 @@
     "SUBMIT_SUCCESS": "تم إرسال النموذج بنجاح!"
   },
   "RFP": {
+    "day":"Days",
     "CreateInitiative": "إنشاء مبادرة",
     "Job Title": "المسمى الوظيفي",
     "Extend Bid Opening Date": "تمديد تاريخ فتح العطاءات",
@@ -486,7 +487,7 @@
     "Invite": "دعوة",
     "CR Number": "رقم السجل التجاري",
     "Request Status": "حالة الطلب",
-    "Estimated Cost (SAR)": "التكلفة التقديرية (ريال سعودي)",
+    "Estimated Cost (SAR)": "التكلفة التقديرية بالريال السعودي (Excl. VAT)",
     "Project Name": "اسم المنافسة",
     "Work Execution Location": "موقع تنفيذ العمل",
     "Contact Details for Site Visit": "بيانات الاتصال لزيارة الموقع",

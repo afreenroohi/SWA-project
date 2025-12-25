@@ -114,6 +114,7 @@
     "SUBMIT_SUCCESS": "Form submitted successfully!"
   },
   "RFP": {
+    "day":"Days",
     "Only alphabets are allowed": "Only alphabets are allowed",
     "Action":"Action",
     "Unit of Measurement": "Unit of Measurement",
@@ -617,7 +618,7 @@
     "Invite": "Invite",
     "CR Number": "CR Number",
     "Request Status": "Request Status",
-    "Estimated Cost (SAR)": "Estimated Cost (SAR)",
+    "Estimated Cost (SAR)": "Estimated Cost in SAR (Excl. VAT)",
     "Project Name": "Project Name",
     "Work Execution Location": "Work Execution Location",
     "Contact Details for Site Visit": "Contact Details for Site Visit",

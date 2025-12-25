@@ -199,7 +199,7 @@ export class RfpdetailviewComponent implements OnInit {
       PurGrpText: 'Procurement Group 1',
       TecMemName: 'John Doe',
       TecMemNamear: 'جون دو',
-      ProjDuration: '12',
+      ProjDuration: '365',
       TotTechEval: '70',
       ProjTypeText: 'Infrastructure',
       PurchaseType: 'R',
@@ -268,7 +268,7 @@ export class RfpdetailviewComponent implements OnInit {
     
     this.VATAmount = this.detArray.EstPrice - this.detArray.EstmPriceWithoutVat;
     this.costctr = [{ CostCenter: '1000', CostCenterTxt: 'Main Cost Center' }];
-    this.durationType = { id: 'M', value: 'Months', valueAr: 'أشهر' };
+    this.durationType = { id: 'D', value: 'Days', valueAr: 'أشهر' };
     this.rfpUserDetails = { UserId: 'USER001', RoleIdf: 'Requestor', DeptId: '00005014' } as any;
     this.rfpRoles = ['Requestor'];
     

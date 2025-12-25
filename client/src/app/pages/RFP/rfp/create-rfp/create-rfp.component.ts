@@ -1599,7 +1599,7 @@ export class CreateRFPComponent implements OnInit {
   }
 
   committeeMembers = [
-    { role: 'Project Director', name: '', jobTitle: '', extension: '' },
+    { role: 'Project Manager', name: '', jobTitle: '', extension: '' },
     { role: 'Project Coordinator', name: '', jobTitle: '', extension: '' },
     { role: 'Committee Member', name: '', jobTitle: '', extension: '' },
   ];
