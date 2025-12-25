@@ -487,7 +487,8 @@ export class AppComponent {
 
         // console.log(userName,'userName==')
         this.navItems = [];
-        this.navItems.push(
+       if(role !== 'SUSER'){
+         this.navItems.push(
           {
             Module: 'Dashboard',
             ModuleAr: 'إدارة طلب المنافسات',
@@ -495,6 +496,7 @@ export class AppComponent {
             link: 'rfp/dashboard'
           },
         )
+       }
         if (role === 'ADMIN') {
 
           // this.constructCOCmenu({ RoleId: 'FI' })
@@ -550,8 +552,9 @@ export class AppComponent {
             ],
           });
 
-          this.cs.activeMenu = 'ticketlist';
           this.router.navigate(['suser/tickets']);
+          this.cs.activeMenu = 'Support Tickets';
+
         }
         if (role === 'PRUSER') {
           this.router.navigate(['rfp/dashboard'])

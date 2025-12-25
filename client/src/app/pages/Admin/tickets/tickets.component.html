@@ -253,9 +253,9 @@
           <th>{{ 'SupportTickets.Description' | translate }}</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
           <th>{{ 'SupportTickets.Status' | translate }}</th>
-          <th>{{ 'SupportTickets.AssignedTo' | translate }}</th>
+          <th *ngIf="!isUserRoute()">Admin Message</th>
+          <th>Assign To</th>
           <th>{{ 'SupportTickets.Actions' | translate }}</th>
-          <th>{{ 'SupportTickets.AdminMessage' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -273,22 +273,31 @@
               {{ 'SupportTickets.' + ticket.status.replace(' ', '') | translate }}
             </span>
           </td>
+          <td *ngIf="!isUserRoute()">
+            <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
+              {{ ticket.adminMessage }}
+            </span>
+            <ng-template #noMessage>
+              <span class="no-message">No message</span>
+            </ng-template>
+          </td>
           <td>
             <ng-container *ngIf="isUserRoute()">
               <ng-container *ngIf="ticket.status === 'Open'; else staticUser">
-                <button nz-button nzSize="small" nzType="primary" (click)="takeTicket(ticket)">
-                  {{ 'SupportTickets.TakeTicket' | translate }}
+                <button nz-button nzSize="small" class="take-ticket-btn" (click)="takeTicket(ticket)">
+                  <span nz-icon nzType="user-add"></span>
+                  Take Ticket
                 </button>
               </ng-container>
               <ng-template #staticUser>
-                <span>{{ ticket.assignedTo }}</span>
+                <span class="assigned-user"><span nz-icon nzType="user"></span> {{ ticket.assignedTo }}</span>
               </ng-template>
             </ng-container>
             <ng-container *ngIf="!isUserRoute()">
-              <nz-select [(ngModel)]="ticket.assignedTo" style="width: 100px;">
+              <nz-select [(ngModel)]="ticket.assignedTo" nzPlaceHolder="Select User" class="assign-select">
                 <nz-option nzValue="suser1" nzLabel="suser1"></nz-option>
                 <nz-option nzValue="suser2" nzLabel="suser2"></nz-option>
-                <nz-option nzValue="admin" nzLabel="admin"></nz-option>
+                <nz-option nzValue="self" nzLabel="Self"></nz-option>
               </nz-select>
             </ng-container>
           </td>
@@ -312,18 +321,10 @@
                 </li>
                 <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
                   <span nz-icon nzType="info-circle"></span>
-                  {{ 'SupportTickets.MoreInfo' | translate }}
+                  Get More Info
                 </li>
               </ul>
             </nz-dropdown-menu>
-          </td>
-          <td>
-            <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
-              {{ ticket.adminMessage }}
-            </span>
-            <ng-template #noMessage>
-              <span class="no-message">{{ 'SupportTickets.NoMessage' | translate }}</span>
-            </ng-template>
           </td>
         </tr>
       </tbody>

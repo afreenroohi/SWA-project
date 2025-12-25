@@ -39,7 +39,7 @@
     "Close": "Close",
     "Version": "Version",
     "SomethingWentWrong": "Something Went Wrong",
-    "CopyrightAllRightsReserved": "Copyright",
+    "CopyrightAllRightsReserved": "Copyright All Rights Reserved",
     "Select": "Select",
     "Back": "Back",
     "Clickhere": "Click Here",
@@ -48,7 +48,9 @@
     "Do you want to proceed": "Do you want to proceed ?",
     "select role": "select role",
     "Select an option": "Select an option",
-    "Do you want to Assign back": "Do you want to Assign back ?"
+    "Do you want to Assign back": "Do you want to Assign back ?",
+    "SUCCESS": "Success",
+    "OK": "OK"
   },
   "sla": {
     "WfDept": "WorkFlow Department",
@@ -71,6 +73,7 @@
     "Description": "Description"
   },
   "Prequalification": {
+    "RequestID":"RequestID",
     "Back": "Back",
     "TotalDocuments": "Total Documents",
     "AllQualificationDocuments": "All Qualification Documents",
@@ -95,29 +98,20 @@
     "Construction": "Construction",
     "ClassificationAreaImplementation": "Classification Area Implementation",
     "QualificationCommittee": "Qualification Committee",
-    "NameOfTechnicalEntry": "Name Of Technical Entry",
+    "NameOfTechnicalEntry": "Name Of Technical Entity",
     "NameOfQualificationCall": "Name Of Qualification Call",
     "SaveAsDraft": "Save As Draft",
     "SaveContinue": "Save & Continue",
     "EnterCallName": "Enter Call Name",
-    "SelectTechnicalEntry": "Select Technical Entry",
+    "SelectTechnicalEntry": "Rehabilitation Department",
     "SelectCommittee": "Select Committee",
     "SelectFile": "Select File",
     "AllowedFormats": "Allowed formats: .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg",
     "Details": "Details",
     "Submit": "Submit"
   },
-  "COMMON": {
-    "SUCCESS": "Success",
-    "OK": "OK"
-  },
   "FORM": {
     "SUBMIT_SUCCESS": "Form submitted successfully!"
-  },
-  "COMMON": {
-    "CopyrightAllRightsReserved": "Copyright All Rights Reserved",
-    "Version": "Version",
-    "Select": "Select"
   },
   "RFP": {
     "Only alphabets are allowed": "Only alphabets are allowed",
@@ -1963,6 +1957,9 @@
     }
   },
   "SupportTickets": {
+    "SupportTicket":"Support Ticket",
+    "Initiative":"Initiative",
+    "SCMInitiative":"SCM Initiative",
     "SubmitNewSupportTicket": "Submit New Support Ticket",
     "ViewMySupportTickets": "View My Support Tickets",
     "MySupportTickets": "My Support Tickets",

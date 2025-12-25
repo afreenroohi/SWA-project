@@ -68,27 +68,121 @@
       <nz-collapse-panel [nzActive]="true" [nzHeader]="'Prequalification.ClassificationAreaImplementation' | translate">
         <div class="row w-100 my-2">
           <!-- Construction -->
-          <div class="col-4 my-1">
+          <!-- <div class="col-4 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.Construction' | translate }}</nz-form-label>
             <nz-select style="width: 100%" nzPlaceHolder="-SELECT-">
               <nz-option nzValue="const1" nzLabel="Construction Type 1"></nz-option>
               <nz-option nzValue="const2" nzLabel="Construction Type 2"></nz-option>
               <nz-option nzValue="const3" nzLabel="Construction Type 3"></nz-option>
             </nz-select>
-          </div>
+          </div> -->
 
           <!-- Regions -->
-          <div class="col-4 my-1">
+          <div class="col-12 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.Regions' | translate }}</nz-form-label>
-            <nz-select style="width: 100%" nzPlaceHolder="-SELECT-">
-              <nz-option nzValue="region1" nzLabel="Region 1"></nz-option>
-              <nz-option nzValue="region2" nzLabel="Region 2"></nz-option>
-              <nz-option nzValue="region3" nzLabel="Region 3"></nz-option>
-            </nz-select>
+              <nz-select formControlName="workLocation" nzMode="multiple" style="width: 100%"
+                [nzPlaceHolder]="'RFP.Select work locations' | translate">
+                <nz-option nzValue="riyadh/Al-Rin" [nzLabel]="'RFP.Riyadh Region/Al-Rin' | translate"></nz-option>
+                <nz-option nzValue="riyadh/Khurayman" [nzLabel]="'RFP.Riyadh Region/Khurayman' | translate"></nz-option>
+                <nz-option nzValue="riyadh/Al-Sahnah" [nzLabel]="'RFP.Riyadh Region/Al-Sahnah' | translate"></nz-option>
+                <nz-option nzValue="makkah/Al-Shaiba" [nzLabel]="'RFP.Makkah Region/Al-Shaiba' | translate"></nz-option>
+                <nz-option nzValue="makkah/Bahrah" [nzLabel]="'RFP.Makkah Region/Bahrah' | translate"></nz-option>
+                <nz-option nzValue="makkah/Asfan" [nzLabel]="'RFP.Makkah Region/Asfan' | translate"></nz-option>
+                <nz-option nzValue="Al-Madinah/Mahd Al-Dhahab"
+                  [nzLabel]="'RFP.Al-Madinah Region/Mahd Al-Dhahab' | translate"></nz-option>
+                <nz-option nzValue="Al-Madinah/Al-Furaysh"
+                  [nzLabel]="'RFP.Al-Madinah Region/Al-Furaysh' | translate"></nz-option>
+                <nz-option nzValue="Al-Madinah/Abyar Al-Mashi"
+                  [nzLabel]="'RFP.Al-Madinah Region/Abyar Al-Mashi' | translate"></nz-option>
+                <nz-option nzValue="Al-Qassim/Shari â€“ Al-Qassim" [nzLabel]="
+                    'RFP.Al-Qassim Region/Shari â€“ Al-Qassim' | translate
+                  "></nz-option>
+                <nz-option nzValue="Al-Qassim/Al-Dhybiyah â€“ Al-Qassim" [nzLabel]="
+                    'RFP.Al-Qassim Region/Al-Dhybiyah â€“ Al-Qassim' | translate
+                  "></nz-option>
+                <nz-option nzValue="Al-Qassim/Al-Khurma"
+                  [nzLabel]="'RFP.Al-Qassim Region/Al-Khurma' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Tarout" [nzLabel]="'RFP.Eastern Region/Tarout' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Al-Juâ€™aymah"
+                  [nzLabel]="'RFP.Eastern Region/Al-Juâ€™aymah' | translate"></nz-option>
+                <nz-option nzValue="Eastern/Shedgum" [nzLabel]="'RFP.Eastern Region/Shedgum' | translate"></nz-option>
+                <nz-option nzValue="Asir Region/Rijal Alma"
+                  [nzLabel]="'RFP.Asir Region/Rijal Alma' | translate"></nz-option>
+                <nz-option nzValue="Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar" [nzLabel]="
+                    'RFP.Asir Region/Tihama of Bani Al-Asmar and Bani Al-Ahmar'
+                      | translate
+                  "></nz-option>
+                <nz-option nzValue="Asir Region/Al-Majardah"
+                  [nzLabel]="'RFP.Asir Region/Al-Majardah' | translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Bajdah" [nzLabel]="'RFP.Tabuk Region/Bajdah' | translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Halat Ammar"
+                  [nzLabel]="'RFP.Tabuk Region/Halat Ammar' | translate"></nz-option>
+                <nz-option nzValue="Tabuk Region/Al-Fouhah"
+                  [nzLabel]="'RFP.Tabuk Region/Al-Fouhah' | translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Miyah"
+                  [nzLabel]="'RFP.Hail Region/Al-Miyah' | translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Sulaymi"
+                  [nzLabel]="'RFP.Hail Region/Al-Sulaymi' | translate"></nz-option>
+                <nz-option nzValue="Hail Region/Al-Rawdah"
+                  [nzLabel]="'RFP.Hail Region/Al-Rawdah' | translate"></nz-option>
+                <nz-option nzValue="Northern Borders Region/Jadidat Arar" [nzLabel]="
+                    'RFP.Northern Borders Region/Jadidat Arar' | translate
+                  "></nz-option>
+                <nz-option nzValue="Northern Borders Region/Rafha"
+                  [nzLabel]="'RFP.Northern Borders Region/Rafha' | translate"></nz-option>
+                <nz-option nzValue="Northern Borders Region/Al-Sha'bah" [nzLabel]="
+                    'RFP.Northern Borders Region/Al-Shabah' | translate
+                  "></nz-option>
+                <nz-option nzValue="Jazan Region/Atwood" [nzLabel]="'RFP.Jazan Region/Atwood' | translate"></nz-option>
+                <nz-option nzValue="Jazan Region/Masliyah"
+                  [nzLabel]="'RFP.Jazan Region/Masliyah' | translate"></nz-option>
+                <nz-option nzValue="Jazan Region/Munajid"
+                  [nzLabel]="'RFP.Jazan Region/Munajid' | translate"></nz-option>
+                <nz-option nzValue="Najran Region/Al-Mujamma"
+                  [nzLabel]="'RFP.Najran Region/Al-Mujamma' | translate"></nz-option>
+                <nz-option nzValue="Najran Region/Hubona"
+                  [nzLabel]="'RFP.Najran Region/Hubona' | translate"></nz-option>
+                <nz-option nzValue="Najran Region/Badr Al-Janoub"
+                  [nzLabel]="'RFP.Najran Region/Badr Al-Janoub' | translate"></nz-option>
+                <nz-option nzValue="Al-Baha Region/Bani Adwan and Bani Harir" [nzLabel]="
+                    'RFP.Al-Baha Region/Bani Adwan and Bani Harir' | translate
+                  "></nz-option>
+                <nz-option nzValue="Al-Baha Region/Yabs" [nzLabel]="'RFP.Al-Baha Region/Yabs' | translate"></nz-option>
+                <nz-option nzValue="Al-Baha Region/Zinad Al-Batat"
+                  [nzLabel]="'RFP.Al-Baha Region/Zinad Al-Batat' | translate"></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Abu Ajram"
+                  [nzLabel]="'RFP.Al-Jouf Region/Abu Ajram' | translate"></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Thaniyat Umm Nakhilah" [nzLabel]="
+                    'RFP.Al-Jouf Region/Thaniyat Umm Nakhilah' | translate
+                  "></nz-option>
+                <nz-option nzValue="Al-Jouf Region/Mayqou"
+                  [nzLabel]="'RFP.Al-Jouf Region/Mayqou' | translate"></nz-option>
+              </nz-select>
+          </div>
+
+          <!-- Activity Description -->
+          <!-- <div class="col-4 my-1">
+            <nz-form-label nzRequired>{{ 'Prequalification.ActivityDescription' | translate }}</nz-form-label>
+            <textarea nz-input rows="3" placeholder="Enter Activity Description"></textarea>
+          </div> -->
+
+          <!-- Activity -->
+          <div class="col-12 my-1">
+            <nz-form-label nzRequired>{{ 'Prequalification.Activity' | translate }}</nz-form-label>
+              <nz-select formControlName="activity" [nzPlaceHolder]="'RFP.Select Activity' | translate"
+                  style="width: 100%" nzAllowClear>
+                  <nz-option *ngFor="let o of activityList" [nzValue]="o.id"
+                    [nzLabel]="cs.userLanguage === 'en' ? o.value : o.valueAr"></nz-option>
+                </nz-select>
+            <!-- <nz-select style="width: 100%" nzPlaceHolder="-SELECT-">
+              <nz-option nzValue="activity1" nzLabel="Activity 1"></nz-option>
+              <nz-option nzValue="activity2" nzLabel="Activity 2"></nz-option>
+              <nz-option nzValue="activity3" nzLabel="Activity 3"></nz-option>
+            </nz-select> -->
           </div>
 
           <!-- Place of execution -->
-          <div class="col-4 my-1">
+          <div class="col-12 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.PlaceOfExecution' | translate }}</nz-form-label>
             <nz-radio-group [(ngModel)]="placeOfExecution">
               <label nz-radio nzValue="outside">{{ 'Prequalification.OutsideKingdom' | translate }}</label>
@@ -96,31 +190,15 @@
             </nz-radio-group>
           </div>
 
-          <!-- Activity Description -->
-          <div class="col-4 my-1">
-            <nz-form-label nzRequired>{{ 'Prequalification.ActivityDescription' | translate }}</nz-form-label>
-            <textarea nz-input rows="3" placeholder="Enter Activity Description"></textarea>
-          </div>
-
-          <!-- Activity -->
-          <div class="col-4 my-1">
-            <nz-form-label nzRequired>{{ 'Prequalification.Activity' | translate }}</nz-form-label>
-            <nz-select style="width: 100%" nzPlaceHolder="-SELECT-">
-              <nz-option nzValue="activity1" nzLabel="Activity 1"></nz-option>
-              <nz-option nzValue="activity2" nzLabel="Activity 2"></nz-option>
-              <nz-option nzValue="activity3" nzLabel="Activity 3"></nz-option>
-            </nz-select>
-          </div>
-
           <!-- Maintenance & Operation -->
-          <div class="col-4 my-1">
+          <!-- <div class="col-4 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.MaintenanceOperation' | translate }}</nz-form-label>
             <nz-select style="width: 100%" nzPlaceHolder="-SELECT-">
               <nz-option nzValue="maint1" nzLabel="Maintenance Type 1"></nz-option>
               <nz-option nzValue="maint2" nzLabel="Maintenance Type 2"></nz-option>
               <nz-option nzValue="maint3" nzLabel="Maintenance Type 3"></nz-option>
             </nz-select>
-          </div>
+          </div> -->
 
           <!-- Details -->
           <div class="col-12 my-1">
@@ -168,20 +246,20 @@
           <!-- Name of Technical Entry -->
           <div class="col-4 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.NameOfTechnicalEntry' | translate }}</nz-form-label>
-            <nz-select style="width: 100%" [nzPlaceHolder]="'Prequalification.SelectTechnicalEntry' | translate">
-              <nz-option nzValue="entry1" nzLabel="Technical Entry 1"></nz-option>
+            <nz-select [nzDisabled]="true" style="width: 100%" [nzPlaceHolder]="'Prequalification.SelectTechnicalEntry' | translate">
+              <!-- <nz-option nzValue="entry1" nzLabel="Technical Entry 1"></nz-option>
               <nz-option nzValue="entry2" nzLabel="Technical Entry 2"></nz-option>
-              <nz-option nzValue="entry3" nzLabel="Technical Entry 3"></nz-option>
+              <nz-option nzValue="entry3" nzLabel="Technical Entry 3"></nz-option> -->
             </nz-select>
           </div>
 
           <!-- Qualification Committee -->
           <div class="col-4 my-1">
             <nz-form-label nzRequired>{{ 'Prequalification.QualificationCommittee' | translate }}</nz-form-label>
-            <nz-select style="width: 100%" [nzPlaceHolder]="'Prequalification.SelectCommittee' | translate">
-              <nz-option nzValue="committee1" nzLabel="Committee 1"></nz-option>
+            <nz-select [nzDisabled]="true" style="width: 100%" [nzPlaceHolder]="'Prequalification.SelectTechnicalEntry' | translate">
+              <!-- <nz-option nzValue="committee1" nzLabel="Committee 1"></nz-option>
               <nz-option nzValue="committee2" nzLabel="Committee 2"></nz-option>
-              <nz-option nzValue="committee3" nzLabel="Committee 3"></nz-option>
+              <nz-option nzValue="committee3" nzLabel="Committee 3"></nz-option> -->
             </nz-select>
           </div>
         </div>

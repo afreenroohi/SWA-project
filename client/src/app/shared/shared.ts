@@ -894,13 +894,13 @@ export const listOfColumnPRQUALUSER = [
   },
   {
     id: 7,
-    title: 'View',
-    titleAr: 'عرض',
+    title: 'Prequalification Number',
+    titleAr: 'رقم التأهيل المسبق',
   },
   {
     id: 8,
-    title: 'Action',
-    titleAr: 'الإجراء',
+    title: 'View',
+    titleAr: 'عرض',
   }
 ];
 

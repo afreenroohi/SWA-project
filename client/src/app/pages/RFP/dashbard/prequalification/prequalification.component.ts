@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { activities } from 'src/app/shared/activity';
+import { CommonService } from 'src/app/service/common.service';
 
 
 @Component({
@@ -15,8 +17,10 @@ export class PrequalificationComponent implements OnInit {
   selectedFileName: string = '';
   selectedFile: File | null = null;
   showInitialBoxes = true;
+  activityList = activities;
 
   constructor(
+    public cs: CommonService,
     private modal: NzModalService,
     private router: Router,
     private translate: TranslateService

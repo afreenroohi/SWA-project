@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class MySupportTicketsComponent implements OnInit {
   showInitialBoxes = true;
   selectedAction = '';
+  showCategoryBoxes = false;
+  selectedCategory = '';
 
   // KPI Data
   totalTickets = 0;
@@ -25,6 +27,11 @@ export class MySupportTicketsComponent implements OnInit {
   submittedInitiatives = 0;
   inReviewInitiatives = 0;
   approvedInitiatives = 0;
+
+  // SCM Initiative KPI Data
+  totalSCMInitiatives = 0;
+  highPrioritySCMInitiatives = 0;
+  openSCMInitiatives = 0;
 
   // Sample ticket data
   tickets = [
@@ -122,11 +129,77 @@ export class MySupportTicketsComponent implements OnInit {
     }
   ];
 
+  // Sample SCM initiative data
+  scmInitiatives = [
+    {
+      id: 'INI-001',
+      title: 'Digital Transformation Initiative',
+      description: 'Modernize legacy systems and implement digital solutions',
+      category: 'SCM',
+      status: 'Open',
+      assignedTo: 'Take Initiative',
+      createdDate: new Date('2024-01-20'),
+      lastUpdated: new Date('2024-01-21'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-002',
+      title: 'Employee Training Program',
+      description: 'Comprehensive training program for skill development',
+      category: 'SCM',
+      status: 'In-Progress',
+      assignedTo: 's2',
+      createdDate: new Date('2024-01-18'),
+      lastUpdated: new Date('2024-01-22'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-003',
+      title: 'Green Energy Project',
+      description: 'Implement renewable energy solutions',
+      category: 'SCM',
+      status: 'Open',
+      assignedTo: 'Take Initiative',
+      createdDate: new Date('2024-01-15'),
+      lastUpdated: new Date('2024-01-19'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-004',
+      title: 'Customer Service Enhancement',
+      description: 'Improve customer service processes and tools',
+      category: 'SCM',
+      status: 'Open',
+      assignedTo: 'Take Initiative',
+      createdDate: new Date('2024-01-12'),
+      lastUpdated: new Date('2024-01-16'),
+      adminMessage: null
+    },
+    {
+      id: 'INI-005',
+      title: 'Cost Optimization Initiative',
+      description: 'Identify and implement cost-saving measures',
+      category: 'SCM',
+      status: 'Closed',
+      assignedTo: 's2',
+      createdDate: new Date('2024-01-08'),
+      lastUpdated: new Date('2024-01-14'),
+      adminMessage: null
+    }
+  ];
+
   constructor(private modal: NzModalService, public cs: CommonService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.calculateKPIs();
     this.calculateInitiativeKPIs();
+    this.calculateSCMInitiativeKPIs();
+  }
+
+  onCategoryClick(category: string): void {
+    this.selectedCategory = category;
+    this.showInitialBoxes = false;
+    this.showCategoryBoxes = true;
   }
 
   onBoxClick(action: string): void {
@@ -134,12 +207,15 @@ export class MySupportTicketsComponent implements OnInit {
       this.openTicketForm();
     } else if (action === 'view-tickets') {
       this.selectedAction = 'view-tickets';
-      this.showInitialBoxes = false;
+      this.showCategoryBoxes = false;
     } else if (action === 'create-initiative') {
       this.openInitiativeForm();
     } else if (action === 'view-initiatives') {
       this.selectedAction = 'view-initiatives';
-      this.showInitialBoxes = false;
+      this.showCategoryBoxes = false;
+    } else if (action === 'scm-initiative') {
+      this.selectedAction = 'scm-initiative';
+      this.showCategoryBoxes = false;
     }
   }
 
@@ -196,13 +272,25 @@ export class MySupportTicketsComponent implements OnInit {
     this.approvedInitiatives = this.initiatives.filter(i => i.status === 'Approved').length;
   }
 
+  calculateSCMInitiativeKPIs(): void {
+    this.totalSCMInitiatives = this.scmInitiatives.length;
+    this.highPrioritySCMInitiatives = this.scmInitiatives.filter(i => i.status === 'In-Review').length;
+    this.openSCMInitiatives = this.scmInitiatives.filter(i => i.status === 'Open' || i.status === 'Submitted').length;
+  }
+
   viewTicket(ticket: any): void {
     console.log('Viewing ticket:', ticket);
     // Implement ticket detail view
   }
 
   goBack(): void {
-    this.showInitialBoxes = true;
-    this.selectedAction = '';
+    if (this.selectedAction) {
+      this.selectedAction = '';
+      this.showCategoryBoxes = true;
+    } else if (this.showCategoryBoxes) {
+      this.showCategoryBoxes = false;
+      this.showInitialBoxes = true;
+      this.selectedCategory = '';
+    }
   }
 }

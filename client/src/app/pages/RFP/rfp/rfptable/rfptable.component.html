@@ -26,6 +26,7 @@
           data.QualificationCommittee) }}</td>
         <td>{{ cs.userLanguage === 'en' ? data.Region : (data.RegionAr || data.Region) }}</td>
         <td>{{ cs.userLanguage === 'en' ? data.Activity : (data.ActivityAr || data.Activity) }}</td>
+        <td>{{ data.PrequalificationNumber }}</td>
         <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
           <button nz-button nzType="primary" class="mx-1" style="border-color: #fff !important; padding: 4px 12px;"
             (click)="openDetails(data,this.Action)" nzSize="default" nz-tooltip
@@ -33,24 +34,6 @@
             [nzTooltipArrowPointAtCenter]="true">
             <span nz-icon nzType="eye" nzTheme="outline"></span>
           </button>
-        </td>
-        <td style="padding: 0%; padding-inline: 0.5%; text-align: center;">
-          <button nz-button nz-dropdown [nzDropdownMenu]="prqualActionMenu" nzPlacement="bottomRight"
-            class="action-dropdown-btn">
-            <span nz-icon nzType="more" nzTheme="outline"></span>
-          </button>
-          <nz-dropdown-menu #prqualActionMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item (click)="onActionClick('approve', data)" style="color: #52c41a;">
-                <span nz-icon nzType="check-circle" nzTheme="outline" style="color: #52c41a;"></span>
-                {{ 'RFP.Approved' | translate }}
-              </li>
-              <li nz-menu-item (click)="onActionClick('decline', data)" style="color: #ff4d4f;">
-                <span nz-icon nzType="close-circle" nzTheme="outline" style="color: #ff4d4f;"></span>
-                {{ 'RFP.Declined' | translate }}
-              </li>
-            </ul>
-          </nz-dropdown-menu>
         </td>
       </tr>
     </ng-container>
@@ -236,7 +219,7 @@
             [nzPlaceHolder]="cs.userLanguage === 'en' ? 'Select Date' : 'اختر التاريخ'"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <!-- <nz-form-item>
         <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Bid Technical Criteria' : 'المعايير
           الفنية للعطاء' }}</nz-form-label>
         <nz-form-control [nzSpan]="24">
@@ -244,7 +227,7 @@
             [placeholder]="cs.userLanguage === 'en' ? 'Enter technical criteria' : 'أدخل المعايير الفنية'"
             style="resize: none; border-radius: 6px;"></textarea>
         </nz-form-control>
-      </nz-form-item>
+      </nz-form-item> -->
       <nz-form-item *ngIf="isDirectPurchase()">
         <nz-form-label nzRequired [nzSpan]="24">{{ cs.userLanguage === 'en' ? 'Direct Procurement Committee' : 'لجنة
           الشراء المباشر' }}</nz-form-label>

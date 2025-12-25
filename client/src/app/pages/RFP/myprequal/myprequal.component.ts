@@ -56,11 +56,11 @@ export class MyprequalComponent implements OnInit {
 
   ngOnInit(): void {
     this.listArray = [
-      { RequestID: 'REQ-001', QualificationCallName: 'Water Infrastructure Qualification', TechnicalEntity: 'Engineering Division', QualificationCommittee: 'Technical Committee A', Region: 'Central', Activity: 'Water Treatment', RfpStatus: 'A' },
-      { RequestID: 'REQ-002', QualificationCallName: 'IT Systems Qualification', TechnicalEntity: 'IT Department', QualificationCommittee: 'Technical Committee B', Region: 'Eastern', Activity: 'IT Services', RfpStatus: 'S' },
-      { RequestID: 'REQ-003', QualificationCallName: 'Construction Qualification', TechnicalEntity: 'Construction Division', QualificationCommittee: 'Technical Committee C', Region: 'Western', Activity: 'Building Construction', RfpStatus: 'D' },
-      { RequestID: 'REQ-004', QualificationCallName: 'Maintenance Services Qualification', TechnicalEntity: 'Operations Department', QualificationCommittee: 'Technical Committee A', Region: 'Northern', Activity: 'Facility Maintenance', RfpStatus: 'A' },
-      { RequestID: 'REQ-005', QualificationCallName: 'Security Systems Qualification', TechnicalEntity: 'Security Division', QualificationCommittee: 'Technical Committee D', Region: 'Central', Activity: 'Security Services', RfpStatus: 'S' }
+      { RequestID: 'REQ-001', QualificationCallName: 'Water Infrastructure Qualification', TechnicalEntity: 'Rehabilitation Department', QualificationCommittee: 'Technical Committee A', Region: 'Central', Activity: 'Water Treatment', PrequalificationNumber: '123456789012', RfpStatus: 'A' },
+      { RequestID: 'REQ-002', QualificationCallName: 'IT Systems Qualification', TechnicalEntity: 'Rehabilitation Department', QualificationCommittee: 'Technical Committee B', Region: 'Eastern', Activity: 'IT Services', PrequalificationNumber: '234567890123', RfpStatus: 'S' },
+      { RequestID: 'REQ-003', QualificationCallName: 'Construction Qualification', TechnicalEntity: 'Rehabilitation Department', QualificationCommittee: 'Technical Committee C', Region: 'Western', Activity: 'Building Construction', PrequalificationNumber: '345678901234', RfpStatus: 'D' },
+      { RequestID: 'REQ-004', QualificationCallName: 'Maintenance Services Qualification', TechnicalEntity: 'Rehabilitation Department', QualificationCommittee: 'Technical Committee A', Region: 'Northern', Activity: 'Facility Maintenance', PrequalificationNumber: '456789012345', RfpStatus: 'A' },
+      { RequestID: 'REQ-005', QualificationCallName: 'Security Systems Qualification', TechnicalEntity: 'Rehabilitation Department', QualificationCommittee: 'Technical Committee D', Region: 'Central', Activity: 'Security Services', PrequalificationNumber: '567890123456', RfpStatus: 'S' }
     ];
 
     const callNameMap: { [key: string]: string } = {
