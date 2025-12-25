@@ -73,6 +73,7 @@
     "Description": "Description"
   },
   "Prequalification": {
+    "RequestID":"RequestID",
     "Back": "Back",
     "TotalDocuments": "Total Documents",
     "AllQualificationDocuments": "All Qualification Documents",

@@ -690,6 +690,7 @@
     "Jazan Region/Atwood": "منطقة جازان / عتود"
   },
   "Prequalification": {
+    "RequestID": "معرّف الطلب",
     "CreateNewRequest": "إنشاء طلب تأهيل جديد",
     "ShowMyRequests": "عرض طلبات التأهيل الخاصة بي",
     "Prequalification": "التأهيل",
@@ -718,7 +719,6 @@
     "SelectCommittee": "اختر اللجنة",
     "DocumentDetails": "تفاصيل وثيقة التأهيل",
     "Back": "عودة",
-    "RequestID": "رقم الطلب",
     "Attachments": "المرفقات",
     "Download": "تحميل",
     "PrequalificationDocuments": "وثائق التأهيل",
