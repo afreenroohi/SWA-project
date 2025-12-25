@@ -39,7 +39,7 @@
     "Close": "Close",
     "Version": "Version",
     "SomethingWentWrong": "Something Went Wrong",
-    "CopyrightAllRightsReserved": "Copyright",
+    "CopyrightAllRightsReserved": "Copyright All Rights Reserved",
     "Select": "Select",
     "Back": "Back",
     "Clickhere": "Click Here",
@@ -48,7 +48,9 @@
     "Do you want to proceed": "Do you want to proceed ?",
     "select role": "select role",
     "Select an option": "Select an option",
-    "Do you want to Assign back": "Do you want to Assign back ?"
+    "Do you want to Assign back": "Do you want to Assign back ?",
+    "SUCCESS": "Success",
+    "OK": "OK"
   },
   "sla": {
     "WfDept": "WorkFlow Department",
@@ -107,17 +109,8 @@
     "Details": "Details",
     "Submit": "Submit"
   },
-  "COMMON": {
-    "SUCCESS": "Success",
-    "OK": "OK"
-  },
   "FORM": {
     "SUBMIT_SUCCESS": "Form submitted successfully!"
-  },
-  "COMMON": {
-    "CopyrightAllRightsReserved": "Copyright All Rights Reserved",
-    "Version": "Version",
-    "Select": "Select"
   },
   "RFP": {
     "Extend Bid Opening Date": "Extend Bid Opening Date",
