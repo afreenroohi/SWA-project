@@ -120,6 +120,10 @@
     "Select": "Select"
   },
   "RFP": {
+    "Only alphabets are allowed": "Only alphabets are allowed",
+    "Action":"Action",
+    "Unit of Measurement": "Unit of Measurement",
+    "Job Title": "Job Title",
     "Extend Bid Opening Date": "Extend Bid Opening Date",
     "Qualifications by Committee": "Qualifications by Committee",
     "Qualifications by Region": "Qualifications by Region",
@@ -687,6 +691,11 @@
     "Third": "Third",
     "Fourth": "Fourth",
     "Fifth": "Fifth",
+    "Document Number": "Document Number",
+    "Minimum Qualification": "Minimum Qualification",
+    "Minimum Years of Experience": "Minimum Years of Experience",
+    "Machine": "Machine",
+    "Material": "Material",
     "Expected number of overtime hours": "Expected number of overtime hours",
     "Expected basic working hours": "Expected basic working hours",
     "No.": "No.",

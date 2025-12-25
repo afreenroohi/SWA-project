@@ -467,7 +467,7 @@ export class AppComponent {
         // Set session with 8 hours expiry
         this.authService.setSession(dummyToken, userDetails, 8 * 60 * 60);
         console.log(this.dispname, 'displayyyyyyyyyyyy')
-        if(role){
+        if (role) {
           localStorage.setItem('username', btoa(role))
         }
         // if (role === 'ENDUSER') {
@@ -559,7 +559,7 @@ export class AppComponent {
         if (role === 'PRQUALUSER') {
           this.router.navigate(['rfp/dashboard'])
         }
-        if(role === 'BIDOPEN'){
+        if (role === 'BIDOPEN') {
           this.cs.activeMenu = 'Dashboard';
           this.navItems.push({
             ModuleIcon: 'dashboard',
@@ -587,9 +587,9 @@ export class AppComponent {
           this.router.navigate(['rfp/dashboard']);
         }
 
-       if (role === 'SCMENDUSER'){
-           this.roleTest('Requestor');
-           this.showHelpIcon = true;
+        if (role === 'SCMENDUSER') {
+          this.roleTest('Requestor');
+          this.showHelpIcon = true;
 
           this.navItems.push({
             Module: 'Support & Initiatives',

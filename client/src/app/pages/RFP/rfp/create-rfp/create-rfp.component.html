@@ -1832,9 +1832,9 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
-                    <th>Ø±Ù‚Ù… Ø§Ù„Ù…Ø³ØªÙ†Ø¯ / Document Number</th>
-                    <th>Action</th>
+                    <th>{{ 'RFP.Serial Number' | translate }}</th>
+                    <th>{{ 'RFP.Document Number' | translate }}</th>
+                    <th>{{ 'RFP.Action' | translate }}</th>
                   </tr>
                 </thead>
 
@@ -1884,13 +1884,13 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
-                    <th>Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ / Job Title</th>
-                    <th>Ø£Ù‚Ù„ Ù…Ø¤Ù‡Ù„ Ù„Ù„Ù‚Ø¨ÙˆÙ„ / Minimum Qualification</th>
+                    <th>{{"RFP.Serial Number" | translate}}</th>
+                    <th>{{"RFP.Job Title" | translate}}</th>
+                    <th>{{"RFP.Minimum Qualification" | translate}}</th>
                     <th>
-                      Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†ÙŠ Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø®Ø¨Ø±Ø© / Minimum Years of Experience
+                      {{ "RFP.Minimum Years of Experience" | translate }}
                     </th>
-                    <th>Action</th>
+                    <th>{{"RFP.Action" | translate}}</th>
                   </tr>
                 </thead>
                 <tbody formArrayName="laborItems">
@@ -1947,11 +1947,11 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
-                    <th>Ø§Ù„Ù…Ø§Ø¯Ø© / Material</th>
-                    <th>Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª / Specifications</th>
-                    <th>ÙˆØ­Ø¯Ø© Ø§Ù„Ù‚ÙŠØ§Ø³ / Unit of Measurement</th>
-                    <th>Action</th>
+                    <th>{{"RFP.Serial Number"| translate}}</th>
+                    <th>{{"RFP.Material" | translate}}</th>
+                    <th>{{"RFP.Specifications" | translate}}</th>
+                    <th>{{"RFP.Unit of Measurement" | translate}}</th>
+                    <th>{{"RFP.Action" | translate}}</th>
                   </tr>
                 </thead>
                 <tbody formArrayName="materialItems">
@@ -1969,7 +1969,7 @@
                           item.get('unit')?.touched &&
                           item.get('unit')?.hasError('pattern')
                         " style="margin-top: 8px; color: red; display: block">
-                        Only alphabets are allowed
+                        {{ "RFP.Only alphabets are allowed" | translate }}
                       </small>
                     </td>
                     <td class="text-center">
@@ -2008,11 +2008,11 @@
               <table class="table table-bordered technical-table mt-3">
                 <thead>
                   <tr>
-                    <th>Ø§Ù„Ø±Ù‚Ù… / Serial Number</th>
-                    <th>Ø§Ù„Ø¢Ù„Ø© / Machine</th>
-                    <th>Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª / Specifications</th>
-                    <th>ÙˆØ­Ø¯Ø© Ø§Ù„Ù‚ÙŠØ§Ø³ / Unit of Measurement</th>
-                    <th>Action</th>
+                    <th>{{"RFP.Serial Number" | translate}}</th>
+                    <th>{{"RFP.Machine" | translate}}</th>
+                    <th>{{"RFP.Specifications" | translate}}</th>
+                    <th>{{"RFP.Unit of Measurement" | translate}}</th>
+                    <th>{{"RFP.Action" | translate}}</th>
                   </tr>
                 </thead>
                 <tbody formArrayName="equipmentItems">
@@ -2030,7 +2030,7 @@
                           item.get('unit')?.touched &&
                           item.get('unit')?.hasError('pattern')
                         " style="margin-top: 8px; color: red; display: block">
-                        Only alphabets are allowed
+                        {{ "RFP.Only alphabets are allowed" | translate }}
                       </small>
                     </td>
                     <td class="text-center">
@@ -3662,4 +3662,3 @@
     </button>
   </ng-template>
 </nz-modal>
-
