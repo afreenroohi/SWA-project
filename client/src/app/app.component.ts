@@ -487,23 +487,23 @@ export class AppComponent {
 
         // console.log(userName,'userName==')
         this.navItems = [];
-       if(role !== 'SUSER'){
-         this.navItems.push(
-          {
-            Module: 'Dashboard',
-            ModuleAr: 'إدارة طلب المنافسات',
-            ModuleIcon: 'line-chart',
-            link: 'rfp/dashboard'
-          },
-        )
-       }
+        if (role !== 'SUSER') {
+          this.navItems.push(
+            {
+              Module: 'Dashboard',
+              ModuleAr: 'إدارة طلب المنافسات',
+              ModuleIcon: 'line-chart',
+              link: 'rfp/dashboard'
+            },
+          )
+        }
         if (role === 'ADMIN') {
 
           // this.constructCOCmenu({ RoleId: 'FI' })
 
           // Add Ticket module for admin
           this.navItems.push({
-            ModuleIcon: 'customer-service',
+            ModuleIcon: IconList.handshake,
             Module: 'Support Tickets',
             ModuleId: '99',
             ModuleAr: 'تذاكر الدعم',
@@ -597,7 +597,7 @@ export class AppComponent {
           this.navItems.push({
             Module: 'Support & Initiatives',
             ModuleAr: 'الدعم والمبادرات',
-            ModuleIcon: 'customer-service',
+            ModuleIcon: IconList.handshake,
             isOpen: false,
             navItem: [
               {

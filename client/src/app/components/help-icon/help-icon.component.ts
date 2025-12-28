@@ -6,35 +6,56 @@ import { CommonService } from '../../service/common.service';
 @Component({
   selector: 'app-help-icon',
   template: `
-    <div class="help-icon-container" [ngClass]="{
-      'rtl-position': cs.userLanguage === 'ar'
-    }">
-      <button nz-button nzType="primary" nzShape="circle" nzSize="large" 
-              (click)="openTicketForm()" class="help-button">
-        <i nz-icon nzType="customer-service" nzTheme="outline"></i>
-      </button>
-    </div>
-  `,
+    <div class="help-icon-container" 
+      [ngClass]="{ 'rtl-position': cs.userLanguage === 'ar' }">
+
+    <button nz-button nzType="primary" nzShape="circle" nzSize="large" 
+            (click)="openTicketForm()" class="help-button">
+
+      <img src="assets/logo/handshake.png" 
+          alt="Help" 
+          class="help-image" />
+          
+    </button>
+  </div>
+
+    `,
   styles: [`
-    .help-icon-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-    .help-icon-container.rtl-position {
-      right: auto;
-      left: 20px;
-    }
+      .help-icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  &.rtl-position {
+    right: auto;
+    left: 20px;
+  }
+
     .help-button {
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+
+      .help-image {
+        width: 100%;
+        height: 90%;
+        object-fit: cover;
+        display: block;
+      }
     }
-  `]
+}
+
+    `]
 })
 export class HelpIconComponent {
-  constructor(private modal: NzModalService, public cs: CommonService) {}
+  constructor(private modal: NzModalService, public cs: CommonService) { }
 
   openTicketForm() {
     this.modal.create({

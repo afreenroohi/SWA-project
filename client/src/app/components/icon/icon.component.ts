@@ -68,4 +68,5 @@ export enum IconList {
   contract = 'contract',
   contractSAP = 'contract-sap',
   trackLine = 'track-line',
+  handshake = 'handshake',
 }
