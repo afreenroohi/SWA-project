@@ -3,7 +3,7 @@
   max-width: 100%;
 }
 
-// RFP Header styling
+// RFP Header stylinglinear-gradient(135deg, #005c99 0%, #004a7a 100%);
 .rfp-header-box {
   background: linear-gradient(135deg, #005c99 0%, #004a7a 100%);
   border-radius: 8px;
@@ -21,6 +21,12 @@
 .rfp-header-icon {
   font-size: 26px;
   color: white;
+}
+.rfp-header{
+  width: 50px;          /* adjust as per UI */
+  height: 50px;
+  object-fit: contain;
+  vertical-align: middle;
 }
 
 .rfp-header-title {

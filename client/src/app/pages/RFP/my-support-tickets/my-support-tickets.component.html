@@ -6,7 +6,9 @@
 <div class="initial-selection-container" *ngIf="showInitialBoxes">
   <div class="selection-boxes-wrapper">
     <div class="selection-box" (click)="onCategoryClick('support-ticket')">
-      <i nz-icon nzType="customer-service" nzTheme="outline" class="box-icon"></i>
+      <img src="assets/logo/handshake.png" alt="handshake" class="boxicon">
+
+      <!-- <i nz-icon nzType="customer-service" nzTheme="outline" class="box-icon"></i> -->
       <h3>{{ 'SupportTickets.SupportTicket' | translate }}</h3>
     </div>
 
@@ -21,7 +23,7 @@
 <div class="initial-selection-container" *ngIf="showCategoryBoxes && selectedCategory === 'support-ticket'">
   <div class="selection-boxes-wrapper">
     <div class="selection-box" (click)="onBoxClick('create-ticket')">
-      <i nz-icon nzType="customer-service" nzTheme="outline" class="box-icon"></i>
+       <img src="assets/logo/handshake.png" alt="handshake" class="boxicon">
       <h3>{{ 'SupportTickets.SubmitNewSupportTicket' | translate }}</h3>
     </div>
 
