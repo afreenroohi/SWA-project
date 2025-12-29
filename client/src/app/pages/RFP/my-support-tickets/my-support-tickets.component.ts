@@ -221,14 +221,50 @@ export class MySupportTicketsComponent implements OnInit {
       this.showCategoryBoxes = false;
     }
   }
+  isAcceptModalVisible = false;
+  isRejectModalVisible = false;
+  selectedTicket: any = null;
+  acceptText = '';
+  rejectionReason = '';
+  otherReasonText = '';
+
   acceptTicket(ticket: any) {
-  ticket.status = 'Accepted';
-  // call backend API here if required
-}
-rejectTicket(ticket: any) {
-  ticket.status = 'Rejected';
-  // call backend API here if required
-}
+    this.selectedTicket = ticket;
+    this.acceptText = '';
+    this.isAcceptModalVisible = true;
+  }
+
+  handleAcceptOk() {
+    this.selectedTicket.status = 'Accepted';
+    this.selectedTicket.adminMessage = this.acceptText;
+    this.isAcceptModalVisible = false;
+    // call backend API here
+  }
+
+  handleAcceptCancel() {
+    this.isAcceptModalVisible = false;
+  }
+
+  rejectTicket(ticket: any) {
+    this.selectedTicket = ticket;
+    this.rejectionReason = '';
+    this.otherReasonText = '';
+    this.isRejectModalVisible = true;
+  }
+
+  handleRejectOk() {
+    if (!this.rejectionReason) return;
+    if (this.rejectionReason === 'Other' && !this.otherReasonText.trim()) return;
+    
+    this.selectedTicket.status = 'Rejected';
+    this.selectedTicket.adminMessage = this.rejectionReason === 'Other' ? this.otherReasonText : this.rejectionReason;
+    this.isRejectModalVisible = false;
+    // call backend API here
+  }
+
+  handleRejectCancel() {
+    this.isRejectModalVisible = false;
+  }
 
   openTicketForm(): void {
     try {

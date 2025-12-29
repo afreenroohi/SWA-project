@@ -1959,6 +1959,8 @@
     }
   },
   "SupportTickets": {
+    "Accepted":"Accepted",
+    "Rejected":"Rejected",
     "Accept": "Accept",
     "Assigned Tickets": "Assigned Tickets",
     "SupportTicket":"Support Ticket",

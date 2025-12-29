@@ -1922,6 +1922,8 @@
     "No Data Label2": "حاول في وقت لاحق"
   },
   "SupportTickets": {
+    "Accepted":"قبول",
+    "Rejected":"مبادرة",
     "Accept": "قبول",
     "Assigned Tickets": "التذاكر المعينة",
     "SupportTicket": "تذكرة دعم",

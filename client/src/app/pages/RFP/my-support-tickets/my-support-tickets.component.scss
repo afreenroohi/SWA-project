@@ -240,8 +240,13 @@
   color: white;
 }
 
-.status-closed {
+.status-closed, .status-accepted {
   background-color: #52c41a;
+  color: white;
+}
+
+.status-rejected {
+  background-color: #ff4d4f;
   color: white;
 }
 

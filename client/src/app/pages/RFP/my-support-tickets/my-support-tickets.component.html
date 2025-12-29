@@ -267,8 +267,8 @@
         <th>{{ 'SupportTickets.Description' | translate }}</th>
         <th>{{ 'SupportTickets.Priority' | translate }}</th>
         <th>{{ 'SupportTickets.Status' | translate }}</th>
-        <th>{{ 'SupportTickets.Actions' | translate }}</th>
         <th>{{ 'SupportTickets.AdminMessage' | translate }}</th>
+        <th>{{ 'SupportTickets.Actions' | translate }}</th>
       </tr>
     </thead>
 
@@ -295,32 +295,37 @@
           </span>
         </td>
 
-        <!-- ACTION BUTTONS -->
-        <td>
-  <ng-container *ngIf="ticket.status === 'Open' || ticket.status === 'Pending'; else noAction">
-    <div class="actions-wrapper">
-      <button nz-button nzType="primary" nzSize="small" (click)="acceptTicket(ticket)">
-        {{ 'SupportTickets.Accept' | translate }}
-      </button>
-
-      <button nz-button nzType="default" nzDanger nzSize="small" (click)="rejectTicket(ticket)">
-        {{ 'SupportTickets.Reject' | translate }}
-      </button>
-    </div>
-  </ng-container>
-
-  <ng-template #noAction>
-    <span>-</span>
-  </ng-template>
-</td>
-
-
         <td>
           <span *ngIf="ticket.status === 'Closed' && ticket.adminMessage" class="admin-message">
             {{ ticket.adminMessage | translate }}
           </span>
           <span *ngIf="ticket.status !== 'Closed'" class="no-message">-</span>
         </td>
+
+        <!-- ACTION BUTTONS -->
+        <td>
+  <ng-container *ngIf="ticket.status === 'Open' || ticket.status === 'Pending'; else noAction">
+    <button nz-button nzType="text" nz-dropdown [nzDropdownMenu]="actionMenu">
+      <i nz-icon nzType="more" nzTheme="outline"></i>
+    </button>
+    <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="acceptTicket(ticket)">
+          <i nz-icon nzType="check-circle" style="color: #52c41a;"></i>
+          {{ 'SupportTickets.Accept' | translate }}
+        </li>
+        <li nz-menu-item (click)="rejectTicket(ticket)">
+          <i nz-icon nzType="close-circle" style="color: #ff4d4f;"></i>
+          {{ 'SupportTickets.Reject' | translate }}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </ng-container>
+
+  <ng-template #noAction>
+    <span>-</span>
+  </ng-template>
+</td>
 
       </tr>
     </tbody>
@@ -574,3 +579,38 @@
     </div>
   </div>
 </div>
+
+<!-- Accept Modal -->
+<nz-modal [(nzVisible)]="isAcceptModalVisible" nzTitle="Accept Ticket" (nzOnCancel)="handleAcceptCancel()" (nzOnOk)="handleAcceptOk()">
+  <ng-container *nzModalContent>
+    <nz-form-item>
+      <nz-form-label>Accept Message</nz-form-label>
+      <nz-form-control>
+        <textarea nz-input [(ngModel)]="acceptText" rows="4" placeholder="Enter acceptance message"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+</nz-modal>
+
+<!-- Reject Modal -->
+<nz-modal [(nzVisible)]="isRejectModalVisible" nzTitle="Reject Ticket" (nzOnCancel)="handleRejectCancel()" (nzOnOk)="handleRejectOk()">
+  <ng-container *nzModalContent>
+    <nz-form-item>
+      <nz-form-label>Reasons for Rejection</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="rejectionReason" nzPlaceHolder="Select a reason">
+          <nz-option nzValue="Incomplete information" nzLabel="Incomplete information"></nz-option>
+          <nz-option nzValue="Outside the department's scope" nzLabel="Outside the department's scope"></nz-option>
+          <nz-option nzValue="Previously processed" nzLabel="Previously processed"></nz-option>
+          <nz-option nzValue="Other" nzLabel="Other"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="rejectionReason === 'Other'">
+      <nz-form-label>Please specify</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="otherReasonText" placeholder="Enter reason" />
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+</nz-modal>
