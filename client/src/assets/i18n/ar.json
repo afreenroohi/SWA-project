@@ -75,6 +75,7 @@
     "SUBMIT_SUCCESS": "تم إرسال النموذج بنجاح!"
   },
   "RFP": {
+    "Actions": "الإجراءات",
     "day":"Days",
     "CreateInitiative": "إنشاء مبادرة",
     "Job Title": "المسمى الوظيفي",
@@ -1921,6 +1922,8 @@
     "No Data Label2": "حاول في وقت لاحق"
   },
   "SupportTickets": {
+    "Accept": "قبول",
+    "Assigned Tickets": "التذاكر المعينة",
     "SupportTicket": "تذكرة دعم",
     "Initiative": "مبادرة",
     "SCMInitiative": "مبادرة إدارة سلسلة التوريد",

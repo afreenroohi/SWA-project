@@ -31,7 +31,13 @@
       <i nz-icon nzType="unordered-list" nzTheme="outline" class="box-icon"></i>
       <h3>{{ 'SupportTickets.ViewMySupportTickets' | translate }}</h3>
     </div>
+
+    <div class="selection-box" (click)="onBoxClick('assignedTo')">
+      <i nz-icon nzType="info-circle" nzTheme="outline" class="box-icon"></i>
+      <h3>{{ 'SupportTickets.Assigned Tickets' | translate }}</h3>
+    </div>
   </div>
+  
   
   <div class="row mt-4" style="margin-left: 20px">
     <div class="col-12">
@@ -184,7 +190,156 @@
     </div>
   </div>
 </div>
+<div class="col-12" *ngIf="!showInitialBoxes && !showCategoryBoxes && selectedAction === 'assignedTo'">
+  <div class="p-2">
+    <!-- Header Box -->
+    <div class="rfp-header-box">
+      <div class="rfp-header-content">
+        <i nz-icon nzType="unordered-list" nzTheme="outline" class="rfp-header-icon"></i>
+        <div>
+          <h1 class="rfp-header-title">{{ 'SupportTickets.MySupportTickets' | translate }}</h1>
+        </div>
+      </div>
+    </div>
 
+    <!-- KPI Cards -->
+    <div class="kpi-container mt-4" style="margin-left: 20px">
+      <div class="row">
+        <div class="col-md-3 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-total">
+            <div class="kpi-content">
+              <i nz-icon nzType="file-text" class="kpi-icon" style="color: #1890ff"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ totalTickets }}</div>
+                <div class="kpi-title">{{ 'SupportTickets.TotalTickets' | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-open">
+            <div class="kpi-content">
+              <i nz-icon nzType="clock-circle" class="kpi-icon" style="color: #faad14"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ openTickets }}</div>
+                <div class="kpi-title">{{ 'SupportTickets.OpenTickets' | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-progress">
+            <div class="kpi-content">
+              <i nz-icon nzType="sync" class="kpi-icon" style="color: #722ed1"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ inProgressTickets }}</div>
+                <div class="kpi-title">{{ 'SupportTickets.InProgress' | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+          <div class="kpi-card kpi-card-closed">
+            <div class="kpi-content">
+              <i nz-icon nzType="check-circle" class="kpi-icon" style="color: #52c41a"></i>
+              <div class="kpi-text">
+                <div class="kpi-value">{{ closedTickets }}</div>
+                <div class="kpi-title">{{ 'SupportTickets.ClosedTickets' | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tickets Table -->
+        <div class="table-container mt-4" style="margin-left: 20px">
+  <nz-table
+    #initiativesTable
+    [nzData]="tickets"
+    [nzPageSize]="10"
+    [nzShowPagination]="true">
+
+    <thead>
+      <tr>
+        <th>{{ 'SupportTickets.TicketID' | translate }}</th>
+        <th>{{ 'SupportTickets.Subject' | translate }}</th>
+        <th>{{ 'SupportTickets.Description' | translate }}</th>
+        <th>{{ 'SupportTickets.Priority' | translate }}</th>
+        <th>{{ 'SupportTickets.Status' | translate }}</th>
+        <th>{{ 'SupportTickets.Actions' | translate }}</th>
+        <th>{{ 'SupportTickets.AdminMessage' | translate }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let ticket of initiativesTable.data">
+
+        <td>{{ ticket.id }}</td>
+
+        <td>{{ ticket.subject | translate }}</td>
+
+        <td>{{ ticket.description | translate }}</td>
+
+        <td>
+          <span class="priority-tag"
+                [ngClass]="'priority-' + ticket.priority.toLowerCase()">
+            {{ 'SupportTickets.' + ticket.priority | translate }}
+          </span>
+        </td>
+
+        <td>
+          <span class="status-tag"
+                [ngClass]="'status-' + ticket.status.toLowerCase().replace(' ', '-')">
+            {{ 'SupportTickets.' + ticket.status.replace(' ', '').replace('-', '') | translate }}
+          </span>
+        </td>
+
+        <!-- ACTION BUTTONS -->
+        <td>
+  <ng-container *ngIf="ticket.status === 'Open' || ticket.status === 'Pending'; else noAction">
+    <div class="actions-wrapper">
+      <button nz-button nzType="primary" nzSize="small" (click)="acceptTicket(ticket)">
+        {{ 'SupportTickets.Accept' | translate }}
+      </button>
+
+      <button nz-button nzType="default" nzDanger nzSize="small" (click)="rejectTicket(ticket)">
+        {{ 'SupportTickets.Reject' | translate }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #noAction>
+    <span>-</span>
+  </ng-template>
+</td>
+
+
+        <td>
+          <span *ngIf="ticket.status === 'Closed' && ticket.adminMessage" class="admin-message">
+            {{ ticket.adminMessage | translate }}
+          </span>
+          <span *ngIf="ticket.status !== 'Closed'" class="no-message">-</span>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </nz-table>
+</div>
+
+
+
+    <!-- Back Button -->
+    <div class="row mt-4" style="margin-left: 20px">
+      <div class="col-12">
+        <button nz-button nzType="default" (click)="goBack()">
+          <i nz-icon nzType="arrow-left"></i> {{ 'SupportTickets.Back' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Initiative List Section -->
 <div class="col-12" *ngIf="!showInitialBoxes && !showCategoryBoxes && selectedAction === 'view-initiatives'">
   <div class="p-2">

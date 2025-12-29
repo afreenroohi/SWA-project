@@ -50,6 +50,11 @@
     font-weight: 600;
   }
 }
+.actions-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
 .rfp-header-box {
   margin-left: 20px;

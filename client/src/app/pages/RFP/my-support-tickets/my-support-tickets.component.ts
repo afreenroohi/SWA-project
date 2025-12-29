@@ -207,8 +207,11 @@ export class MySupportTicketsComponent implements OnInit {
       this.openTicketForm();
     } else if (action === 'view-tickets') {
       this.selectedAction = 'view-tickets';
-      this.showCategoryBoxes = false;
-    } else if (action === 'create-initiative') {
+      this.showCategoryBoxes = false;}
+     else if (action === 'assignedTo') {
+      this.selectedAction = 'assignedTo';
+      this.showCategoryBoxes = false;}
+     else if (action === 'create-initiative') {
       this.openInitiativeForm();
     } else if (action === 'view-initiatives') {
       this.selectedAction = 'view-initiatives';
@@ -218,6 +221,14 @@ export class MySupportTicketsComponent implements OnInit {
       this.showCategoryBoxes = false;
     }
   }
+  acceptTicket(ticket: any) {
+  ticket.status = 'Accepted';
+  // call backend API here if required
+}
+rejectTicket(ticket: any) {
+  ticket.status = 'Rejected';
+  // call backend API here if required
+}
 
   openTicketForm(): void {
     try {

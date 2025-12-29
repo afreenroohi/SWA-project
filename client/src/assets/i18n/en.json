@@ -762,7 +762,8 @@
     "Najran Region/Al-Mujamma": "Najran Region/Al-Mujamma",
     "Jazan Region/Munajid ": "Jazan Region/Munajidah",
     "Jazan Region/Masliyah": "Jazan Region/Masliyah",
-    "Jazan Region/Atwood": "Jazan Region/Atwood"
+    "Jazan Region/Atwood": "Jazan Region/Atwood",
+    "Actions": "Actions"
   },
   "COC": {
     "Create COC": "Create COC",
@@ -1958,6 +1959,8 @@
     }
   },
   "SupportTickets": {
+    "Accept": "Accept",
+    "Assigned Tickets": "Assigned Tickets",
     "SupportTicket":"Support Ticket",
     "Initiative":"Initiative",
     "SCMInitiative":"SCM Initiative",
