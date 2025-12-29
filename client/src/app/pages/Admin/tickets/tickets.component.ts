@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonService } from '../../../service/common.service';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss']
 })
-export class TicketsComponent implements OnInit {
+export class TicketsComponent implements OnInit, OnDestroy {
   tickets: any[] = [];
   showSupportForm = false;
   totalTickets = 0;
@@ -20,6 +22,8 @@ export class TicketsComponent implements OnInit {
   selectedTicket: any = null;
   closeMessage = '';
   staticTicketsLoaded = false;
+  ticketType: string = '';
+  private routerSubscription?: Subscription;
 
   // Action modal properties
   showActionModal = false;
@@ -72,13 +76,36 @@ export class TicketsComponent implements OnInit {
       description: ['', Validators.required],
       priority: ['Medium']
     });
+    
+    const navigation = this.router.getCurrentNavigation();
+    this.ticketType = navigation?.extras?.state?.['type'] || '';
+    console.log('Ticket Type (constructor):', this.ticketType);
   }
 
   ngOnInit(): void {
+    if (!this.ticketType) {
+      this.ticketType = history.state?.type || '';
+    }
+    console.log('Ticket Type (ngOnInit):', this.ticketType);
+    
+    // Subscribe to router events to detect navigation changes
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.ticketType = history.state?.type || '';
+      console.log('Ticket Type (navigation change):', this.ticketType);
+    });
+    
     this.loadTickets();
     setInterval(() => {
       this.loadTickets();
     }, 5000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   loadTickets(): void {

@@ -398,9 +398,25 @@ export class AppComponent {
         })
       }
       this.cs.activeMenu = item.name ?? item.Module;
-      this.router.navigate([`/${item.link}`], { queryParams: { fullAccess: item?.adminFullAccess } });
+      const navExtras: any = { 
+        queryParams: { fullAccess: item?.adminFullAccess },
+        replaceUrl: false
+      };
+      if (item.type) {
+        navExtras.state = { type: item.type };
+      }
+      
+      // Force component reload for same route
+      const currentUrl = this.router.url.split('?')[0];
+      const targetUrl = `/${item.link}`;
+      if (currentUrl === targetUrl) {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate([targetUrl], navExtras);
+        });
+      } else {
+        this.router.navigate([targetUrl], navExtras);
+      }
 
-      // Auto-close the sidebar on mobile so the content is visible
       if (this.isMobile) {
         this.isCollapsed = true;
       }
@@ -521,6 +537,14 @@ export class AppComponent {
                 text: 'Initiative List',
                 textAr: 'قائمة المبادرات',
                 link: 'admin/initiatives',
+              },
+              {
+                name: 'myticketlist',
+                iconName: IconList.listnote,
+                text: 'My Ticket List',
+                textAr: 'قائمة التذاكر',
+                link: 'admin/tickets',
+                type: 'myTickets'
               },
             ],
           });
