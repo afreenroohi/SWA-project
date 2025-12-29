@@ -269,7 +269,7 @@ export class MySupportTicketsComponent implements OnInit {
   openTicketForm(): void {
     try {
       const modal = this.modal.create({
-        nzTitle: 'Submit Support Ticket', // Fallback title
+        nzTitle: this.cs.userLanguage === 'ar' ? 'إنشاء تذكرة' : 'Create Ticket',
         nzContent: TicketFormComponent,
         nzFooter: null,
         nzWidth: 600

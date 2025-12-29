@@ -43,33 +43,70 @@ import { CommonService } from '../../service/common.service';
             formControlName="category"
             [nzPlaceHolder]="cs.userLanguage === 'ar' ? 'حدد الفئة' : 'Select category'">
             
-            <nz-option nzValue="Procedures & Policies" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'إجراءات وسياسات' : 'Procedures & Policies'">
-            </nz-option>
+            <ng-container *ngIf="!isAdmin">
+              <nz-option nzValue="Procedures & Policies" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'إجراءات وسياسات' : 'Procedures & Policies'">
+              </nz-option>
 
-            <nz-option nzValue="Proposal" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'مقترح' : 'Proposal'">
-            </nz-option>
+              <nz-option nzValue="Proposal" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'مقترح' : 'Proposal'">
+              </nz-option>
 
-            <nz-option nzValue="Priority" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'أولوية' : 'Priority'">
-            </nz-option>
+              <nz-option nzValue="Priority" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'أولوية' : 'Priority'">
+              </nz-option>
 
-            <nz-option nzValue="Indicators" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'مؤشرات' : 'Indicators'">
-            </nz-option>
+              <nz-option nzValue="Indicators" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'مؤشرات' : 'Indicators'">
+              </nz-option>
 
-            <nz-option nzValue="Achievements" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'منجزات' : 'Achievements'">
-            </nz-option>
+              <nz-option nzValue="Achievements" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'منجزات' : 'Achievements'">
+              </nz-option>
 
-            <nz-option nzValue="Leadership Recommendations" 
-              [nzLabel]="cs.userLanguage === 'ar' ? 'توصيات قيادية' : 'Leadership Recommendations'">
-            </nz-option>
+              <nz-option nzValue="Leadership Recommendations" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'توصيات قيادية' : 'Leadership Recommendations'">
+              </nz-option>
 
-            <nz-option nzValue="OtherText"
-              [nzLabel]="cs.userLanguage === 'ar' ? 'أخرى (نص)' : 'Other (Text)'">
-            </nz-option>
+              <nz-option nzValue="OtherText"
+                [nzLabel]="cs.userLanguage === 'ar' ? 'أخرى (نص)' : 'Other (Text)'">
+              </nz-option>
+            </ng-container>
+
+            <ng-container *ngIf="isAdmin">
+              <nz-option nzValue="Procedures" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'إجراءات' : 'Procedures'">
+              </nz-option>
+
+              <nz-option nzValue="Approvals" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'تصاريح' : 'Approvals'">
+              </nz-option>
+
+              <nz-option nzValue="Priority" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'أولوية' : 'Priority'">
+              </nz-option>
+
+              <nz-option nzValue="Processing Time" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'مدة الإجراء' : 'Processing Time'">
+              </nz-option>
+
+              <nz-option nzValue="Weekly Deliverables" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'مخرجات أسبوعية' : 'Weekly Deliverables'">
+              </nz-option>
+
+              <nz-option nzValue="Leadership Recommendations" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'توصيات قيادية' : 'Leadership Recommendations'">
+              </nz-option>
+
+              <nz-option nzValue="Service Level Agreement" 
+                [nzLabel]="cs.userLanguage === 'ar' ? 'ضمانات (SLA)' : 'Service Level Agreement (SLA)'">
+              </nz-option>
+
+              <nz-option nzValue="OtherText"
+                [nzLabel]="cs.userLanguage === 'ar' ? 'أخرى (نص / Text)' : 'Other (Text)'">
+              </nz-option>
+            </ng-container>
+
           </nz-select>
 
           <!-- Other Text Field -->
@@ -98,9 +135,9 @@ import { CommonService } from '../../service/common.service';
         </nz-form-control>
       </nz-form-item>
 
-      <!-- Assign To (Admin Only) -->
+      <!-- Assign To (Admin Only - Mandatory) -->
       <nz-form-item *ngIf="isAdmin">
-        <nz-form-label [nzSpan]="6">
+        <nz-form-label [nzSpan]="6" nzRequired>
           {{ cs.userLanguage === 'ar' ? 'تعيين إلى' : 'Assign to' }}
         </nz-form-label>
         <nz-form-control [nzSpan]="18">
@@ -111,9 +148,9 @@ import { CommonService } from '../../service/common.service';
         </nz-form-control>
       </nz-form-item>
 
-      <!-- Attachment -->
+      <!-- Attachment (Admin Only - Mandatory) -->
       <nz-form-item>
-        <nz-form-label [nzSpan]="6">
+        <nz-form-label [nzSpan]="6" [nzRequired]="isAdmin">
           {{ cs.userLanguage === 'ar' ? 'المرفقات' : 'Attachments' }}
         </nz-form-label>
         <nz-form-control [nzSpan]="18">
@@ -123,6 +160,9 @@ import { CommonService } from '../../service/common.service';
               {{ cs.userLanguage === 'ar' ? 'رفع المرفقات' : 'Upload Attachments' }}
             </button>
           </nz-upload>
+          <div *ngIf="isAdmin && !uploadedFile" style="color: red; font-size: 12px; margin-top: 4px;">
+            {{ cs.userLanguage === 'ar' ? 'المرفق مطلوب' : 'Attachment is required' }}
+          </div>
         </nz-form-control>
       </nz-form-item>
 
@@ -134,7 +174,7 @@ import { CommonService } from '../../service/common.service';
 
         <button nz-button nzType="primary"
           [nzLoading]="loading"
-          [disabled]="!ticketForm.valid"
+          [disabled]="!isFormValid()"
           type="submit">
           {{ cs.userLanguage === 'ar' ? 'إرسال التذكرة' : 'Submit Ticket' }}
         </button>
@@ -180,6 +220,12 @@ export class TicketFormComponent {
       assignTo: ['']
     });
 
+    // Set assignTo as required for admin
+    if (this.isAdmin) {
+      this.ticketForm.get('assignTo')?.setValidators([Validators.required]);
+      this.ticketForm.get('assignTo')?.updateValueAndValidity();
+    }
+
     // Listen for category change
     this.ticketForm.get('category')?.valueChanges.subscribe(value => {
       this.showOtherText = value === 'OtherText';
@@ -199,6 +245,12 @@ export class TicketFormComponent {
     this.uploadedFile = file.originFileObj || file;
     return false;
   };
+
+  isFormValid(): boolean {
+    if (!this.ticketForm.valid) return false;
+    if (this.isAdmin && !this.uploadedFile) return false;
+    return true;
+  }
 
   submitTicket() {
     if (!this.ticketForm.valid) return;

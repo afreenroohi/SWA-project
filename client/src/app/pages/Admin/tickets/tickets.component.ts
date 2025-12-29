@@ -114,6 +114,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
       this.tickets = [
         {
           id: 'TKT-001',
+          category: 'Priority',
           subject: 'SupportTickets.LoginIssue',
           description: 'SupportTickets.LoginIssueDesc',
           priority: 'High',
@@ -126,6 +127,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
         },
         {
           id: 'TKT-002',
+          category: 'Leadership Recommendations',
           subject: 'SupportTickets.FeatureRequest',
           description: 'SupportTickets.FeatureRequestDesc',
           priority: 'Medium',
@@ -138,6 +140,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
         },
         {
           id: 'TKT-003',
+          category: 'Priority',
           subject: 'SupportTickets.BugReport',
           description: 'SupportTickets.BugReportDesc',
           priority: 'Low',
@@ -150,6 +153,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
         },
         {
           id: 'TKT-004',
+          category: 'Leadership Recommendations',
           subject: 'SupportTickets.GeneralInquiry',
           description: 'SupportTickets.GeneralInquiryDesc',
           priority: 'High',
@@ -162,6 +166,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
         },
         {
           id: 'TKT-005',
+          category: 'Priority',
           subject: 'SupportTickets.PasswordReset',
           description: 'SupportTickets.PasswordResetDesc',
           priority: 'Medium',

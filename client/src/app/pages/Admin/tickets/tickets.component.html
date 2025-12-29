@@ -5,7 +5,7 @@
      <img src="assets/logo/handshake.png" alt="handshake" class="rfp-header">
 
       <h2 class="rfp-header-title">
-        {{ isMyTicketsView() ? 'My Support Tickets' : ('SupportTickets.Title' | translate) }}
+        {{ isMyTicketsView() ? 'My Tickets' : ('SupportTickets.Title' | translate) }}
       </h2>
     </div>
   </div>
@@ -70,6 +70,7 @@
       <thead>
         <tr>
           <th>{{ 'SupportTickets.TicketID' | translate }}</th>
+          <th>Category</th>
           <th>{{ 'SupportTickets.Subject' | translate }}</th>
           <th>{{ 'SupportTickets.Description' | translate }}</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
@@ -82,6 +83,9 @@
       <tbody>
         <tr *ngFor="let ticket of ticketsTable.data">
           <td>{{ ticket.id }}</td>
+          <td>
+            <span class="category-badge">{{ ticket.category }}</span>
+          </td>
           <td>{{ ticket.subject | translate }}</td>
           <td>{{ ticket.description | translate }}</td>
           <td>
@@ -133,11 +137,11 @@
             </button>
             <nz-dropdown-menu #actionMenu="nzDropdownMenu">
               <ul nz-menu>
-                <li nz-menu-item (click)="openActionModal('approve', ticket)">
+                <li *ngIf="!isMyTicketsView()" nz-menu-item (click)="openActionModal('approve', ticket)">
                   <span nz-icon nzType="check"></span>
                   {{ 'SupportTickets.Approve' | translate }}
                 </li>
-                <li nz-menu-item (click)="openActionModal('reject', ticket)">
+                <li *ngIf="!isMyTicketsView()" nz-menu-item (click)="openActionModal('reject', ticket)">
                   <span nz-icon nzType="close"></span>
                   {{ 'SupportTickets.Reject' | translate }}
                 </li>
@@ -145,7 +149,7 @@
                   <span nz-icon nzType="swap"></span>
                   {{ 'SupportTickets.Transfer' | translate }}
                 </li>
-                <li nz-menu-item (click)="openActionModal('moreInfo', ticket)">
+                <li *ngIf="!isMyTicketsView()" nz-menu-item (click)="openActionModal('moreInfo', ticket)">
                   <span nz-icon nzType="info-circle"></span>
                   Get More Info
                 </li>
