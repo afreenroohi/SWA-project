@@ -530,6 +530,7 @@ export class AppComponent {
                 text: 'Ticket List',
                 textAr: 'قائمة التذاكر',
                 link: 'admin/tickets',
+                type: 'allTickets'
               },
               {
                 name: 'initiativelist',

@@ -1,192 +1,12 @@
 <div class="tickets-container">
-  <!-- RFP Header -->
-  <div class="rfp-header-box" *ngIf="!isUserRoute()">
-    <div class="rfp-header-content">
-      <span nz-icon nzType="file-text" class="rfp-header-icon"></span>
-      <h2 class="rfp-header-title">{{ 'RFP.DashboardTitle' | translate }}</h2>
-    </div>
-  </div>
-
-  <!-- RFP KPI Cards -->
-  <div class="kpi-container" *ngIf="!isUserRoute()">
-    <nz-row [nzGutter]="[16, 16]">
-      <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-total" (click)="toggleRfpStats()" style="cursor: pointer;">
-          <div class="kpi-content">
-            <div class="kpi-icon">
-              <span nz-icon nzType="file-text"></span>
-            </div>
-            <div class="kpi-text">
-              <div class="kpi-value">{{ totalRfp }}</div>
-              <div class="kpi-title">{{ 'RFP.Total_Rfps' | translate }}</div>
-            </div>
-          </div>
-        </nz-card>
-      </nz-col>
-      <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-open" (click)="toggleContractStats()" style="cursor: pointer;">
-          <div class="kpi-content">
-            <div class="kpi-icon">
-              <span nz-icon nzType="file-protect"></span>
-            </div>
-            <div class="kpi-text">
-              <div class="kpi-value">{{ totalContracts }}</div>
-              <div class="kpi-title">{{ 'RFP.TotalContracts' | translate }}</div>
-            </div>
-          </div>
-        </nz-card>
-      </nz-col>
-      <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-progress" (click)="toggleBidOpeningStats()" style="cursor: pointer;">
-          <div class="kpi-content">
-            <div class="kpi-icon">
-              <span nz-icon nzType="folder-open"></span>
-            </div>
-            <div class="kpi-text">
-              <div class="kpi-value">{{ totalBidsOpen }}</div>
-              <div class="kpi-title">{{ 'RFP.TotalBidOpenings' | translate }}</div>
-            </div>
-          </div>
-        </nz-card>
-      </nz-col>
-      <nz-col [nzSpan]="6">
-        <nz-card class="kpi-card kpi-card-closed" (click)="toggleBidEvaluationStats()" style="cursor: pointer;">
-          <div class="kpi-content">
-            <div class="kpi-icon">
-              <span nz-icon nzType="check-circle"></span>
-            </div>
-            <div class="kpi-text">
-              <div class="kpi-value">{{ totalBidsEvaluated }}</div>
-              <div class="kpi-title">{{ 'RFP.TotalBidEvaluations' | translate }}</div>
-            </div>
-          </div>
-        </nz-card>
-      </nz-col>
-    </nz-row>
-  </div>
-
-  <!-- RFP Stats Table -->
-  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showRfpStats">
-    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.Total_Rfps' | translate }}</h3>
-    <nz-table #rfpTable [nzData]="rfpStats" [nzShowPagination]="false" nzSize="small">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Department</th>
-          <th>Total RFPs</th>
-          <th>In Progress</th>
-          <th>Approved</th>
-          <th>Rejected</th>
-          <th>Closed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stat of rfpTable.data">
-          <td>{{ stat.user }}</td>
-          <td>{{ stat.department }}</td>
-          <td>{{ stat.total }}</td>
-          <td>{{ stat.inProgress }}</td>
-          <td>{{ stat.approved }}</td>
-          <td>{{ stat.rejected }}</td>
-          <td>{{ stat.closed }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </div>
-
-  <!-- Contract Stats Table -->
-  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showContractStats">
-    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalContracts' | translate }}</h3>
-    <nz-table #contractTable [nzData]="contractStats" [nzShowPagination]="false" nzSize="small">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Department</th>
-          <th>Total Contracts</th>
-          <th>In Progress</th>
-          <th>Approved</th>
-          <th>Rejected</th>
-          <th>Closed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stat of contractTable.data">
-          <td>{{ stat.user }}</td>
-          <td>{{ stat.department }}</td>
-          <td>{{ stat.total }}</td>
-          <td>{{ stat.inProgress }}</td>
-          <td>{{ stat.approved }}</td>
-          <td>{{ stat.rejected }}</td>
-          <td>{{ stat.closed }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </div>
-
-  <!-- Bid Opening Stats Table -->
-  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showBidOpeningStats">
-    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalBidOpenings' | translate }}</h3>
-    <nz-table #bidOpenTable [nzData]="bidOpeningStats" [nzShowPagination]="false" nzSize="small">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Department</th>
-          <th>Total Bid Openings</th>
-          <th>In Progress</th>
-          <th>Approved</th>
-          <th>Rejected</th>
-          <th>Closed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stat of bidOpenTable.data">
-          <td>{{ stat.user }}</td>
-          <td>{{ stat.department }}</td>
-          <td>{{ stat.total }}</td>
-          <td>{{ stat.inProgress }}</td>
-          <td>{{ stat.approved }}</td>
-          <td>{{ stat.rejected }}</td>
-          <td>{{ stat.closed }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </div>
-
-  <!-- Bid Evaluation Stats Table -->
-  <div class="table-container mt-4" style="margin-bottom: 24px;" *ngIf="showBidEvaluationStats">
-    <h3 style="color: #1f1f1f; margin-bottom: 16px; font-weight: 600;">{{ 'RFP.TotalBidEvaluations' | translate }}</h3>
-    <nz-table #bidEvalTable [nzData]="bidEvaluationStats" [nzShowPagination]="false" nzSize="small">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Department</th>
-          <th>Total Bid Evaluations</th>
-          <th>In Progress</th>
-          <th>Approved</th>
-          <th>Rejected</th>
-          <th>Closed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stat of bidEvalTable.data">
-          <td>{{ stat.user }}</td>
-          <td>{{ stat.department }}</td>
-          <td>{{ stat.total }}</td>
-          <td>{{ stat.inProgress }}</td>
-          <td>{{ stat.approved }}</td>
-          <td>{{ stat.rejected }}</td>
-          <td>{{ stat.closed }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </div>
-
   <!-- Support Tickets Header -->
   <div class="rfp-header-box">
     <div class="rfp-header-content">
      <img src="assets/logo/handshake.png" alt="handshake" class="rfp-header">
 
-      <h2 class="rfp-header-title">{{ 'SupportTickets.Title' | translate }}</h2>
+      <h2 class="rfp-header-title">
+        {{ isMyTicketsView() ? 'My Support Tickets' : ('SupportTickets.Title' | translate) }}
+      </h2>
     </div>
   </div>
 
@@ -254,8 +74,8 @@
           <th>{{ 'SupportTickets.Description' | translate }}</th>
           <th>{{ 'SupportTickets.Priority' | translate }}</th>
           <th>{{ 'SupportTickets.Status' | translate }}</th>
-          <th *ngIf="!isUserRoute()">Admin Message</th>
-          <th>Assign To</th>
+          <th *ngIf="!isUserRoute() && !isAdminUser()">Admin Message</th>
+          <th>{{ isMyTicketsView() ? 'Assigned To' : 'Assign To' }}</th>
           <th>{{ 'SupportTickets.Actions' | translate }}</th>
         </tr>
       </thead>
@@ -274,7 +94,7 @@
               {{ 'SupportTickets.' + ticket.status.replace(' ', '') | translate }}
             </span>
           </td>
-          <td *ngIf="!isUserRoute()">
+          <td *ngIf="!isUserRoute() && !isAdminUser()">
             <span class="admin-message" *ngIf="ticket.adminMessage; else noMessage">
               {{ ticket.adminMessage }}
             </span>
@@ -295,7 +115,12 @@
               </ng-template>
             </ng-container>
             <ng-container *ngIf="!isUserRoute()">
-              <nz-select [(ngModel)]="ticket.assignedTo" nzPlaceHolder="Select User" class="assign-select">
+              <!-- For myTickets view, show static name -->
+              <span *ngIf="isMyTicketsView()" class="assigned-user">
+                <span nz-icon nzType="user"></span> {{ getAssignedToName(ticket) }}
+              </span>
+              <!-- For allTickets view, show dropdown -->
+              <nz-select *ngIf="!isMyTicketsView()" [(ngModel)]="ticket.assignedTo" nzPlaceHolder="Select User" class="assign-select">
                 <nz-option nzValue="suser1" nzLabel="suser1"></nz-option>
                 <nz-option nzValue="suser2" nzLabel="suser2"></nz-option>
                 <nz-option nzValue="self" nzLabel="Self"></nz-option>

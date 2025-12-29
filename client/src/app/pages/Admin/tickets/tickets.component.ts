@@ -260,6 +260,32 @@ export class TicketsComponent implements OnInit, OnDestroy {
     this.selectedTicket = null;
   }
 
+  isMyTicketsView(): boolean {
+    return this.ticketType === 'myTickets';
+  }
+
+  isAdminUser(): boolean {
+    const username = localStorage.getItem('username');
+    if (username) {
+      try {
+        const decodedRole = atob(username);
+        return decodedRole === 'ADMIN';
+      } catch (e) {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  getAssignedToName(ticket: any): string {
+    const assignedUsers = ['Ahmed Rashid', 'Fatima Hassan', 'Mohammed Ali', 'Sara Abdullah', 'Omar Khalid'];
+    if (this.isMyTicketsView()) {
+      const index = parseInt(ticket.id.split('-')[1]) % assignedUsers.length;
+      return assignedUsers[index];
+    }
+    return ticket.assignedTo;
+  }
+
   openActionModal(action: string, ticket: any): void {
     this.selectedTicket = ticket;
     this.currentAction = action;
