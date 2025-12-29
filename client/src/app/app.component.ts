@@ -500,7 +500,7 @@ export class AppComponent {
         if (role === 'ADMIN') {
 
           // this.constructCOCmenu({ RoleId: 'FI' })
-
+          this.showHelpIcon = true;
           // Add Ticket module for admin
           this.navItems.push({
             ModuleIcon: IconList.handshake,

@@ -98,6 +98,19 @@ import { CommonService } from '../../service/common.service';
         </nz-form-control>
       </nz-form-item>
 
+      <!-- Assign To (Admin Only) -->
+      <nz-form-item *ngIf="isAdmin">
+        <nz-form-label [nzSpan]="6">
+          {{ cs.userLanguage === 'ar' ? 'تعيين إلى' : 'Assign to' }}
+        </nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <nz-select formControlName="assignTo"
+            [nzPlaceHolder]="cs.userLanguage === 'ar' ? 'اختر المستخدم' : 'Select user'">
+            <nz-option *ngFor="let user of usersList" [nzValue]="user.id" [nzLabel]="user.name"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
       <!-- Attachment -->
       <nz-form-item>
         <nz-form-label [nzSpan]="6">
@@ -141,6 +154,12 @@ export class TicketFormComponent {
   loading = false;
   uploadedFile: any = null;
   showOtherText = false;
+  isAdmin = false;
+  usersList = [
+    { id: 's1', name: 'Support User 1' },
+    { id: 's2', name: 'Support User 2' },
+    { id: 's3', name: 'Support User 3' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -149,12 +168,16 @@ export class TicketFormComponent {
     public cs: CommonService
   ) {
 
+    const username = localStorage.getItem('username');
+    this.isAdmin = username ? atob(username).toUpperCase() === 'ADMIN' : false;
+
     this.ticketForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       priority: ['Medium', Validators.required],
       category: ['', Validators.required],
-      otherCategory: ['']
+      otherCategory: [''],
+      assignTo: ['']
     });
 
     // Listen for category change
@@ -194,6 +217,7 @@ export class TicketFormComponent {
       category: finalCategory,
       status: 'Open',
       screenshot: this.uploadedFile?.name,
+      assignedTo: formData.assignTo || '',
       createdDate: new Date(),
       lastUpdated: new Date()
     };
