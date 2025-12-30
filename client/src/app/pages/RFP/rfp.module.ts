@@ -37,6 +37,8 @@ import { MyprequalComponent } from './myprequal/myprequal.component';
 import { MySupportTicketsComponent } from './my-support-tickets/my-support-tickets.component';
 import { RaiseInitiativeComponent } from './raise-initiative/raise-initiative.component';
 import { InitiativeFormComponent } from '../../components/initiative-form/initiative-form.component';
+import { TicketsComponent } from '../Admin/tickets/tickets.component';
+import { InitiativesComponent } from '../Admin/initiatives/initiatives.component';
 const routes: Routes = [
   {
     path: 'create',
@@ -148,6 +150,16 @@ const routes: Routes = [
     component: RaiseInitiativeComponent,
     canActivate: [AuthGuardGuard],
   },
+  {
+        path: 'tickets',
+        component: TicketsComponent,
+        canActivate: [AuthGuardGuard]
+    },
+    {
+        path: 'initiatives',
+        component: InitiativesComponent,
+        canActivate: [AuthGuardGuard]
+    },
 ];
 
 @NgModule({
