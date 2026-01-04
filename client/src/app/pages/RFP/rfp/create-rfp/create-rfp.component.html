@@ -1025,14 +1025,14 @@
               <textarea nz-input rows="3" placeholder="Describe the Impact..." formControlName="Impact"></textarea>
             </div>
 
-            <div class="col-12 my-3">
+            <!-- <div class="col-12 my-3">
               <div class="toggle-row info-box">
                 <label class="toggle-label">
                   {{ "RFP.frameworkIncluded" | translate }}
                 </label>
                 <nz-switch formControlName="frameworkIncluded"></nz-switch>
               </div>
-            </div>
+            </div> -->
 
             <!-- * Framework Agreement -->
             <!-- <div class="col-4 my-1">
@@ -3279,16 +3279,16 @@
             </div> -->
 
             <!-- ROW 2 â€” Upload area (below the select row) -->
-            <label class="field-label">Upload</label>
+            <label class="field-label">{{"RFP.Upload" | translate}}</label>
             <div class="section" style="margin-top: 12px">
               <nz-upload nzType="drag" [nzBeforeUpload]="beforeUpload" nzMultiple
                 nzAccept=".pdf,.doc,.docx,.xlsx,.png,.jpg" class="upload-area">
                 <p class="ant-upload-drag-icon">
                   <i nz-icon nzType="upload"></i>
                 </p>
-                <p class="upload-message">Click or drag files to upload</p>
+                <p class="upload-message">{{"RFP.Click or drag files to upload" | translate}}</p>
                 <p class="helper">
-                  Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.
+                 {{ "RFP.Allowed" | translate }}: pdf, doc, xlsx, png, jpg. Max 10MB / file.
                 </p>
               </nz-upload>
 

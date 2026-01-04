@@ -6151,7 +6151,7 @@ export class CreateRFPComponent implements OnInit {
       );
       if (frameworkType) {
         this.rfpForm.get('competitionType')?.setValue(frameworkType.id);
-        this.rfpForm.get('competitionType')?.disable();
+        //this.rfpForm.get('competitionType')?.disable();
       }
     }
     // Add logic for other types if needed

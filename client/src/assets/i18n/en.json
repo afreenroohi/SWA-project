@@ -114,6 +114,15 @@
     "SUBMIT_SUCCESS": "Form submitted successfully!"
   },
   "RFP": {
+    "Open": "Open",
+    "Guidance Appendix": "Guidance Appendix",
+    "Upload": "Upload",
+    "Allowed": "Allowed: pdf, doc, xlsx, png, jpg. Max 10MB / file.",
+    "Open/Close Vendors": "Open/Close Vendors",
+    "Request from Agreement": "Request from Agreement",
+    "Create from Scratch": "Create from Scratch",
+    "Request from Electric Market": "Request from Electric Market",
+    "Create Agreement From": "Create Agreement From",
     "day":"Days",
     "Only alphabets are allowed": "Only alphabets are allowed",
     "Action":"Action",
