@@ -1,0 +1,326 @@
+/**
+ * ============================================================================
+ * VISUAL PREVIEW - How the Modal Will Look
+ * ============================================================================
+ */
+
+/*
+
+DESKTOP VIEW (600px modal width)
+================================
+
+┌────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │  Create Agreement                                      [X]    │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │   ┌─────┐                                                     │ │
+│  │   │     │                                                     │ │
+│  │   │  📄  │   Create from Scratch                             │ │
+│  │   │     │                                                     │ │
+│  │   └─────┘   Start creating a new agreement from beginning    │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │   ┌─────┐                                                     │ │
+│  │   │     │                                                     │ │
+│  │   │  📋  │   Request from Agreement                          │ │
+│  │   │     │                                                     │ │
+│  │   └─────┘   Create agreement based on existing agreement     │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │   ┌─────┐                                                     │ │
+│  │   │     │                                                     │ │
+│  │   │  ⚡  │   Request from Electric Market                    │ │
+│  │   │     │                                                     │ │
+│  │   └─────┘   Create agreement from electric market request    │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+└────────────────────────────────────────────────────────────────────┘
+
+
+HOVER STATE (when mouse over an option)
+========================================
+
+┌────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │  Create Agreement                                      [X]    │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ╔══════════════════════════════════════════════════════════════╗ │
+│  ║                                                                ║ │
+│  ║   ┌─────┐                                                     ║ │
+│  ║   │ ███ │                                                     ║ │
+│  ║   │ ███ │   Create from Scratch                             ║ │
+│  ║   │ ███ │                                                     ║ │
+│  ║   └─────┘   Start creating a new agreement from beginning    ║ │
+│  ║                                                                ║ │
+│  ║   ← Blue border, light blue background, shadow, lifted       ║ │
+│  ╚══════════════════════════════════════════════════════════════╝ │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │   (other options remain normal)                               │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+└────────────────────────────────────────────────────────────────────┘
+
+
+MOBILE VIEW (95% screen width)
+===============================
+
+┌─────────────────────────────────────┐
+│                                      │
+│  ┌────────────────────────────────┐ │
+│  │ Create Agreement          [X]  │ │
+│  └────────────────────────────────┘ │
+│                                      │
+│  ┌────────────────────────────────┐ │
+│  │  ┌──┐                          │ │
+│  │  │📄│ Create from Scratch      │ │
+│  │  └──┘                          │ │
+│  │  Start creating new agreement  │ │
+│  └────────────────────────────────┘ │
+│                                      │
+│  ┌────────────────────────────────┐ │
+│  │  ┌──┐                          │ │
+│  │  │📋│ Request from Agreement   │ │
+│  │  └──┘                          │ │
+│  │  Create from existing          │ │
+│  └────────────────────────────────┘ │
+│                                      │
+│  ┌────────────────────────────────┐ │
+│  │  ┌──┐                          │ │
+│  │  │⚡│ Request from Electric    │ │
+│  │  └──┘                          │ │
+│  │  Create from electric market   │ │
+│  └────────────────────────────────┘ │
+│                                      │
+└─────────────────────────────────────┘
+
+
+TRIGGER TILE (on dashboard)
+============================
+
+┌────────────────────────────────────┐
+│                                     │
+│           ┌─────────┐              │
+│           │         │              │
+│           │    📄   │              │
+│           │         │              │
+│           └─────────┘              │
+│                                     │
+│        Create Agreement            │
+│                                     │
+│   Start creating a new agreement   │
+│                                     │
+└────────────────────────────────────┘
+         ↑ Click to open modal
+
+
+TRIGGER TILE - HOVER STATE
+===========================
+
+╔═════════════════════════════════════╗
+║                                      ║
+║           ┌─────────┐               ║
+║           │  █████  │               ║
+║           │  █████  │  ← Blue BG   ║
+║           │  █████  │               ║
+║           └─────────┘               ║
+║                                      ║
+║        Create Agreement             ║
+║                                      ║
+║   Start creating a new agreement    ║
+║                                      ║
+║  ← Blue border, lifted, shadow      ║
+╚═════════════════════════════════════╝
+
+
+COLOR LEGEND
+============
+
+Normal State:
+- Border: Light gray (#e8e8e8)
+- Background: White (#ffffff)
+- Icon BG: Very light blue (#e6f4ff)
+- Icon: Blue (#005c99)
+- Text: Dark gray (#262626)
+- Description: Medium gray (#8c8c8c)
+
+Hover State:
+- Border: Blue (#005c99)
+- Background: Light blue (#f0f8ff)
+- Icon BG: Blue (#005c99)
+- Icon: White (#ffffff)
+- Text: Dark gray (#262626)
+- Description: Medium gray (#8c8c8c)
+- Shadow: rgba(0, 92, 153, 0.15)
+
+
+SPACING & SIZING
+================
+
+Modal:
+- Width: 600px (desktop), 90% (tablet), 95% (mobile)
+- Padding: 20px
+
+Option Cards:
+- Padding: 20px
+- Gap between cards: 16px
+- Border radius: 8px
+- Border width: 2px
+
+Icons:
+- Circle size: 60px
+- Icon size: 28px
+- Margin right: 20px
+
+Text:
+- Title: 18px, weight 600
+- Description: 14px, weight 400
+- Line height: 1.5
+
+
+ANIMATIONS
+==========
+
+Hover Effect:
+- Duration: 0.3s
+- Easing: ease
+- Transform: translateY(-2px)
+- Shadow: 0 4px 12px rgba(0, 92, 153, 0.1)
+
+Modal Open/Close:
+- Handled by ng-zorro-antd
+- Fade in/out effect
+- Backdrop fade
+
+
+ACCESSIBILITY
+=============
+
+Keyboard Navigation:
+- Tab: Move between options
+- Enter: Select option
+- Escape: Close modal
+
+Screen Reader:
+- Modal has proper ARIA labels
+- Options are announced correctly
+- Focus management handled
+
+
+RTL (RIGHT-TO-LEFT) LAYOUT
+===========================
+
+Arabic/RTL View:
+┌────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │    [X]                                      إنشاء اتفاقية    │ │
+│  │                                                                │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │                                                                │ │
+│  │                                     إنشاء من البداية  ┌─────┐│ │
+│  │                                                         │     ││ │
+│  │    ابدأ في إنشاء اتفاقية جديدة من البداية            │  📄  ││ │
+│  │                                                         │     ││ │
+│  │                                                         └─────┘│ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  (Icon and text positions are mirrored)                            │
+│                                                                     │
+└────────────────────────────────────────────────────────────────────┘
+
+
+RESPONSIVE BREAKPOINTS
+======================
+
+Desktop (> 768px):
+- Modal: 600px width
+- Options: Full padding (20px)
+- Icons: 60px circles
+- Text: Full size
+
+Tablet (768px - 480px):
+- Modal: 90% width
+- Options: Medium padding (16px)
+- Icons: 55px circles
+- Text: Slightly smaller
+
+Mobile (< 480px):
+- Modal: 95% width
+- Options: Compact padding (12px)
+- Icons: 50px circles
+- Text: Smaller, wrapped
+
+
+INTERACTION FLOW
+================
+
+1. User sees trigger tile/button
+   ↓
+2. User hovers → Tile highlights
+   ↓
+3. User clicks → Modal opens with fade-in
+   ↓
+4. User hovers over option → Option highlights
+   ↓
+5. User clicks option → Modal closes, navigation happens
+   ↓
+6. User lands on target page
+
+Alternative:
+3. User clicks X or outside → Modal closes with fade-out
+
+
+BROWSER RENDERING
+=================
+
+Chrome/Edge:
+- Full support
+- Smooth animations
+- Perfect rendering
+
+Firefox:
+- Full support
+- Smooth animations
+- Perfect rendering
+
+Safari:
+- Full support
+- Smooth animations
+- Perfect rendering
+
+Mobile Browsers:
+- Touch-friendly
+- Tap targets: 44x44px minimum
+- Smooth scrolling
+
+
+PERFORMANCE
+===========
+
+Load Time: < 50ms
+Animation: 60fps
+Memory: < 1MB
+Bundle Size: ~5KB (minified)
+
+*/

@@ -122,7 +122,7 @@
   </div>
 </div>
 
-<!-- Popup Modal -->
+<!-- Popup Modal for RFP -->
 <div class="custom-popup-overlay" *ngIf="showPopup" (click)="closePopup()">
   <div class="custom-popup-container" (click)="$event.stopPropagation()">
     <div class="custom-popup-header">
@@ -139,6 +139,32 @@
       <button class="custom-popup-btn" (click)="onPopupButtonClick('automated')">
         <i nz-icon nzType="robot" nzTheme="outline"></i>
         <span>{{ "RFP.Create Automated RFP" | translate }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Modal for Agreement -->
+<div class="custom-popup-overlay" *ngIf="showAgreementPopup" (click)="closeAgreementPopup()">
+  <div class="custom-popup-container" (click)="$event.stopPropagation()">
+    <div class="custom-popup-header">
+      <h2>{{ "RFP.Create Agreement From" | translate }}</h2>
+      <button class="close-btn" (click)="closeAgreementPopup()">
+        <i nz-icon nzType="close" nzTheme="outline"></i>
+      </button>
+    </div>
+    <div class="custom-popup-content">
+      <button class="custom-popup-btn" (click)="onAgreementPopupButtonClick('scratch')">
+        <i nz-icon nzType="file-add" nzTheme="outline"></i>
+        <span>{{ "RFP.Create from Scratch" | translate }}</span>
+      </button>
+      <button class="custom-popup-btn" (click)="onAgreementPopupButtonClick('agreement')">
+        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        <span>{{ "RFP.Request from Agreement" | translate }}</span>
+      </button>
+      <button class="custom-popup-btn" (click)="onAgreementPopupButtonClick('electric')">
+        <i nz-icon nzType="thunderbolt" nzTheme="outline"></i>
+        <span>{{ "RFP.Request from Electric Market" | translate }}</span>
       </button>
     </div>
   </div>
@@ -302,6 +328,17 @@
                 " style="margin-top: 8px; color: red">
                 {{ "RFP.Max of 20 Characters" | translate }}
               </small>
+            </div>
+
+            <!-- * Open/Close Vendors (only visible when coming from scratch) -->
+            <div class="col-4 my-1" *ngIf="isFromScratch">
+              <nz-form-label nzRequired for="openCloseVendors">{{
+                "RFP.Open/Close Vendors" | translate
+                }}</nz-form-label>
+              <nz-select formControlName="openCloseVendors" style="width: 100%" nzAllowClear>
+                <nz-option nzValue="open" [nzLabel]="'RFP.Open' | translate"></nz-option>
+                <nz-option nzValue="close" [nzLabel]="'RFP.Close' | translate"></nz-option>
+              </nz-select>
             </div>
 
             <!-- * Estimated Cost -->
@@ -1854,6 +1891,45 @@
 
                         <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1"
                           *ngIf="technicalDocs.length > 1" (click)="deleteTechnicalDoc(i)">
+                        </i>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!--Guidance Appendix (only visible when coming from scratch)-->
+            <div class="col-md-12 col-12 my-1" *ngIf="isFromScratch">
+              <nz-form-label class="bold-label" nzRequired for="guidanceAppendix">
+                {{ "RFP.Guidance Appendix" | translate }}
+              </nz-form-label>
+
+              <table class="table table-bordered technical-table mt-3">
+                <thead>
+                  <tr>
+                    <th>{{ 'RFP.Serial Number' | translate }}</th>
+                    <th>{{ 'RFP.Guidance Appendix' | translate }}</th>
+                    <th>{{ 'RFP.Action' | translate }}</th>
+                  </tr>
+                </thead>
+
+                <tbody formArrayName="guidanceAppendix">
+                  <tr *ngFor="let item of guidanceAppendix.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+
+                    <td>
+                      <input nz-input formControlName="appendixText" placeholder="Enter guidance appendix" />
+                    </td>
+
+                    <td class="text-center">
+                      <ng-container *ngIf="i === guidanceAppendix.length - 1">
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" class="add-icon mx-1"
+                          (click)="addGuidanceAppendix(i)">
+                        </i>
+
+                        <i nz-icon nzType="delete" nzTheme="outline" class="delete-icon mx-1"
+                          *ngIf="guidanceAppendix.length > 1" (click)="deleteGuidanceAppendix(i)">
                         </i>
                       </ng-container>
                     </td>

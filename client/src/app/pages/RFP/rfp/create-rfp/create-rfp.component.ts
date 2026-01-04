@@ -62,6 +62,8 @@ export class CreateRFPComponent implements OnInit {
   showGovernmentDocs: boolean = false;
   showSupplierDocs: boolean = false;
   showSensitiveDocs: boolean = false;
+  showAgreementPopup: boolean = false;
+  isFromScratch: boolean = false;
   step: number = 0;
   //showScope=false;
   directCompetitionId: any = null;
@@ -1897,6 +1899,7 @@ export class CreateRFPComponent implements OnInit {
       // contractType: new FormControl('', [Validators.required]),
       competitionType: new FormControl('', [Validators.required]),
       technicalDocs: this.fb.array([this.createTechnicalDocRow()]),
+      guidanceAppendix: this.fb.array([this.createGuidanceAppendixRow()]),
 
       prequalificationDetails: new FormControl('', [Validators.required]),
       coordinatorName: new FormControl(''),
@@ -1920,6 +1923,7 @@ export class CreateRFPComponent implements OnInit {
       qualificationReference: [''],
       qualificationLink: [''],
       competitionName: ['', [Validators.required, Validators.maxLength(20)]],
+      openCloseVendors: [''],
       dividedIntoLots: [false, [Validators.required]],
       contractDuration: ['', [Validators.required]],
       MatGrpId: ['', [Validators.required]],
@@ -2291,6 +2295,26 @@ export class CreateRFPComponent implements OnInit {
   deleteTechnicalDoc(index: number): void {
     if (this.technicalDocs.length > 1) {
       this.technicalDocs.removeAt(index);
+    }
+  }
+
+  get guidanceAppendix(): FormArray {
+    return this.rfpForm.get('guidanceAppendix') as FormArray;
+  }
+
+  createGuidanceAppendixRow(): FormGroup {
+    return this.fb.group({
+      appendixText: [''],
+    });
+  }
+
+  addGuidanceAppendix(index: number): void {
+    this.guidanceAppendix.insert(index + 1, this.createGuidanceAppendixRow());
+  }
+
+  deleteGuidanceAppendix(index: number): void {
+    if (this.guidanceAppendix.length > 1) {
+      this.guidanceAppendix.removeAt(index);
     }
   }
 
@@ -6114,28 +6138,53 @@ export class CreateRFPComponent implements OnInit {
     return Array.isArray(workLocationValue) ? workLocationValue : [];
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  onBoxClick(boxType: string): void {
-    if (boxType === 'services') {
-      this.showPopup = true;
-    } else {
+  onAgreementPopupButtonClick(type: string): void {
+    console.log('Agreement popup button clicked:', type);
+    this.showAgreementPopup = false;
+    if (type === 'scratch') {
+      this.isFromScratch = true;
       this.showInitialBoxes = false;
       this.step1 = true;
+      // Set Framework Agreement competition type and disable it
+      const frameworkType = this.competitionTypes.find(
+        (ct: any) => ct.value?.toLowerCase().includes('framework') || ct.valueAr?.toLowerCase().includes('إطار')
+      );
+      if (frameworkType) {
+        this.rfpForm.get('competitionType')?.setValue(frameworkType.id);
+        this.rfpForm.get('competitionType')?.disable();
+      }
     }
+    // Add logic for other types if needed
+    // if (type === 'agreement') { ... }
+    // if (type === 'electric') { ... }
   }
 
-  onPopupButtonClick(buttonType: string): void {
-    this.showPopup = false;
-    this.showInitialBoxes = false;
-    this.step1 = true;
+  closeAgreementPopup(): void {
+    this.showAgreementPopup = false;
+  }
+
+  onBoxClick(type: string): void {
+    if (type === 'agreements') {
+      this.showAgreementPopup = true;
+    } else if (type === 'services') {
+      this.showPopup = true;
+    }
   }
 
   closePopup(): void {
     this.showPopup = false;
+  }
+
+  onPopupButtonClick(type: string): void {
+    this.showPopup = false;
+    this.showInitialBoxes = false;
+    this.step1 = true;
+    // Add logic based on type (manual/automated)
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createTechReq(): FormGroup {
