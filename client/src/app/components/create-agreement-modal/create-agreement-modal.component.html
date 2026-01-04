@@ -1,0 +1,35 @@
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'Create Agreement' | translate" (nzOnCancel)="handleCancel()" [nzFooter]="null" nzWidth="600px">
+  <ng-container *nzModalContent>
+    <div class="agreement-options">
+      <div class="option-card" (click)="selectOption('scratch')">
+        <div class="option-icon">
+          <i nz-icon nzType="file-add" nzTheme="outline"></i>
+        </div>
+        <div class="option-content">
+          <h3>{{ 'Create from Scratch' | translate }}</h3>
+          <p>{{ 'Start creating a new agreement from the beginning' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="option-card" (click)="selectOption('agreement')">
+        <div class="option-icon">
+          <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        </div>
+        <div class="option-content">
+          <h3>{{ 'Request from Agreement' | translate }}</h3>
+          <p>{{ 'Create agreement based on existing agreement' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="option-card" (click)="selectOption('electric')">
+        <div class="option-icon">
+          <i nz-icon nzType="thunderbolt" nzTheme="outline"></i>
+        </div>
+        <div class="option-content">
+          <h3>{{ 'Request from Electric Market' | translate }}</h3>
+          <p>{{ 'Create agreement from electric market request' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>
