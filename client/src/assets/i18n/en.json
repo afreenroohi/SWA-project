@@ -114,6 +114,8 @@
     "SUBMIT_SUCCESS": "Form submitted successfully!"
   },
   "RFP": {
+    "Enter Email": "Enter Email",
+    "Enter Contact Number": "Enter Contact Number",
     "Open": "Open",
     "Guidance Appendix": "Guidance Appendix",
     "Upload": "Upload",

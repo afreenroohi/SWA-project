@@ -884,7 +884,7 @@
               <nz-form-label nzRequired>{{
                 "RFP.Previous Project Number" | translate
                 }}</nz-form-label>
-              <input nz-input [placeholder]="'RFP.Enter Previous Project Number'" formControlName="number" />
+              <input nz-input [placeholder]="'RFP.Enter Previous Project Number' | translate" formControlName="number" />
             </div>
 
             <div class="col-4 my-1" *ngIf="rfpForm.get('projectRelaunched')?.value">
