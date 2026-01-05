@@ -76,7 +76,10 @@
   },
   "RFP": {
     "Open": "فتح",
-    
+    "No, I want to create": "لا، أريد إنشاء",
+    "Yes, I have prequalification number": "نعم، لدي رقم تأهيل مسبق",
+    "Do you have a prequalification number?": "هل لديك رقم تأهيل مسبق؟",
+    "Prequalification":"التأهيل",
     "Upload": "رفع",
     "Guidance Appendix": "ملحق الإرشادات",
     "Allowed": "مسموح به: pdf، doc، xlsx، png، jpg. الحد الأقصى 10 ميغا بايت / ملف.",

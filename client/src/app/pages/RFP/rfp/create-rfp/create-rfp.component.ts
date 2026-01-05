@@ -1418,14 +1418,14 @@ export class CreateRFPComponent implements OnInit {
 
   showPrequalificationModal(): void {
     const modal = this.modal.confirm({
-      nzTitle: 'Prequalification',
-      nzContent: 'Do you have a prequalification number?',
+      nzTitle: this.translate.instant('RFP.Prequalification'),
+      nzContent: this.translate.instant('RFP.Do you have a prequalification number?'),
       nzCentered: true,
       nzWidth: 500,
-      nzOkText: 'Yes, I have prequalification number',
+      nzOkText: this.translate.instant('RFP.Yes, I have prequalification number'),
       nzOkType: 'primary',
       nzOkDanger: false,
-      nzCancelText: 'No, I want to create',
+      nzCancelText: this.translate.instant('RFP.No, I want to create'),
       nzOnOk: () => {
         // User has prequalification number - keep the field visible
         console.log('User has prequalification number');

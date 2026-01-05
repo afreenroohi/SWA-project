@@ -114,6 +114,10 @@
     "SUBMIT_SUCCESS": "Form submitted successfully!"
   },
   "RFP": {
+    "Prequalification": "Prequalification",
+    "No, I want to create": "No, I want to create",
+    "Yes, I have prequalification number": "Yes, I have prequalification number",
+    "Do you have a prequalification number?": "Do you have a prequalification number?",
     "Enter Email": "Enter Email",
     "Enter Contact Number": "Enter Contact Number",
     "Open": "Open",
